@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>"Work Done Well, Work Done Right"</title>
+    <title>OCS LLC - Professional Window Cleaning Services</title>
+    <meta name="description" content="Opus Cordis Services (OCS) LLC offers professional window cleaning for residential and commercial properties in Montana. Schedule an estimate today!">
+    <meta property="og:title" content="OCS LLC - Professional Window Cleaning Services">
+    <meta property="og:description" content="Reliable window cleaning and home services by OCS LLC. Work Done Well, Work Done Right.">
+    <meta property="og:image" content="https://live.staticflickr.com/65535/54650912485_2e25b50918_h.jpg">
+    <meta property="og:url" content="https://www.ocsllc.services">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: 'Verdana', sans-serif;
         }
         .hero-bg {
-            background-image: url('https://live.staticflickr.com/65535/54478070542_b5e76ebc2b_b.jpg');
+            background-image: url('https://live.staticflickr.com/65535/54650912485_2e25b50918_h.jpg');
             background-size: cover;
-            background-position: center;
+            background-position: center 100%;
             position: relative;
         }
         .hero-bg::before {
@@ -81,7 +86,7 @@
             opacity: 1;
         }
         .stars {
-            color: #FFD700;
+            color: #0CC0DF;
             font-size: 1.2rem;
         }
         .gallery-grid {
@@ -113,6 +118,107 @@
             width: 100%;
             height: 100%;
             border: none;
+            z-index: 1;
+        }
+        .gallery-grid .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 1rem;
+            z-index: 2;
+        }
+        .gallery-grid .image-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .gallery-grid .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 1rem;
+            z-index: 2;
+        }
+        .gallery-grid .video-container:hover .video-overlay,
+        .gallery-grid .image-container:hover .image-overlay {
+            display: none;
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        .lightbox-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+        .lightbox-prev, .lightbox-next {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 2rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .lightbox-prev:hover, .lightbox-next:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .lightbox-close:hover {
+            background: rgba(0, 0, 0, 0.8);
         }
         .service-img {
             width: 100%;
@@ -173,6 +279,18 @@
             .gallery-grid {
                 grid-template-columns: 1fr;
             }
+            .gallery-grid .video-overlay,
+            .gallery-grid .image-overlay {
+                font-size: 1rem;
+            }
+            .lightbox-prev, .lightbox-next {
+                font-size: 1.5rem;
+                padding: 0.3rem 0.6rem;
+            }
+            .lightbox-close {
+                font-size: 1.2rem;
+                padding: 0.3rem;
+            }
             .social-items {
                 flex-direction: column;
                 gap: 1rem;
@@ -188,7 +306,7 @@
             .social-handle {
                 font-size: 0.875rem;
             }
-            .schedule-buttons {
+            .schedule-button {
                 flex-direction: column;
                 gap: 1rem;
             }
@@ -209,7 +327,7 @@
             }
             .contact-info {
                 align-items: flex-start;
-                font-size: 0.875rem;
+                font-size: 1rem;
             }
         }
     </style>
@@ -239,10 +357,13 @@
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-8">Who We Are</h2>
             <p class="text-lg text-center max-w-3xl mx-auto mb-4">
-                Opus Cordis Services (OCS) LLC is your personable and reliable professional window cleaning service that is expanding to be your one-stop shop for general home and business services to meet your needs.
+                At OCS LLC, we're not just here to clean windows — we're here to make your space feel cleaner, clearer, and taken care of. Based in Kalispell and serving the Flathead Valley, we specialize in both residential and commercial window cleaning with a focus on quality, consistency, and personable relationships with our customers.
+            </p>
+            <p class="text-lg text-center max-w-3xl mx-auto mb-4">
+                We treat every project like it matters — because to you, it does. Whether residential or a local business, we approach each job with care and attention to detail. We're not about shortcuts or surface-level service. We're about showing up, doing it right the first time, and making sure you're genuinely satisfied.
             </p>
             <p class="text-lg text-center max-w-3xl mx-auto">
-                Our slogan, “Work Done Well, Work Done Right,” reflects our commitment to quality and attention to detail in every job. Our mission is to provide college students with valuable work experience that financially supports their academic and personal goals, fostering their growth while serving our community to the best of our ability.
+                "Work Done Well, Work Done Right." That’s not just our motto — it’s how we operate.
             </p>
         </div>
     </section>
@@ -254,15 +375,15 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
                     <h3 class="text-xl font-semibold mb-4">Residential Window Cleaning</h3>
-                    <img src="https://live.staticflickr.com/65535/54477952996_71b022d983_m.jpg" alt="Residential window cleaning" class="service-img">
+                    <img src="https://live.staticflickr.com/65535/54477952996_71b022d983_m.jpg" alt="Person cleaning residential windows" class="service-img" loading="lazy">
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
                     <h3 class="text-xl font-semibold mb-4">Commercial Window Cleaning</h3>
-                    <img src="https://live.staticflickr.com/65535/54474968775_afddf5b0ab_m.jpg" alt="Commercial window cleaning" class="service-img">
+                    <img src="https://live.staticflickr.com/65535/54474968775_afddf5b0ab_m.jpg" alt="Professional cleaning commercial windows" class="service-img" loading="lazy">
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
                     <h3 class="text-xl font-semibold mb-4">Additional Service Options</h3>
-                    <img src="https://live.staticflickr.com/65535/54478559103_1b8790e4d7_m.jpg" alt="Additional services" class="service-img">
+                    <img src="https://live.staticflickr.com/65535/54478559103_1b8790e4d7_m.jpg" alt="Additional home and business services" class="service-img" loading="lazy">
                 </div>
             </div>
         </div>
@@ -271,7 +392,7 @@
     <!-- Testimonials Section -->
     <section id="testimonials" class="py-16 bg-white">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-8">Reviews</h2>
+            <h2 class="text-3xl font-bold text-center mb-8">What They Say</h2>
             <div class="testimonial-slider max-w-3xl mx-auto">
                 <div class="testimonial-slide active">
                     <div class="stars text-center mb-2">★★★★★</div>
@@ -288,24 +409,25 @@
             <h2 class="text-3xl font-bold text-center mb-8">Our Work</h2>
             <div class="gallery-grid">
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/lx4Ngu8h6CY?feature=share" title="Commercial window cleaning video" allowfullscreen></iframe>
+                    <div class="video-overlay video-overlay-1">Residential Window Cleaning</div>
+                    <iframe src="https://www.youtube.com/embed/XOP7iZ6sa8o" title="Window cleaning short video 1" allowfullscreen loading="lazy"></iframe>
                 </div>
-                <img src="https://live.staticflickr.com/65535/54474616375_f76032a1ce_c.jpg" alt="Person cleaning large residential window with mountain view">
+                <div class="image-container">
+                    <div class="image-overlay">Photos</div>
+                    <img src="https://live.staticflickr.com/65535/54573517443_e6997fcc5e_c.jpg" alt="Residential window cleaning work" loading="lazy" id="photo-album-trigger">
+                </div>
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/19VkHzR-t8w?feature=share" title="Window cleaning process video" allowfullscreen></iframe>
+                    <div class="video-overlay video-overlay-2">Commercial Window Cleaning</div>
+                    <iframe src="https://www.youtube.com/embed/hCEnLgBag1Y" title="Window cleaning short video 2" allowfullscreen loading="lazy"></iframe>
                 </div>
-                <img src="https://live.staticflickr.com/65535/54573517443_e6997fcc5e_c.jpg" alt="Residential window cleaning work">
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/cEre8N0W62k" title="Window cleaning short video" allowfullscreen></iframe>
+            </div>
+            <div class="lightbox" id="lightbox">
+                <span class="lightbox-close" id="lightbox-close">×</span>
+                <div class="lightbox-controls">
+                    <span class="lightbox-prev" id="lightbox-prev">❮</span>
+                    <span class="lightbox-next" id="lightbox-next">❯</span>
                 </div>
-                <img src="https://live.staticflickr.com/65535/54573533898_9645403aaf_c.jpg" alt="Window cleaning project">
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/V5_-zhrtehk" title="Window cleaning short video" allowfullscreen></iframe>
-                </div>
-                <img src="https://live.staticflickr.com/65535/54573622475_8be89b071d_c.jpg" alt="Commercial window cleaning work">
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/cs3F7Bc0lB8" title="Window cleaning short video" allowfullscreen></iframe>
-                </div>
+                <img src="" alt="Lightbox image" id="lightbox-img">
             </div>
         </div>
     </section>
@@ -317,7 +439,7 @@
             <p class="text-lg mb-6 max-w-2xl mx-auto">
                 Schedule a window cleaning estimate today!
             </p>
-            <div class="schedule-buttons flex justify-center space-x-4">
+            <div class="schedule-button flex justify-center">
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSebwebwElqQKJSURqOhfiZXuF35kDuRYFP7Q7WO5qfu1_uKLQ/viewform?usp=header" target="_blank" class="bg-white text-black px-6 py-3 rounded-lg hover:bg-gray-300 transition">
                     Schedule an Estimate
                 </a>
@@ -333,18 +455,13 @@
                 <h2 class="text-3xl font-bold mb-6">Follow Us</h2>
                 <div class="social-items">
                     <div class="social-item">
-                        <a href="http://www.youtube.com/@ocs.windowcleaning" target="_blank" class="social-link" title="YouTube">
-                            <img src="https://live.staticflickr.com/65535/54479173024_0070579a91_m.jpg" alt="YouTube logo">
+                        <a href="https://instagram.com/ocsllc.services" target="_blank" class="social-link" title="Instagram">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram logo" loading="lazy">
                         </a>
                     </div>
                     <div class="social-item">
-                        <a href="https://www.instagram.com/ocs.windowcleaning/" target="_blank" class="social-link" title="Instagram">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram logo">
-                        </a>
-                    </div>
-                    <div class="social-item">
-                        <a href="https://www.facebook.com/share/1BW6uFZ9Gq/?mibextid=wwXIfr" target="_blank" class="social-link" title="Facebook">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook logo">
+                        <a href="https://facebook.com/ocsllc.services" target="_blank" class="social-link" title="Facebook">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook logo" loading="lazy">
                         </a>
                     </div>
                 </div>
@@ -361,7 +478,7 @@
         </footer>
     </div>
 
-    <!-- Smooth Scroll and Testimonial Slider Script -->
+    <!-- Smooth Scroll, Testimonial Slider, and Lightbox Script -->
     <script>
         // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -391,7 +508,51 @@
 
         showSlide(currentSlide);
         setInterval(nextSlide, 5000);
+
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+        const lightboxPrev = document.getElementById('lightbox-prev');
+        const lightboxNext = document.getElementById('lightbox-next');
+        const photoAlbumTrigger = document.getElementById('photo-album-trigger');
+        const albumImages = [
+            'https://live.staticflickr.com/65535/54650520711_1bbe2644e8_c.jpg',
+            'https://live.staticflickr.com/65535/54649723797_8214803d40_c.jpg',
+            'https://live.staticflickr.com/65535/54650568676_d03a8e7ee8_c.jpg',
+            'https://live.staticflickr.com/65535/54573517443_e6997fcc5e_c.jpg'
+        ];
+        let currentImageIndex = 0;
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            lightboxImg.src = albumImages[index];
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+        }
+
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + albumImages.length) % albumImages.length;
+            lightboxImg.src = albumImages[currentImageIndex];
+        }
+
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % albumImages.length;
+            lightboxImg.src = albumImages[currentImageIndex];
+        }
+
+        photoAlbumTrigger.parentElement.addEventListener('click', () => openLightbox(0));
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxPrev.addEventListener('click', showPrevImage);
+        lightboxNext.addEventListener('click', showNextImage);
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
     </script>
-    <!-- Updated at 12:54 PM MDT, Saturday, June 7, 2025 -->
+    <!-- Updated at 05:06 PM PDT, Saturday, July 12, 2025 -->
 </body>
 </html>
