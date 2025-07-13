@@ -19,6 +19,8 @@
             background-size: cover;
             background-position: center 100%;
             position: relative;
+            min-height: 50vh;
+            aspect-ratio: 16 / 9;
         }
         .hero-bg::before {
             content: '';
@@ -34,7 +36,7 @@
             z-index: 1;
         }
         .hero-content p {
-            font-size: clamp(1rem, 4vw, 2.5rem);
+            font-size: clamp(1rem, 3vw, 2rem);
             white-space: normal;
             line-height: 1.2;
         }
@@ -269,11 +271,8 @@
             background-color: #0CC0DF;
         }
         @media (max-width: 640px) {
-            .hero-bg {
-                height: 60vh;
-            }
             .hero-content p {
-                font-size: clamp(0.875rem, 3vw, 1.5rem);
+                font-size: clamp(0.875rem, 2.5vw, 1.25rem);
                 padding: 0 1rem;
             }
             .gallery-grid {
@@ -330,6 +329,11 @@
                 font-size: 1rem;
             }
         }
+        @media (min-width: 1280px) {
+            .hero-bg {
+                min-height: 60vh;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-200 text-black">
@@ -345,7 +349,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero-bg h-96 flex items-center justify-center text-white">
+    <section id="home" class="hero-bg flex items-center justify-center text-white">
         <div class="text-center hero-content">
             <p class="font-bold mb-6">"Work Done Well, Work Done Right"</p>
             <a href="#schedule" class="bg-white text-black px-6 py-3 rounded-lg hover:bg-gray-300 transition">Schedule Now</a>
@@ -553,6 +557,6 @@
             if (e.target === lightbox) closeLightbox();
         });
     </script>
-    <!-- Updated at 05:06 PM PDT, Saturday, July 12, 2025 -->
+    <!-- Updated at 05:07 PM PDT, Saturday, July 12, 2025 -->
 </body>
 </html>
