@@ -20,7 +20,7 @@
             background-position: center 100%;
             position: relative;
             min-height: 50vh;
-            aspect-ratio: 12 / 5;
+            aspect-ratio: 16 / 9;
             width: 100%;
         }
         .hero-bg::before {
@@ -78,15 +78,22 @@
             position: relative;
             overflow: hidden;
             width: 100%;
+            min-height: 200px;
         }
         .testimonial-slide {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
             display: none;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
+            transform: translateX(100%);
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
         }
         .testimonial-slide.active {
             display: block;
             opacity: 1;
+            transform: translateX(0);
         }
         .stars {
             color: #0CC0DF;
@@ -129,7 +136,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.95);
             color: white;
             display: flex;
             align-items: center;
@@ -154,7 +161,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.95);
             color: white;
             display: flex;
             align-items: center;
@@ -329,6 +336,14 @@
                 align-items: flex-start;
                 font-size: 1rem;
             }
+            .testimonial-slider {
+                min-height: 250px;
+            }
+            .testimonial-slide p {
+                font-size: 0.875rem;
+                max-height: 200px;
+                overflow-y: auto;
+            }
         }
         @media (min-width: 1280px) {
             .hero-bg {
@@ -401,8 +416,33 @@
             <div class="testimonial-slider max-w-3xl mx-auto">
                 <div class="testimonial-slide active">
                     <div class="stars text-center mb-2">★★★★★</div>
-                    <p class="text-lg italic text-center mb-4">"These guys did an amazing job on our windows! The crew was friendly and professional and our windows look better than they ever have! Highly recommend!"</p>
-                    <p class="text-center font-semibold">- Sandy Lorenc</p>
+                    <p class="text-lg italic text-center mb-4">"Highly recommended, fantastic service in all ways; the window cleaning itself and the customer service. Great price as well, highly recommend"</p>
+                    <p class="text-center font-semibold">- Jayden Jacobson</p>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="stars text-center mb-2">★★★★★</div>
+                    <p class="text-lg italic text-center mb-4">"Barrett did a fantastic job on my building, he was prompt, prepared and professional. My windows look amazing, thank you so much!"</p>
+                    <p class="text-center font-semibold">- Katerina Robinson</p>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="stars text-center mb-2">★★★★★</div>
+                    <p class="text-lg italic text-center mb-4">"Barrett did an amazing job on my windows inside and out very polite and very hard-working. I definitely will use him again and I highly recommend him."</p>
+                    <p class="text-center font-semibold">- Debbie Turner</p>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="stars text-center mb-2">★★★★★</div>
+                    <p class="text-lg italic text-center mb-4">"Would definitely recommend and would hire again! I have heard of window washing contractors charging exorbitant fees based on amount of glass of course, but also on the affluence of the neighborhood...rest assured not only will Barrett do a fantastic job, it will be for a fair price!"</p>
+                    <p class="text-center font-semibold">- Donna M</p>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="stars text-center mb-2">★★★★★</div>
+                    <p class="text-lg italic text-center mb-4">"Barrett does a fantastic job at cleaning windows! OCS did my father in laws business and the windows look amazing!"</p>
+                    <p class="text-center font-semibold">- Cohen Booth</p>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="stars text-center mb-2">★★★★★</div>
+                    <p class="text-lg italic text-center mb-4">"Thank you so much for doing such an incredible job! Competitive pricing, thorough job, and very friendly. Will use you guys again and refer you to whoever is in need!!!"</p>
+                    <p class="text-center font-semibold">- Darel Handley</p>
                 </div>
             </div>
         </div>
@@ -502,15 +542,34 @@
         function showSlide(index) {
             slides.forEach((slide, i) => {
                 slide.classList.remove('active');
-                if (i === index) slide.classList.add('active');
+                slide.style.display = 'none';
+                slide.style.opacity = '0';
+                slide.style.transform = 'translateX(100%)';
+                if (i === index) {
+                    slide.classList.add('active');
+                    slide.style.display = 'block';
+                    // Ensure transition starts after display is set
+                    setTimeout(() => {
+                        slide.style.opacity = '1';
+                        slide.style.transform = 'translateX(0)';
+                    }, 10);
+                }
             });
         }
 
         function nextSlide() {
+            const prevSlide = currentSlide;
             currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
+            // Trigger exit animation for previous slide
+            slides[prevSlide].style.opacity = '0';
+            slides[prevSlide].style.transform = 'translateX(-100%)';
+            // Show next slide after a short delay to allow exit animation
+            setTimeout(() => {
+                showSlide(currentSlide);
+            }, 500); // Match transition duration
         }
 
+        // Initialize first slide
         showSlide(currentSlide);
         setInterval(nextSlide, 5000);
 
@@ -558,6 +617,6 @@
             if (e.target === lightbox) closeLightbox();
         });
     </script>
-    <!-- Updated at 05:12 PM PDT, Saturday, July 12, 2025 -->
+    <!-- Updated at 12:32 AM PDT, Tuesday, July 29, 2025 -->
 </body>
 </html>
