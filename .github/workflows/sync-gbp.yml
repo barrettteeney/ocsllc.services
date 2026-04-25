@@ -1,0 +1,48 @@
+name: Sync Google Business Profile
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Sync from Google Business Profile
+        env:
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+          PLACE_ID:              ${{ secrets.PLACE_ID }}
+          REPO_ROOT:             ${{ github.workspace }}
+        run: |
+          if [ -z "$GOOGLE_PLACES_API_KEY" ] || [ -z "$PLACE_ID" ]; then
+            echo "::warning::GBP secrets not set; skipping sync."
+            exit 0
+          fi
+          python scripts/sync_gbp.py
+      - name: Rebuild sitemap
+        env:
+          REPO_ROOT: ${{ github.workspace }}
+        run: python scripts/build_sitemap.py
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "ocs-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "auto: sync from Google Business Profile [skip ci]"
+            git push
+            echo "pushed updates"
+          else
+            echo "no changes"
+          fi
