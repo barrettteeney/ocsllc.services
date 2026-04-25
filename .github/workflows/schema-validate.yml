@@ -1,0 +1,57 @@
+name: Schema validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for GitHub Pages deploy
+        run: sleep 90
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate JSON-LD on live URLs
+        run: |
+          python <<'PY'
+          import json, re, sys, urllib.request
+          URLS = [
+              "https://ocsllc.services/",
+              "https://ocsllc.services/about/",
+              "https://ocsllc.services/reviews/",
+              "https://ocsllc.services/kalispell/",
+              "https://ocsllc.services/services/pressure-washing/",
+              "https://ocsllc.services/kalispell/residential/",
+          ]
+          fail = False
+          for u in URLS:
+              try:
+                  body = urllib.request.urlopen(u, timeout=20).read().decode("utf-8")
+              except Exception as e:
+                  print(f"::error::Could not fetch {u}: {e}")
+                  fail = True
+                  continue
+              blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', body, re.DOTALL)
+              if not blocks:
+                  print(f"::warning::No JSON-LD found on {u}")
+                  continue
+              for i, b in enumerate(blocks):
+                  try:
+                      json.loads(b)
+                  except json.JSONDecodeError as e:
+                      print(f"::error::Invalid JSON-LD on {u} block {i}: {e}")
+                      fail = True
+              print(f"  {u}: {len(blocks)} JSON-LD block(s) parsed OK")
+          sys.exit(1 if fail else 0)
+          PY
