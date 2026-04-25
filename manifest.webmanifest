@@ -1,0 +1,19 @@
+{
+  "name": "OCS LLC Window Cleaning",
+  "short_name": "OCS LLC",
+  "description": "Window cleaning and pressure washing in Kalispell, Whitefish, Columbia Falls, and Bigfork.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0CC0DF",
+  "theme_color": "#0CC0DF",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Get a free estimate", "url": "/#quote", "description": "Request a quote in 2 fields" },
+    { "name": "Call now",            "url": "tel:+14066072151" }
+  ]
+}
