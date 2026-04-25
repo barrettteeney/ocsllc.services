@@ -19,48 +19,15 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Compute changed URLs
-        id: diff
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            {
-              echo "urls<<EOF"
-              echo "https://ocsllc.services/"
-              echo "EOF"
-            } >> $GITHUB_OUTPUT
-          else
-            CHANGED=$(git diff --name-only HEAD~1 HEAD | grep -E '(index\.html|404\.html|sitemap\.xml)$' || true)
-            URLS=""
-            for f in $CHANGED; do
-              if [ "$f" = "index.html" ]; then
-                URLS="$URLS
-https://ocsllc.services/"
-              elif [ "$f" = "404.html" ]; then
-                URLS="$URLS
-https://ocsllc.services/404.html"
-              elif [ "$f" = "sitemap.xml" ]; then
-                URLS="$URLS
-https://ocsllc.services/sitemap.xml"
-              else
-                p=$(echo "$f" | sed 's|index\.html$||')
-                URLS="$URLS
-https://ocsllc.services/$p"
-              fi
-            done
-            {
-              echo "urls<<EOF"
-              echo -e "$URLS"
-              echo "EOF"
-            } >> $GITHUB_OUTPUT
-          fi
-      - name: Ping IndexNow
+      - name: Ping IndexNow with sitemap URLs
         env:
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
           HOST: ocsllc.services
-          CHANGED_URLS: ${{ steps.diff.outputs.urls }}
-        run: python scripts/indexnow_ping.py
+        run: |
+          python -c "import re,os,urllib.request; xml=urllib.request.urlopen('https://ocsllc.services/sitemap.xml',timeout=15).read().decode(); urls='\n'.join(re.findall(r'<loc>([^<]+)</loc>',xml)); open('/tmp/u.txt','w').write(urls)"
+          cat /tmp/u.txt | head -5
+          export CHANGED_URLS="$(cat /tmp/u.txt)"
+          python scripts/indexnow_ping.py
