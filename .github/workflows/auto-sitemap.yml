@@ -1,0 +1,37 @@
+auto-sitemap.ymlname: Auto-update sitemap
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/index.html'
+      - '!.github/**'
+      - '!docs/**'
+      - '!assets/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Rebuild sitemap
+        env:
+          REPO_ROOT: ${{ github.workspace }}
+        run: python scripts/build_sitemap.py
+      - name: Commit if changed
+        run: |
+          git config user.name  "ocs-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if [ -n "$(git status --porcelain sitemap.xml)" ]; then
+            git add sitemap.xml
+            git commit -m "auto: regenerate sitemap [skip ci]"
+            git push
+          fi
