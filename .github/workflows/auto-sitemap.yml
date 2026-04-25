@@ -1,4 +1,5 @@
-auto-sitemap.ymlname: Auto-update sitemap
+name: Auto-update sitemap
+
 
 on:
   push:
@@ -10,8 +11,10 @@ on:
       - '!assets/**'
   workflow_dispatch:
 
+
 permissions:
   contents: write
+
 
 jobs:
   build:
@@ -34,4 +37,3 @@ jobs:
             git add sitemap.xml
             git commit -m "auto: regenerate sitemap [skip ci]"
             git push
-          fi
