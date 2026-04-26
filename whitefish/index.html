@@ -31,7 +31,27 @@
             body{padding-bottom:calc(60px + env(safe-area-inset-bottom))}
             img.service-icon{width:64px!important;height:64px!important}
         }
-    </style>
+    
+        .hero-photo {
+            position: relative;
+            color: white;
+            padding: clamp(2.5rem, 6vw + 1rem, 5rem) 1rem;
+            text-align: center;
+            background: url("/assets/photos/54650520711.jpg") center/cover no-repeat;
+            isolation: isolate;
+        }
+        .hero-photo::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(12,192,223,0.85) 0%, rgba(10,163,189,0.92) 100%);
+            z-index: -1;
+        }
+        .hero-photo h1, .hero-photo p, .hero-photo .trust-row, .hero-photo .hero-cta-row {
+            position: relative;
+            z-index: 1;
+        }
+</style>
 
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="theme-color" content="#0CC0DF">
@@ -152,7 +172,7 @@
             </div>
         </div>
     </nav>
-    <section class="hero-mini">
+    <section class="hero-mini hero-photo">
         <h1>Window Cleaning &amp; Pressure Washing in Whitefish</h1>
         <p>Window cleaning and pressure washing for Whitefish homes, lake properties, vacation rentals, and Big Mountain residences. Careful with high-end finishes, built around resort-town schedules.</p>
         <div class="hero-cta-row">

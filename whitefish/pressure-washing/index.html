@@ -31,7 +31,27 @@
             body{padding-bottom:calc(60px + env(safe-area-inset-bottom))}
             img.service-icon{width:64px!important;height:64px!important}
         }
-    </style>
+    
+        .hero-photo {
+            position: relative;
+            color: white;
+            padding: clamp(2.5rem, 6vw + 1rem, 5rem) 1rem;
+            text-align: center;
+            background: url("/assets/photos/54693602255.jpg") center/cover no-repeat;
+            isolation: isolate;
+        }
+        .hero-photo::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(12,192,223,0.85) 0%, rgba(10,163,189,0.92) 100%);
+            z-index: -1;
+        }
+        .hero-photo h1, .hero-photo p, .hero-photo .trust-row, .hero-photo .hero-cta-row {
+            position: relative;
+            z-index: 1;
+        }
+</style>
 
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="theme-color" content="#0CC0DF">
@@ -154,7 +174,7 @@
             </div>
         </div>
     </nav>
-    <section class="hero-mini">
+    <section class="hero-mini hero-photo">
         <h1>Pressure Washing in Whitefish, Montana</h1>
         <p>Driveways, decks, siding, and fences in Whitefish cleaned with the right PSI for the surface — and bundled with window cleaning at a discount.</p>
         <div class="hero-cta-row">
