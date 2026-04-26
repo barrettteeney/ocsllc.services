@@ -1,0 +1,53 @@
+name: Daily site maintenance
+
+on:
+  schedule:
+    - cron: '23 7 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  maintain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Rotate hero photos
+        env: { REPO_ROOT: "${{ github.workspace }}" }
+        run: python scripts/rotate_hero.py
+      - name: Build image-sitemap
+        env: { REPO_ROOT: "${{ github.workspace }}" }
+        run: python scripts/build_image_sitemap.py
+      - name: Refresh schema dateModified
+        env: { REPO_ROOT: "${{ github.workspace }}" }
+        run: python scripts/update_schema_dates.py
+      - name: Commit if changed
+        run: |
+          git config user.name  "ocs-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "auto: daily maintenance [skip ci]"
+            git push
+          fi
+      - name: Wait for Pages deploy
+        run: sleep 90
+      - name: Health check live site
+        id: health
+        env: { REPO_ROOT: "${{ github.workspace }}" }
+        run: python scripts/health_check.py
+        continue-on-error: true
+      - name: Open issue if health check failed
+        if: steps.health.outcome == 'failure'
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: 'Daily health-check failures'
+          content: |
+            The daily health-check workflow detected problems.
+            See run logs in the Actions tab.
+          labels: health-check, automated
