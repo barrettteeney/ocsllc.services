@@ -671,6 +671,30 @@
         @media (max-width: 640px) { .gal-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 
+    
+    <!-- Live reviews embed -->
+    <section id="live-reviews" class="bg-white">
+        <div class="container">
+            <h2 class="text-3xl font-bold text-center mb-2">Real reviews. Updated automatically.</h2>
+            <p class="text-center max-w-2xl mx-auto mb-6 text-gray-700">Pulled live from our Google Business Profile. New reviews appear here within hours of being posted.</p>
+            <div class="map-embed-wrap">
+                <iframe
+                    src="https://maps.google.com/maps?ll=48.298,-113.949&z=10&output=embed&q=OCS+LLC+Window+Cleaning+Kalispell+MT"
+                    width="100%" height="500" style="border:0;"
+                    loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+                    title="OCS LLC on Google Maps — live reviews and photos"></iframe>
+            </div>
+            <p class="text-center mt-4">
+                <a class="text-custom-cyan font-semibold underline" href="https://www.google.com/maps/place/OCS+LLC/data=!4m2!3m1!1s0x2ba17fade10a7f9b:0x7b5721a0f9b3ddf4" target="_blank" rel="noopener">Open on Google Maps →</a>
+            </p>
+        </div>
+    </section>
+    <style>
+        .map-embed-wrap { aspect-ratio: 16/9; max-width: 1100px; margin: 0 auto; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 28px rgba(0,0,0,0.10); }
+        .map-embed-wrap iframe { display: block; width: 100%; height: 100%; }
+        @media (max-width: 720px) { .map-embed-wrap { aspect-ratio: 4/5; } }
+    </style>
+
     <!-- Areas -->
     <section id="areas" class="bg-gray-100">
         <div class="container">
