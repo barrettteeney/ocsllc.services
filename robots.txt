@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
 
 Sitemap: https://ocsllc.services/sitemap.xml
+Sitemap: https://ocsllc.services/image-sitemap.xml
