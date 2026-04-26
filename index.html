@@ -388,6 +388,20 @@
             .contact-info { align-items: flex-start; font-size: 1rem; }
         }
 </style>
+<script>
+        window.OCS_CONFIG = {
+            // HubSpot Forms API — set these after creating a free HubSpot account.
+            // See docs/CRM-SETUP.md for the 5-minute walkthrough.
+            // Until set, form falls back to email-only delivery (still works).
+            hubspotPortalId: "HUBSPOT_PORTAL_ID_PLACEHOLDER",
+            hubspotFormId:   "HUBSPOT_FORM_ID_PLACEHOLDER",
+
+            // Cloudinary — used by /admin/upload/ for drag-drop photo uploads.
+            // See docs/CRM-SETUP.md for setup.
+            cloudinaryCloudName:    "CLOUDINARY_CLOUD_NAME_PLACEHOLDER",
+            cloudinaryUploadPreset: "CLOUDINARY_UPLOAD_PRESET_PLACEHOLDER"
+        };
+    </script>
 </head>
 <body class="bg-gray-200 text-black">
     <!-- Navigation -->
@@ -588,16 +602,11 @@
         <div class="container">
             <h2 class="text-3xl font-bold text-center mb-3">Get a free estimate</h2>
             <p class="text-center max-w-xl mx-auto mb-6">Tell us about your project and we'll text or call you back the same day with a fair, no-pressure price.</p>
-            <form action="https://formsubmit.co/barrett@ocsllc.services" method="POST" class="max-w-xl mx-auto bg-white rounded-lg shadow-md p-6 space-y-4">
-                <!-- Web3Forms access key — replace with real key after signup at web3forms.com -->
-                <input type="hidden" name="_subject" value="OCS LLC quote request">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_next" value="https://ocsllc.services/?thanks=1">
+            <form id="quote-form" class="max-w-xl mx-auto bg-white rounded-lg shadow-md p-6 space-y-4">
                 <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
                 <div>
                     <label for="qf-name" class="block font-semibold mb-1">Your name</label>
-                    <input id="qf-name" name="name" type="text" required class="w-full border border-gray-300 rounded px-3 py-2">
+                    <input id="qf-name" name="firstname" type="text" required class="w-full border border-gray-300 rounded px-3 py-2">
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -634,13 +643,83 @@
                     <textarea id="qf-msg" name="message" rows="3" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Pane count, stories, special concerns…"></textarea>
                 </div>
                 <button type="submit" class="bg-custom-cyan text-white font-semibold px-6 py-3 rounded-lg w-full hover:opacity-90 transition">Get my free estimate</button>
+                <p id="qf-status" class="text-center text-sm" role="status" aria-live="polite"></p>
                 <p class="text-xs text-gray-500 text-center">Or call <a class="underline text-custom-cyan font-semibold" href="tel:+14066072151">(406) 607-2151</a> · No spam, ever.</p>
             </form>
         </div>
     </section>
 
+    <script>
+        // Quote-form submission: posts to HubSpot CRM (if configured) + emails Barrett.
+        // Configuration is read from window.OCS_CONFIG injected below.
+        (function() {
+            const form   = document.getElementById('quote-form');
+            const status = document.getElementById('qf-status');
+            if (!form) return;
 
-    <!-- FAQ -->
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const data = Object.fromEntries(new FormData(form).entries());
+                if (data._honey) return;  // bot trap
+                status.textContent = 'Sending…';
+                status.className = 'text-center text-sm text-gray-600';
+
+                const cfg = window.OCS_CONFIG || {};
+                const tasks = [];
+
+                // 1. HubSpot Forms API — if configured
+                if (cfg.hubspotPortalId && cfg.hubspotFormId) {
+                    const hsBody = {
+                        fields: [
+                            { name: 'firstname', value: data.firstname || '' },
+                            { name: 'phone',     value: data.phone || '' },
+                            { name: 'email',     value: data.email || (data.phone || '') + '@phone.ocsllc.local' },
+                            { name: 'message',   value: 'Service: ' + (data.service||'') + ' · Town: ' + (data.town||'') + (data.message ? ' · ' + data.message : '') }
+                        ],
+                        context: { pageUri: location.href, pageName: document.title }
+                    };
+                    tasks.push(fetch(
+                        'https://api.hsforms.com/submissions/v3/integration/submit/' + encodeURIComponent(cfg.hubspotPortalId) + '/' + encodeURIComponent(cfg.hubspotFormId),
+                        { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(hsBody) }
+                    ).then(r => r.ok ? 'hubspot:ok' : ('hubspot:' + r.status))
+                     .catch(err => 'hubspot:err'));
+                }
+
+                // 2. Email backup via FormSubmit — always sends so Barrett never misses a lead
+                const fd = new FormData();
+                fd.append('name',    data.firstname || '');
+                fd.append('phone',   data.phone || '');
+                fd.append('email',   data.email || '');
+                fd.append('service', data.service || '');
+                fd.append('town',    data.town || '');
+                fd.append('message', data.message || '');
+                fd.append('_subject', 'OCS LLC quote request');
+                fd.append('_template', 'table');
+                fd.append('_captcha', 'false');
+                tasks.push(fetch('https://formsubmit.co/ajax/barrett@ocsllc.services',
+                    { method: 'POST', body: fd })
+                    .then(r => r.ok ? 'fs:ok' : ('fs:' + r.status))
+                    .catch(err => 'fs:err'));
+
+                try {
+                    const results = await Promise.allSettled(tasks);
+                    const okCount = results.filter(r => r.status === 'fulfilled' && r.value.endsWith(':ok')).length;
+                    if (okCount > 0) {
+                        status.textContent = 'Thanks! We got it — we\'ll text or call you back the same day.';
+                        status.className = 'text-center text-sm text-green-700 font-semibold';
+                        form.reset();
+                        setTimeout(() => { location.href = '/thanks/'; }, 1200);
+                    } else {
+                        throw new Error('All endpoints failed');
+                    }
+                } catch (err) {
+                    status.textContent = 'Sorry — something went wrong. Please call (406) 607-2151.';
+                    status.className = 'text-center text-sm text-red-700 font-semibold';
+                }
+            });
+        })();
+    </script>
+<!-- FAQ -->
     <section id="faq" class="bg-white">
         <div class="container">
             <h2 class="text-3xl font-bold text-center mb-6">Frequently Asked Questions</h2>

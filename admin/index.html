@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0CC0DF">
+    <title>OCS LLC Admin</title>
+    <link rel="canonical" href="https://ocsllc.services/admin/">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230CC0DF'/%3E%3Ctext x='50' y='62' font-family='Arial,sans-serif' font-size='44' font-weight='700' text-anchor='middle' fill='white'%3EO%3C/text%3E%3C/svg%3E">
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <style>
+        body { font-family: 'Garet', sans-serif; margin: 0; min-height: 100vh; background: #f9fafb; }
+        .container { width: 92%; max-width: 1100px; margin: 0 auto; padding: 1rem; }
+        .bg-custom-cyan { background: #0CC0DF; }
+        .card { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.25rem; transition: transform 0.15s, box-shadow 0.15s; display: block; text-decoration: none; color: inherit; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+        .card .ico { font-size: 2rem; margin-bottom: 0.5rem; display: block; line-height: 1; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+        .pill { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+        .pill-ok { background: #d1fae5; color: #047857; }
+        .pill-todo { background: #fef3c7; color: #92400e; }
+    </style>
+</head>
+<body>
+    <header class="bg-custom-cyan text-white p-4">
+        <div class="container flex justify-between items-center flex-wrap gap-2">
+            <a href="/" class="text-lg font-bold">OCS LLC Admin</a>
+            <a href="/" class="text-sm underline">← Back to public site</a>
+        </div>
+    </header>
+
+    <main class="container py-8">
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 text-sm rounded">
+            <strong>This is your private command center.</strong> Bookmark <code>ocsllc.services/admin</code>. It's not linked from the public site or indexed by Google.
+        </div>
+
+        <h2 class="text-2xl font-bold mb-3">Customer pipeline</h2>
+        <div class="grid mb-8">
+            <a class="card" href="https://app.hubspot.com/contacts" target="_blank" rel="noopener">
+                <span class="ico">📇</span>
+                <div class="font-bold mb-1">HubSpot CRM <span class="pill pill-todo">setup</span></div>
+                <div class="text-sm text-gray-600">All leads + contacts + deal pipeline. <a href="/docs/CRM-SETUP.md" class="text-custom-cyan underline">5-min setup guide →</a></div>
+            </a>
+            <a class="card" href="mailto:barrett@ocsllc.services">
+                <span class="ico">📧</span>
+                <div class="font-bold mb-1">Form-submission email</div>
+                <div class="text-sm text-gray-600">Every quote-form submission emails you here. Already active.</div>
+            </a>
+            <a class="card" href="https://search.google.com/local/writereview?placeid=ChIJ" target="_blank" rel="noopener">
+                <span class="ico">⭐</span>
+                <div class="font-bold mb-1">Send review request</div>
+                <div class="text-sm text-gray-600">Copy the templates from <a class="text-custom-cyan underline" href="/docs/CITATIONS.md">docs/CITATIONS.md</a> after every job.</div>
+            </a>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-3">Photos &amp; content</h2>
+        <div class="grid mb-8">
+            <a class="card" href="/admin/upload/">
+                <span class="ico">📤</span>
+                <div class="font-bold mb-1">Upload new photos <span class="pill pill-todo">setup</span></div>
+                <div class="text-sm text-gray-600">Drag-drop from any device. Powered by Cloudinary.</div>
+            </a>
+            <a class="card" href="https://www.flickr.com/photos/202677555@N02/" target="_blank" rel="noopener">
+                <span class="ico">📷</span>
+                <div class="font-bold mb-1">Flickr account <span class="pill pill-ok">live</span></div>
+                <div class="text-sm text-gray-600">Public photos here auto-sync to /gallery/ daily.</div>
+            </a>
+            <a class="card" href="/gallery/">
+                <span class="ico">🖼️</span>
+                <div class="font-bold mb-1">Live gallery</div>
+                <div class="text-sm text-gray-600">What customers see. Auto-updated.</div>
+            </a>
+            <a class="card" href="/blog/">
+                <span class="ico">📝</span>
+                <div class="font-bold mb-1">Blog</div>
+                <div class="text-sm text-gray-600">Add seasonal posts to capture organic search.</div>
+            </a>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-3">Site &amp; SEO</h2>
+        <div class="grid mb-8">
+            <a class="card" href="https://github.com/barrettteeney/ocsllc.services" target="_blank" rel="noopener">
+                <span class="ico">🛠️</span>
+                <div class="font-bold mb-1">GitHub repo</div>
+                <div class="text-sm text-gray-600">Source code, workflows, automation history.</div>
+            </a>
+            <a class="card" href="https://github.com/barrettteeney/ocsllc.services/actions" target="_blank" rel="noopener">
+                <span class="ico">⚙️</span>
+                <div class="font-bold mb-1">Workflow runs</div>
+                <div class="text-sm text-gray-600">7 automations running. See latest status.</div>
+            </a>
+            <a class="card" href="https://search.google.com/search-console" target="_blank" rel="noopener">
+                <span class="ico">🔍</span>
+                <div class="font-bold mb-1">Google Search Console <span class="pill pill-todo">setup</span></div>
+                <div class="text-sm text-gray-600">Submit sitemap, see search queries.</div>
+            </a>
+            <a class="card" href="https://business.google.com/" target="_blank" rel="noopener">
+                <span class="ico">📍</span>
+                <div class="font-bold mb-1">Google Business Profile</div>
+                <div class="text-sm text-gray-600">Photos, hours, reviews. Auto-syncs to site.</div>
+            </a>
+            <a class="card" href="https://search.google.com/test/rich-results?url=https%3A%2F%2Focsllc.services%2F" target="_blank" rel="noopener">
+                <span class="ico">📊</span>
+                <div class="font-bold mb-1">Rich-results test</div>
+                <div class="text-sm text-gray-600">11 valid items detected. SEO schema healthy.</div>
+            </a>
+            <a class="card" href="https://pagespeed.web.dev/?url=https%3A%2F%2Focsllc.services%2F" target="_blank" rel="noopener">
+                <span class="ico">⚡</span>
+                <div class="font-bold mb-1">PageSpeed Insights</div>
+                <div class="text-sm text-gray-600">Live performance scores.</div>
+            </a>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-3">Setup checklist</h2>
+        <ul class="bg-white border border-gray-200 rounded-lg p-5 space-y-2 text-sm">
+            <li>✅ Quote form active (FormSubmit emailing barrett@ocsllc.services)</li>
+            <li>✅ Google Cloud + Places API + GBP secret configured</li>
+            <li>✅ Flickr feed sync running daily</li>
+            <li>✅ IndexNow auto-pinging Bing/Yandex</li>
+            <li>✅ 30 indexable URLs · sitemap auto-managed</li>
+            <li>⏳ HubSpot Free CRM — sign up and add Portal ID + Form ID. <a class="text-custom-cyan underline" href="/docs/CRM-SETUP.md">Guide →</a></li>
+            <li>⏳ Cloudinary — sign up, create unsigned preset, add to config. <a class="text-custom-cyan underline" href="/docs/CRM-SETUP.md">Guide →</a></li>
+            <li>⏳ Google Business Profile share-link — paste your Maps share link to enable live reviews sync</li>
+            <li>⏳ Google Search Console — submit sitemap.xml</li>
+        </ul>
+
+        <p class="text-xs text-gray-500 mt-8 text-center">OCS LLC Admin · last updated automatically</p>
+    </main>
+</body>
+</html>

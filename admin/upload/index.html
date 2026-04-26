@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0CC0DF">
+    <title>Upload photos | OCS LLC Admin</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230CC0DF'/%3E%3Ctext x='50' y='62' font-family='Arial,sans-serif' font-size='44' font-weight='700' text-anchor='middle' fill='white'%3EO%3C/text%3E%3C/svg%3E">
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <script src="https://upload-widget.cloudinary.com/global/all.js" defer></script>
+    <style>
+        body { font-family: 'Garet', sans-serif; margin: 0; min-height: 100vh; background: #f9fafb; }
+        .container { width: 92%; max-width: 760px; margin: 0 auto; padding: 1rem; }
+        .bg-custom-cyan { background: #0CC0DF; }
+        .drop-zone { border: 3px dashed #0CC0DF; border-radius: 16px; padding: 4rem 2rem; text-align: center; background: white; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+        .drop-zone:hover { background: #f0fdfa; transform: scale(1.005); }
+        .drop-zone .ico { font-size: 4rem; line-height: 1; margin-bottom: 1rem; }
+        .uploaded-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; margin-top: 2rem; }
+        .uploaded-list img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <header class="bg-custom-cyan text-white p-4">
+        <div class="container flex justify-between items-center flex-wrap gap-2">
+            <a href="/admin/" class="text-lg font-bold">OCS LLC Admin</a>
+            <a href="/admin/" class="text-sm underline">← Dashboard</a>
+        </div>
+    </header>
+
+    <main class="container py-8">
+        <h1 class="text-3xl font-bold mb-2">Upload new photos</h1>
+        <p class="text-gray-700 mb-6">Drag photos here or click to choose. They go straight into the gallery — appears on the public site within minutes.</p>
+
+        <div id="drop" class="drop-zone">
+            <div class="ico">📤</div>
+            <p class="text-xl font-bold mb-2">Drag photos here</p>
+            <p class="text-gray-600">Or click to choose files from your phone or computer</p>
+            <p class="text-xs text-gray-500 mt-3">JPEG · PNG · HEIC · up to 50 photos at a time</p>
+        </div>
+
+        <div id="uploaded" class="uploaded-list"></div>
+
+        <p id="status" class="text-center text-sm text-gray-600 mt-6" role="status" aria-live="polite"></p>
+
+        <details class="mt-8 bg-white border border-gray-200 rounded-lg p-4">
+            <summary class="font-semibold cursor-pointer">First-time setup (5 min)</summary>
+            <div class="mt-3 text-sm text-gray-700 space-y-2">
+                <p>Before your first upload, you need to create a free Cloudinary account and set up an unsigned upload preset.</p>
+                <p>Step-by-step instructions are in <a class="text-custom-cyan underline" href="/docs/CRM-SETUP.md">docs/CRM-SETUP.md</a> — the Cloudinary section. Takes 5 minutes.</p>
+            </div>
+        </details>
+    </main>
+
+    <script src="/admin-config.js" defer></script>
+    <script>
+        function showError(msg) {
+            const s = document.getElementById('status');
+            s.textContent = msg;
+            s.className = 'text-center text-sm text-red-700 font-semibold mt-6';
+        }
+        function showOk(msg) {
+            const s = document.getElementById('status');
+            s.textContent = msg;
+            s.className = 'text-center text-sm text-green-700 font-semibold mt-6';
+        }
+
+        window.addEventListener('load', function() {
+            const cfg = window.OCS_CONFIG || {};
+            if (!cfg.cloudinaryCloudName || cfg.cloudinaryCloudName.includes('PLACEHOLDER')) {
+                showError('Cloudinary not configured yet. See setup guide below.');
+                document.getElementById('drop').style.opacity = '0.5';
+                document.getElementById('drop').style.pointerEvents = 'none';
+                return;
+            }
+            if (!window.cloudinary) {
+                setTimeout(() => location.reload(), 1500);
+                return;
+            }
+
+            const widget = window.cloudinary.createUploadWidget({
+                cloudName:    cfg.cloudinaryCloudName,
+                uploadPreset: cfg.cloudinaryUploadPreset,
+                sources: ['local','camera','url'],
+                multiple: true,
+                maxFiles: 50,
+                folder:   'ocsllc-website',
+                clientAllowedFormats: ['image'],
+                maxFileSize: 25_000_000,
+                styles: { palette: { window: '#FFFFFF', windowBorder: '#0CC0DF', tabIcon: '#0CC0DF', menuIcons: '#0CC0DF', textDark: '#000', link: '#0CC0DF', action: '#0CC0DF', inactiveTabIcon: '#9ca3af', error: '#EF4444', inProgress: '#0CC0DF', complete: '#10B981', sourceBg: '#F9FAFB' } }
+            }, (err, result) => {
+                if (err) { showError('Upload error: ' + (err.message || err.statusText)); return; }
+                if (result && result.event === 'success') {
+                    const url = result.info.secure_url;
+                    const img = document.createElement('img');
+                    img.src = url; img.alt = 'Uploaded photo';
+                    document.getElementById('uploaded').appendChild(img);
+                    showOk('Uploaded! It will appear on /gallery/ within 24 hours (or sooner — trigger a manual sync from GitHub Actions).');
+                }
+            });
+
+            document.getElementById('drop').addEventListener('click', () => widget.open());
+
+            ['dragenter','dragover','drop'].forEach(ev => {
+                document.getElementById('drop').addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); });
+            });
+            document.getElementById('drop').addEventListener('drop', () => widget.open());
+        });
+    </script>
+</body>
+</html>
