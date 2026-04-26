@@ -28,7 +28,7 @@ POSTS = {
         ]
     },
     2: {
-        "slug": "spring-window-cleaning-checklist",
+        "slug": "spring-window-cleaning-checklist-flathead-valley",
         "title": "Spring window cleaning checklist — Flathead Valley homeowners",
         "lead": "Eight steps to undo a Montana winter, in the right order.",
         "body": [
