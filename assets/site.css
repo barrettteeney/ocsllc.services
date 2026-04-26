@@ -119,3 +119,103 @@ section { padding: clamp(2rem, 5vw, 4rem) 0; }
     .mobile-bottom-bar .mcb-half:hover { background: rgba(255,255,255,0.1); }
     .mobile-call-bar { display: none !important; } /* hide the original single-bar version */
 }
+
+/* === Monoline icon system === */
+.service-icon {
+  width: 80px !important;
+  height: 80px !important;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 0.75rem;
+}
+@media (max-width:720px) {
+  .service-icon { width: 64px !important; height: 64px !important; }
+}
+
+/* Specialty services strip (below main 4-card grid) */
+.specialty-strip {
+  margin-top: 2.5rem;
+  text-align: center;
+  padding: 1.5rem;
+  background: #fff;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  border-radius: 6px;
+}
+.specialty-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 0 0 0.85rem;
+  font-weight: 700;
+}
+.specialty-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem 2.5rem;
+  justify-content: center;
+  align-items: center;
+}
+.specialty-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #0f172a;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.15s;
+}
+.specialty-list a:hover {
+  color: #0CC0DF;
+}
+.specialty-list img {
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Why-OCS differentiator cards */
+.why-card {
+  background: #fff;
+  padding: 1.75rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.why-card:hover {
+  border-color: #0CC0DF;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+}
+.why-icon {
+  display: block;
+  margin: 0 auto 1rem;
+  width: 40px;
+  height: 40px;
+}
+.why-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: #0f172a;
+}
+.why-desc {
+  font-size: 0.92rem;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Hero tagline — italic, subtle, sits below H1 */
+.hero-tagline {
+  font-style: italic;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  opacity: 0.95;
+  margin: 0.5rem 0 1rem;
+}
