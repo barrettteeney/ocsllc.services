@@ -1,0 +1,35 @@
+name: Weekly tracking + content
+
+on:
+  schedule:
+    - cron: '11 11 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Rank tracker (Bing)
+        env: { REPO_ROOT: "${{ github.workspace }}" }
+        run: python scripts/rank_tracker.py
+        continue-on-error: true
+      - name: Auto-blog (publishes seasonal post if quarter is new)
+        env: { REPO_ROOT: "${{ github.workspace }}" }
+        run: python scripts/auto_blog.py
+        continue-on-error: true
+      - name: Commit if changed
+        run: |
+          git config user.name  "ocs-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "auto: weekly tracking + content [skip ci]"
+            git push
+          fi
