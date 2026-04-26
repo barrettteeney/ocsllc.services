@@ -1,0 +1,39 @@
+name: Sync Cloudinary photos
+
+on:
+  schedule:
+    - cron: '47 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pull new photos from Cloudinary
+        env:
+          CLOUDINARY_CLOUD_NAME:  ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY:     ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET:  ${{ secrets.CLOUDINARY_API_SECRET }}
+          REPO_ROOT: ${{ github.workspace }}
+        run: |
+          if [ -z "$CLOUDINARY_CLOUD_NAME" ]; then
+            echo "::warning::Cloudinary secrets not set; skipping (this is fine until Cloudinary is configured)"
+            exit 0
+          fi
+          python scripts/sync_cloudinary.py
+      - name: Commit if changed
+        run: |
+          git config user.name  "ocs-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "auto: sync Cloudinary photos [skip ci]"
+            git push
+          fi
