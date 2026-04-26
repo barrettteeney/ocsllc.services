@@ -1,0 +1,14 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:OCS LLC
+N:LLC;OCS;;;
+ORG:OCS LLC;
+TITLE:Window Cleaning & Pressure Washing
+TEL;TYPE=WORK,VOICE:+14066072151
+TEL;TYPE=CELL:+14066072151
+EMAIL;TYPE=WORK:barrett@ocsllc.services
+URL:https://ocsllc.services
+ADR;TYPE=WORK:;;Kalispell;MT;59901;US
+NOTE:Professional window cleaning and pressure washing in the Flathead Valley. Licensed and insured.
+CATEGORIES:Window cleaning,Pressure washing,Service business
+END:VCARD

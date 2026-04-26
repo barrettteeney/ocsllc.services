@@ -176,6 +176,26 @@
     <link rel="stylesheet" href="/assets/responsive.css">
 </head>
 <body class="bg-gray-50 text-black">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-black px-3 py-2 rounded z-50">Skip to content</a>
+    <div id="rp-bar" aria-hidden="true"></div>
+    <style>
+        #rp-bar { position: fixed; top: 0; left: 0; height: 3px; background: #0CC0DF; z-index: 100; width: 0%; transition: width 0.1s ease-out; box-shadow: 0 0 8px rgba(12,192,223,0.5); }
+    </style>
+    <script>
+        (function() {
+            const bar = document.getElementById('rp-bar');
+            if (!bar) return;
+            function update() {
+                const h = document.documentElement;
+                const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+                bar.style.width = Math.min(100, Math.max(0, scrolled * 100)) + '%';
+            }
+            window.addEventListener('scroll', update, { passive: true });
+            window.addEventListener('resize', update);
+            update();
+        })();
+    </script>
+
     <nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10">
         <div class="container nav-container">
             <a href="/" class="text-lg font-bold">OCS LLC</a>
@@ -264,6 +284,6 @@
             <p class="mt-3 text-sm"><a class="underline" href="/">Home</a> &middot; <a class="underline" href="/about/">About</a> &middot; <a class="underline" href="/privacy/">Privacy</a> &middot; <a class="underline" href="/terms/">Terms</a> &middot; <a class="underline" href="/pricing/">Pricing</a> &middot; <a class="underline" href="/blog/">Blog</a> &middot; <a class="underline" href="/reviews/">Reviews</a></p>
         </div>
     </footer>
-    <a href="tel:+14066072151" class="mobile-call-bar" aria-label="Call OCS LLC now">📞 Call (406) 607-2151</a>
+    <div class="mobile-bottom-bar"><a href="tel:+14066072151" class="mobile-call-bar mcb-half">📞 Call</a><a href="sms:+14066072151" class="mobile-call-bar mcb-half sms-bar-link" style="border-left: 1px solid rgba(255,255,255,0.3);">💬 Text</a></div>
 </body>
 </html>

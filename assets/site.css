@@ -90,3 +90,32 @@ section { padding: clamp(2rem, 5vw, 4rem) 0; }
 .area-pin .pin-icon { font-size: 1.5rem; line-height: 1; margin-bottom: 0.4rem; display: block; color: #0CC0DF; }
 .area-pin .name { font-weight: 700; font-size: 1.1rem; }
 .area-pin .meta { font-size: 0.8rem; color: #6b7280; margin-top: 0.25rem; }
+
+
+/* Mobile bottom bar — split call + SMS */
+.mobile-bottom-bar { display: none; }
+@media (max-width: 720px) {
+    .mobile-bottom-bar {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        display: flex;
+        background: #0CC0DF;
+        color: #fff;
+        z-index: 50;
+        box-shadow: 0 -4px 12px rgba(0,0,0,0.18);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    .mobile-bottom-bar .mcb-half {
+        flex: 1;
+        position: static;
+        text-align: center;
+        padding: 0.95rem 0.5rem;
+        font-weight: 700;
+        text-decoration: none;
+        color: #fff;
+        font-size: 1rem;
+        display: block;
+    }
+    .mobile-bottom-bar .mcb-half:hover { background: rgba(255,255,255,0.1); }
+    .mobile-call-bar { display: none !important; } /* hide the original single-bar version */
+}

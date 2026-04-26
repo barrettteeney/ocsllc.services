@@ -23,6 +23,7 @@
     <meta name="twitter:image" content="https://ocsllc.services/assets/og.png">
 </head>
 <body class="bg-gray-50 text-black">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-black px-3 py-2 rounded z-50">Skip to content</a>
     <nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10">
         <div class="container nav-container">
             <a href="/" class="text-lg font-bold">OCS LLC</a>
@@ -33,7 +34,7 @@
         </div>
     </nav>
 
-    <section class="hero-mini hero-photo" style="background-image: url('/assets/photos/54650912485.jpg');">
+    <section class="hero-mini hero-photo" style="background-image: url('/assets/photos/54650912485.jpg'); background-image: image-set(url('/assets/photos/webp/54650912485-1280.webp') type('image/webp') 1x, url('/assets/photos/webp/54650912485-1280.jpg') type('image/jpeg') 1x);">
         <h1>Privacy policy</h1>
         <p>The short, plain-English version. No legalese, no sneaky data sales.</p>
     </section>
@@ -82,6 +83,6 @@
             <p class="mt-2"><a class="underline" href="/">Home</a> · <a class="underline" href="/about/">About</a> · <a class="underline" href="/privacy/">Privacy</a> · <a class="underline" href="/terms/">Terms</a></p>
         </div>
     </footer>
-    <a href="tel:+14066072151" class="mobile-call-bar">📞 Call (406) 607-2151</a>
+    <div class="mobile-bottom-bar"><a href="tel:+14066072151" class="mobile-call-bar mcb-half">📞 Call</a><a href="sms:+14066072151" class="mobile-call-bar mcb-half sms-bar-link" style="border-left: 1px solid rgba(255,255,255,0.3);">💬 Text</a></div>
 </body>
 </html>

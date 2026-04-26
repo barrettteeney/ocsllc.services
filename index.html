@@ -282,6 +282,15 @@
   "foundingLocation": {
     "@type": "Place",
     "name": "Kalispell, MT"
+  },
+  "serviceArea": {
+    "@type": "GeoCircle",
+    "geoMidpoint": {
+      "@type": "GeoCoordinates",
+      "latitude": 48.1958,
+      "longitude": -114.3128
+    },
+    "geoRadius": 50000
   }
 }
     </script>
@@ -387,8 +396,23 @@
     </script>
     <link rel="stylesheet" href="/assets/site.css">
     <link rel="stylesheet" href="/assets/responsive.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+      "h1",
+      ".hero-mini p",
+      "#why-us .stat-card"
+    ]
+  }
+}
+    </script>
 </head>
 <body class="bg-gray-200 text-black">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-black px-3 py-2 rounded z-50">Skip to content</a>
     <!-- Navigation -->
     <nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10">
         <div class="container nav-container">
@@ -400,9 +424,11 @@
         </div>
     </nav>
 
+    
+    
     <!-- Hero -->
     <!-- Hero -->
-    <section id="home" class="hero-mini hero-photo" style="background-image: url('/assets/photos/54649749362.jpg');">
+    <section id="home" class="hero-mini hero-photo" style="background-image: url('/assets/photos/54649749362.jpg'); background-image: image-set(url('/assets/photos/webp/54649749362-1280.webp') type('image/webp') 1x, url('/assets/photos/webp/54649749362-1280.jpg') type('image/jpeg') 1x);">
         <h1>Crystal-clear windows in the Flathead Valley</h1>
         <p>Window cleaning &amp; pressure washing for Kalispell, Whitefish, Columbia Falls, and Bigfork. Licensed, insured, family-owned.</p>
         <div class="hero-cta-row">
@@ -456,6 +482,38 @@
     </section>
 
 
+
+    <!-- Trust badges -->
+    <section id="trust-badges-section" class="bg-white" style="padding-top: 1rem; padding-bottom: 1rem;">
+        <div class="container">
+            <div class="trust-badges">
+                <div class="badge">
+                    <div class="badge-icon">★★★★★</div>
+                    <div class="badge-text"><strong>5.0</strong> on Google<br><span>8 verified reviews</span></div>
+                </div>
+                <div class="badge">
+                    <div class="badge-icon">🛡️</div>
+                    <div class="badge-text"><strong>Licensed &amp; Insured</strong><br><span>General liability + workers comp</span></div>
+                </div>
+                <div class="badge">
+                    <div class="badge-icon">👨‍👩‍👧</div>
+                    <div class="badge-text"><strong>Family-owned</strong><br><span>Operated by Barrett Teeney</span></div>
+                </div>
+                <div class="badge">
+                    <div class="badge-icon">⏱️</div>
+                    <div class="badge-text"><strong>Same-day quotes</strong><br><span>Most responses within 1 hour</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <style>
+        .trust-badges { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 1rem; }
+        .badge { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; }
+        .badge-icon { font-size: 1.5rem; line-height: 1; min-width: 36px; color: #0CC0DF; font-weight: 800; }
+        .badge-text { font-size: 0.85rem; line-height: 1.3; }
+        .badge-text strong { display: block; font-size: 0.95rem; }
+        .badge-text span { color: #6b7280; }
+    </style>
 
     <!-- Why OCS LLC -->
     <section id="why-us" class="bg-gray-50">
@@ -822,6 +880,6 @@
             <p class="mt-3 text-sm"><a class="underline" href="/">Home</a> &middot; <a class="underline" href="/about/">About</a> &middot; <a class="underline" href="/privacy/">Privacy</a> &middot; <a class="underline" href="/terms/">Terms</a> &middot; <a class="underline" href="/pricing/">Pricing</a> &middot; <a class="underline" href="/blog/">Blog</a> &middot; <a class="underline" href="/reviews/">Reviews</a> &middot; <a class="underline" href="/kalispell/">Kalispell</a> &middot; <a class="underline" href="/whitefish/">Whitefish</a> &middot; <a class="underline" href="/columbia-falls/">Columbia Falls</a> &middot; <a class="underline" href="/bigfork/">Bigfork</a> &middot; <a class="underline" href="/services/residential/">Residential</a> &middot; <a class="underline" href="/services/commercial/">Commercial</a> &middot; <a class="underline" href="/services/post-construction/">Post-Construction</a> &middot; <a class="underline" href="/services/pressure-washing/">Pressure Washing</a></p>
         </div>
     </footer>
-    <a href="tel:+14066072151" class="mobile-call-bar" aria-label="Call OCS LLC now">📞 Call (406) 607-2151</a>
+    <div class="mobile-bottom-bar"><a href="tel:+14066072151" class="mobile-call-bar mcb-half">📞 Call</a><a href="sms:+14066072151" class="mobile-call-bar mcb-half sms-bar-link" style="border-left: 1px solid rgba(255,255,255,0.3);">💬 Text</a></div>
 </body>
 </html>
