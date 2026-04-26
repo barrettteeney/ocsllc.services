@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <rect width="1024" height="1024" fill="white"/>
+  <g fill="#222" stroke="#222" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" transform="translate(512,512)">
+    <!-- Pressure washing wand -->
+    <g transform="translate(-200,-220) rotate(20)">
+      <!-- Handle -->
+      <rect x="0" y="80" width="80" height="280" rx="12" fill="#222"/>
+      <!-- Trigger guard -->
+      <path d="M -40 200 q -50 30 -10 80 l 50 0 z" fill="#222"/>
+      <!-- Body -->
+      <rect x="80" y="100" width="200" height="100" rx="20" fill="#222"/>
+      <!-- Wand barrel -->
+      <rect x="280" y="135" width="320" height="30" fill="#222"/>
+      <!-- Tip -->
+      <polygon points="600,135 660,150 600,165" fill="#222"/>
+      <!-- Spray rays -->
+      <g fill="none" stroke="#222" stroke-width="14" stroke-linecap="round">
+        <line x1="680" y1="100" x2="780" y2="80"/>
+        <line x1="680" y1="135" x2="800" y2="135"/>
+        <line x1="680" y1="170" x2="780" y2="190"/>
+        <line x1="680" y1="120" x2="760" y2="105"/>
+        <line x1="680" y1="155" x2="760" y2="170"/>
+      </g>
+    </g>
+    <!-- Water droplets falling -->
+    <g fill="#222">
+      <path d="M 100 80 q 20 30 0 60 q -20 -30 0 -60 z"/>
+      <path d="M 200 130 q 16 24 0 48 q -16 -24 0 -48 z" transform="scale(0.85)"/>
+      <path d="M 30 160 q 14 20 0 40 q -14 -20 0 -40 z" transform="scale(0.7)"/>
+    </g>
+  </g>
+</svg>

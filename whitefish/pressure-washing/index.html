@@ -204,6 +204,30 @@
         </div>
     </section>
 
+    
+    <section class="bg-white">
+        <div class="container">
+            <h2 class="text-2xl font-bold mb-4 text-center">Recent work</h2>
+            <div class="gal-strip">
+                <a href="/gallery/" class="gal-strip-item"><img src="/assets/photos/54693602255.jpg" alt="Window cleaning project — interior view" loading="lazy" decoding="async"></a>
+                <a href="/gallery/" class="gal-strip-item"><img src="/assets/photos/54723284430.jpg" alt="Crystal-clear residential window after professional cleaning" loading="lazy" decoding="async"></a>
+                <a href="/gallery/" class="gal-strip-item"><img src="/assets/photos/54722974706.jpg" alt="Streak-free exterior glass cleaning result" loading="lazy" decoding="async"></a>
+                <a href="/gallery/" class="gal-strip-item"><img src="/assets/photos/54723308610.jpg" alt="OCS LLC team at work in the Flathead Valley" loading="lazy" decoding="async"></a>
+                <a href="/gallery/" class="gal-strip-item"><img src="/assets/photos/54723193839.jpg" alt="Hand-detailed window pane in a Kalispell home" loading="lazy" decoding="async"></a>
+                <a href="/gallery/" class="gal-strip-item"><img src="/assets/photos/54723308760.jpg" alt="Professional window cleaning outdoor view" loading="lazy" decoding="async"></a>
+            </div>
+            <p class="text-center mt-4"><a class="text-custom-cyan font-semibold underline" href="/gallery/">See the full gallery →</a></p>
+        </div>
+    </section>
+    <style>
+        .gal-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem; }
+        .gal-strip-item { display: block; aspect-ratio: 1; overflow: hidden; border-radius: 6px; transition: transform 0.25s; }
+        .gal-strip-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+        .gal-strip-item:hover { transform: translateY(-2px); }
+        .gal-strip-item:hover img { transform: scale(1.05); }
+        @media (max-width: 720px) { .gal-strip { grid-template-columns: repeat(3, 1fr); } }
+    </style>
+
     <footer class="bg-custom-cyan text-white py-8 mt-auto">
         <div class="container text-center">
             <p>&copy; 2025 OCS LLC / Licensed and Insured</p>
