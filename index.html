@@ -60,8 +60,6 @@
   "@type": "LocalBusiness",
   "@id": "https://ocsllc.services/#business",
   "name": "OCS LLC",
-  "legalName": "Opus Cordis Services LLC",
-  "alternateName": "Opus Cordis Services",
   "description": "Professional residential, commercial, and post-construction window cleaning and pressure washing serving Kalispell, Whitefish, Columbia Falls, Bigfork, and the greater Flathead Valley.",
   "slogan": "Work Done Well, Work Done Right.",
   "url": "https://ocsllc.services/",
@@ -72,11 +70,21 @@
   "priceRange": "$$",
   "address": {
     "@type": "PostalAddress",
+    "streetAddress": "378 Ponderosa Ln",
     "addressLocality": "Kalispell",
     "addressRegion": "MT",
     "postalCode": "59901",
     "addressCountry": "US"
   },
+  "foundingDate": "2025",
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      "opens": "08:00",
+      "closes": "20:00"
+    }
+  ],
   "geo": {
     "@type": "GeoCoordinates",
     "latitude": 48.1958,
@@ -84,32 +92,33 @@
   },
   "hasMap": "https://www.google.com/maps/place/Kalispell,+MT+59901/",
   "areaServed": [
-    {
-      "@type": "City",
-      "name": "Kalispell, MT"
-    },
-    {
-      "@type": "City",
-      "name": "Whitefish, MT"
-    },
-    {
-      "@type": "City",
-      "name": "Columbia Falls, MT"
-    },
-    {
-      "@type": "City",
-      "name": "Bigfork, MT"
-    },
-    {
-      "@type": "AdministrativeArea",
-      "name": "Flathead Valley, MT"
-    }
+    { "@type": "City", "name": "Kalispell, MT" },
+    { "@type": "City", "name": "Whitefish, MT" },
+    { "@type": "City", "name": "Columbia Falls, MT" },
+    { "@type": "City", "name": "Bigfork, MT" },
+    { "@type": "City", "name": "Lakeside, MT" },
+    { "@type": "City", "name": "Somers, MT" },
+    { "@type": "City", "name": "Polson, MT" },
+    { "@type": "City", "name": "Marion, MT" },
+    { "@type": "City", "name": "Olney, MT" },
+    { "@type": "City", "name": "Ferndale, MT" },
+    { "@type": "City", "name": "Kila, MT" },
+    { "@type": "City", "name": "Hungry Horse, MT" },
+    { "@type": "City", "name": "Martin City, MT" },
+    { "@type": "City", "name": "West Glacier, MT" },
+    { "@type": "City", "name": "Coram, MT" },
+    { "@type": "City", "name": "Eureka, MT" },
+    { "@type": "AdministrativeArea", "name": "Flathead Valley, MT" },
+    { "@type": "AdministrativeArea", "name": "Flathead County, MT" }
   ],
   "serviceType": [
     "Residential Window Cleaning",
     "Commercial Window Cleaning",
     "Post-Construction Window Cleaning",
-    "Pressure Washing"
+    "Pressure Washing",
+    "Solar Panel Cleaning",
+    "Skylight Cleaning",
+    "Chandelier and Hard-to-Reach Glass Cleaning"
   ],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
@@ -146,6 +155,30 @@
           "name": "Pressure Washing",
           "url": "https://ocsllc.services/services/pressure-washing/"
         }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Solar Panel Cleaning",
+          "description": "Streak-free cleaning of residential solar panel arrays for restored efficiency."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Skylight Cleaning",
+          "description": "Hand-cleaned skylights from outside the home with ladder access."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Chandelier and Hard-to-Reach Interior Glass",
+          "description": "Hand-detailing of chandeliers, vaulted-ceiling fixtures, and high interior glass."
+        }
       }
     ]
   },
@@ -159,7 +192,7 @@
     "ratingValue": "5.0",
     "bestRating": "5",
     "worstRating": "1",
-    "reviewCount": "8"
+    "reviewCount": "14"
   },
   "review": [
     {
@@ -272,7 +305,7 @@
     "name": "Schedule an Estimate",
     "target": "https://ocsllc.services/#quote"
   },
-  "paymentAccepted": "Cash, Check, Visa, Mastercard, American Express, Discover, Apple Pay, Google Pay, Venmo, Zelle",
+  "paymentAccepted": "Cash, Check, Visa, Mastercard, American Express, Discover, Apple Pay, Google Pay, Venmo, Zelle, ACH, Square, Stripe (processing fees may apply on cards)",
   "currenciesAccepted": "USD",
   "knowsLanguage": "en-US",
   "founder": {
@@ -290,7 +323,7 @@
       "latitude": 48.1958,
       "longitude": -114.3128
     },
-    "geoRadius": 50000
+    "geoRadius": 80000
   }
 }
     </script>
@@ -320,7 +353,7 @@
       "name": "Are you licensed and insured?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. OCS LLC is a licensed Montana business and we carry general liability and workers' comp insurance. We can send a certificate of insurance to property managers and HOAs on request."
+        "text": "Yes. OCS LLC is a registered Montana LLC and is fully insured (general liability through Ergo Next Insurance). We can send a certificate of insurance to property managers and HOAs on request."
       }
     },
     {
@@ -336,7 +369,7 @@
       "name": "Do you clean windows in winter?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "We clean year-round in the Flathead Valley as long as conditions allow \u2014 generally above about 25\u00b0F and dry. We use winter-safe solutions on cold days and reschedule if it's actively snowing or icing."
+        "text": "We clean year-round in the Flathead Valley, including below freezing. We use winter-safe solutions on cold days and only reschedule if conditions are unsafe (heavy snow, icing, or extreme wind)."
       }
     },
     {
@@ -437,7 +470,7 @@
         </div>
         <div class="trust-row">
             <span>Licensed &amp; Insured</span>
-            <span>5.0&#9733; (8 Reviews)</span>
+            <span>5.0&#9733; (14 Reviews)</span>
             <span>Same-day quotes</span>
         </div>
     </section>
@@ -489,7 +522,7 @@
             <div class="trust-badges">
                 <div class="badge">
                     <div class="badge-icon">★★★★★</div>
-                    <div class="badge-text"><strong>5.0</strong> on Google<br><span>8 verified reviews</span></div>
+                    <div class="badge-text"><strong>5.0</strong> on Google<br><span>14 verified reviews</span></div>
                 </div>
                 <div class="badge">
                     <div class="badge-icon">🛡️</div>
@@ -522,7 +555,7 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="num">5.0&#9733;</div>
-                    <span class="label">Google rating · 8 reviews</span>
+                    <span class="label">Google rating · 14 reviews</span>
                 </div>
                 <div class="stat-card">
                     <div class="num">100%</div>
@@ -863,7 +896,7 @@
             </details>
             <details class="mb-3 bg-white p-4 rounded-lg border border-gray-200">
                 <summary class="font-semibold cursor-pointer">Are you licensed and insured?</summary>
-                <p class="mt-2 text-gray-700">Yes. OCS LLC is a licensed Montana business and we carry general liability and workers' comp insurance. We can send a certificate of insurance to property managers and HOAs on request.</p>
+                <p class="mt-2 text-gray-700">Yes. OCS LLC is a registered Montana LLC and is fully insured (general liability through Ergo Next Insurance). We can send a certificate of insurance to property managers and HOAs on request.</p>
             </details>
             <details class="mb-3 bg-white p-4 rounded-lg border border-gray-200">
                 <summary class="font-semibold cursor-pointer">Do you do pressure washing too?</summary>
