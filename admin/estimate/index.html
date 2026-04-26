@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Estimate calculator · OCS LLC</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{--cyan:#0CC0DF;--cyan-d:#0aa3bd;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--bg:#f8fafc;--good:#16a34a;--warn:#f59e0b;--bad:#dc2626}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding-bottom:calc(120px + env(safe-area-inset-bottom))}
+header{background:var(--cyan);color:#fff;padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+header h1{margin:0;font-size:1.05rem}
+header a{color:#fff;text-decoration:none;font-size:.85rem}
+.wrap{max-width:760px;margin:0 auto;padding:1rem}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.1rem 1.25rem;margin-bottom:1rem;box-shadow:0 2px 6px rgba(15,23,42,.04)}
+.card h2{margin:0 0 .5rem;font-size:1.05rem;display:flex;align-items:center;justify-content:space-between}
+.card h2 small{font-weight:400;color:var(--muted);font-size:.78rem}
+.card .sub{font-size:.82rem;color:var(--muted);margin:0 0 .85rem}
+input[type=text],input[type=number],textarea,select{width:100%;padding:.6rem .75rem;border:1px solid var(--line);border-radius:8px;font-size:16px;font-family:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:60px;resize:vertical}
+label{display:block;font-weight:600;font-size:.82rem;margin:.65rem 0 .3rem;color:var(--ink)}
+
+/* Counter rows */
+.counter{display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:.6rem;padding:.55rem 0;border-bottom:1px dashed var(--line)}
+.counter:last-child{border-bottom:0}
+.counter .name{font-weight:600;font-size:.95rem}
+.counter .name .pp{display:block;font-size:.72rem;color:var(--muted);font-weight:400;margin-top:1px}
+.counter .qty{min-width:36px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums;font-size:1.05rem}
+.btn-c{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:1.25rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;line-height:1}
+.btn-c:active{background:var(--cyan);color:#fff}
+.btn-c.minus{color:var(--muted)}
+.counter.bundle .toggle{display:flex;gap:.25rem}
+.toggle{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:.75rem;font-weight:700}
+.toggle button{padding:.4rem .6rem;background:#fff;border:0;cursor:pointer;color:var(--muted);font-size:.72rem;letter-spacing:.02em}
+.toggle button.active{background:var(--cyan);color:#fff}
+
+/* Section sub-grid for compact layouts */
+.kv{display:flex;justify-content:space-between;align-items:center;font-size:.92rem;padding:.35rem 0}
+.kv b{font-variant-numeric:tabular-nums}
+
+/* Modifiers */
+.mods{display:flex;flex-wrap:wrap;gap:.5rem}
+.mod{flex:1 1 calc(50% - .25rem);min-width:140px;padding:.65rem .75rem;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:.85rem;cursor:pointer;text-align:left}
+.mod.on{border-color:var(--cyan);background:rgba(12,192,223,.08);color:var(--ink)}
+.mod .ttl{font-weight:700;display:block;font-size:.85rem}
+.mod .desc{font-size:.72rem;color:var(--muted);display:block;margin-top:1px}
+
+/* Live total bar */
+.totalbar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:.75rem 1rem calc(.75rem + env(safe-area-inset-bottom));box-shadow:0 -4px 12px rgba(15,23,42,.06);z-index:15}
+.totalbar .row{display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+.totalbar .total{font-size:1.45rem;font-weight:800;color:var(--ink)}
+.totalbar .total small{font-size:.7rem;font-weight:600;color:var(--muted);display:block;text-transform:uppercase;letter-spacing:.04em;margin-top:-2px}
+.totalbar .meta{font-size:.78rem;color:var(--muted);text-align:right}
+.totalbar .meta b{color:var(--ink)}
+.totalbar .acts{display:flex;gap:.4rem;margin-top:.5rem}
+.totalbar .acts button{flex:1;padding:.6rem;border-radius:8px;border:0;cursor:pointer;font-weight:600;font-size:.85rem}
+.btn-prim{background:var(--cyan);color:#fff}
+.btn-sec{background:#f1f5f9;color:var(--ink)}
+.btn-warn{background:#fef3c7;color:#92400e}
+
+/* Pill */
+.pill{display:inline-block;padding:.15rem .5rem;border-radius:999px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.pill.min{background:#fef3c7;color:#92400e}
+.pill.ok{background:#dcfce7;color:#14532d}
+
+details{margin:.4rem 0}
+summary{cursor:pointer;font-weight:600;color:var(--cyan);font-size:.85rem;padding:.3rem 0}
+summary::marker{color:var(--cyan)}
+
+.size-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:.4rem}
+.size-table td{padding:.3rem .5rem;border-bottom:1px solid var(--line)}
+.size-table td:first-child{font-weight:700;color:var(--cyan)}
+.size-table td:nth-child(3){font-variant-numeric:tabular-nums;text-align:right;color:var(--muted)}
+
+@media (max-width:480px){
+  .wrap{padding:.65rem}
+  .card{padding:.95rem;border-radius:12px}
+  .totalbar .total{font-size:1.25rem}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Estimate calculator</h1>
+  <a href="/admin/">&larr; Admin</a>
+</header>
+<main class="wrap">
+
+<!-- Job info -->
+<section class="card">
+  <h2>Job info <small id="job-saved"></small></h2>
+  <label for="cust">Customer name</label>
+  <input type="text" id="cust" placeholder="e.g. Sarah Johnson">
+  <label for="addr">Address or town</label>
+  <input type="text" id="addr" placeholder="e.g. 123 Main St, Whitefish">
+  <label for="phone">Phone (for sending estimate)</label>
+  <input type="text" id="phone" placeholder="(406) 555-1234">
+  <label for="email">Email (for sending estimate)</label>
+  <input type="text" id="email" placeholder="customer@email.com">
+  <label for="notes">Notes</label>
+  <textarea id="notes" placeholder="e.g. lake-facing, dog on property, prefers texting"></textarea>
+</section>
+
+<!-- Windows -->
+<section class="card">
+  <h2>Windows</h2>
+  <p class="sub">Use the +/- to count. Toggle "1 side" or "Both" per row. Bundle saves $2-4 per window.</p>
+  <details>
+    <summary>What size is what?</summary>
+    <table class="size-table">
+      <tr><td>Small</td><td>Largest side &le; 36"</td><td>$6 / $10</td></tr>
+      <tr><td>Medium</td><td>37 - 60"</td><td>$8 / $14</td></tr>
+      <tr><td>Large</td><td>61 - 72"</td><td>$10 / $18</td></tr>
+      <tr><td>XL</td><td>73 - 96"</td><td>$12 / $22</td></tr>
+      <tr><td>Pic/Bay</td><td>97"+ (1.5x XL)</td><td>$18 / $33</td></tr>
+    </table>
+    <p class="sub" style="margin-top:.4rem">Prices shown as <b>one side / both sides</b>.</p>
+  </details>
+  <div id="window-counters"></div>
+</section>
+
+<!-- Doors / specialty -->
+<section class="card">
+  <h2>Doors &amp; specialty</h2>
+  <div id="door-counters"></div>
+</section>
+
+<!-- French / multi-pane -->
+<section class="card">
+  <h2>French / multi-pane windows</h2>
+  <p class="sub">Count individual lites (panes within the grid). Capped at $25/$40 per window assembly so big grids don't run away.</p>
+  <label for="french-lites">Total lites across all multi-pane windows</label>
+  <input type="number" id="french-lites" min="0" value="0" step="1">
+  <label for="french-asm"># of separate window assemblies (for cap calculation)</label>
+  <input type="number" id="french-asm" min="0" value="0" step="1">
+  <div class="counter">
+    <div class="name">Side mode</div>
+    <div></div>
+    <div></div>
+    <div class="toggle" data-toggle="french-side"><button class="active" data-v="1">1 side</button><button data-v="2">Both</button></div>
+  </div>
+  <div class="kv"><span>Subtotal (after cap)</span><b id="french-sub">$0</b></div>
+</section>
+
+<!-- Add-ons -->
+<section class="card">
+  <h2>Add-ons</h2>
+  <div id="addon-counters"></div>
+</section>
+
+<!-- Screens -->
+<section class="card">
+  <h2>Screens</h2>
+  <div id="screen-counters"></div>
+</section>
+
+<!-- Modifiers -->
+<section class="card">
+  <h2>Job modifiers</h2>
+  <div class="mods" id="mods"></div>
+
+  <label for="travel">Travel zone</label>
+  <select id="travel">
+    <option value="0">Free (0-15 mi: Kalispell, Whitefish, Col. Falls, Bigfork, Lakeside, Somers)</option>
+    <option value="25">$25 (16-30 mi: Polson, far Lakeside)</option>
+    <option value="50">$50 (31-50 mi: Eureka, Olney, Marion)</option>
+    <option value="custom">Custom (50+ mi - enter below)</option>
+  </select>
+  <input type="number" id="travel-custom" min="0" placeholder="Custom travel fee in $" hidden>
+
+  <label for="custom-add">Custom adjustment (extra add or discount, in $)</label>
+  <input type="number" id="custom-add" value="0" step="1" placeholder="0">
+
+  <label for="custom-note">Note for adjustment</label>
+  <input type="text" id="custom-note" placeholder="e.g. Returning customer 10% off">
+</section>
+
+<!-- Breakdown -->
+<section class="card">
+  <h2>Breakdown</h2>
+  <div id="breakdown" style="font-size:.88rem"></div>
+</section>
+
+</main>
+
+<!-- Sticky total bar -->
+<div class="totalbar">
+  <div class="row">
+    <div class="total">$<span id="grand">0</span><small>Estimate <span id="min-flag" class="pill min" hidden>$150 min applied</span></small></div>
+    <div class="meta">
+      Time est: <b id="time-est">0 min</b><br>
+      Effective rate: <b id="rate-est">-</b>
+    </div>
+  </div>
+  <div class="acts">
+    <button class="btn-prim" id="btn-text">📱 Text estimate</button>
+    <button class="btn-sec" id="btn-email">✉ Email estimate</button>
+    <button class="btn-warn" id="btn-clear">Clear</button>
+  </div>
+</div>
+
+<script>
+// ============== CONFIG (edit here to change pricing) ==============
+const PRICES = {
+  windows: [
+    { id:'sm',  label:'Small',          desc:'&le; 36"',         one:6,  both:10 },
+    { id:'md',  label:'Medium',         desc:'37-60"',           one:8,  both:14 },
+    { id:'lg',  label:'Large',          desc:'61-72"',           one:10, both:18 },
+    { id:'xl',  label:'XL',             desc:'73-96"',           one:12, both:22 },
+    { id:'pic', label:'Picture / Bay',  desc:'97"+ (1.5x XL)',   one:18, both:33 },
+  ],
+  doors: [
+    { id:'fdoor',  label:'Front door (small glass)', desc:'non-sliding, non-full-glass', one:4,  both:6  },
+    { id:'sdoor',  label:'Sliding glass door',       desc:'priced as Large',             one:10, both:18 },
+    { id:'gdoor',  label:'Garage door section',      desc:'per glass section',           one:4,  both:6  },
+    { id:'sky',    label:'Skylight',                 desc:'exterior-only, ladder included', one:14, both:14 },
+  ],
+  addons: [
+    { id:'ladder1', label:'Ladder window (one side)', desc:'>12ft / ladder one side', price:4  },
+    { id:'ladder2', label:'Ladder window (both)',     desc:'ladder needed inside AND out',   price:8  },
+    { id:'hwlight', label:'Hard water - light',       desc:'spots, vinegar wash',     price:8  },
+    { id:'hwheavy', label:'Hard water - heavy',       desc:'mineral buildup, acid restoration', price:20 },
+    { id:'pcd',     label:'Post-construction debris', desc:'+$2 per pane',            price:2  },
+    { id:'storm',   label:'Storm window',             desc:'separate removal/replace', price:3 },
+  ],
+  screens: [
+    { id:'scrsm', label:'Small/Medium screen', desc:'each', price:2 },
+    { id:'scrlg', label:'Large/XL screen',     desc:'each', price:4 },
+  ],
+  french: { perLite1:3, perLiteBoth:5, capOne:25, capBoth:40 },
+  modifiers: [
+    { id:'firsttime', label:'First-time deep clean', desc:'1.25x base',  mult:1.25 },
+    { id:'maint',     label:'Recurring maintenance', desc:'1.00x base',  mult:1.0  },
+  ],
+  minimum: 150,
+  hourlyTarget: { low:75, high:150 },
+  // Time per item (minutes) - used for time estimate
+  timePerWindow: { sm:1.5, md:2, lg:3, xl:4, pic:6 },
+  timePerWindowBoth: { sm:3, md:4, lg:5, xl:7, pic:10 },
+  timePerDoor: { fdoor:1, sdoor:3, gdoor:1, sky:5 },
+  timePerDoorBoth: { fdoor:2, sdoor:5, gdoor:2, sky:5 },
+  timePerLite: 0.75, timePerLiteBoth:1.25,
+  timePerScreen: 1, timeSetupMin: 25,
+  timePerHardLight: 8, timePerHardHeavy: 20,
+};
+// ============== END CONFIG ==============
+
+const $ = q=>document.querySelector(q);
+const STATE_KEY = 'ocs_estimate_state_v2';
+
+// State: counts and toggles
+const state = {
+  win:   { sm:0,md:0,lg:0,xl:0,pic:0 },
+  winSide:{ sm:'both',md:'both',lg:'both',xl:'both',pic:'both' },
+  door:  { fdoor:0,sdoor:0,gdoor:0,sky:0 },
+  doorSide:{ fdoor:'both',sdoor:'both',gdoor:'both',sky:'one' },
+  addon: { ladder1:0,ladder2:0,hwlight:0,hwheavy:0,pcd:0,storm:0 },
+  screen:{ scrsm:0,scrlg:0 },
+  french:{ lites:0, assemblies:0, side:1 },
+  mod:   'maint',
+  travel: 0,
+  travelCustom: 0,
+  customAdd: 0,
+  customNote: '',
+  cust:'', addr:'', phone:'', email:'', notes:''
+};
+
+// Build UI
+function counterRow(parent, item, kind){
+  const wrap = document.createElement('div');
+  wrap.className = 'counter bundle';
+  const sideKey = (kind==='win'?state.winSide:state.doorSide)[item.id];
+  wrap.innerHTML = `
+    <div class="name">${item.label}<span class="pp">${item.desc} · $${item.one}/$${item.both}</span></div>
+    <button class="btn-c minus" data-act="dec" data-kind="${kind}" data-id="${item.id}">−</button>
+    <span class="qty" id="q-${kind}-${item.id}">0</span>
+    <button class="btn-c" data-act="inc" data-kind="${kind}" data-id="${item.id}">+</button>
+    <div></div><div></div>
+    <div class="toggle" data-toggle="side-${kind}-${item.id}">
+      <button class="${sideKey==='one'?'active':''}" data-v="one">1 side</button>
+      <button class="${sideKey==='both'?'active':''}" data-v="both">Both</button>
+    </div>`;
+  parent.appendChild(wrap);
+}
+
+function simpleRow(parent, item, kind){
+  const wrap = document.createElement('div');
+  wrap.className = 'counter';
+  wrap.innerHTML = `
+    <div class="name">${item.label}<span class="pp">${item.desc} · +$${item.price}</span></div>
+    <button class="btn-c minus" data-act="dec" data-kind="${kind}" data-id="${item.id}">−</button>
+    <span class="qty" id="q-${kind}-${item.id}">0</span>
+    <button class="btn-c" data-act="inc" data-kind="${kind}" data-id="${item.id}">+</button>`;
+  parent.appendChild(wrap);
+}
+
+PRICES.windows.forEach(it => counterRow($('#window-counters'), it, 'win'));
+PRICES.doors.forEach(it   => counterRow($('#door-counters'), it, 'door'));
+PRICES.addons.forEach(it  => simpleRow($('#addon-counters'), it, 'addon'));
+PRICES.screens.forEach(it => simpleRow($('#screen-counters'), it, 'screen'));
+
+PRICES.modifiers.forEach(m => {
+  const b = document.createElement('button');
+  b.className = 'mod' + (state.mod===m.id ? ' on' : '');
+  b.dataset.id = m.id;
+  b.innerHTML = `<span class="ttl">${m.label}</span><span class="desc">${m.desc}</span>`;
+  b.onclick = () => { state.mod = m.id; refreshMods(); recompute(); };
+  $('#mods').appendChild(b);
+});
+
+function refreshMods(){
+  document.querySelectorAll('#mods .mod').forEach(b=>{
+    b.classList.toggle('on', b.dataset.id===state.mod);
+  });
+}
+
+document.addEventListener('click', e => {
+  const t = e.target;
+  if (t.dataset.act==='inc' || t.dataset.act==='dec'){
+    const k = t.dataset.kind, id = t.dataset.id;
+    const delta = t.dataset.act==='inc' ? 1 : -1;
+    state[k][id] = Math.max(0, (state[k][id]||0) + delta);
+    document.querySelector(`#q-${k}-${id}`).textContent = state[k][id];
+    recompute();
+    return;
+  }
+  if (t.parentElement && t.parentElement.dataset.toggle){
+    const tog = t.parentElement.dataset.toggle;
+    const v = t.dataset.v;
+    t.parentElement.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===t));
+    if (tog === 'french-side') state.french.side = +v;
+    else if (tog.startsWith('side-win-'))  state.winSide[tog.replace('side-win-','')] = v;
+    else if (tog.startsWith('side-door-')) state.doorSide[tog.replace('side-door-','')] = v;
+    recompute();
+  }
+});
+
+['cust','addr','phone','email','notes','custom-note'].forEach(id => {
+  $('#'+id).addEventListener('input', e => { state[id.replace('custom-','custom')] = e.target.value; saveState(); });
+});
+['french-lites','french-asm','custom-add','travel-custom'].forEach(id => {
+  $('#'+id).addEventListener('input', e => {
+    if (id==='french-lites') state.french.lites = +e.target.value || 0;
+    if (id==='french-asm')   state.french.assemblies = +e.target.value || 0;
+    if (id==='custom-add')   state.customAdd = +e.target.value || 0;
+    if (id==='travel-custom')state.travelCustom = +e.target.value || 0;
+    recompute();
+  });
+});
+$('#travel').addEventListener('change', e => {
+  if (e.target.value === 'custom'){
+    $('#travel-custom').hidden = false;
+    state.travel = 'custom';
+  } else {
+    $('#travel-custom').hidden = true;
+    state.travel = +e.target.value;
+  }
+  recompute();
+});
+
+// Recompute
+function recompute(){
+  const lines = [];
+  let subtotal = 0;
+  let timeMin = PRICES.timeSetupMin;
+
+  // Windows
+  PRICES.windows.forEach(w => {
+    const n = state.win[w.id]||0;
+    if (!n) return;
+    const both = state.winSide[w.id]==='both';
+    const price = (both?w.both:w.one) * n;
+    subtotal += price;
+    timeMin += n * (both ? PRICES.timePerWindowBoth[w.id] : PRICES.timePerWindow[w.id]);
+    lines.push({ name:`${n} × ${w.label} (${both?'both':'one'})`, val:price });
+  });
+
+  // Doors
+  PRICES.doors.forEach(d => {
+    const n = state.door[d.id]||0;
+    if (!n) return;
+    const both = state.doorSide[d.id]==='both';
+    const price = (both?d.both:d.one) * n;
+    subtotal += price;
+    timeMin += n * (both ? PRICES.timePerDoorBoth[d.id] : PRICES.timePerDoor[d.id]);
+    lines.push({ name:`${n} × ${d.label} (${both?'both':'one'})`, val:price });
+  });
+
+  // French
+  const f = state.french;
+  if (f.lites>0){
+    const per = f.side===2 ? PRICES.french.perLiteBoth : PRICES.french.perLite1;
+    const cap = f.side===2 ? PRICES.french.capBoth : PRICES.french.capOne;
+    const raw = f.lites * per;
+    const asm = Math.max(1, f.assemblies);
+    const capped = Math.min(raw, cap*asm);
+    subtotal += capped;
+    timeMin += f.lites * (f.side===2 ? PRICES.timePerLiteBoth : PRICES.timePerLite);
+    lines.push({ name:`${f.lites} lites × $${per} (${f.side===2?'both':'one'} side, capped at $${cap}/window × ${asm})`, val:capped });
+    $('#french-sub').textContent = '$'+capped;
+  } else {
+    $('#french-sub').textContent = '$0';
+  }
+
+  // Addons
+  PRICES.addons.forEach(a => {
+    const n = state.addon[a.id]||0;
+    if (!n) return;
+    const price = a.price * n;
+    subtotal += price;
+    if (a.id==='hwlight') timeMin += n * PRICES.timePerHardLight;
+    else if (a.id==='hwheavy') timeMin += n * PRICES.timePerHardHeavy;
+    lines.push({ name:`${n} × ${a.label}`, val:price });
+  });
+
+  // Screens
+  PRICES.screens.forEach(s => {
+    const n = state.screen[s.id]||0;
+    if (!n) return;
+    const price = s.price * n;
+    subtotal += price;
+    timeMin += n * PRICES.timePerScreen;
+    lines.push({ name:`${n} × ${s.label}`, val:price });
+  });
+
+  const baseSubtotal = subtotal;
+  // Modifier
+  const mod = PRICES.modifiers.find(m=>m.id===state.mod) || {mult:1.0,label:''};
+  let postMod = subtotal * mod.mult;
+  if (mod.mult !== 1.0){
+    const delta = postMod - subtotal;
+    lines.push({ name:`${mod.label} (${mod.mult}x)`, val:delta });
+  }
+
+  // Custom adjustment
+  if (state.customAdd){
+    postMod += state.customAdd;
+    lines.push({ name: state['custom-note'] || 'Custom adjustment', val: state.customAdd });
+  }
+
+  // Travel
+  let travelFee = state.travel === 'custom' ? state.travelCustom : state.travel;
+  if (travelFee){
+    postMod += travelFee;
+    lines.push({ name:`Travel fee`, val:travelFee });
+  }
+
+  let grand = postMod;
+  let minFlagged = false;
+  if (grand < PRICES.minimum && grand > 0){
+    grand = PRICES.minimum;
+    minFlagged = true;
+    lines.push({ name:`$${PRICES.minimum} minimum applied (was $${postMod.toFixed(0)})`, val: grand - postMod });
+  }
+  $('#grand').textContent = grand.toFixed(0);
+  $('#min-flag').hidden = !minFlagged;
+
+  $('#time-est').textContent = timeMin>0 ? Math.round(timeMin) + ' min (~' + (timeMin/60).toFixed(1) + ' hr)' : '0 min';
+  if (timeMin > 0 && grand > 0){
+    const rate = grand / (timeMin/60);
+    let cls = 'pill ok';
+    if (rate < PRICES.hourlyTarget.low) cls='pill min';
+    if (rate > PRICES.hourlyTarget.high*1.5) cls='pill ok';
+    $('#rate-est').innerHTML = `$${rate.toFixed(0)}/hr <span class="${cls}">${rate>=PRICES.hourlyTarget.low&&rate<=PRICES.hourlyTarget.high*1.5?'ok':rate<PRICES.hourlyTarget.low?'low':'high'}</span>`;
+  } else {
+    $('#rate-est').textContent = '-';
+  }
+
+  // Breakdown
+  $('#breakdown').innerHTML = lines.length===0 ?
+    '<p class="sub">Add windows above to see breakdown.</p>' :
+    lines.map(l=>`<div class="kv"><span>${l.name}</span><b>$${l.val.toFixed(0)}</b></div>`).join('') +
+    `<hr style="border:0;border-top:1px solid var(--line);margin:.6rem 0">` +
+    `<div class="kv"><span><b>Total</b></span><b>$${grand.toFixed(0)}</b></div>`;
+
+  saveState();
+}
+
+// Save / restore
+function saveState(){
+  // collect inputs
+  state.cust = $('#cust').value;
+  state.addr = $('#addr').value;
+  state.phone = $('#phone').value;
+  state.email = $('#email').value;
+  state.notes = $('#notes').value;
+  state.customNote = $('#custom-note').value;
+  localStorage.setItem(STATE_KEY, JSON.stringify(state));
+  $('#job-saved').textContent = 'auto-saved ' + new Date().toLocaleTimeString().slice(0,5);
+}
+
+function loadState(){
+  const raw = localStorage.getItem(STATE_KEY);
+  if (!raw) return;
+  try {
+    const s = JSON.parse(raw);
+    Object.assign(state, s);
+    // populate inputs
+    ['cust','addr','phone','email','notes'].forEach(k => $('#'+k).value = state[k]||'');
+    $('#custom-note').value = state.customNote||'';
+    $('#custom-add').value = state.customAdd||0;
+    $('#french-lites').value = state.french?.lites||0;
+    $('#french-asm').value = state.french?.assemblies||0;
+    if (state.travel === 'custom'){
+      $('#travel').value = 'custom';
+      $('#travel-custom').hidden = false;
+      $('#travel-custom').value = state.travelCustom||0;
+    } else {
+      $('#travel').value = String(state.travel||0);
+    }
+    // counts
+    Object.entries(state.win||{}).forEach(([k,v])=>{ const el=$(`#q-win-${k}`); if(el) el.textContent=v; });
+    Object.entries(state.door||{}).forEach(([k,v])=>{ const el=$(`#q-door-${k}`); if(el) el.textContent=v; });
+    Object.entries(state.addon||{}).forEach(([k,v])=>{ const el=$(`#q-addon-${k}`); if(el) el.textContent=v; });
+    Object.entries(state.screen||{}).forEach(([k,v])=>{ const el=$(`#q-screen-${k}`); if(el) el.textContent=v; });
+    // toggles
+    document.querySelectorAll('[data-toggle^="side-win-"]').forEach(t => {
+      const k = t.dataset.toggle.replace('side-win-','');
+      t.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.v === state.winSide[k]));
+    });
+    document.querySelectorAll('[data-toggle^="side-door-"]').forEach(t => {
+      const k = t.dataset.toggle.replace('side-door-','');
+      t.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.v === state.doorSide[k]));
+    });
+    const ftog = document.querySelector('[data-toggle="french-side"]');
+    if (ftog) ftog.querySelectorAll('button').forEach(b=>b.classList.toggle('active', +b.dataset.v === state.french.side));
+    refreshMods();
+  } catch (e) { console.warn(e); }
+}
+
+// Actions
+function buildEstimateText(){
+  const t = `Hi${state.cust ? ' '+state.cust.split(' ')[0] : ''} - here's your OCS LLC estimate:\n\n` +
+    `Total: $${$('#grand').textContent}\n` +
+    `Includes: ${[...new Set([...PRICES.windows,...PRICES.doors].filter(x=>state.win[x.id]||state.door[x.id]).map(x=>x.label))].join(', ')||'—'}\n` +
+    (state.notes ? `\nNotes: ${state.notes}\n` : '') +
+    `\nThis quote is firm if the property is as described. If we find more glass or condition issues, we'll show you and re-quote before starting.\n\n` +
+    `Ready to book? Reply yes and we'll set a date. Questions? Just reply.\n\n— Barrett, OCS LLC\n(406) 607-2151`;
+  return t;
+}
+
+$('#btn-text').onclick = () => {
+  const txt = buildEstimateText();
+  const phone = state.phone.replace(/\D/g,'');
+  if (phone) location.href = `sms:+1${phone}&body=${encodeURIComponent(txt)}`;
+  else { navigator.clipboard.writeText(txt); alert('Estimate copied. Phone number missing — paste in your messaging app.'); }
+};
+$('#btn-email').onclick = () => {
+  const txt = buildEstimateText();
+  const subj = `Your OCS LLC window cleaning estimate - $${$('#grand').textContent}`;
+  const to = state.email || '';
+  location.href = `mailto:${to}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(txt)}`;
+};
+$('#btn-clear').onclick = () => {
+  if (!confirm('Clear this estimate? Customer info will also be cleared.')) return;
+  localStorage.removeItem(STATE_KEY);
+  location.reload();
+};
+
+loadState();
+recompute();
+</script>
+</body>
+</html>
