@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Photo upload · OCS LLC admin</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root { --cyan:#0CC0DF; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --bg:#f8fafc; --good:#16a34a; --warn:#f59e0b; --bad:#dc2626; }
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding-bottom:env(safe-area-inset-bottom)}
+header{background:var(--cyan);color:#fff;padding:1rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+header h1{margin:0;font-size:1.05rem} header a{color:#fff;text-decoration:none;font-size:.85rem}
+.wrap{max-width:720px;margin:0 auto;padding:1rem}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 2px 6px rgba(15,23,42,.04)}
+.card h2{margin:0 0 .75rem;font-size:1.05rem} .card p{margin:.25rem 0;font-size:.9rem;color:var(--muted)}
+input[type=text],input[type=password],textarea,select{width:100%;padding:.65rem .8rem;border:1px solid var(--line);border-radius:8px;font-size:16px;font-family:inherit}
+textarea{min-height:70px;resize:vertical}
+label{display:block;font-weight:600;font-size:.85rem;margin:.75rem 0 .35rem;color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;background:var(--cyan);color:#fff;border:0;padding:.8rem 1.2rem;border-radius:10px;font-weight:600;font-size:1rem;cursor:pointer;width:100%}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.dropzone{border:2px dashed var(--cyan);border-radius:14px;background:rgba(12,192,223,.05);padding:2rem 1rem;text-align:center;cursor:pointer;transition:background .2s}
+.dropzone.drag{background:rgba(12,192,223,.15)}
+.dropzone p{margin:0;color:var(--ink)} .dropzone .pick{color:var(--cyan);font-weight:700}
+#file-input{display:none}
+.thumb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.75rem;margin-top:1rem}
+.thumb{position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;aspect-ratio:4/3;background:var(--bg)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb .x{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.55);color:#fff;border:0;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:14px;line-height:1}
+.thumb .status{position:absolute;inset:auto 0 0 0;background:rgba(0,0,0,.6);color:#fff;font-size:.7rem;padding:.25rem .5rem;text-align:center}
+.log{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:.75rem 1rem;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:.82rem;max-height:240px;overflow-y:auto;white-space:pre-wrap;word-break:break-all}
+.log .ok{color:#4ade80} .log .err{color:#f87171} .log .info{color:#60a5fa}
+.row{display:flex;gap:.5rem;flex-wrap:wrap} .row .btn{flex:1 1 0;min-width:140px}
+.pill{display:inline-block;padding:.15rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.pill.ok{background:#dcfce7;color:#14532d} .pill.warn{background:#fef3c7;color:#92400e} .pill.bad{background:#fee2e2;color:#7f1d1d}
+.hint{font-size:.82rem;color:var(--muted)} .hint code{background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:.8rem}
+details{margin-top:.5rem} details summary{cursor:pointer;font-weight:600;color:var(--cyan)} details ol{padding-left:1.25rem} details li{margin:.35rem 0}
+@media (max-width:480px){.wrap{padding:.75rem} .card{padding:1rem;border-radius:12px}}
+</style>
+</head>
+<body>
+<header><h1>Photo upload</h1><a href="/admin/">&larr; Admin</a></header>
+<main class="wrap">
+
+<section class="card" id="auth-card">
+  <h2>Step 1 &mdash; One-time setup</h2>
+  <p>Paste a GitHub fine-grained personal access token. Stored only on this device. <span id="auth-status" class="pill warn">Not connected</span></p>
+  <details><summary>How to make a token (60 seconds)</summary>
+    <ol>
+      <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a></li>
+      <li>Token name: <code>OCS LLC photo uploads</code></li>
+      <li>Expiration: <code>1 year</code></li>
+      <li>Repository access: <strong>Only select repositories</strong> &rarr; <code>barrettteeney/ocsllc.services</code></li>
+      <li>Permissions &rarr; Repository &rarr; <strong>Contents</strong>: <code>Read and write</code></li>
+      <li>Click <strong>Generate token</strong>, copy the long string starting with <code>github_pat_</code></li>
+      <li>Paste it below. Done.</li>
+    </ol>
+  </details>
+  <label for="pat">GitHub token</label>
+  <input type="password" id="pat" placeholder="github_pat_..." autocomplete="off">
+  <div class="row" style="margin-top:.75rem">
+    <button class="btn" id="save-pat">Save &amp; verify</button>
+    <button class="btn secondary" id="clear-pat">Clear</button>
+  </div>
+</section>
+
+<section class="card" id="upload-card" hidden>
+  <h2>Step 2 &mdash; Drop photos here</h2>
+  <p>Auto-resized to WebP (1600 / 800 / 400 px) and committed to <code>/assets/photos/</code>.</p>
+  <div class="dropzone" id="drop">
+    <p>&#128247; <span class="pick">Tap to pick photos</span> or drag &amp; drop</p>
+    <p class="hint">JPEG, PNG, HEIC, WebP. Multiple files OK.</p>
+  </div>
+  <input type="file" id="file-input" accept="image/*" multiple capture="environment">
+  <label for="caption">Default caption / alt text</label>
+  <textarea id="caption" placeholder="e.g. Window cleaning at a Whitefish lakefront home"></textarea>
+  <label for="page-tag">Where will these photos go?</label>
+  <select id="page-tag">
+    <option value="general">General gallery (rotates everywhere)</option>
+    <option value="residential">Residential service page</option>
+    <option value="commercial">Commercial service page</option>
+    <option value="post-construction">Post-construction service page</option>
+    <option value="pressure-washing">Pressure washing service page</option>
+    <option value="kalispell">Kalispell town page</option>
+    <option value="whitefish">Whitefish town page</option>
+    <option value="columbia-falls">Columbia Falls town page</option>
+    <option value="bigfork">Bigfork town page</option>
+    <option value="hero">Homepage hero rotation</option>
+    <option value="before-after">Before/after collection</option>
+  </select>
+  <div id="thumb-grid" class="thumb-grid"></div>
+  <div class="row" style="margin-top:1rem">
+    <button class="btn" id="upload-btn" disabled>Upload &amp; commit to website</button>
+    <button class="btn secondary" id="clear-queue" disabled>Clear queue</button>
+  </div>
+</section>
+
+<section class="card" id="log-card" hidden>
+  <h2>Activity</h2>
+  <div class="log" id="log"></div>
+  <div class="hint" style="margin-top:.5rem">After upload, GitHub Pages takes ~60-90 seconds to redeploy. Then your photos are live.</div>
+</section>
+
+</main>
+<script>
+const REPO_OWNER='barrettteeney',REPO_NAME='ocsllc.services',BRANCH='main',SIZES=[1600,800,400];
+const $=q=>document.querySelector(q);
+const log=(m,c='')=>{const e=$('#log'),l=document.createElement('div');l.className=c;l.textContent='['+new Date().toLocaleTimeString()+'] '+m;e.appendChild(l);e.scrollTop=e.scrollHeight;$('#log-card').hidden=false};
+const PK='ocsllc_admin_pat';
+const getPat=()=>localStorage.getItem(PK)||'',setPat=p=>localStorage.setItem(PK,p),clearPat=()=>localStorage.removeItem(PK);
+async function verifyPat(p){if(!p)return false;const r=await fetch('https://api.github.com/repos/'+REPO_OWNER+'/'+REPO_NAME,{headers:{Authorization:'Bearer '+p,Accept:'application/vnd.github+json'}});return r.ok}
+async function refreshAuthUI(){const p=getPat();if(!p){$('#auth-status').textContent='Not connected';$('#auth-status').className='pill warn';$('#upload-card').hidden=true;return}
+  $('#auth-status').textContent='Checking...';$('#auth-status').className='pill warn';
+  const ok=await verifyPat(p);
+  if(ok){$('#auth-status').textContent='Connected';$('#auth-status').className='pill ok';$('#upload-card').hidden=false;$('#pat').value=p.slice(0,12)+'...'+p.slice(-4)}
+  else{$('#auth-status').textContent='Token rejected';$('#auth-status').className='pill bad';$('#upload-card').hidden=true}}
+$('#save-pat').onclick=async()=>{const v=$('#pat').value.trim();if(!v||v.includes('...')){alert('Paste a fresh token');return}setPat(v);await refreshAuthUI()};
+$('#clear-pat').onclick=()=>{if(confirm('Forget the saved token on this device?')){clearPat();$('#pat').value='';refreshAuthUI()}};
+const queue=[];
+const uid=()=>'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+async function fileToBitmap(f){try{return await createImageBitmap(f)}catch(e){const u=URL.createObjectURL(f);return new Promise((r,j)=>{const i=new Image();i.onload=()=>{URL.revokeObjectURL(u);r(i)};i.onerror=()=>{URL.revokeObjectURL(u);j(new Error('Could not decode image: '+f.name))};i.src=u})}}
+async function resizeWebP(b,m){const w=b.width||b.naturalWidth,h=b.height||b.naturalHeight,s=Math.min(1,m/Math.max(w,h)),cw=Math.round(w*s),ch=Math.round(h*s),c=document.createElement('canvas');c.width=cw;c.height=ch;const x=c.getContext('2d',{alpha:false});x.imageSmoothingQuality='high';x.drawImage(b,0,0,cw,ch);return new Promise(r=>c.toBlob(r,'image/webp',.82))}
+function blobB64(b){return new Promise((r,j)=>{const f=new FileReader();f.onloadend=()=>r(f.result.split(',')[1]);f.onerror=j;f.readAsDataURL(b)})}
+function renderQ(){const g=$('#thumb-grid');g.innerHTML='';queue.forEach((q,i)=>{const d=document.createElement('div');d.className='thumb';const u=URL.createObjectURL(q.preview||q.file);d.innerHTML='<img src="'+u+'" alt=""><button class="x" data-i="'+i+'">&times;</button>'+(q.status?'<div class="status">'+q.status+'</div>':'');g.appendChild(d)});g.querySelectorAll('.x').forEach(b=>b.onclick=e=>{queue.splice(+e.target.dataset.i,1);renderQ()});$('#upload-btn').disabled=queue.length===0;$('#clear-queue').disabled=queue.length===0}
+async function addFiles(fs){for(const f of fs){if(!f.type.startsWith('image/')&&!/\.(heic|heif)$/i.test(f.name))continue;queue.push({file:f,baseName:uid(),status:'queued',preview:f})}renderQ()}
+const dz=$('#drop'),fi=$('#file-input');
+dz.onclick=()=>fi.click();fi.onchange=e=>addFiles(e.target.files);
+['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag')}));
+['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag')}));
+dz.addEventListener('drop',e=>addFiles(e.dataTransfer.files));
+$('#clear-queue').onclick=()=>{queue.length=0;renderQ()};
+async function ghPut(p,b64,m){let sha;try{const r=await fetch('https://api.github.com/repos/'+REPO_OWNER+'/'+REPO_NAME+'/contents/'+p+'?ref='+BRANCH,{headers:{Authorization:'Bearer '+getPat(),Accept:'application/vnd.github+json'}});if(r.ok)sha=(await r.json()).sha}catch(e){}
+  const body={message:m,content:b64,branch:BRANCH};if(sha)body.sha=sha;
+  const r=await fetch('https://api.github.com/repos/'+REPO_OWNER+'/'+REPO_NAME+'/contents/'+p,{method:'PUT',headers:{Authorization:'Bearer '+getPat(),Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok)throw new Error('GitHub PUT failed ('+r.status+'): '+(await r.text()).slice(0,200));return r.json()}
+async function fetchManifest(){try{const r=await fetch('https://api.github.com/repos/'+REPO_OWNER+'/'+REPO_NAME+'/contents/assets/photos/manifest.json?ref='+BRANCH,{headers:{Authorization:'Bearer '+getPat(),Accept:'application/vnd.github+json'}});if(!r.ok)return{sha:null,data:[]};const j=await r.json();return{sha:j.sha,data:JSON.parse(atob(j.content.replace(/\s/g,'')))}}catch{return{sha:null,data:[]}}}
+async function putManifest(d,sha){const t=JSON.stringify(d,null,2),b=btoa(unescape(encodeURIComponent(t)));const body={message:'Add photos via /admin/photos upload',content:b,branch:BRANCH};if(sha)body.sha=sha;const r=await fetch('https://api.github.com/repos/'+REPO_OWNER+'/'+REPO_NAME+'/contents/assets/photos/manifest.json',{method:'PUT',headers:{Authorization:'Bearer '+getPat(),Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('Manifest write failed: '+(await r.text()).slice(0,200));return r.json()}
+$('#upload-btn').onclick=async()=>{
+  if(queue.length===0)return;$('#upload-btn').disabled=true;
+  const cap=$('#caption').value.trim()||'Window cleaning project photo by OCS LLC',tag=$('#page-tag').value;
+  log('Starting upload of '+queue.length+' photo(s) tagged "'+tag+'"...','info');
+  log('Fetching current manifest...');
+  const {sha:msha,data:man}=await fetchManifest();
+  log('Existing manifest has '+man.length+' entries.');
+  for(let i=0;i<queue.length;i++){const it=queue[i];it.status='resizing...';renderQ();
+    try{const bm=await fileToBitmap(it.file);const sized={};for(const s of SIZES)sized[s]=await resizeWebP(bm,s);
+      const id=it.baseName;
+      for(const s of SIZES){it.status='uploading '+s+'px...';renderQ();const path='assets/photos/'+id+'-'+s+'.webp';const b64=await blobB64(sized[s]);await ghPut(path,b64,'Add photo '+id+' ('+s+'px) [admin upload]');log('OK '+path,'ok')}
+      man.unshift({id,file:id+'-1600.webp',srcset:'assets/photos/'+id+'-400.webp 400w, assets/photos/'+id+'-800.webp 800w, assets/photos/'+id+'-1600.webp 1600w',title:it.file.name,alt:cap,page:tag,addedVia:'admin/photos',pubDate:new Date().toUTCString()});
+      it.status='done';renderQ();
+    }catch(e){log('FAIL '+it.file.name+': '+e.message,'err');it.status='failed';renderQ()}}
+  try{log('Updating manifest.json...');await putManifest(man,msha);log('OK Manifest updated. Pages will redeploy in ~90 seconds.','ok');log('Live at https://ocsllc.services/assets/photos/','info')}
+  catch(e){log('FAIL Manifest write: '+e.message,'err')}
+  $('#upload-btn').disabled=false;
+  if(queue.every(q=>q.status==='done'))setTimeout(()=>{queue.length=0;renderQ();log('Queue cleared. Ready for next batch.','info')},2500)
+};
+refreshAuthUI();
+</script>
+</body>
+</html>
