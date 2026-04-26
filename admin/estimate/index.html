@@ -129,11 +129,10 @@ summary::marker{color:var(--cyan)}
 <!-- French / multi-pane -->
 <section class="card">
   <h2>French / multi-pane windows</h2>
-  <p class="sub">Count individual lites (panes within the grid). Capped at $25/$40 per window assembly so big grids don't run away.</p>
+  <p class="sub">Count individual lites. $4 per side, flat (no bundle, no cap). Pricing reflects the extra labor for grid detailing.</p>
   <label for="french-lites">Total lites across all multi-pane windows</label>
   <input type="number" id="french-lites" min="0" value="0" step="1">
-  <label for="french-asm"># of separate window assemblies (for cap calculation)</label>
-  <input type="number" id="french-asm" min="0" value="0" step="1">
+  <input type="hidden" id="french-asm" value="0">
   <div class="counter">
     <div class="name">Side mode</div>
     <div></div>
@@ -162,10 +161,9 @@ summary::marker{color:var(--cyan)}
 
   <label for="travel">Travel zone</label>
   <select id="travel">
-    <option value="0">Free (0-15 mi: Kalispell, Whitefish, Col. Falls, Bigfork, Lakeside, Somers)</option>
-    <option value="25">$25 (16-30 mi: Polson, far Lakeside)</option>
-    <option value="50">$50 (31-50 mi: Eureka, Olney, Marion)</option>
-    <option value="custom">Custom (50+ mi - enter below)</option>
+    <option value="0">Free (0-25 mi: Kalispell, Whitefish, Col. Falls, Bigfork, Lakeside, Somers, near Polson)</option>
+    <option value="25">$25 one-time (25-50 mi: covers both estimate visit and cleaning trip)</option>
+    <option value="custom">Case-by-case (50+ mi: Eureka, Olney - enter custom amount)</option>
   </select>
   <input type="number" id="travel-custom" min="0" placeholder="Custom travel fee in $" hidden>
 
@@ -219,8 +217,8 @@ const PRICES = {
   addons: [
     { id:'ladder1', label:'Ladder window (one side)', desc:'>12ft / ladder one side', price:4  },
     { id:'ladder2', label:'Ladder window (both)',     desc:'ladder needed inside AND out',   price:8  },
-    { id:'hwlight', label:'Hard water - light',       desc:'spots, vinegar wash',     price:8  },
-    { id:'hwheavy', label:'Hard water - heavy',       desc:'mineral buildup, acid restoration', price:20 },
+    { id:'hwlight', label:'Hard water - light',       desc:'light spotting',          price:4  },
+    { id:'hwheavy', label:'Hard water - heavy',       desc:'heavy mineral buildup',   price:8  },
     { id:'pcd',     label:'Post-construction debris', desc:'+$2 per pane',            price:2  },
     { id:'storm',   label:'Storm window',             desc:'separate removal/replace', price:3 },
   ],
@@ -228,7 +226,7 @@ const PRICES = {
     { id:'scrsm', label:'Small/Medium screen', desc:'each', price:2 },
     { id:'scrlg', label:'Large/XL screen',     desc:'each', price:4 },
   ],
-  french: { perLite1:3, perLiteBoth:5, capOne:25, capBoth:40 },
+  french: { perLite1:4, perLiteBoth:8, capOne:99999, capBoth:99999 },
   modifiers: [
     { id:'firsttime', label:'First-time deep clean', desc:'1.25x base',  mult:1.25 },
     { id:'maint',     label:'Recurring maintenance', desc:'1.00x base',  mult:1.0  },
@@ -242,7 +240,7 @@ const PRICES = {
   timePerDoorBoth: { fdoor:2, sdoor:5, gdoor:2, sky:5 },
   timePerLite: 0.75, timePerLiteBoth:1.25,
   timePerScreen: 1, timeSetupMin: 25,
-  timePerHardLight: 8, timePerHardHeavy: 20,
+  timePerHardLight: 5, timePerHardHeavy: 12,
 };
 // ============== END CONFIG ==============
 
@@ -397,7 +395,7 @@ function recompute(){
     const capped = Math.min(raw, cap*asm);
     subtotal += capped;
     timeMin += f.lites * (f.side===2 ? PRICES.timePerLiteBoth : PRICES.timePerLite);
-    lines.push({ name:`${f.lites} lites × $${per} (${f.side===2?'both':'one'} side, capped at $${cap}/window × ${asm})`, val:capped });
+    lines.push({ name:`${f.lites} lites × $${per} (${f.side===2?'both':'one'} side)`, val:capped });
     $('#french-sub').textContent = '$'+capped;
   } else {
     $('#french-sub').textContent = '$0';
@@ -443,7 +441,7 @@ function recompute(){
   let travelFee = state.travel === 'custom' ? state.travelCustom : state.travel;
   if (travelFee){
     postMod += travelFee;
-    lines.push({ name:`Travel fee`, val:travelFee });
+    lines.push({ name:`Travel fee (one-time, covers estimate + clean)`, val:travelFee });
   }
 
   let grand = postMod;
