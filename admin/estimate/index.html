@@ -162,9 +162,14 @@ summary::marker{color:var(--cyan)}
   <label for="travel">Travel zone</label>
   <select id="travel">
     <option value="0">Free (0-25 mi: Kalispell, Whitefish, Col. Falls, Bigfork, Lakeside, Somers, near Polson)</option>
-    <option value="25">$25 one-time (25-50 mi: covers both estimate visit and cleaning trip)</option>
+    <option value="25">$25 per trip (25-50 mi: applies each visit unless remote estimate)</option>
     <option value="custom">Case-by-case (50+ mi: Eureka, Olney - enter custom amount)</option>
   </select>
+  <div id="remote-est-row" hidden style="margin-top:.5rem">
+    <label style="display:flex;align-items:center;gap:.5rem;font-weight:500;font-size:.85rem">
+      <input type="checkbox" id="remote-est" style="width:auto"> Customer chose remote estimate (skip the estimate trip — only charge travel for the cleaning visit)
+    </label>
+  </div>
   <input type="number" id="travel-custom" min="0" placeholder="Custom travel fee in $" hidden>
 
   <label for="custom-add">Custom adjustment (extra add or discount, in $)</label>
@@ -261,6 +266,7 @@ const state = {
   travelCustom: 0,
   customAdd: 0,
   customNote: '',
+  remoteEst: false,
   cust:'', addr:'', phone:'', email:'', notes:''
 };
 
@@ -354,6 +360,12 @@ $('#travel').addEventListener('change', e => {
     $('#travel-custom').hidden = true;
     state.travel = +e.target.value;
   }
+  // Show remote-estimate option only when there IS a travel fee
+  $('#remote-est-row').hidden = (state.travel === 0 || state.travel === '0');
+  recompute();
+});
+$('#remote-est').addEventListener('change', e => {
+  state.remoteEst = e.target.checked;
   recompute();
 });
 
@@ -437,11 +449,16 @@ function recompute(){
     lines.push({ name: state['custom-note'] || 'Custom adjustment', val: state.customAdd });
   }
 
-  // Travel
-  let travelFee = state.travel === 'custom' ? state.travelCustom : state.travel;
-  if (travelFee){
+  // Travel — applies per trip. Default 2 trips (estimate + cleaning) unless remote estimate.
+  let travelPerTrip = state.travel === 'custom' ? state.travelCustom : state.travel;
+  if (travelPerTrip){
+    const trips = state.remoteEst ? 1 : 2;
+    const travelFee = travelPerTrip * trips;
     postMod += travelFee;
-    lines.push({ name:`Travel fee (one-time, covers estimate + clean)`, val:travelFee });
+    lines.push({
+      name:`Travel fee ${state.remoteEst ? '(remote estimate - 1 trip)' : '(2 trips: estimate + clean)'} @ $${travelPerTrip}/trip`,
+      val: travelFee
+    });
   }
 
   let grand = postMod;
@@ -484,6 +501,7 @@ function saveState(){
   state.email = $('#email').value;
   state.notes = $('#notes').value;
   state.customNote = $('#custom-note').value;
+  state.remoteEst = $('#remote-est').checked;
   localStorage.setItem(STATE_KEY, JSON.stringify(state));
   $('#job-saved').textContent = 'auto-saved ' + new Date().toLocaleTimeString().slice(0,5);
 }
@@ -497,6 +515,8 @@ function loadState(){
     // populate inputs
     ['cust','addr','phone','email','notes'].forEach(k => $('#'+k).value = state[k]||'');
     $('#custom-note').value = state.customNote||'';
+    $('#remote-est').checked = !!state.remoteEst;
+    $('#remote-est-row').hidden = !((state.travel === 25) || state.travel === 'custom');
     $('#custom-add').value = state.customAdd||0;
     $('#french-lites').value = state.french?.lites||0;
     $('#french-asm').value = state.french?.assemblies||0;
