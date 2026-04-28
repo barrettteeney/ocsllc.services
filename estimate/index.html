@@ -76,7 +76,7 @@
 <body>
 <nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10">
   <div class="container nav-container">
-    <a class="text-lg font-bold" href="/">OCS LLC</a>
+    <a class="text-lg font-bold" style="text-decoration:none" href="/">OCS LLC</a>
     <div class="contact-info">
       <a href="tel:+14066072151">(406) 607-2151</a>
       <a href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a>
@@ -94,7 +94,7 @@
 
   <div class="calc-row" data-row data-out="6" data-both="10">
     <div><h4>Small</h4><span class="desc">Under 2&times;3 ft &mdash; bedroom, bath, basement</span></div>
-    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
+    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">One side only</button></div>
     <button type="button" class="calc-btn" data-act="-" aria-label="Decrease small">&minus;</button>
     <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Small count">
     <button type="button" class="calc-btn" data-act="+" aria-label="Increase small">+</button>
@@ -102,7 +102,7 @@
 
   <div class="calc-row" data-row data-out="8" data-both="14">
     <div><h4>Medium</h4><span class="desc">2&times;3 to 3&times;5 ft &mdash; standard living room</span></div>
-    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
+    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">One side only</button></div>
     <button type="button" class="calc-btn" data-act="-" aria-label="Decrease medium">&minus;</button>
     <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Medium count">
     <button type="button" class="calc-btn" data-act="+" aria-label="Increase medium">+</button>
@@ -110,7 +110,7 @@
 
   <div class="calc-row" data-row data-out="10" data-both="18">
     <div><h4>Large</h4><span class="desc">3&times;5 to 4&times;6 ft &mdash; sliders, patio doors</span></div>
-    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
+    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">One side only</button></div>
     <button type="button" class="calc-btn" data-act="-" aria-label="Decrease large">&minus;</button>
     <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Large count">
     <button type="button" class="calc-btn" data-act="+" aria-label="Increase large">+</button>
@@ -118,7 +118,7 @@
 
   <div class="calc-row" data-row data-out="12" data-both="22">
     <div><h4>Extra Large</h4><span class="desc">4&times;6 to 5&times;7 ft &mdash; bigger kitchens, dining</span></div>
-    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
+    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">One side only</button></div>
     <button type="button" class="calc-btn" data-act="-" aria-label="Decrease xl">&minus;</button>
     <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="XL count">
     <button type="button" class="calc-btn" data-act="+" aria-label="Increase xl">+</button>
@@ -126,7 +126,7 @@
 
   <div class="calc-row" data-row data-out="18" data-both="33">
     <div><h4>Picture / Bay</h4><span class="desc">5+ ft tall or wide &mdash; great rooms, lake views</span></div>
-    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
+    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">One side only</button></div>
     <button type="button" class="calc-btn" data-act="-" aria-label="Decrease picture">&minus;</button>
     <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Picture count">
     <button type="button" class="calc-btn" data-act="+" aria-label="Increase picture">+</button>
@@ -134,7 +134,7 @@
 
   <div class="calc-row" data-row data-out="4" data-both="8">
     <div><h4>French / Divided lite</h4><span class="desc">Per individual pane</span></div>
-    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
+    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">One side only</button></div>
     <button type="button" class="calc-btn" data-act="-" aria-label="Decrease french">&minus;</button>
     <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="French count">
     <button type="button" class="calc-btn" data-act="+" aria-label="Increase french">+</button>
@@ -198,7 +198,7 @@
 <div class="faq-strip">
   <h3>Quick answers</h3>
   <details><summary>How accurate is this estimate?</summary><p>Within about &plusmn;15% for most homes. We confirm a firm price before any work begins &mdash; no surprises.</p></details>
-  <details><summary>Inside &amp; outside or just outside?</summary><p>Use the "Both sides" / "Outside only" toggle on each row. Outside-only is roughly 60% of the both-sides price.</p></details>
+  <details><summary>Interior &amp; exterior or just one side?</summary><p>Use the "Both sides" / "One side only" toggle on each row. One side only is roughly 60% of the both-sides price.</p></details>
   <details><summary>What counts as a 2nd-story window?</summary><p>Anything that needs a ladder past first-floor reach. Flat $3 per window on top of the regular size price.</p></details>
   <details><summary>Do you charge for hard water or heavy build-up?</summary><p>Light spotting is +$4 per window, heavy mineral build-up is +$8. We'll confirm with you before adding it to the bill.</p></details>
   <details><summary>What's the service area?</summary><p>The whole Flathead Valley &mdash; Kalispell, Whitefish, Columbia Falls, Bigfork, Lakeside, Somers. Beyond 25 mi from Kalispell may have a small travel fee.</p></details>
