@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Instant Estimate | OCS LLC Window Cleaning</title>
+<meta name="description" content="Get an instant ballpark estimate for window cleaning in the Flathead Valley. Tap counters for your windows, see your range, send for a firm quote.">
+<link rel="canonical" href="https://ocsllc.services/estimate/">
+<meta name="theme-color" content="#0CC0DF">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Instant Estimate · OCS LLC">
+<meta property="og:description" content="Tap counters, see your range, send for a firm quote.">
+<meta property="og:url" content="https://ocsllc.services/estimate/">
+<meta property="og:image" content="https://ocsllc.services/assets/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230CC0DF'/%3E%3Ctext x='50' y='62' font-family='Arial,sans-serif' font-size='44' font-weight='700' text-anchor='middle' fill='white'%3EO%3C/text%3E%3C/svg%3E">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/responsive.css">
+<style>
+.calc-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;margin-bottom:1rem;box-shadow:0 2px 6px rgba(15,23,42,.04)}
+.calc-row{display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:.6rem;padding:.7rem 0;border-bottom:1px dashed #e5e7eb}
+.calc-row:last-child{border-bottom:0}
+.calc-row .name{font-weight:600;font-size:.95rem;color:#0f172a}
+.calc-row .name .pp{display:block;font-size:.75rem;color:#64748b;font-weight:400;margin-top:2px}
+.calc-row .qty{min-width:36px;text-align:center;font-weight:700;font-size:1.1rem;font-variant-numeric:tabular-nums;color:#0f172a}
+.btn-c{width:36px;height:36px;border-radius:50%;border:1px solid #e2e8f0;background:#fff;color:#0f172a;font-size:1.25rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;line-height:1;transition:background .15s,border-color .15s}
+.btn-c:active{background:#0CC0DF;color:#fff;border-color:#0CC0DF}
+.btn-c.minus{color:#64748b}
+.toggle{display:inline-flex;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;font-weight:700;font-size:.72rem}
+.toggle button{padding:.4rem .65rem;background:#fff;border:0;cursor:pointer;color:#64748b;letter-spacing:.02em}
+.toggle button.active{background:#0CC0DF;color:#fff}
+.estimate-box{background:linear-gradient(135deg,#0CC0DF 0%,#0aa3bd 100%);color:#fff;border-radius:12px;padding:1.75rem;text-align:center;margin:1.5rem 0;box-shadow:0 8px 24px rgba(12,192,223,.25)}
+.estimate-box .est-value{font-size:2.5rem;font-weight:800;line-height:1;margin:.5rem 0}
+.estimate-box .est-label{text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;opacity:.92;font-weight:600}
+.estimate-box .est-note{font-size:.85rem;opacity:.92;margin-top:.5rem}
+.quote-form{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;margin-top:1rem}
+.quote-form label{display:block;font-weight:600;font-size:.85rem;margin:.7rem 0 .3rem;color:#0f172a}
+.quote-form input,.quote-form select,.quote-form textarea{width:100%;padding:.7rem .85rem;border:1px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit}
+.quote-form input:focus,.quote-form select:focus,.quote-form textarea:focus{outline:none;border-color:#0CC0DF;box-shadow:0 0 0 3px rgba(12,192,223,.15)}
+.quote-form textarea{min-height:70px;resize:vertical}
+.quote-form .row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media (max-width:600px){.quote-form .row2{grid-template-columns:1fr}}
+.quote-form button{background:#0CC0DF;color:#fff;padding:.95rem 2rem;border:0;border-radius:8px;font-weight:700;font-size:1rem;cursor:pointer;margin-top:1rem;width:100%;transition:background .2s}
+.quote-form button:hover{background:#0aa3bd}
+</style>
+</head>
+<body class="bg-gray-50 text-black">
+<nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10"><div class="container nav-container"><a href="/" class="text-lg font-bold">OCS LLC</a><div class="contact-info"><p><a href="tel:+14066072151">(406) 607-2151</a></p><p><a href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a></p></div></div></nav>
+<main id="main">
+<section class="hero-mini hero-photo" style="background-image:url('/assets/photos/54650520711.jpg');">
+<h1>Instant Estimate</h1>
+<p>Tap your windows. Get a price range. Send for a firm quote.</p>
+</section>
+<section class="bg-white"><div class="container" style="max-width:760px">
+<p class="breadcrumbs"><a href="/">Home</a> &rsaquo; Instant Estimate</p>
+<div class="calc-card">
+<h2 class="text-xl font-bold mb-1">Step 1 — Count your windows</h2>
+<p class="text-sm text-gray-600 mb-4">Use the +/- buttons. Pick whether you want both sides cleaned (interior + exterior) or one side only.</p>
+<div id="counters"></div>
+</div>
+<div class="estimate-box">
+<p class="est-label">Your estimated range</p>
+<p class="est-value" id="estValue">$0</p>
+<p class="est-note" id="estNote">Add windows to see your estimate. Job minimum $150.</p>
+</div>
+<div class="calc-card">
+<h2 class="text-xl font-bold mb-1">Step 2 — Send for a firm quote</h2>
+<p class="text-sm text-gray-600 mb-4">We'll review your details and send you a firm price the same day. Most quotes back within a few hours.</p>
+<div class="quote-form">
+<form action="https://formsubmit.co/barrett@ocsllc.services" method="POST" id="qForm">
+<input type="hidden" name="_subject" value="OCS LLC instant-estimate quote request">
+<input type="hidden" name="_next" value="https://ocsllc.services/thanks/">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_captcha" value="true">
+<input type="hidden" name="calculated_estimate" id="calcEst" value="">
+<input type="hidden" name="window_breakdown" id="calcBreakdown" value="">
+<div class="row2"><div><label>Your name *</label><input name="name" required></div><div><label>Phone *</label><input name="phone" required type="tel"></div></div>
+<div class="row2"><div><label>Email *</label><input name="email" required type="email"></div><div><label>Town</label><input name="town" placeholder="Whitefish, Bigfork, etc."></div></div>
+<label>Anything else worth knowing?</label><textarea name="details" placeholder="Hard water? Lake-facing? First time?"></textarea>
+<button type="submit">Send for Firm Quote &rarr;</button>
+</form>
+</div></div>
+<p class="text-center mt-6 text-gray-600">Or skip the form: <a href="tel:+14066072151" class="text-custom-cyan font-bold">call (406) 607-2151</a> or <a href="sms:+14066072151" class="text-custom-cyan font-bold">text us</a>.</p>
+</div></section>
+</main>
+<footer class="bg-custom-cyan text-white py-8 mt-auto"><div class="container text-center"><p>&copy; 2025 OCS LLC · Insured · Locally owned</p><p class="mt-2"><a class="underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="underline" href="tel:+14066072151">(406) 607-2151</a></p></div></footer>
+<div class="mobile-bottom-bar"><a href="tel:+14066072151" class="mobile-call-bar mcb-half">Call</a><a href="sms:+14066072151" class="mobile-call-bar mcb-half" style="border-left:1px solid rgba(255,255,255,0.3)">Text</a></div><script>
+var CLASSES=[{id:"sm",label:"Small",desc:"<=36in - basement, bath",one:6,both:10},{id:"md",label:"Medium",desc:"37-60in - bedroom, kitchen",one:8,both:14},{id:"lg",label:"Large",desc:"61-72in - living room",one:10,both:18},{id:"xl",label:"XL",desc:"73-96in - cathedral, bay",one:12,both:22},{id:"pic",label:"Picture/Bay",desc:"97in+ panoramic",one:18,both:33},{id:"fr",label:"French/multi-pane",desc:"per individual lite",one:4,both:8}];
+var state={},sides={};CLASSES.forEach(function(c){state[c.id]=0;sides[c.id]="both";});
+function render(){var wrap=document.getElementById("counters");wrap.innerHTML="";CLASSES.forEach(function(c){var r=document.createElement("div");r.className="calc-row";var sk=sides[c.id];r.innerHTML="<div class=\"name\">"+c.label+"<span class=\"pp\">"+c.desc+" - $"+c.one+"/$"+c.both+"</span></div><button class=\"btn-c minus\" data-act=\"dec\" data-id=\""+c.id+"\">-</button><span class=\"qty\" id=\"q-"+c.id+"\">"+state[c.id]+"</span><button class=\"btn-c\" data-act=\"inc\" data-id=\""+c.id+"\">+</button><div></div><div></div><div class=\"toggle\" data-tog=\""+c.id+"\"><button class=\""+(sk==="one"?"active":"")+"\" data-v=\"one\">1 side</button><button class=\""+(sk==="both"?"active":"")+"\" data-v=\"both\">Both</button></div>";wrap.appendChild(r);});compute();}
+function compute(){var lo=0,hi=0,bd=[];CLASSES.forEach(function(c){var n=state[c.id];if(!n)return;var both=sides[c.id]==="both";var price=both?c.both:c.one;var sub=n*price;lo+=sub;hi+=sub;bd.push(n+"x "+c.label+" ("+(both?"both":"1 side")+") = $"+sub);});hi=Math.ceil(hi*1.15);if(lo>0&&lo<150){lo=150;hi=Math.max(hi,150);}var ev=document.getElementById("estValue"),en=document.getElementById("estNote");if(lo===0){ev.textContent="$0";en.textContent="Add windows above to see your range. Job minimum $150.";}else{ev.textContent="$"+lo+" - $"+hi;en.textContent="Range allows for typical add-ons. Send the form for a firm price.";}document.getElementById("calcEst").value="$"+lo+" - $"+hi;document.getElementById("calcBreakdown").value=bd.join(" | ");}
+document.addEventListener("click",function(e){var t=e.target;if(t.dataset&&t.dataset.act){var id=t.dataset.id;state[id]=Math.max(0,state[id]+(t.dataset.act==="inc"?1:-1));document.getElementById("q-"+id).textContent=state[id];compute();return;}if(t.parentElement&&t.parentElement.dataset.tog){var id=t.parentElement.dataset.tog;var v=t.dataset.v;sides[id]=v;t.parentElement.querySelectorAll("button").forEach(function(b){b.classList.toggle("active",b===t);});compute();}});
+render();
+</script></body></html>
