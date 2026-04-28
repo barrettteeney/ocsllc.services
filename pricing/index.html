@@ -29,15 +29,15 @@
 .simple-tile{background:#f9fafb;border-left:4px solid #0CC0DF;padding:1rem 1.25rem;border-radius:0 8px 8px 0}
 .simple-tile h4{font-weight:700;font-size:.95rem;margin:0 0 .25rem;color:#0f172a}
 .simple-tile p{color:#64748b;font-size:.85rem;margin:.25rem 0 0}
-.quote-form{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,.04)}
-.quote-form label{display:block;font-weight:600;font-size:.85rem;margin:.7rem 0 .3rem;color:#0f172a}
-.quote-form input,.quote-form select,.quote-form textarea{width:100%;padding:.7rem .85rem;border:1px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit}
-.quote-form input:focus,.quote-form select:focus,.quote-form textarea:focus{outline:none;border-color:#0CC0DF;box-shadow:0 0 0 3px rgba(12,192,223,.15)}
-.quote-form textarea{min-height:70px}
-.quote-form .row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
-@media (max-width:600px){.quote-form .row2{grid-template-columns:1fr}}
-.quote-form button{background:#0CC0DF;color:#fff;padding:.95rem 2rem;border:0;border-radius:8px;font-weight:700;font-size:1rem;cursor:pointer;margin-top:1rem;width:100%}
-.quote-form button:hover{background:#0aa3bd}
+.qf{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,.04)}
+.qf label{display:block;font-weight:600;font-size:.85rem;margin:.7rem 0 .3rem;color:#0f172a}
+.qf input,.qf select,.qf textarea{width:100%;padding:.7rem .85rem;border:1px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit}
+.qf input:focus,.qf select:focus,.qf textarea:focus{outline:none;border-color:#0CC0DF;box-shadow:0 0 0 3px rgba(12,192,223,.15)}
+.qf textarea{min-height:70px}
+.qf .row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media (max-width:600px){.qf .row2{grid-template-columns:1fr}}
+.qf button{background:#0CC0DF;color:#fff;padding:.95rem 2rem;border:0;border-radius:8px;font-weight:700;font-size:1rem;cursor:pointer;margin-top:1rem;width:100%}
+.qf button:hover{background:#0aa3bd}
 .headline-rate{font-size:1.6rem;font-weight:800;color:#0CC0DF;text-align:center;margin:1rem 0}
 </style>
 </head>
@@ -63,21 +63,19 @@
 <h2 class="text-2xl font-bold mb-3 mt-6 text-center">What we charge for</h2>
 <div class="simple-grid">
 <div class="simple-tile"><h4>The glass</h4><p>Every pane, inside and out. Bundle saves you money.</p></div>
-<div class="simple-tile"><h4>Access difficulty</h4><p>Ground-level is base price. Ladders, 2nd/3rd story add a bit.</p></div>
 <div class="simple-tile"><h4>Hard water / build-up</h4><p>Mineral spotting takes longer to remove. Quoted on-site if needed.</p></div>
 <div class="simple-tile"><h4>Post-construction</h4><p>Stucco, paint, debris from new builds. Small per-pane add-on.</p></div>
-<div class="simple-tile"><h4>First-time deep clean</h4><p>If they haven't been cleaned in 12+ months, jobs run a bit higher.</p></div>
-<div class="simple-tile"><h4>Travel beyond 25 mi</h4><p>Free within Kalispell, Whitefish, Columbia Falls, Bigfork. Beyond that, $25 per trip.</p></div>
+<div class="simple-tile"><h4>Travel beyond 25 mi</h4><p>If a job is further than 25 miles from Kalispell, a small travel fee may apply.</p></div>
 </div>
 <h2 class="text-2xl font-bold mb-3 mt-10 text-center">What we DON'T charge for</h2>
 <ul class="list-disc pl-6 mb-6 text-gray-700 max-w-2xl mx-auto">
 <li>Estimates - free, in person or by photo</li>
-<li>Travel within the Flathead Valley</li>
-<li>Going back up if we missed a streak (72-hour satisfaction guarantee)</li>
+<li>Travel within the Flathead Valley (within 25 mi of Kalispell)</li>
+<li>Going back up if we missed a streak (24-hour satisfaction guarantee)</li>
 <li>Drop cloths, shoe covers, supplies</li>
 <li>Weather reschedules</li>
 </ul>
-<div id="quote-form" class="quote-form" style="max-width:680px;margin:2.5rem auto">
+<div id="quote-form" class="qf" style="max-width:680px;margin:2.5rem auto">
 <h2 class="text-2xl font-bold mb-2" style="color:#0f172a">Get your specific quote</h2>
 <p class="text-gray-600 mb-4 text-sm">Most quotes back same-day. No obligation.</p>
 <form action="https://formsubmit.co/barrett@ocsllc.services" method="POST">
@@ -88,7 +86,7 @@
 <div class="row2"><div><label>Your name *</label><input name="name" required></div><div><label>Phone *</label><input name="phone" required type="tel"></div></div>
 <div class="row2"><div><label>Email *</label><input name="email" required type="email"></div><div><label>Town</label><input name="town" placeholder="Whitefish, Bigfork, etc."></div></div>
 <label>Service</label><select name="service"><option>Window cleaning - inside &amp; out</option><option>Window cleaning - exterior only</option><option>Commercial / storefront</option><option>Post-construction</option><option>Pressure washing</option><option>Solar panels / skylights / chandeliers</option><option>Multiple - let's talk</option></select>
-<label>Anything else?</label><textarea name="details" placeholder="Approximate # of windows, hard water, special access?"></textarea>
+<label>Anything else?</label><textarea name="details" placeholder="Approx # of windows, hard water, special access?"></textarea>
 <button type="submit">Send Quote Request &rarr;</button>
 </form>
 </div>
