@@ -8,6 +8,21 @@
 <link rel="canonical" href="https://ocsllc.services/estimate/">
 <link rel="stylesheet" href="/assets/site.css">
 <style>
+.text-white{color:#fff}
+.text-lg{font-size:1.125rem;line-height:1.75rem}
+.text-xl{font-size:1.25rem;line-height:1.75rem}
+.font-bold{font-weight:700}
+.text-center{text-align:center}
+.py-8{padding-top:2rem;padding-bottom:2rem}
+.p-4{padding:1rem}
+.mt-auto{margin-top:auto}
+.sticky{position:sticky}
+.z-10{z-index:10}
+.top-0{top:0}
+.underline{text-decoration:underline}
+.mb-2{margin-bottom:.5rem}
+.mt-2{margin-top:.5rem}
+.nav-container a,.site-footer a{color:#fff}
 .calc-wrap{max-width:880px;margin:0 auto;padding:0 1rem}
 .calc-row{display:grid;grid-template-columns:1fr auto auto auto auto;gap:.6rem;align-items:center;border:1px solid #e5e7eb;border-radius:14px;padding:.85rem 1rem;margin-bottom:.65rem;background:#fff}
 .calc-row h4{margin:0;font-weight:700;font-size:1.02rem;color:#0f172a}
@@ -49,11 +64,13 @@
 .faq-strip summary{cursor:pointer;font-weight:600;color:#0f172a;font-size:.92rem}
 .faq-strip details[open] summary{margin-bottom:.4rem}
 .faq-strip p{margin:.3rem 0 0;color:#475569;font-size:.88rem;line-height:1.5}
+.calc-page{background:#f8fafc;padding:2rem 0 3rem}
+.site-footer p{margin:.4rem 0}
+.site-footer a:hover{opacity:.85}
 @media(max-width:560px){
   .calc-row{grid-template-columns:1fr auto auto auto;gap:.4rem;padding:.7rem .8rem}
   .calc-row .side-toggle{grid-column:1/-1;justify-self:start;margin-top:.4rem}
 }
-.calc-page{background:#f8fafc;padding:2rem 0 3rem}
 </style>
 </head>
 <body>
@@ -79,7 +96,7 @@
     <div><h4>Small</h4><span class="desc">Under 2&times;3 ft &mdash; bedroom, bath, basement</span></div>
     <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
     <button type="button" class="calc-btn" data-act="-" aria-label="Decrease small">&minus;</button>
-    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Small window count">
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Small count">
     <button type="button" class="calc-btn" data-act="+" aria-label="Increase small">+</button>
   </div>
 
@@ -87,7 +104,7 @@
     <div><h4>Medium</h4><span class="desc">2&times;3 to 3&times;5 ft &mdash; standard living room</span></div>
     <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
     <button type="button" class="calc-btn" data-act="-" aria-label="Decrease medium">&minus;</button>
-    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Medium window count">
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Medium count">
     <button type="button" class="calc-btn" data-act="+" aria-label="Increase medium">+</button>
   </div>
 
@@ -95,7 +112,7 @@
     <div><h4>Large</h4><span class="desc">3&times;5 to 4&times;6 ft &mdash; sliders, patio doors</span></div>
     <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
     <button type="button" class="calc-btn" data-act="-" aria-label="Decrease large">&minus;</button>
-    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Large window count">
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Large count">
     <button type="button" class="calc-btn" data-act="+" aria-label="Increase large">+</button>
   </div>
 
@@ -103,7 +120,7 @@
     <div><h4>Extra Large</h4><span class="desc">4&times;6 to 5&times;7 ft &mdash; bigger kitchens, dining</span></div>
     <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
     <button type="button" class="calc-btn" data-act="-" aria-label="Decrease xl">&minus;</button>
-    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Extra large window count">
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="XL count">
     <button type="button" class="calc-btn" data-act="+" aria-label="Increase xl">+</button>
   </div>
 
@@ -111,7 +128,7 @@
     <div><h4>Picture / Bay</h4><span class="desc">5+ ft tall or wide &mdash; great rooms, lake views</span></div>
     <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
     <button type="button" class="calc-btn" data-act="-" aria-label="Decrease picture">&minus;</button>
-    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Picture window count">
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Picture count">
     <button type="button" class="calc-btn" data-act="+" aria-label="Increase picture">+</button>
   </div>
 
@@ -119,7 +136,7 @@
     <div><h4>French / Divided lite</h4><span class="desc">Per individual pane</span></div>
     <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
     <button type="button" class="calc-btn" data-act="-" aria-label="Decrease french">&minus;</button>
-    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="French pane count">
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="French count">
     <button type="button" class="calc-btn" data-act="+" aria-label="Increase french">+</button>
   </div>
 
@@ -137,7 +154,7 @@
     <div><h4>2nd-story windows</h4><span class="desc">Ladder access, flat $3 per window</span></div>
     <span></span>
     <button type="button" class="calc-btn" data-act="-" aria-label="Decrease 2nd story">&minus;</button>
-    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Second story count">
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="2nd story count">
     <button type="button" class="calc-btn" data-act="+" aria-label="Increase 2nd story">+</button>
   </div>
 
@@ -151,13 +168,14 @@
 <div class="qf" id="book">
   <h2>Lock in this estimate</h2>
   <p class="sub">Send your numbers and we'll confirm by text or email within 24 hours.</p>
-  <form action="https://formsubmit.co/barrett@ocsllc.services" method="POST">
+  <form id="estimate-form" action="https://formsubmit.co/barrett@ocsllc.services" method="POST">
     <input type="hidden" name="_subject" value="Estimate calculator submission">
     <input type="hidden" name="_next" value="https://ocsllc.services/thanks/">
     <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="estimate" id="est-hidden" value="$150">
     <input type="hidden" name="window_breakdown" id="brk-hidden" value="">
+    <input type="hidden" name="source" value="estimate-page">
     <div class="row2">
       <div><label>Name *</label><input name="name" required type="text"></div>
       <div><label>Phone *</label><input name="phone" required type="tel"></div>
@@ -167,6 +185,10 @@
       <div><label>Town</label><input name="town" placeholder="Whitefish, Bigfork, etc."></div>
     </div>
     <label>Service address</label><input name="address" placeholder="Street, city">
+    <div class="row2">
+      <div><label>Preferred date</label><input name="preferred_date" type="date"></div>
+      <div><label>Preferred time</label><input name="preferred_time" type="time"></div>
+    </div>
     <label>Anything else?</label><textarea name="details" placeholder="Hard water, special access, preferred dates..."></textarea>
     <button type="submit">Send My Estimate &rarr;</button>
   </form>
@@ -185,12 +207,12 @@
 </section>
 </main>
 
-<footer class="bg-custom-cyan text-white py-8 mt-auto">
+<footer class="bg-custom-cyan text-white py-8 mt-auto site-footer">
   <div class="container text-center">
     <p>&copy; 2025 OCS LLC &middot; Insured &middot; Locally owned</p>
-    <p><a class="text-white underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="text-white underline" href="tel:+14066072151">(406) 607-2151</a></p>
+    <p><a class="underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="underline" href="tel:+14066072151">(406) 607-2151</a></p>
     <p>Serving Kalispell, Whitefish, Columbia Falls, Bigfork &amp; the Flathead Valley.</p>
-    <p><a class="text-white underline" href="/">Home</a> &middot; <a class="text-white underline" href="/pricing/">Pricing</a> &middot; <a class="text-white underline" href="/estimate/">Instant Estimate</a> &middot; <a class="text-white underline" href="/reviews/">Reviews</a> &middot; <a class="text-white underline" href="/about/">About</a> &middot; <a class="text-white underline" href="/services/additional/">Additional Services</a></p>
+    <p><a class="underline" href="/">Home</a> &middot; <a class="underline" href="/pricing/">Pricing</a> &middot; <a class="underline" href="/estimate/">Instant Estimate</a> &middot; <a class="underline" href="/reviews/">Reviews</a> &middot; <a class="underline" href="/about/">About</a> &middot; <a class="underline" href="/services/additional/">Additional Services</a></p>
   </div>
 </footer>
 
@@ -201,6 +223,7 @@
   const estHid = document.getElementById('est-hidden');
   const brkHid = document.getElementById('brk-hidden');
   const MIN = 150;
+  const CRM_ENDPOINT = window.OCS_CRM_ENDPOINT || '';
 
   function getCount(r){
     const el = r.querySelector('[data-count]');
@@ -281,6 +304,21 @@
       calc();
     }
   }, true);
+
+  const form = document.getElementById('estimate-form');
+  if(form){
+    form.addEventListener('submit', () => {
+      if(!CRM_ENDPOINT) return;
+      try {
+        const fd = new FormData(form);
+        const obj = {};
+        fd.forEach((v,k) => { obj[k] = v; });
+        navigator.sendBeacon
+          ? navigator.sendBeacon(CRM_ENDPOINT, new Blob([JSON.stringify(obj)], {type:'application/json'}))
+          : fetch(CRM_ENDPOINT, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(obj)});
+      } catch(e) {}
+    });
+  }
 
   calc();
 })();
