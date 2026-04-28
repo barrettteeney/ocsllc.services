@@ -1,94 +1,203 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>Instant Estimate | OCS LLC Window Cleaning</title>
-<meta name="description" content="Get an instant ballpark estimate for window cleaning in the Flathead Valley. Tap counters for your windows, see your range, send for a firm quote.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Window Cleaning Estimate Calculator | OCS LLC</title>
+<meta name="description" content="Get an instant window-cleaning estimate. Count your windows, add screens or 2nd-story windows, and we'll show a price range with no surprises.">
 <link rel="canonical" href="https://ocsllc.services/estimate/">
-<meta name="theme-color" content="#0CC0DF">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Instant Estimate · OCS LLC">
-<meta property="og:description" content="Tap counters, see your range, send for a firm quote.">
-<meta property="og:url" content="https://ocsllc.services/estimate/">
-<meta property="og:image" content="https://ocsllc.services/assets/og.png">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230CC0DF'/%3E%3Ctext x='50' y='62' font-family='Arial,sans-serif' font-size='44' font-weight='700' text-anchor='middle' fill='white'%3EO%3C/text%3E%3C/svg%3E">
-<script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="/assets/site.css">
-<link rel="stylesheet" href="/assets/responsive.css">
 <style>
-.calc-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;margin-bottom:1rem;box-shadow:0 2px 6px rgba(15,23,42,.04)}
-.calc-row{display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:.6rem;padding:.7rem 0;border-bottom:1px dashed #e5e7eb}
-.calc-row:last-child{border-bottom:0}
-.calc-row .name{font-weight:600;font-size:.95rem;color:#0f172a}
-.calc-row .name .pp{display:block;font-size:.75rem;color:#64748b;font-weight:400;margin-top:2px}
-.calc-row .qty{min-width:36px;text-align:center;font-weight:700;font-size:1.1rem;font-variant-numeric:tabular-nums;color:#0f172a}
-.btn-c{width:36px;height:36px;border-radius:50%;border:1px solid #e2e8f0;background:#fff;color:#0f172a;font-size:1.25rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;line-height:1;transition:background .15s,border-color .15s}
-.btn-c:active{background:#0CC0DF;color:#fff;border-color:#0CC0DF}
-.btn-c.minus{color:#64748b}
-.toggle{display:inline-flex;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;font-weight:700;font-size:.72rem}
-.toggle button{padding:.4rem .65rem;background:#fff;border:0;cursor:pointer;color:#64748b;letter-spacing:.02em}
-.toggle button.active{background:#0CC0DF;color:#fff}
-.estimate-box{background:linear-gradient(135deg,#0CC0DF 0%,#0aa3bd 100%);color:#fff;border-radius:12px;padding:1.75rem;text-align:center;margin:1.5rem 0;box-shadow:0 8px 24px rgba(12,192,223,.25)}
-.estimate-box .est-value{font-size:2.5rem;font-weight:800;line-height:1;margin:.5rem 0}
-.estimate-box .est-label{text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;opacity:.92;font-weight:600}
-.estimate-box .est-note{font-size:.85rem;opacity:.92;margin-top:.5rem}
-.quote-form{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;margin-top:1rem}
-.quote-form label{display:block;font-weight:600;font-size:.85rem;margin:.7rem 0 .3rem;color:#0f172a}
-.quote-form input,.quote-form select,.quote-form textarea{width:100%;padding:.7rem .85rem;border:1px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit}
-.quote-form input:focus,.quote-form select:focus,.quote-form textarea:focus{outline:none;border-color:#0CC0DF;box-shadow:0 0 0 3px rgba(12,192,223,.15)}
-.quote-form textarea{min-height:70px;resize:vertical}
-.quote-form .row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
-@media (max-width:600px){.quote-form .row2{grid-template-columns:1fr}}
-.quote-form button{background:#0CC0DF;color:#fff;padding:.95rem 2rem;border:0;border-radius:8px;font-weight:700;font-size:1rem;cursor:pointer;margin-top:1rem;width:100%;transition:background .2s}
-.quote-form button:hover{background:#0aa3bd}
+.calc-wrap{max-width:880px;margin:0 auto;padding:1rem}
+.calc-row{display:grid;grid-template-columns:1fr auto auto auto;gap:.6rem;align-items:center;border:1px solid #e5e7eb;border-radius:14px;padding:.85rem 1rem;margin-bottom:.65rem;background:#fff}
+.calc-row h4{margin:0;font-weight:700;font-size:1.02rem}
+.calc-row .desc{display:block;font-weight:400;color:#475569;font-size:.82rem;margin-top:.15rem}
+.calc-row .count{font-weight:800;font-size:1.2rem;min-width:2.4rem;text-align:center}
+.calc-btn{width:36px;height:36px;border-radius:999px;border:1px solid #cbd5e1;background:#f8fafc;font-size:1.15rem;font-weight:700;cursor:pointer}
+.calc-btn:hover{background:#e2e8f0}
+.side-toggle{display:inline-flex;border:1px solid #cbd5e1;border-radius:999px;overflow:hidden;font-size:.78rem}
+.side-toggle button{border:0;background:#fff;padding:.35rem .7rem;cursor:pointer;font-weight:600;color:#475569}
+.side-toggle button.on{background:#0f172a;color:#fff}
+.calc-summary{position:sticky;bottom:.6rem;background:#0f172a;color:#fff;border-radius:16px;padding:1rem 1.2rem;margin-top:1rem;box-shadow:0 8px 20px rgba(15,23,42,.18);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem}
+.calc-summary .est{font-size:1.6rem;font-weight:800}
+.calc-summary .lbl{font-size:.78rem;opacity:.75;text-transform:uppercase;letter-spacing:.06em}
+.calc-cta{background:#22d3ee;color:#0f172a;font-weight:700;padding:.7rem 1.1rem;border-radius:999px;text-decoration:none}
+.calc-note{font-size:.78rem;color:#64748b;margin-top:.4rem}
+.section-h{font-weight:800;letter-spacing:.04em;color:#475569;text-transform:uppercase;font-size:.78rem;margin:1.2rem 0 .4rem;padding-left:.2rem}
+@media(max-width:560px){
+  .calc-row{grid-template-columns:1fr auto auto;gap:.4rem;padding:.7rem .8rem}
+  .calc-row .side-toggle{grid-column:1/-1;justify-self:start;margin-top:.4rem}
+}
 </style>
 </head>
-<body class="bg-gray-50 text-black">
-<nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10"><div class="container nav-container"><a href="/" class="text-lg font-bold">OCS LLC</a><div class="contact-info"><p><a href="tel:+14066072151">(406) 607-2151</a></p><p><a href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a></p></div></div></nav>
-<main id="main">
-<section class="hero-mini hero-photo" style="background-image:url('/assets/photos/54650520711.jpg');">
-<h1>Instant Estimate</h1>
-<p>Tap your windows. Get a price range. Send for a firm quote.</p>
+<body>
+<header class="bg-custom-cyan text-white py-4"><div class="container"><div class="flex-between"><a href="/" class="text-white font-bold text-xl">OCS LLC</a><nav class="flex-gap"><a href="/services/" class="text-white">Services</a><a href="/pricing/" class="text-white">Pricing</a><a href="/estimate/" class="text-white font-bold">Estimate</a><a href="tel:+14066072151" class="text-white">(406) 607-2151</a></nav></div></div></header>
+
+<main class="bg-custom-light-gray py-8">
+<section class="container">
+<div class="text-center mb-6"><h1 class="text-4xl font-bold mb-2">Instant Estimate Calculator</h1><p class="text-gray-600 max-w-2xl m-auto">Count up your windows below. We'll show a live price range. No email or phone required to see your estimate &mdash; only when you're ready to book.</p></div>
+
+<div class="calc-wrap">
+  <div class="section-h">Windows by size</div>
+
+  <div class="calc-row" data-row data-out="6" data-both="10">
+    <div><h4>Small</h4><span class="desc">Under 2&times;3 ft &mdash; bedroom, bath, basement</span></div>
+    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
+    <button type="button" class="calc-btn" data-act="-">&minus;</button>
+    <span class="count" data-count>0</span>
+    <button type="button" class="calc-btn" data-act="+">+</button>
+  </div>
+
+  <div class="calc-row" data-row data-out="8" data-both="14">
+    <div><h4>Medium</h4><span class="desc">2&times;3 to 3&times;5 ft &mdash; standard living room</span></div>
+    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
+    <button type="button" class="calc-btn" data-act="-">&minus;</button>
+    <span class="count" data-count>0</span>
+    <button type="button" class="calc-btn" data-act="+">+</button>
+  </div>
+
+  <div class="calc-row" data-row data-out="10" data-both="18">
+    <div><h4>Large</h4><span class="desc">3&times;5 to 4&times;6 ft &mdash; sliders, patio doors</span></div>
+    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
+    <button type="button" class="calc-btn" data-act="-">&minus;</button>
+    <span class="count" data-count>0</span>
+    <button type="button" class="calc-btn" data-act="+">+</button>
+  </div>
+
+  <div class="calc-row" data-row data-out="12" data-both="22">
+    <div><h4>Extra Large</h4><span class="desc">4&times;6 to 5&times;7 ft &mdash; bigger kitchens, dining</span></div>
+    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
+    <button type="button" class="calc-btn" data-act="-">&minus;</button>
+    <span class="count" data-count>0</span>
+    <button type="button" class="calc-btn" data-act="+">+</button>
+  </div>
+
+  <div class="calc-row" data-row data-out="18" data-both="33">
+    <div><h4>Picture / Bay</h4><span class="desc">5+ ft tall or wide &mdash; great rooms, lake views</span></div>
+    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
+    <button type="button" class="calc-btn" data-act="-">&minus;</button>
+    <span class="count" data-count>0</span>
+    <button type="button" class="calc-btn" data-act="+">+</button>
+  </div>
+
+  <div class="calc-row" data-row data-out="4" data-both="8">
+    <div><h4>French / Divided lite</h4><span class="desc">Per individual pane</span></div>
+    <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
+    <button type="button" class="calc-btn" data-act="-">&minus;</button>
+    <span class="count" data-count>0</span>
+    <button type="button" class="calc-btn" data-act="+">+</button>
+  </div>
+
+  <div class="section-h">Add-ons</div>
+
+  <div class="calc-row" data-row data-flat="2">
+    <div><h4>Screens</h4><span class="desc">Wash &amp; rinse, $2 each</span></div>
+    <span></span>
+    <button type="button" class="calc-btn" data-act="-">&minus;</button>
+    <span class="count" data-count>0</span>
+    <button type="button" class="calc-btn" data-act="+">+</button>
+  </div>
+
+  <div class="calc-row" data-row data-flat="3">
+    <div><h4>2nd-story windows</h4><span class="desc">Ladder access, flat $3 per window</span></div>
+    <span></span>
+    <button type="button" class="calc-btn" data-act="-">&minus;</button>
+    <span class="count" data-count>0</span>
+    <button type="button" class="calc-btn" data-act="+">+</button>
+  </div>
+
+  <div class="calc-summary">
+    <div><div class="lbl">Estimated total</div><div class="est" id="est-range">$150</div></div>
+    <div><a class="calc-cta" href="#book">Book this estimate &rarr;</a></div>
+  </div>
+  <p class="calc-note">Estimates include a &plusmn;15% buffer for site conditions. $150 minimum applies. Hard water / heavy build-up, post-construction work, or travel beyond 25 mi from Kalispell may add to the final price &mdash; we always confirm before charging extra. Backed by our 24-hour satisfaction guarantee.</p>
+</div>
+
+<div id="book" class="qf max-w-2xl m-auto mt-8 bg-white p-6 rounded-lg shadow">
+  <h2 class="text-2xl font-bold mb-2">Lock in this estimate</h2>
+  <p class="text-gray-600 mb-4">Send us your numbers and we'll confirm the price by text or email within 24 hours.</p>
+  <form action="https://formsubmit.co/barrett@ocsllc.services" method="POST">
+    <input type="hidden" name="_subject" value="Estimate calculator submission">
+    <input type="hidden" name="_next" value="https://ocsllc.services/thanks/">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="estimate" id="est-hidden" value="$150">
+    <input type="hidden" name="window_breakdown" id="brk-hidden" value="">
+    <div class="row2"><div><label>Name *</label><input name="name" required type="text"></div><div><label>Email *</label><input name="email" required type="email"></div></div>
+    <div class="row2"><div><label>Phone *</label><input name="phone" required type="tel"></div><div><label>Town</label><input name="town" placeholder="Whitefish, Bigfork, etc."></div></div>
+    <label>Service address</label><input name="address" placeholder="Street, city">
+    <label>Anything else?</label><textarea name="details" placeholder="Hard water, special access, preferred dates, etc."></textarea>
+    <button type="submit">Send My Estimate &rarr;</button>
+  </form>
+  <p class="text-center text-gray-600 mt-4 text-sm">Or skip the form: <a href="tel:+14066072151" class="text-custom-cyan font-bold">call (406) 607-2151</a> or <a href="sms:+14066072151" class="text-custom-cyan font-bold">text us</a></p>
+</div>
 </section>
-<section class="bg-white"><div class="container" style="max-width:760px">
-<p class="breadcrumbs"><a href="/">Home</a> &rsaquo; Instant Estimate</p>
-<div class="calc-card">
-<h2 class="text-xl font-bold mb-1">Step 1 — Count your windows</h2>
-<p class="text-sm text-gray-600 mb-4">Use the +/- buttons. Pick whether you want both sides cleaned (interior + exterior) or one side only.</p>
-<div id="counters"></div>
-</div>
-<div class="estimate-box">
-<p class="est-label">Your estimated range</p>
-<p class="est-value" id="estValue">$0</p>
-<p class="est-note" id="estNote">Add windows to see your estimate. Job minimum $150.</p>
-</div>
-<div class="calc-card">
-<h2 class="text-xl font-bold mb-1">Step 2 — Send for a firm quote</h2>
-<p class="text-sm text-gray-600 mb-4">We'll review your details and send you a firm price the same day. Most quotes back within a few hours.</p>
-<div class="quote-form">
-<form action="https://formsubmit.co/barrett@ocsllc.services" method="POST" id="qForm">
-<input type="hidden" name="_subject" value="OCS LLC instant-estimate quote request">
-<input type="hidden" name="_next" value="https://ocsllc.services/thanks/">
-<input type="hidden" name="_template" value="table">
-<input type="hidden" name="_captcha" value="true">
-<input type="hidden" name="calculated_estimate" id="calcEst" value="">
-<input type="hidden" name="window_breakdown" id="calcBreakdown" value="">
-<div class="row2"><div><label>Your name *</label><input name="name" required></div><div><label>Phone *</label><input name="phone" required type="tel"></div></div>
-<div class="row2"><div><label>Email *</label><input name="email" required type="email"></div><div><label>Town</label><input name="town" placeholder="Whitefish, Bigfork, etc."></div></div>
-<label>Anything else worth knowing?</label><textarea name="details" placeholder="Hard water? Lake-facing? First time?"></textarea>
-<button type="submit">Send for Firm Quote &rarr;</button>
-</form>
-</div></div>
-<p class="text-center mt-6 text-gray-600">Or skip the form: <a href="tel:+14066072151" class="text-custom-cyan font-bold">call (406) 607-2151</a> or <a href="sms:+14066072151" class="text-custom-cyan font-bold">text us</a>.</p>
-</div></section>
 </main>
-<footer class="bg-custom-cyan text-white py-8 mt-auto"><div class="container text-center"><p>&copy; 2025 OCS LLC · Insured · Locally owned</p><p class="mt-2"><a class="underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="underline" href="tel:+14066072151">(406) 607-2151</a></p></div></footer>
-<div class="mobile-bottom-bar"><a href="tel:+14066072151" class="mobile-call-bar mcb-half">Call</a><a href="sms:+14066072151" class="mobile-call-bar mcb-half" style="border-left:1px solid rgba(255,255,255,0.3)">Text</a></div><script>
-var CLASSES=[{id:"sm",label:"Small",desc:"<=36in - basement, bath",one:6,both:10},{id:"md",label:"Medium",desc:"37-60in - bedroom, kitchen",one:8,both:14},{id:"lg",label:"Large",desc:"61-72in - living room",one:10,both:18},{id:"xl",label:"XL",desc:"73-96in - cathedral, bay",one:12,both:22},{id:"pic",label:"Picture/Bay",desc:"97in+ panoramic",one:18,both:33},{id:"fr",label:"French/multi-pane",desc:"per individual lite",one:4,both:8}];
-var state={},sides={};CLASSES.forEach(function(c){state[c.id]=0;sides[c.id]="both";});
-function render(){var wrap=document.getElementById("counters");wrap.innerHTML="";CLASSES.forEach(function(c){var r=document.createElement("div");r.className="calc-row";var sk=sides[c.id];r.innerHTML="<div class=\"name\">"+c.label+"<span class=\"pp\">"+c.desc+" - $"+c.one+"/$"+c.both+"</span></div><button class=\"btn-c minus\" data-act=\"dec\" data-id=\""+c.id+"\">-</button><span class=\"qty\" id=\"q-"+c.id+"\">"+state[c.id]+"</span><button class=\"btn-c\" data-act=\"inc\" data-id=\""+c.id+"\">+</button><div></div><div></div><div class=\"toggle\" data-tog=\""+c.id+"\"><button class=\""+(sk==="one"?"active":"")+"\" data-v=\"one\">1 side</button><button class=\""+(sk==="both"?"active":"")+"\" data-v=\"both\">Both</button></div>";wrap.appendChild(r);});compute();}
-function compute(){var lo=0,hi=0,bd=[];CLASSES.forEach(function(c){var n=state[c.id];if(!n)return;var both=sides[c.id]==="both";var price=both?c.both:c.one;var sub=n*price;lo+=sub;hi+=sub;bd.push(n+"x "+c.label+" ("+(both?"both":"1 side")+") = $"+sub);});hi=Math.ceil(hi*1.15);if(lo>0&&lo<150){lo=150;hi=Math.max(hi,150);}var ev=document.getElementById("estValue"),en=document.getElementById("estNote");if(lo===0){ev.textContent="$0";en.textContent="Add windows above to see your range. Job minimum $150.";}else{ev.textContent="$"+lo+" - $"+hi;en.textContent="Range allows for typical add-ons. Send the form for a firm price.";}document.getElementById("calcEst").value="$"+lo+" - $"+hi;document.getElementById("calcBreakdown").value=bd.join(" | ");}
-document.addEventListener("click",function(e){var t=e.target;if(t.dataset&&t.dataset.act){var id=t.dataset.id;state[id]=Math.max(0,state[id]+(t.dataset.act==="inc"?1:-1));document.getElementById("q-"+id).textContent=state[id];compute();return;}if(t.parentElement&&t.parentElement.dataset.tog){var id=t.parentElement.dataset.tog;var v=t.dataset.v;sides[id]=v;t.parentElement.querySelectorAll("button").forEach(function(b){b.classList.toggle("active",b===t);});compute();}});
-render();
-</script></body></html>
+
+<footer class="bg-custom-cyan text-white py-8 mt--auto"><div class="container text-center"><p>&copy; 2025 OCS LLC &middot; Insured &middot; Locally owned</p><p class="mt-2"><a class="underline" href="/">Home</a> &middot; <a class="underline" href="/pricing/">Pricing</a> &middot; <a class="underline" href="/services/">Services</a> &middot; <a class="underline" href="/about/">About</a></p></div></footer>
+
+<script>
+(function(){
+  const rows = document.querySelectorAll('[data-row]');
+  const estEl = document.getElementById('est-range');
+  const estHid = document.getElementById('est-hidden');
+  const brkHid = document.getElementById('brk-hidden');
+  const MIN = 150;
+
+  function calc(){
+    let total = 0;
+    const parts = [];
+    rows.forEach(r => {
+      const c = parseInt(r.querySelector('[data-count]').textContent, 10) || 0;
+      if(c <= 0) return;
+      let unit = 0;
+      if(r.dataset.flat){
+        unit = parseFloat(r.dataset.flat);
+      } else {
+        const sideBtn = r.querySelector('.side-toggle button.on');
+        const side = sideBtn ? sideBtn.dataset.side : 'both';
+        unit = parseFloat(r.dataset[side] || r.dataset.both);
+      }
+      const sub = unit * c;
+      total += sub;
+      const label = r.querySelector('h4').textContent.trim();
+      parts.push(label + ' x' + c + ' = $' + sub.toFixed(0));
+    });
+    if(total < MIN && total > 0) total = MIN;
+    if(total === 0){
+      estEl.textContent = '$' + MIN;
+      estHid.value = '$' + MIN;
+      brkHid.value = '';
+      return;
+    }
+    const lo = Math.round(total * 0.92 / 5) * 5;
+    const hi = Math.round(total * 1.15 / 5) * 5;
+    const range = '$' + lo + '-$' + hi;
+    estEl.textContent = range;
+    estHid.value = range;
+    brkHid.value = parts.join(' | ');
+  }
+
+  document.addEventListener('click', e => {
+    const t = e.target;
+    if(t.matches('.calc-btn')){
+      const row = t.closest('[data-row]');
+      const cEl = row.querySelector('[data-count]');
+      let n = parseInt(cEl.textContent, 10) || 0;
+      n += (t.dataset.act === '+' ? 1 : -1);
+      if(n < 0) n = 0;
+      cEl.textContent = n;
+      calc();
+    } else if(t.matches('.side-toggle button')){
+      const grp = t.closest('.side-toggle');
+      grp.querySelectorAll('button').forEach(b => b.classList.remove('on'));
+      t.classList.add('on');
+      calc();
+    }
+  });
+
+  calc();
+})();
+</script>
+</body>
+</html>
