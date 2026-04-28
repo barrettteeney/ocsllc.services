@@ -1,158 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Performance hints -->
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://live.staticflickr.com" crossorigin>
-    <link rel="preconnect" href="https://www.youtube.com" crossorigin>
-    <link rel="dns-prefetch" href="https://upload.wikimedia.org">
-    <meta http-equiv="x-dns-prefetch-control" content="on">
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <style>
-        body{margin:0;font-family:'Garet',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
-        html,body{overflow-x:hidden;max-width:100vw}
-        *,*::before,*::after{box-sizing:border-box}
-        img,video,iframe,svg,picture{max-width:100%;height:auto;display:inline-block}
-        img.service-icon{width:80px!important;height:80px!important;object-fit:contain;margin:0 auto 0.75rem;display:block}
-        .container{width:100%;max-width:1200px;margin:0 auto;padding:0 clamp(0.85rem,4vw,2rem)}
-        .bg-custom-cyan{background:#0CC0DF}
-        nav.bg-custom-cyan{padding:0.75rem 0;color:white}
-        .nav-container{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.5rem;padding:1rem;width:100%;max-width:1200px;margin:0 auto}
-        .contact-info{display:flex;flex-direction:column;align-items:flex-end;gap:0.25rem;font-size:.95rem}
-        .contact-info a{color:#fff;text-decoration:none}
-        section{padding:clamp(2rem,5vw,4rem) 0}
-        h1,h2,h3{margin:0 0 .75rem}
-        @media (max-width:720px){
-            .nav-container{flex-direction:column;align-items:flex-start;gap:.4rem}
-            .contact-info{align-items:flex-start;font-size:.95rem}
-            body{padding-bottom:calc(60px + env(safe-area-inset-bottom))}
-            img.service-icon{width:64px!important;height:64px!important}
-        }
-    </style>
-    <meta name="theme-color" content="#0CC0DF">
-    <title>Window Cleaning &amp; Pressure Washing in Kalispell &amp; Flathead Valley | OCS LLC</title>
-    <meta name="description" content="Professional window cleaning and pressure washing throughout the Flathead Valley. Insured. Locally owned. Free estimates - call (406) 607-2151.">
-    <link rel="canonical" href="https://ocsllc.services/">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230CC0DF'/%3E%3Ctext x='50' y='62' font-family='Arial,sans-serif' font-size='44' font-weight='700' text-anchor='middle' fill='white'%3EO%3C/text%3E%3C/svg%3E">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/assets/site.css">
-    <link rel="stylesheet" href="/assets/responsive.css">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "@id": "https://ocsllc.services/#business",
-  "name": "OCS LLC",
-  "description": "Professional residential, commercial, and post-construction window cleaning and pressure washing serving Kalispell, Whitefish, Columbia Falls, Bigfork, and the greater Flathead Valley.",
-  "slogan": "Work Done Well, Work Done Right.",
-  "url": "https://ocsllc.services/",
-  "telephone": "+1-406-607-2151",
-  "email": "barrett@ocsllc.services",
-  "priceRange": "$$",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "378 Ponderosa Ln",
-    "addressLocality": "Kalispell",
-    "addressRegion": "MT",
-    "postalCode": "59901",
-    "addressCountry": "US"
-  },
-  "foundingDate": "2025",
-  "openingHoursSpecification": [
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday"
-      ],
-      "opens": "08:00",
-      "closes": "20:00"
-    }
-  ],
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 48.1958,
-    "longitude": -114.3128
-  },
-  "areaServed": [
-    {
-      "@type": "City",
-      "name": "Kalispell, MT"
-    },
-    {
-      "@type": "City",
-      "name": "Whitefish, MT"
-    },
-    {
-      "@type": "City",
-      "name": "Columbia Falls, MT"
-    },
-    {
-      "@type": "City",
-      "name": "Bigfork, MT"
-    },
-    {
-      "@type": "City",
-      "name": "Lakeside, MT"
-    },
-    {
-      "@type": "City",
-      "name": "Polson, MT"
-    },
-    {
-      "@type": "AdministrativeArea",
-      "name": "Flathead Valley, MT"
-    }
-  ],
-  "serviceType": [
-    "Residential Window Cleaning",
-    "Commercial Window Cleaning",
-    "Post-Construction Window Cleaning",
-    "Pressure Washing",
-    "Solar Panel Cleaning",
-    "Skylight Cleaning",
-    "Chandelier and Hard-to-Reach Glass Cleaning"
-  ],
-  "sameAs": [
-    "https://facebook.com/ocsllc.services",
-    "https://instagram.com/ocsllc.services"
-  ],
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5.0",
-    "bestRating": "5",
-    "worstRating": "1",
-    "reviewCount": "14"
-  },
-  "paymentAccepted": "Cash, Check, Visa, Mastercard, Venmo, Zelle, ACH, Square, Stripe",
-  "currenciesAccepted": "USD",
-  "knowsLanguage": "en-US",
-  "founder": {
-    "@type": "Person",
-    "name": "Barrett Teeney"
-  }
-}
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>OCS LLC | Window Cleaning &amp; Pressure Washing - Flathead Valley, MT</title>
+<meta name="description" content="Professional window cleaning &amp; pressure washing throughout the Flathead Valley. Insured, locally owned, 5.0 stars on Google. Free same-day quotes - call (406) 607-2151.">
+<link rel="canonical" href="https://ocsllc.services/">
+<meta name="theme-color" content="#0CC0DF">
+<meta property="og:type" content="website">
+<meta property="og:title" content="OCS LLC - Window Cleaning &amp; Pressure Washing">
+<meta property="og:description" content="Insured. Locally owned. 5.0 on Google. Free same-day quotes.">
+<meta property="og:url" content="https://ocsllc.services/">
+<meta property="og:image" content="https://ocsllc.services/assets/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230CC0DF'/%3E%3Ctext x='50' y='62' font-family='Arial,sans-serif' font-size='44' font-weight='700' text-anchor='middle' fill='white'%3EO%3C/text%3E%3C/svg%3E">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/responsive.css">
+<style>
+.trust-badges{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:1rem}
+.tb{display:flex;align-items:center;gap:.85rem;padding:.95rem 1.1rem;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px}
+.tb .ico{width:32px;height:32px;flex-shrink:0;color:#0f172a}
+.tb .text{font-size:.85rem;line-height:1.3}
+.tb .text strong{display:block;font-size:.95rem;color:#0f172a}
+.tb .text span{color:#6b7280}
+.qf{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;box-shadow:0 8px 24px rgba(15,23,42,.06);max-width:560px;margin:1.25rem auto 0}
+.qf label{display:block;font-weight:600;font-size:.82rem;margin:.6rem 0 .25rem;color:#0f172a}
+.qf input,.qf select,.qf textarea{width:100%;padding:.65rem .8rem;border:1px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit}
+.qf input:focus,.qf select:focus,.qf textarea:focus{outline:none;border-color:#0CC0DF;box-shadow:0 0 0 3px rgba(12,192,223,.15)}
+.qf textarea{min-height:60px;resize:vertical}
+.qf .row2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+@media (max-width:520px){.qf .row2{grid-template-columns:1fr}}
+.qf button{background:#0CC0DF;color:#fff;padding:.85rem;border:0;border-radius:8px;font-weight:700;font-size:.95rem;cursor:pointer;margin-top:.85rem;width:100%}
+.qf button:hover{background:#0aa3bd}
+</style>
 </head>
-<body class="bg-gray-200 text-black">
-<a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-black px-3 py-2 rounded z-50">Skip to content</a>
-<nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10"><div class="container nav-container"><a href="/" class="text-lg font-bold">OCS LLC</a><div class="contact-info"><p><a href="tel:+14066072151" aria-label="Call OCS LLC at (406) 607-2151">(406) 607-2151</a></p><p><a href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a></p></div></div></nav>
-<section id="home" class="hero-mini hero-photo" style="background-image: url('/assets/photos/54649749362.jpg');"><h1>Crystal-clear windows in the Flathead Valley</h1><p class="hero-tagline" style="font-style:italic;font-size:clamp(1rem,2vw,1.15rem);opacity:.95;margin:.5rem 0 1rem">"Work Done Well, Work Done Right."</p><p>Window cleaning &amp; pressure washing throughout the Flathead Valley. Insured. Locally owned.</p><div class="hero-cta-row"><a href="#quote" class="bg-white text-black px-6 py-3 rounded-lg hover:bg-gray-200 transition font-semibold">Get a Free Estimate</a><a href="tel:+14066072151" class="tel-link" aria-label="Call OCS LLC at (406) 607-2151">Or call (406) 607-2151</a></div><div class="trust-row"><span>Insured</span><span><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="vertical-align:-2px" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 5.0 &middot; 14 Reviews</span><span>Same-day quotes</span></div></section>
-<section id="trust-badges-section" class="bg-white" style="padding-top: 1rem; padding-bottom: 1rem;"><div class="container"><div class="trust-badges" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:1rem"><div class="badge" style="display:flex;align-items:center;gap:0.75rem;padding:0.85rem 1rem;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px"><div class="badge-icon" style="font-size:1.5rem;color:#0CC0DF;font-weight:800;min-width:36px">★★★★★</div><div class="badge-text" style="font-size:0.85rem"><strong style="display:block;font-size:.95rem">5.0</strong> on Google<br><span style="color:#6b7280">14 verified reviews</span></div></div><div class="badge" style="display:flex;align-items:center;gap:0.75rem;padding:0.85rem 1rem;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px"><div class="badge-icon" style="font-size:1.5rem;color:#0CC0DF;font-weight:800;min-width:36px">🔒</div><div class="badge-text" style="font-size:0.85rem"><strong style="display:block;font-size:.95rem">Insured</strong><br><span style="color:#6b7280">General liability</span></div></div><div class="badge" style="display:flex;align-items:center;gap:0.75rem;padding:0.85rem 1rem;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px"><div class="badge-icon" style="font-size:1.5rem;color:#0CC0DF;font-weight:800;min-width:36px">📍</div><div class="badge-text" style="font-size:0.85rem"><strong style="display:block;font-size:.95rem">Locally owned</strong><br><span style="color:#6b7280">Flathead Valley · operated by Barrett Teeney</span></div></div><div class="badge" style="display:flex;align-items:center;gap:0.75rem;padding:0.85rem 1rem;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px"><div class="badge-icon" style="font-size:1.5rem;color:#0CC0DF;font-weight:800;min-width:36px">⏱️</div><div class="badge-text" style="font-size:0.85rem"><strong style="display:block;font-size:.95rem">Same-day quotes</strong><br><span style="color:#6b7280">Most responses within 1 hour</span></div></div></div></div></section>
-<main id="main"><section id="why-us" class="bg-white"><div class="container"><h2 class="text-3xl font-bold text-center mb-2">Why OCS LLC</h2><p class="text-center text-gray-600 mb-8">Three things that make the difference.</p><div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto"><div class="why-card"><img src="/assets/icons/hand.svg" alt="" width="40" height="40" class="why-icon"><h3 class="why-title">Hand-cleaned, every pane</h3><p class="why-desc">Traditional squeegee &amp; scrubber for the luxury feel. We only reach for the water-fed pole when ladders aren't safe.</p></div><div class="why-card"><img src="/assets/icons/leaf.svg" alt="" width="40" height="40" class="why-icon"><h3 class="why-title">Eco-friendly, pet &amp; plant safe</h3><p class="why-desc">Biodegradable detergents. Safe around dogs, kids, and the prized garden you don't want to replace.</p></div><div class="why-card"><img src="/assets/icons/shield.svg" alt="" width="40" height="40" class="why-icon"><h3 class="why-title">72-hour satisfaction guarantee</h3><p class="why-desc">Streak-free promise. If anything's off within 72 hours of the job, we come back and make it right.</p></div></div><p class="text-center text-gray-600 mt-8 text-sm">Over <strong>10,000 windows cleaned per season</strong> across the Flathead Valley.</p></div></section>
-<section id="services" class="bg-gray-100"><div class="container"><h2 class="text-3xl font-bold text-center mb-2">What We Do</h2><p class="text-center text-gray-600 mb-8">Hand-detailed work across every service. <a href="/pricing/" class="text-custom-cyan font-semibold underline">See pricing &rarr;</a></p><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"><a href="/services/residential/" class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition"><img src="/assets/icons/residential.jpg" alt="Residential window cleaning icon" width="80" height="80" loading="lazy" decoding="async" class="service-icon mx-auto mb-3 w-20 h-20 object-contain"><h3 class="text-xl font-semibold mb-2">Residential</h3><p class="text-sm text-gray-600">Homes across the Flathead Valley. Hand-cleaned for that luxury feel. Frames, tracks, and sills wiped clean.</p></a><a href="/services/commercial/" class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition"><img src="/assets/icons/commercial.jpg" alt="Commercial window cleaning icon" width="80" height="80" loading="lazy" decoding="async" class="service-icon mx-auto mb-3 w-20 h-20 object-contain"><h3 class="text-xl font-semibold mb-2">Commercial</h3><p class="text-sm text-gray-600">Storefronts, multi-story, and recurring contracts (monthly or quarterly). Net 30 available.</p></a><a href="/services/post-construction/" class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition"><img src="/assets/icons/post-construction.jpg" alt="Post-construction cleaning icon" width="80" height="80" loading="lazy" decoding="async" class="service-icon mx-auto mb-3 w-20 h-20 object-contain"><h3 class="text-xl font-semibold mb-2">Post-Construction</h3><p class="text-sm text-gray-600">Builder-ready finish: stucco splatter, paint overspray, debris &mdash; removed without scratches.</p></a><a href="/services/pressure-washing/" class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition"><img src="/assets/icons/pressure-washing-v2.svg" alt="Pressure washing icon" width="80" height="80" loading="lazy" decoding="async" class="service-icon mx-auto mb-3 w-20 h-20 object-contain"><h3 class="text-xl font-semibold mb-2">Pressure Washing</h3><p class="text-sm text-gray-600">Driveways, decks, siding, fences, and concrete. Cold-water only, no soft wash.</p></a></div><a href="/services/additional/" class="additional-strip"><div class="additional-icons"><img src="/assets/icons/solar.svg" alt="" width="28" height="28"><img src="/assets/icons/skylight.svg" alt="" width="28" height="28"><img src="/assets/icons/chandelier.svg" alt="" width="28" height="28"><img src="/assets/icons/hand.svg" alt="" width="28" height="28"></div><div class="additional-text"><p class="additional-label">Additional Services</p><p class="additional-desc">Solar panels, skylights, chandeliers, hard-to-reach interior glass &amp; more</p></div><span class="additional-arrow" aria-hidden="true">&rsaquo;</span></a></div></section>
-<section id="testimonials" class="bg-white"><div class="container"><h2 class="text-3xl font-bold text-center mb-8">What customers say</h2><div class="max-w-3xl mx-auto"><div class="review-carousel" id="reviewCarousel"><div class="review-card active"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Highly recommended, fantastic service in all ways; the window cleaning itself and the customer service. Great price as well, highly recommend."</p><p class="mt-2 text-sm font-semibold">&mdash; Jayden Jacobson</p></div><div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Barrett did a fantastic job on my building, he was prompt, prepared and professional. My windows look amazing, thank you so much!"</p><p class="mt-2 text-sm font-semibold">&mdash; Katerina Robinson</p></div><div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Barrett did an amazing job on my windows inside and out very polite and very hard-working. I definitely will use him again and I highly recommend him."</p><p class="mt-2 text-sm font-semibold">&mdash; Debbie Turner</p></div><div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Would definitely recommend and would hire again! Rest assured Barrett does a fantastic job for a fair price."</p><p class="mt-2 text-sm font-semibold">&mdash; Donna M</p></div><div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Barrett does a fantastic job at cleaning windows! OCS did my father in law's business and the windows look amazing!"</p><p class="mt-2 text-sm font-semibold">&mdash; Cohen Booth</p></div><div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Competitive pricing, thorough job, and very friendly. Will use you guys again and refer you to whoever is in need!"</p><p class="mt-2 text-sm font-semibold">&mdash; Darel Handley</p></div><div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Inside and outside our windows look so clear and beautiful! The job Barrett and his company did exceeded our expectations. Really good communication throughout."</p><p class="mt-2 text-sm font-semibold">&mdash; Addie C</p></div><div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Barrett did such a great job cleaning our windows. He took his time, was very thorough. I would recommend his business to anyone."</p><p class="mt-2 text-sm font-semibold">&mdash; Cheryl Klippenstein</p></div></div><div class="review-dots" id="reviewDots"></div><p class="text-center mt-6"><a href="/reviews/" class="text-custom-cyan font-semibold underline">Read all reviews &rarr;</a></p></div></div></section>
-<section id="live-reviews" class="bg-white"><div class="container"><h2 class="text-3xl font-bold text-center mb-2">Where we work</h2><p class="text-center max-w-2xl mx-auto mb-6 text-gray-700">Find us on the map.</p><div class="map-embed-wrap" style="aspect-ratio:16/9;max-width:1100px;margin:0 auto;border-radius:12px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,0.10);"><iframe src="https://maps.google.com/maps?ll=48.298,-113.949&z=10&output=embed&q=OCS+LLC+Window+Cleaning+Kalispell+MT" width="100%" height="500" style="border:0;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" title="OCS LLC on Google Maps"></iframe></div></div></section><section id="areas" class="bg-gray-50"><div class="container"><h2 class="text-3xl font-bold text-center mb-3">Service Areas</h2><p class="text-center max-w-2xl mx-auto mb-6 text-gray-700">Throughout the Flathead Valley.</p><div class="area-grid"><a href="/kalispell/" class="area-pin"><span class="pin-icon">📍</span><span class="name">Kalispell</span><span class="meta">Home base</span></a><a href="/whitefish/" class="area-pin"><span class="pin-icon">📍</span><span class="name">Whitefish</span><span class="meta">Lake homes</span></a><a href="/columbia-falls/" class="area-pin"><span class="pin-icon">📍</span><span class="name">Columbia Falls</span><span class="meta">Glacier-adjacent</span></a><a href="/bigfork/" class="area-pin"><span class="pin-icon">📍</span><span class="name">Bigfork</span><span class="meta">Lakefront</span></a></div></div></section>
-<section id="quote" class="bg-custom-cyan text-white"><div class="container max-w-2xl text-center"><h2 class="text-3xl font-bold mb-4" style="color:white">Get a free estimate</h2><p class="mb-6">Most quotes back same-day. No obligation.</p><div class="hero-cta-row"><a href="tel:+14066072151" class="bg-white text-black px-6 py-3 rounded-lg font-bold inline-block">Call (406) 607-2151</a><a href="sms:+14066072151" class="bg-white text-black px-6 py-3 rounded-lg font-bold inline-block">Text us</a></div></div></section>
+<body class="bg-gray-50 text-black">
+<nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10"><div class="container nav-container"><a href="/" class="text-lg font-bold">OCS LLC</a><div class="contact-info"><p><a href="tel:+14066072151">(406) 607-2151</a></p><p><a href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a></p></div></div></nav>
+<main id="main">
+<section id="home" class="hero-mini hero-photo" style="background-image:url('/assets/photos/54649749362.jpg');">
+<h1>Crystal-clear windows in the Flathead Valley</h1>
+<p class="hero-tagline" style="font-style:italic;font-size:clamp(1rem,2vw,1.15rem);opacity:.95;margin:.5rem 0 1rem">"Work Done Well, Work Done Right."</p>
+<p>Insured. Locally owned. 5.0 stars on Google.</p>
+<div class="hero-cta-row"><a href="#quote" class="bg-white text-black px-6 py-3 rounded-lg font-semibold">Get a Free Quote</a><a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a></div>
+</section>
+<section id="trust" class="bg-white" style="padding-top:1rem;padding-bottom:1rem">
+<div class="container"><div class="trust-badges">
+<div class="tb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><div class="text"><strong>5.0 on Google</strong><span>14 verified reviews</span></div></div>
+<div class="tb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><div class="text"><strong>Insured</strong><span>General liability</span></div></div>
+<div class="tb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><div class="text"><strong>Locally owned</strong><span>Operated by Barrett Teeney</span></div></div>
+<div class="tb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div class="text"><strong>Same-day quotes</strong><span>Most replies under 1 hour</span></div></div>
+</div></div></section>
+<section id="quote" class="bg-gray-50">
+<div class="container" style="max-width:780px;text-align:center">
+<h2 class="text-3xl font-bold mb-2">Get a free quote</h2>
+<p class="text-gray-600 mb-3">Fill it out, call, or text. Most quotes back same-day.</p>
+<div class="qf">
+<form action="https://formsubmit.co/barrett@ocsllc.services" method="POST">
+<input type="hidden" name="_subject" value="OCS LLC homepage quote request">
+<input type="hidden" name="_next" value="https://ocsllc.services/thanks/">
+<input type="hidden" name="_captcha" value="true">
+<input type="hidden" name="_template" value="table">
+<div class="row2"><div><label>Name *</label><input name="name" required></div><div><label>Phone *</label><input name="phone" required type="tel"></div></div>
+<div class="row2"><div><label>Email *</label><input name="email" required type="email"></div><div><label>Town</label><input name="town" placeholder="Whitefish, etc."></div></div>
+<label>Service</label><select name="service"><option>Window cleaning - inside &amp; out</option><option>Window cleaning - exterior only</option><option>Commercial / storefront</option><option>Post-construction</option><option>Pressure washing</option><option>Multiple - let's talk</option></select>
+<label>Anything else?</label><textarea name="details" placeholder="Approx # of windows, special access, hard water, etc."></textarea>
+<button type="submit">Send Quote Request &rarr;</button>
+</form>
+</div>
+<p class="text-sm text-gray-600 mt-4">Or <a href="tel:+14066072151" class="text-custom-cyan font-bold">call (406) 607-2151</a> or <a href="sms:+14066072151" class="text-custom-cyan font-bold">text us</a> &middot; <a href="/estimate/" class="text-custom-cyan font-bold underline">Try the instant calculator</a></p>
+</div>
+</section>
+<section id="why-us" class="bg-white"><div class="container">
+<h2 class="text-3xl font-bold text-center mb-8">Why OCS LLC</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+<div class="why-card"><img src="/assets/icons/hand.svg" alt="" width="40" height="40" class="why-icon"><h3 class="why-title">Hand-cleaned, every pane</h3><p class="why-desc">Squeegee &amp; scrubber for the luxury feel. Water-fed pole only when ladders aren't safe.</p></div>
+<div class="why-card"><img src="/assets/icons/leaf.svg" alt="" width="40" height="40" class="why-icon"><h3 class="why-title">Eco-friendly, pet &amp; plant safe</h3><p class="why-desc">Biodegradable detergents. Safe around dogs, kids, and prized gardens.</p></div>
+<div class="why-card"><img src="/assets/icons/shield.svg" alt="" width="40" height="40" class="why-icon"><h3 class="why-title">72-hour guarantee</h3><p class="why-desc">Streak-free promise. Anything off within 72 hours, we come back and fix it.</p></div>
+</div></div></section>
+<section id="services" class="bg-gray-100"><div class="container">
+<h2 class="text-3xl font-bold text-center mb-2">What We Do</h2>
+<p class="text-center text-gray-600 mb-8"><a href="/pricing/" class="text-custom-cyan font-semibold underline">See pricing &rarr;</a></p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<a href="/services/residential/" class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition"><img src="/assets/icons/residential.jpg" alt="Residential" width="80" height="80" class="service-icon mx-auto mb-3"><h3 class="text-xl font-semibold mb-2">Residential</h3><p class="text-sm text-gray-600">Hand-cleaned, frames and tracks wiped.</p></a>
+<a href="/services/commercial/" class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition"><img src="/assets/icons/commercial.jpg" alt="Commercial" width="80" height="80" class="service-icon mx-auto mb-3"><h3 class="text-xl font-semibold mb-2">Commercial</h3><p class="text-sm text-gray-600">Storefronts, multi-story, recurring contracts.</p></a>
+<a href="/services/post-construction/" class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition"><img src="/assets/icons/post-construction.jpg" alt="Post-construction" width="80" height="80" class="service-icon mx-auto mb-3"><h3 class="text-xl font-semibold mb-2">Post-Construction</h3><p class="text-sm text-gray-600">Stucco, paint, debris removed clean.</p></a>
+<a href="/services/pressure-washing/" class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition"><img src="/assets/icons/pressure-washing.jpg" alt="Pressure washing" width="80" height="80" class="service-icon mx-auto mb-3"><h3 class="text-xl font-semibold mb-2">Pressure Washing</h3><p class="text-sm text-gray-600">Driveways, decks, siding, fences.</p></a>
+</div>
+<a href="/services/additional/" class="additional-strip"><div class="additional-icons"><img src="/assets/icons/solar.svg" alt="" width="28" height="28"><img src="/assets/icons/skylight.svg" alt="" width="28" height="28"><img src="/assets/icons/chandelier.svg" alt="" width="28" height="28"><img src="/assets/icons/hand.svg" alt="" width="28" height="28"></div><div class="additional-text"><p class="additional-label">Additional Services</p><p class="additional-desc">Solar panels, skylights, chandeliers, hard-to-reach interior glass</p></div><span class="additional-arrow">&rsaquo;</span></a>
+</div></section>
+<section id="testimonials" class="bg-white"><div class="container">
+<h2 class="text-3xl font-bold text-center mb-8">What customers say</h2>
+<div class="max-w-3xl mx-auto"><div class="review-carousel" id="reviewCarousel">
+<div class="review-card active"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Highly recommended, fantastic service in all ways; the window cleaning itself and the customer service. Great price as well."</p><p class="mt-2 text-sm font-semibold">- Jayden Jacobson</p></div>
+<div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Barrett did a fantastic job on my building, prompt, prepared and professional. My windows look amazing."</p><p class="mt-2 text-sm font-semibold">- Katerina Robinson</p></div>
+<div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Inside and outside our windows look so clear and beautiful! Exceeded our expectations."</p><p class="mt-2 text-sm font-semibold">- Addie C</p></div>
+<div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Competitive pricing, thorough job, very friendly. Will use you guys again."</p><p class="mt-2 text-sm font-semibold">- Darel Handley</p></div>
+<div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Barrett did such a great job. Took his time, was thorough. Recommend his business to anyone."</p><p class="mt-2 text-sm font-semibold">- Cheryl Klippenstein</p></div>
+</div><div class="review-dots" id="reviewDots"></div>
+<p class="text-center mt-6"><a href="/reviews/" class="text-custom-cyan font-semibold underline">Read all reviews &rarr;</a></p></div></div></section>
+<section id="map" class="bg-gray-50"><div class="container">
+<h2 class="text-3xl font-bold text-center mb-2">Where we work</h2>
+<p class="text-center text-gray-700 mb-6">Throughout the Flathead Valley.</p>
+<div style="aspect-ratio:16/9;max-width:1100px;margin:0 auto;border-radius:12px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.10)"><iframe src="https://maps.google.com/maps?ll=48.298,-113.949&z=10&output=embed&q=OCS+LLC+Window+Cleaning+Kalispell+MT" width="100%" height="500" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="OCS LLC on Google Maps"></iframe></div>
+</div></section>
+<section id="final-cta" class="bg-custom-cyan text-white"><div class="container max-w-2xl text-center">
+<h2 class="text-3xl font-bold mb-3" style="color:#fff">Ready for crystal-clear windows?</h2>
+<p class="mb-6">Free quote, no obligation. Same-day response.</p>
+<div class="hero-cta-row"><a href="#quote" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Fill out form</a><a href="tel:+14066072151" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Call (406) 607-2151</a><a href="sms:+14066072151" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Text us</a></div>
+</div></section>
 </main>
-<footer class="bg-custom-cyan text-white py-8 mt-auto"><div class="container text-center"><p>&copy; 2025 OCS LLC &middot; Insured</p><p class="mt-2">Contact: <a class="underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="underline" href="tel:+14066072151">(406) 607-2151</a></p><p class="mt-2 text-sm">Proudly serving Kalispell, Whitefish, Columbia Falls, Bigfork &amp; the Flathead Valley.</p><p class="mt-3 text-sm"><a class="underline" href="/">Home</a> &middot; <a class="underline" href="/about/">About</a> &middot; <a class="underline" href="/privacy/">Privacy</a> &middot; <a class="underline" href="/terms/">Terms</a> &middot; <a class="underline" href="/pricing/">Pricing</a> &middot; <a class="underline" href="/blog/">Blog</a> &middot; <a class="underline" href="/reviews/">Reviews</a> &middot; <a class="underline" href="/services/residential/">Residential</a> &middot; <a class="underline" href="/services/commercial/">Commercial</a> &middot; <a class="underline" href="/services/post-construction/">Post-Construction</a> &middot; <a class="underline" href="/services/pressure-washing/">Pressure Washing</a> &middot; <a class="underline" href="/services/additional/">Additional Services</a></p></div></footer>
+<footer class="bg-custom-cyan text-white py-8 mt-auto"><div class="container text-center"><p>&copy; 2025 OCS LLC &middot; Insured &middot; Locally owned</p><p class="mt-2"><a class="underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="underline" href="tel:+14066072151">(406) 607-2151</a></p><p class="mt-2 text-sm">Serving Kalispell, Whitefish, Columbia Falls, Bigfork &amp; the Flathead Valley.</p><p class="mt-3 text-sm"><a class="underline" href="/">Home</a> &middot; <a class="underline" href="/pricing/">Pricing</a> &middot; <a class="underline" href="/estimate/">Instant Estimate</a> &middot; <a class="underline" href="/reviews/">Reviews</a> &middot; <a class="underline" href="/about/">About</a> &middot; <a class="underline" href="/services/additional/">Additional Services</a></p></div></footer>
 <div class="mobile-bottom-bar"><a href="tel:+14066072151" class="mobile-call-bar mcb-half">Call</a><a href="sms:+14066072151" class="mobile-call-bar mcb-half" style="border-left:1px solid rgba(255,255,255,0.3)">Text</a></div>
-<script>(function(){var carousel=document.getElementById('reviewCarousel');if(!carousel)return;var cards=carousel.querySelectorAll('.review-card');if(cards.length===0)return;var dotsEl=document.getElementById('reviewDots');cards.forEach(function(_,i){var b=document.createElement('button');b.setAttribute('aria-label','Show review '+(i+1));if(i===0)b.classList.add('active');b.addEventListener('click',function(){go(i);resetTimer();});dotsEl.appendChild(b);});var idx=0,timer;function go(n){cards[idx].classList.remove('active');dotsEl.children[idx].classList.remove('active');idx=(n+cards.length)%cards.length;cards[idx].classList.add('active');dotsEl.children[idx].classList.add('active');}function next(){go(idx+1);}function startTimer(){timer=setInterval(next,6000);}function resetTimer(){clearInterval(timer);startTimer();}carousel.addEventListener('mouseenter',function(){clearInterval(timer);});carousel.addEventListener('mouseleave',startTimer);startTimer();})();(function(){var els=document.querySelectorAll('section, .review-card, .why-card, .stat-card, .price-card, .badge');if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('reveal','in');});return;}els.forEach(function(el){el.classList.add('reveal');});var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});els.forEach(function(el){io.observe(el);});})();</script>
+<script>(function(){var c=document.getElementById('reviewCarousel');if(!c)return;var cards=c.querySelectorAll('.review-card');if(!cards.length)return;var dots=document.getElementById('reviewDots');cards.forEach(function(_,i){var b=document.createElement('button');b.setAttribute('aria-label','Review '+(i+1));if(i===0)b.classList.add('active');b.addEventListener('click',function(){go(i);reset();});dots.appendChild(b);});var idx=0,t;function go(n){cards[idx].classList.remove('active');dots.children[idx].classList.remove('active');idx=(n+cards.length)%cards.length;cards[idx].classList.add('active');dots.children[idx].classList.add('active');}function next(){go(idx+1);}function start(){t=setInterval(next,6000);}function reset(){clearInterval(t);start();}c.addEventListener('mouseenter',function(){clearInterval(t);});c.addEventListener('mouseleave',start);start();})();(function(){var els=document.querySelectorAll('section,.review-card,.why-card,.tb');if(!('IntersectionObserver' in window))return els.forEach(function(e){e.classList.add('reveal','in');});els.forEach(function(e){e.classList.add('reveal');});var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.08,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){io.observe(e);});})();</script>
 </body>
 </html>
