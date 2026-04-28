@@ -9,10 +9,12 @@
 <link rel="stylesheet" href="/assets/site.css">
 <style>
 .calc-wrap{max-width:880px;margin:0 auto;padding:1rem}
-.calc-row{display:grid;grid-template-columns:1fr auto auto auto;gap:.6rem;align-items:center;border:1px solid #e5e7eb;border-radius:14px;padding:.85rem 1rem;margin-bottom:.65rem;background:#fff}
+.calc-row{display:grid;grid-template-columns:1fr auto auto auto auto;gap:.6rem;align-items:center;border:1px solid #e5e7eb;border-radius:14px;padding:.85rem 1rem;margin-bottom:.65rem;background:#fff}
 .calc-row h4{margin:0;font-weight:700;font-size:1.02rem}
 .calc-row .desc{display:block;font-weight:400;color:#475569;font-size:.82rem;margin-top:.15rem}
-.calc-row .count{font-weight:800;font-size:1.2rem;min-width:2.4rem;text-align:center}
+.calc-row .count{font-weight:800;font-size:1.2rem;width:3.4rem;text-align:center;border:1px solid #cbd5e1;border-radius:10px;padding:.35rem .25rem;background:#f8fafc;color:#0f172a;-moz-appearance:textfield}
+.calc-row .count::-webkit-outer-spin-button,.calc-row .count::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.calc-row .count:focus{outline:none;border-color:#0891b2;background:#fff;box-shadow:0 0 0 3px rgba(8,145,178,.15)}
 .calc-btn{width:36px;height:36px;border-radius:999px;border:1px solid #cbd5e1;background:#f8fafc;font-size:1.15rem;font-weight:700;cursor:pointer}
 .calc-btn:hover{background:#e2e8f0}
 .side-toggle{display:inline-flex;border:1px solid #cbd5e1;border-radius:999px;overflow:hidden;font-size:.78rem}
@@ -24,8 +26,9 @@
 .calc-cta{background:#22d3ee;color:#0f172a;font-weight:700;padding:.7rem 1.1rem;border-radius:999px;text-decoration:none}
 .calc-note{font-size:.78rem;color:#64748b;margin-top:.4rem}
 .section-h{font-weight:800;letter-spacing:.04em;color:#475569;text-transform:uppercase;font-size:.78rem;margin:1.2rem 0 .4rem;padding-left:.2rem}
+.calc-tip{font-size:.74rem;color:#64748b;margin:0 0 .8rem .2rem}
 @media(max-width:560px){
-  .calc-row{grid-template-columns:1fr auto auto;gap:.4rem;padding:.7rem .8rem}
+  .calc-row{grid-template-columns:1fr auto auto auto;gap:.4rem;padding:.7rem .8rem}
   .calc-row .side-toggle{grid-column:1/-1;justify-self:start;margin-top:.4rem}
 }
 </style>
@@ -35,16 +38,17 @@
 
 <main class="bg-custom-light-gray py-8">
 <section class="container">
-<div class="text-center mb-6"><h1 class="text-4xl font-bold mb-2">Instant Estimate Calculator</h1><p class="text-gray-600 max-w-2xl m-auto">Count up your windows below. We'll show a live price range. No email or phone required to see your estimate &mdash; only when you're ready to book.</p></div>
+<div class="text-center mb-6"><h1 class="text-4xl font-bold mb-2">Instant Estimate Calculator</h1><p class="text-gray-600 max-w-2xl m-auto">Count up your windows below. Tap +/&minus; or type the count straight into the box. We'll show a live price range &mdash; no email or phone needed to see your estimate.</p></div>
 
 <div class="calc-wrap">
   <div class="section-h">Windows by size</div>
+  <p class="calc-tip">Tip: type a number directly into the count box for big jobs.</p>
 
   <div class="calc-row" data-row data-out="6" data-both="10">
     <div><h4>Small</h4><span class="desc">Under 2&times;3 ft &mdash; bedroom, bath, basement</span></div>
     <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
     <button type="button" class="calc-btn" data-act="-">&minus;</button>
-    <span class="count" data-count>0</span>
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Small window count">
     <button type="button" class="calc-btn" data-act="+">+</button>
   </div>
 
@@ -52,7 +56,7 @@
     <div><h4>Medium</h4><span class="desc">2&times;3 to 3&times;5 ft &mdash; standard living room</span></div>
     <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
     <button type="button" class="calc-btn" data-act="-">&minus;</button>
-    <span class="count" data-count>0</span>
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Medium window count">
     <button type="button" class="calc-btn" data-act="+">+</button>
   </div>
 
@@ -60,7 +64,7 @@
     <div><h4>Large</h4><span class="desc">3&times;5 to 4&times;6 ft &mdash; sliders, patio doors</span></div>
     <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
     <button type="button" class="calc-btn" data-act="-">&minus;</button>
-    <span class="count" data-count>0</span>
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Large window count">
     <button type="button" class="calc-btn" data-act="+">+</button>
   </div>
 
@@ -68,7 +72,7 @@
     <div><h4>Extra Large</h4><span class="desc">4&times;6 to 5&times;7 ft &mdash; bigger kitchens, dining</span></div>
     <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
     <button type="button" class="calc-btn" data-act="-">&minus;</button>
-    <span class="count" data-count>0</span>
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Extra large window count">
     <button type="button" class="calc-btn" data-act="+">+</button>
   </div>
 
@@ -76,7 +80,7 @@
     <div><h4>Picture / Bay</h4><span class="desc">5+ ft tall or wide &mdash; great rooms, lake views</span></div>
     <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
     <button type="button" class="calc-btn" data-act="-">&minus;</button>
-    <span class="count" data-count>0</span>
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Picture/bay window count">
     <button type="button" class="calc-btn" data-act="+">+</button>
   </div>
 
@@ -84,7 +88,7 @@
     <div><h4>French / Divided lite</h4><span class="desc">Per individual pane</span></div>
     <div class="side-toggle"><button type="button" class="on" data-side="both">Both sides</button><button type="button" data-side="out">Outside only</button></div>
     <button type="button" class="calc-btn" data-act="-">&minus;</button>
-    <span class="count" data-count>0</span>
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="French pane count">
     <button type="button" class="calc-btn" data-act="+">+</button>
   </div>
 
@@ -94,7 +98,7 @@
     <div><h4>Screens</h4><span class="desc">Wash &amp; rinse, $2 each</span></div>
     <span></span>
     <button type="button" class="calc-btn" data-act="-">&minus;</button>
-    <span class="count" data-count>0</span>
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Screen count">
     <button type="button" class="calc-btn" data-act="+">+</button>
   </div>
 
@@ -102,7 +106,7 @@
     <div><h4>2nd-story windows</h4><span class="desc">Ladder access, flat $3 per window</span></div>
     <span></span>
     <button type="button" class="calc-btn" data-act="-">&minus;</button>
-    <span class="count" data-count>0</span>
+    <input class="count" data-count type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Second-story window count">
     <button type="button" class="calc-btn" data-act="+">+</button>
   </div>
 
@@ -144,11 +148,25 @@
   const brkHid = document.getElementById('brk-hidden');
   const MIN = 150;
 
+  function getCount(r){
+    const el = r.querySelector('[data-count]');
+    let v = parseInt(el.value, 10);
+    if(isNaN(v) || v < 0) v = 0;
+    if(v > 9999) v = 9999;
+    return v;
+  }
+  function setCount(r,n){
+    const el = r.querySelector('[data-count]');
+    if(n < 0) n = 0;
+    if(n > 9999) n = 9999;
+    el.value = n;
+  }
+
   function calc(){
     let total = 0;
     const parts = [];
     rows.forEach(r => {
-      const c = parseInt(r.querySelector('[data-count]').textContent, 10) || 0;
+      const c = getCount(r);
       if(c <= 0) return;
       let unit = 0;
       if(r.dataset.flat){
@@ -182,11 +200,9 @@
     const t = e.target;
     if(t.matches('.calc-btn')){
       const row = t.closest('[data-row]');
-      const cEl = row.querySelector('[data-count]');
-      let n = parseInt(cEl.textContent, 10) || 0;
+      let n = getCount(row);
       n += (t.dataset.act === '+' ? 1 : -1);
-      if(n < 0) n = 0;
-      cEl.textContent = n;
+      setCount(row, n);
       calc();
     } else if(t.matches('.side-toggle button')){
       const grp = t.closest('.side-toggle');
@@ -195,6 +211,26 @@
       calc();
     }
   });
+
+  document.addEventListener('input', e => {
+    if(e.target.matches('[data-count]')){
+      calc();
+    }
+  });
+
+  document.addEventListener('focusin', e => {
+    if(e.target.matches('[data-count]')){
+      e.target.select();
+    }
+  });
+
+  document.addEventListener('blur', e => {
+    if(e.target.matches('[data-count]')){
+      const row = e.target.closest('[data-row]');
+      setCount(row, getCount(row));
+      calc();
+    }
+  }, true);
 
   calc();
 })();
