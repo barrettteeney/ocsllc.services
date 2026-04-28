@@ -219,3 +219,221 @@ section { padding: clamp(2rem, 5vw, 4rem) 0; }
   opacity: 0.95;
   margin: 0.5rem 0 1rem;
 }
+
+
+/* Single "Additional Services" callout below main services grid */
+.additional-strip {
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #0f172a;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.additional-strip:hover {
+  border-color: #0CC0DF;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+  transform: translateY(-1px);
+}
+.additional-icons {
+  display: flex;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+.additional-icons img {
+  width: 28px;
+  height: 28px;
+}
+.additional-text {
+  flex: 1;
+}
+.additional-label {
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0 0 0.15rem;
+  color: #0f172a;
+}
+.additional-desc {
+  font-size: 0.88rem;
+  color: #64748b;
+  margin: 0;
+}
+.additional-arrow {
+  color: #0CC0DF;
+  font-size: 1.6rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+@media (max-width: 600px) {
+  .additional-strip {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+  .additional-arrow { display: none; }
+}
+
+/* /services/additional/ page extras grid */
+.extras-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+.extra-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.extra-card:hover {
+  border-color: #0CC0DF;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+}
+.extra-icon {
+  width: 48px;
+  height: 48px;
+  display: block;
+  margin-bottom: 0.85rem;
+}
+.extra-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: #0f172a;
+}
+.extra-card p {
+  color: #475569;
+  font-size: 0.92rem;
+  margin: 0 0 0.85rem;
+}
+.extra-bullets {
+  margin: 0.6rem 0 0.5rem 1.1rem;
+  padding: 0;
+  font-size: 0.88rem;
+  color: #475569;
+}
+.extra-bullets li { margin: 0.25rem 0; }
+.extra-note {
+  font-size: 0.82rem;
+  color: #92400e;
+  background: #fef3c7;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem !important;
+}
+
+
+/* Review carousel */
+.review-carousel {
+  position: relative;
+  min-height: 200px;
+}
+.review-carousel .review-card {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+}
+.review-carousel .review-card.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  position: relative;
+}
+.review-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+}
+.review-dots button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 0;
+  background: #cbd5e1;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  padding: 0;
+}
+.review-dots button:hover { background: #94a3b8; }
+.review-dots button.active {
+  background: #0CC0DF;
+  transform: scale(1.4);
+}
+
+/* Scroll-reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; }
+  .review-carousel .review-card { transition: none; }
+}
+
+/* Smooth-scroll site-wide */
+html { scroll-behavior: smooth; }
+
+/* Image fade-in on load */
+img.fade-on-load {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+img.fade-on-load.loaded { opacity: 1; }
+
+/* Subtle hover lift for service cards */
+#services a.bg-white {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+#services a.bg-white:hover {
+  transform: translateY(-4px);
+}
+
+/* Background imagery on About section */
+#about {
+  background:
+    linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.96)),
+    url("/assets/photos/54650520711.jpg") center/cover no-repeat fixed;
+}
+@supports not (background-attachment: fixed) {
+  #about { background-attachment: scroll; }
+}
+@media (max-width: 720px) {
+  #about { background-attachment: scroll; }
+}
+
+
+/* Subtle photo background for services section */
+#services {
+  position: relative;
+}
+#services::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(243,244,246,0.94), rgba(243,244,246,0.94)),
+    url("/assets/photos/54573533898.jpg") center/cover no-repeat;
+  z-index: 0;
+}
+#services > * { position: relative; z-index: 1; }
+
+/* Hero photo enhancement: stronger overlay so text contrast is solid even with brighter photos */
+.hero-photo::before {
+  background: linear-gradient(135deg, rgba(12,192,223,0.78) 0%, rgba(10,163,189,0.88) 100%) !important;
+}
