@@ -3,283 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <style>
-        /* Critical CSS — applied before any other stylesheet so the layout never collapses */
-        body{margin:0;font-family:'Garet',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-        html,body{overflow-x:hidden;max-width:100vw}
-        *,*::before,*::after{box-sizing:border-box}
-        img,video,iframe,svg,picture{max-width:100%;height:auto;display:inline-block}
-        img.service-icon{width:80px!important;height:80px!important;max-width:80px!important;max-height:80px!important;object-fit:contain;margin:0 auto 0.75rem;display:block}
-        .container{width:100%;max-width:1200px;margin:0 auto;padding-left:clamp(0.85rem,4vw,2rem);padding-right:clamp(0.85rem,4vw,2rem)}
-        .bg-custom-cyan{background:#0CC0DF}
-        nav.bg-custom-cyan{padding:0.75rem 0;color:white}
-        .nav-container{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.5rem;padding:1rem;width:100%;max-width:1200px;margin:0 auto}
-        .contact-info{display:flex;flex-direction:column;align-items:flex-end;gap:0.25rem;font-size:.95rem}
-        .contact-info a{color:#fff;text-decoration:none}
-        section{padding:clamp(2rem,5vw,4rem) 0}
-        h1,h2,h3{margin:0 0 .75rem}
-        @media (max-width:720px){
-            .nav-container{flex-direction:column;align-items:flex-start;gap:.4rem}
-            .contact-info{align-items:flex-start;font-size:.95rem}
-            body{padding-bottom:calc(60px + env(safe-area-inset-bottom))}
-            img.service-icon{width:64px!important;height:64px!important}
-        }
-    
-        .hero-photo {
-            position: relative;
-            color: white;
-            padding: clamp(2.5rem, 6vw + 1rem, 5rem) 1rem;
-            text-align: center;
-            background: url("/assets/photos/54693602255.jpg") center/cover no-repeat;
-            isolation: isolate;
-        }
-        .hero-photo::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(12,192,223,0.85) 0%, rgba(10,163,189,0.92) 100%);
-            z-index: -1;
-        }
-        .hero-photo h1, .hero-photo p, .hero-photo .trust-row, .hero-photo .hero-cta-row {
-            position: relative;
-            z-index: 1;
-        }
-</style>
-
-    <meta name="robots" content="index, follow, max-image-preview:large">
-    <meta name="theme-color" content="#0CC0DF">
-    <!-- Performance hints -->
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://live.staticflickr.com" crossorigin>
-    <meta http-equiv="x-dns-prefetch-control" content="on">
-
-    <title>Pricing | OCS LLC Window Cleaning &amp; Pressure Washing</title>
-    <meta name="description" content="Transparent pricing for window cleaning, post-construction, commercial, and pressure washing in the Flathead Valley. Most homes $200-$500. Free estimates.">
+    <title>How Pricing Works | OCS LLC Window Cleaning &amp; Pressure Washing</title>
+    <meta name="description" content="How OCS LLC quotes window cleaning, post-construction, commercial, and pressure washing in the Flathead Valley. Every job is unique — get a free quote.">
     <link rel="canonical" href="https://ocsllc.services/pricing/">
-
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="OCS LLC">
-    <meta property="og:title" content="Pricing | OCS LLC Window Cleaning &amp; Pressure Washing">
-    <meta property="og:description" content="Transparent pricing for window cleaning, post-construction, commercial, and pressure washing in the Flathead Valley. Most homes $200-$500. Free estimates.">
-    <meta property="og:url" content="https://ocsllc.services/pricing/">
-    <meta property="og:image" content="https://ocsllc.services/assets/og.png">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Pricing | OCS LLC Window Cleaning &amp; Pressure Washing">
-    <meta name="twitter:description" content="Transparent pricing for window cleaning, post-construction, commercial, and pressure washing in the Flathead Valley. Most homes $200-$500. Free estimates.">
-    <meta name="twitter:image" content="https://ocsllc.services/assets/og.png">
-
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://ocsllc.services/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Pricing",
-      "item": "https://ocsllc.services/pricing/"
-    }
-  ]
-}
-    </script>
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "OfferCatalog",
-  "name": "OCS LLC Cleaning Services",
-  "itemListElement": [
-    {
-      "@type": "Offer",
-      "itemOffered": {
-        "@type": "Service",
-        "name": "Residential Window Cleaning"
-      },
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "minPrice": "200",
-        "maxPrice": "500",
-        "priceCurrency": "USD"
-      },
-      "url": "https://ocsllc.services/services/residential/"
-    },
-    {
-      "@type": "Offer",
-      "itemOffered": {
-        "@type": "Service",
-        "name": "Post-Construction Window Cleaning"
-      },
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "minPrice": "300",
-        "maxPrice": "1500",
-        "priceCurrency": "USD"
-      },
-      "url": "https://ocsllc.services/services/post-construction/"
-    },
-    {
-      "@type": "Offer",
-      "itemOffered": {
-        "@type": "Service",
-        "name": "Pressure Washing"
-      },
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "minPrice": "200",
-        "maxPrice": "600",
-        "priceCurrency": "USD"
-      },
-      "url": "https://ocsllc.services/services/pressure-washing/"
-    }
-  ]
-}
-    </script>
-
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230CC0DF'/%3E%3Ctext x='50' y='62' font-family='Arial,sans-serif' font-size='44' font-weight='700' text-anchor='middle' fill='white'%3EO%3C/text%3E%3C/svg%3E">
-    <link rel="manifest" href="/manifest.webmanifest">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link rel="stylesheet" href="/assets/site.css">
     <link rel="stylesheet" href="/assets/responsive.css">
 </head>
 <body class="bg-gray-50 text-black">
-    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-black px-3 py-2 rounded z-50">Skip to content</a>
-    <nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10">
-        <div class="container nav-container">
-            <a href="/" class="text-lg font-bold">OCS LLC</a>
-            <div class="contact-info">
-                <p><a href="tel:+14066072151" aria-label="Call OCS LLC at (406) 607-2151">(406) 607-2151</a></p>
-                <p><a href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a></p>
-            </div>
-        </div>
-    </nav>
-    <section class="hero-mini hero-photo">
+    <nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10"><div class="container nav-container"><a href="/" class="text-lg font-bold">OCS LLC</a><div class="contact-info"><p><a href="tel:+14066072151">(406) 607-2151</a></p><p><a href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a></p></div></div></nav>
+    <section class="hero-mini hero-photo" style="background:url('/assets/photos/54693602255.jpg') center/cover no-repeat;">
         <h1>Honest, Up-Front Pricing</h1>
-        <p>What things actually cost in the Flathead Valley. No bait-and-switch. No "we'll let you know when we get there."</p>
-        <div class="hero-cta-row">
-            <a href="/#quote" class="bg-white text-black px-6 py-3 rounded-lg hover:bg-gray-200 transition font-semibold">Get a Free Estimate</a>
-            <a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a>
-        </div>
+        <p>What things actually cost in the Flathead Valley. No bait-and-switch.</p>
+        <div class="hero-cta-row"><a href="/#quote" class="bg-white text-black px-6 py-3 rounded-lg font-semibold">Get a Free Estimate</a><a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a></div>
     </section>
-
-    <section class="bg-white">
-        <div class="container">
-            <p class="breadcrumbs"><a href="/">Home</a> &rsaquo; Pricing</p>
-
-            <h2 class="text-2xl font-bold mb-3">Quick reference: typical price ranges</h2>
-            <p class="mb-4">Every job is quoted before we start. These are the ranges most jobs fall in for the Flathead Valley. Smaller homes and storefronts trend toward the lower end; larger homes, three-story builds, and lake-view properties trend higher. <strong>You'll always get a firm price before we start work.</strong></p>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
-                <div class="price-card">
-                    <h3 class="text-xl font-bold mb-2">Residential window cleaning</h3>
-                    <div class="price">$200–$500<br><small>typical home</small></div>
-                    <ul>
-                        <li>Interior + exterior glass</li>
-                        <li>Screens hand-washed</li>
-                        <li>Sills and tracks detailed</li>
-                        <li>Drop cloths inside</li>
-                        <li>Walk-through at the end</li>
-                    </ul>
-                    <p class="mt-3 text-sm text-gray-600">Smaller cottages or condos can run $150–$200. Lake homes or 3-story properties can run $500–$1,000+.</p>
-                </div>
-
-                <div class="price-card">
-                    <h3 class="text-xl font-bold mb-2">Post-construction</h3>
-                    <div class="price">$300–$1,500<br><small>per project</small></div>
-                    <ul>
-                        <li>Stucco and paint overspray</li>
-                        <li>Manufacturer label removal</li>
-                        <li>Drywall dust and debris</li>
-                        <li>Sills, tracks, surrounding finishes</li>
-                        <li>GC walk-through</li>
-                    </ul>
-                    <p class="mt-3 text-sm text-gray-600">Priced per pane count + complexity. Custom homes with high vaulted glass are at the upper end.</p>
-                </div>
-
-                <div class="price-card">
-                    <h3 class="text-xl font-bold mb-2">Pressure washing</h3>
-                    <div class="price">$200–$600<br><small>residential</small></div>
-                    <ul>
-                        <li>Driveways, patios, sidewalks</li>
-                        <li>Decks (low-pressure soft-wash)</li>
-                        <li>Siding (vinyl, metal, fiber-cement)</li>
-                        <li>Fences and brick</li>
-                        <li>Pre-treatment for stains</li>
-                    </ul>
-                    <p class="mt-3 text-sm text-gray-600"><strong>Bundle with window cleaning</strong> and we typically discount the combined rate by 10-20%.</p>
-                </div>
-            </div>
-
-            <h2 class="text-2xl font-bold mb-3 mt-8">Commercial and recurring</h2>
-            <p class="mb-4">Storefronts, offices, restaurants, and multi-tenant buildings on a recurring schedule are priced per visit at a flat rate. Recurring service is usually 15–30% cheaper per visit than one-off cleans because we can schedule efficiently.</p>
-            <ul class="list-disc pl-6 mb-4 text-gray-700">
-                <li><strong>Small storefront, weekly:</strong> $40–$80 per visit</li>
-                <li><strong>Mid-size office, monthly:</strong> $150–$300 per visit</li>
-                <li><strong>Multi-tenant or 3-story commercial:</strong> custom quote</li>
-            </ul>
-            <p class="mb-4">Net-15 or net-30 invoicing available, COI on request, after-hours service available — just ask.</p>
-
-            <h2 class="text-2xl font-bold mb-3 mt-8">What affects the final price</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-                <div class="factor-card">
-                    <h3 class="font-bold mb-1">Pane count + size</h3>
-                    <p class="text-sm">More panes = more time. Big picture windows count as one pane but take longer than four small ones.</p>
-                </div>
-                <div class="factor-card">
-                    <h3 class="font-bold mb-1">Number of stories</h3>
-                    <p class="text-sm">Single-story is straightforward. Two-story takes ladders or water-fed pole. Three-story takes more time and equipment.</p>
-                </div>
-                <div class="factor-card">
-                    <h3 class="font-bold mb-1">Interior vs. exterior</h3>
-                    <p class="text-sm">Exterior-only is cheaper than both. Interior takes drop cloths, careful furniture work, and slower passes.</p>
-                </div>
-                <div class="factor-card">
-                    <h3 class="font-bold mb-1">Screen condition</h3>
-                    <p class="text-sm">Standard hand-washing is included. Heavily caked screens or torn frames may need extra time or replacement.</p>
-                </div>
-                <div class="factor-card">
-                    <h3 class="font-bold mb-1">Hard-water staining</h3>
-                    <p class="text-sm">Light spots come out with our standard process. Heavy mineral buildup needs specialty treatment, quoted separately.</p>
-                </div>
-                <div class="factor-card">
-                    <h3 class="font-bold mb-1">Travel</h3>
-                    <p class="text-sm">No drive-time fees within Kalispell, Whitefish, Columbia Falls, or Bigfork. Outlying areas are priced case-by-case.</p>
-                </div>
-            </div>
-
-            <h2 class="text-2xl font-bold mb-3 mt-8">What we don't charge for</h2>
-            <ul class="list-disc pl-6 mb-4 text-gray-700">
-                <li>Estimates — always free, in person or by photo</li>
-                <li>Travel within the Flathead Valley</li>
-                <li>"Going back up" if we missed a streak — we just fix it</li>
-                <li>Drop cloths, shoe covers, or any standard supplies</li>
-                <li>Last-minute reschedules due to weather (we reschedule the day-of if it's actively raining or freezing)</li>
-            </ul>
-
-            <div class="cta-box">
-                <h2>Get a firm price for your specific job</h2>
-                <p>Call, text, or fill out the form. Most quotes come back same-day.</p>
-                <a href="/#quote" class="btn-white">Request a Free Estimate</a>
-                <a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a>
-            </div>
+    <section class="bg-white"><div class="container">
+        <p class="breadcrumbs"><a href="/">Home</a> &rsaquo; Pricing</p>
+        <h2 class="text-2xl font-bold mb-3">Quick reference: typical price ranges</h2>
+        <p class="mb-4">Every job is quoted before we start. <strong>You'll always get a firm price before we start work.</strong></p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+            <div class="price-card"><h3 class="text-xl font-bold mb-2">Residential</h3><div class="price">Custom<br><small>Every home is different</small></div><ul><li>Interior + exterior glass</li><li>Screens hand-washed</li><li>Sills and tracks detailed</li><li>Drop cloths inside</li><li>Walk-through at the end</li></ul><p class="mt-3 text-sm text-gray-600">A small cottage and a lakefront with three stories of glass aren't the same job.</p></div>
+            <div class="price-card"><h3 class="text-xl font-bold mb-2">Post-construction</h3><div class="price">Custom<br><small>Per project</small></div><ul><li>Stucco and paint overspray</li><li>Manufacturer label removal</li><li>Drywall dust and debris</li><li>Sills, tracks, surrounding finishes</li><li>GC walk-through</li></ul><p class="mt-3 text-sm text-gray-600">Quoted by the project. We walk it before quoting.</p></div>
+            <div class="price-card"><h3 class="text-xl font-bold mb-2">Pressure washing</h3><div class="price">Custom<br><small>Quoted on-site</small></div><ul><li>Driveways, patios, sidewalks</li><li>Decks (low-pressure soft-wash)</li><li>Siding (vinyl, metal, fiber-cement)</li><li>Fences and brick</li><li>Pre-treatment for stains</li></ul><p class="mt-3 text-sm text-gray-600"><strong>Bundle with window cleaning</strong> and you save the second trip charge automatically.</p></div>
         </div>
-    </section>
-
-    <footer class="bg-custom-cyan text-white py-8 mt-auto">
-        <div class="container text-center">
-            <p>&copy; 2025 OCS LLC / Insured</p>
-            <p class="mt-2">Contact: <a class="underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="underline" href="tel:+14066072151">(406) 607-2151</a></p>
-            <p class="mt-2 text-sm">Proudly serving Kalispell, Whitefish, Columbia Falls, Bigfork &amp; the Flathead Valley.</p>
-            <p class="mt-3 text-sm"><a class="underline" href="/">Home</a> &middot; <a class="underline" href="/about/">About</a> &middot; <a class="underline" href="/privacy/">Privacy</a> &middot; <a class="underline" href="/terms/">Terms</a> &middot; <a class="underline" href="/pricing/">Pricing</a> &middot; <a class="underline" href="/blog/">Blog</a> &middot; <a class="underline" href="/reviews/">Reviews</a></p>
-        </div>
-    </footer>
-    <div class="mobile-bottom-bar"><a href="tel:+14066072151" class="mobile-call-bar mcb-half"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;margin-right:6px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call</a><a href="sms:+14066072151" class="mobile-call-bar mcb-half sms-bar-link" style="border-left: 1px solid rgba(255,255,255,0.3);"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;margin-right:6px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Text</a></div>
+        <h2 class="text-2xl font-bold mb-3 mt-8">The honest truth on pricing</h2>
+        <p class="mb-4">We don't post a price list because no two homes are the same. A 12-window bungalow and a 40-window lakefront with 3 stories of glass aren't comparable — and we'd rather give you a real number that holds up than a guess that doesn't.</p>
+        <p class="mb-4">Most quotes take less than 5 minutes. Text us a few photos or schedule a quick walk-through and we'll send a firm price the same day.</p>
+        <div class="cta-row mt-6"><a href="tel:+14066072151" class="bg-custom-cyan text-white px-6 py-3 rounded-lg font-bold inline-block">Call (406) 607-2151</a><a href="sms:+14066072151" class="bg-custom-cyan text-white px-6 py-3 rounded-lg font-bold inline-block ml-2">Text us</a><a href="/#quote" class="bg-white text-custom-cyan border border-custom-cyan px-6 py-3 rounded-lg font-bold inline-block ml-2">Web form</a></div>
+        <div class="cta-box mt-8"><h2>Get a firm price for your specific job</h2><p>Call, text, or fill out the form. Most quotes come back same-day.</p><a href="/#quote" class="btn-white">Request a Free Estimate</a><a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a></div>
+    </div></section>
+    <footer class="bg-custom-cyan text-white py-8 mt-auto"><div class="container text-center"><p>&copy; 2025 OCS LLC / Insured</p><p class="mt-2"><a class="underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="underline" href="tel:+14066072151">(406) 607-2151</a></p><p class="mt-2 text-sm">Proudly serving Kalispell, Whitefish, Columbia Falls, Bigfork &amp; the Flathead Valley.</p></div></footer>
 </body>
 </html>
