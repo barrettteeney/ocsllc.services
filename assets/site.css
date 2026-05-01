@@ -439,5 +439,5 @@ img.fade-on-load.loaded { opacity: 1; }
 }
 
 /* Trust badge: keep star icon inline with text on city/service pages */
-.bg-custom-cyan span:has(>svg[viewBox="0 0 24 24"][width="12"]){display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}
-.bg-custom-cyan span svg[viewBox="0 0 24 24"][width="12"]{display:inline-block;vertical-align:middle}
+.trust-row span:has(>svg){display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}
+.trust-row span svg{display:inline-block;vertical-align:middle}
