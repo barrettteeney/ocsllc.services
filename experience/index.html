@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>OCS LLC — Crystal-clear, in 3D</title>
+<meta name="description" content="An interactive 3D look at how we bring crystal-clear windows to homes across the Flathead Valley. Scroll to clean.">
+<link rel="canonical" href="https://experience.ocsllc.services/">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;font-family:'Garet',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#05080f;color:#fff;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{cursor:default}
+#scene{position:fixed;inset:0;width:100vw;height:100vh;display:block;z-index:1}
+.hud{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 2rem;pointer-events:none;mix-blend-mode:difference}
+.hud .brand{font-weight:800;font-size:1.05rem;letter-spacing:.04em;color:#fff;pointer-events:auto}
+.hud .nav{display:flex;gap:1.5rem;font-size:.85rem;color:#fff;pointer-events:auto}
+.hud .nav a{color:#fff;text-decoration:none;opacity:.85;transition:opacity .2s}
+.hud .nav a:hover{opacity:1}
+.story{position:relative;z-index:5;pointer-events:none}
+.story section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:2rem max(2rem,8vw);max-width:680px}
+.story section.right{margin-left:auto;text-align:right;padding-right:max(2rem,8vw)}
+.eyebrow{font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#0CC0DF;margin-bottom:1rem;font-weight:700}
+.headline{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:800;line-height:1.05;letter-spacing:-.02em;margin-bottom:1.25rem;color:#fff;text-wrap:balance}
+.headline em{font-style:normal;background:linear-gradient(120deg,#0CC0DF,#67e8f9);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lede{font-size:clamp(1rem,1.6vw,1.2rem);line-height:1.55;color:#cbd5e1;max-width:520px;margin-bottom:2rem}
+.story.right .lede{margin-left:auto}
+.cta{display:inline-flex;align-items:center;gap:.6rem;background:#0CC0DF;color:#05080f;padding:.85rem 1.5rem;border-radius:999px;text-decoration:none;font-weight:700;letter-spacing:.02em;pointer-events:auto;transition:transform .2s,box-shadow .2s;box-shadow:0 0 0 0 rgba(12,192,223,.4)}
+.cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(12,192,223,.35)}
+.cta-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3);padding:.8rem 1.4rem}
+.cta-ghost:hover{border-color:#0CC0DF;color:#0CC0DF;box-shadow:none}
+.cta svg{width:14px;height:14px}
+.scroll-hint{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:.5rem;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);pointer-events:none;animation:pulse 2.4s ease-in-out infinite}
+.scroll-hint .line{width:1px;height:32px;background:linear-gradient(to bottom,rgba(12,192,223,.8),transparent)}
+@keyframes pulse{0%,100%{opacity:.4;transform:translate(-50%,0)}50%{opacity:.9;transform:translate(-50%,4px)}}
+.loading{position:fixed;inset:0;background:#05080f;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;transition:opacity .8s}
+.loading.done{opacity:0;pointer-events:none}
+.loading .ring{width:36px;height:36px;border:2px solid rgba(255,255,255,.1);border-top-color:#0CC0DF;border-radius:50%;animation:spin .9s linear infinite}
+.loading .label{font-size:.78rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.scene-overlay{position:fixed;inset:0;background:radial-gradient(circle at 50% 70%,transparent 40%,#05080f 100%);z-index:2;pointer-events:none}
+.cleanup-fx{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:0}
+.cleanup-fx.active{opacity:1;animation:cleanFlash 1.4s ease-out forwards}
+@keyframes cleanFlash{0%{background:radial-gradient(circle at var(--x,50%) var(--y,50%),rgba(12,192,223,.6),transparent 25%);opacity:.9}100%{background:radial-gradient(circle at var(--x,50%) var(--y,50%),rgba(255,255,255,0),transparent 90%);opacity:0}}
+.final-cta{position:relative;z-index:5;text-align:center;padding:6rem 2rem;background:linear-gradient(180deg,transparent,rgba(12,192,223,.08))}
+.final-cta h2{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-.02em;margin-bottom:1rem}
+.final-cta p{color:#94a3b8;margin-bottom:2rem;font-size:1.05rem}
+.final-cta .row{display:inline-flex;gap:1rem;flex-wrap:wrap;justify-content:center;pointer-events:auto}
+footer{position:relative;z-index:5;padding:3rem 2rem;text-align:center;font-size:.8rem;color:rgba(255,255,255,.4);border-top:1px solid rgba(255,255,255,.06)}
+footer a{color:#0CC0DF;text-decoration:none}
+@media (max-width:720px){
+  .hud{padding:1rem 1.25rem;font-size:.8rem}
+  .hud .nav{gap:1rem;font-size:.75rem}
+  .story section{padding:2rem 1.5rem;min-height:90vh}
+  .story section.right{padding-right:1.5rem;text-align:left;margin-left:0}
+  .story.right .lede{margin-left:0}
+}
+.window-tip{position:fixed;top:50%;left:50%;transform:translate(-50%,calc(-50% + 80px));z-index:6;background:rgba(8,12,22,.85);backdrop-filter:blur(8px);border:1px solid rgba(12,192,223,.3);padding:.65rem 1rem;border-radius:999px;font-size:.85rem;color:#cbd5e1;pointer-events:none;opacity:0;transition:opacity .4s}
+.window-tip.show{opacity:1}
+.window-tip strong{color:#0CC0DF}
+</style>
+</head>
+<body>
+
+<div class="loading" id="loader">
+  <div class="ring"></div>
+  <div class="label">Polishing the glass</div>
+</div>
+
+<canvas id="scene"></canvas>
+<div class="scene-overlay"></div>
+<div class="cleanup-fx" id="cleanupFx"></div>
+<div class="window-tip" id="windowTip">Click any window to <strong>clean it</strong></div>
+
+<header class="hud">
+  <div class="brand">OCS LLC</div>
+  <nav class="nav">
+    <a href="https://ocsllc.services/estimate/">Estimate</a>
+    <a href="https://ocsllc.services/pricing/">Pricing</a>
+    <a href="tel:+14066072151">(406) 607-2151</a>
+  </nav>
+</header>
+
+<main class="story">
+  <section>
+    <div class="eyebrow">OCS LLC · Flathead Valley</div>
+    <h1 class="headline">Crystal-clear windows, <em>by hand, every time.</em></h1>
+    <p class="lede">Scroll to see how we bring back the view — pane by pane, across Kalispell, Whitefish, Columbia Falls, and Bigfork.</p>
+    <a class="cta" href="https://ocsllc.services/estimate/">
+      Get a free estimate
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </section>
+
+  <section class="right">
+    <div class="eyebrow">Step 01 · Approach</div>
+    <h2 class="headline">We show up <em>on the day we say.</em></h2>
+    <p class="lede">No four-hour windows, no "we'll get to you next week." Same-day quotes, scheduled visits, and a black Tacoma in your driveway when promised.</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">Step 02 · Detail</div>
+    <h2 class="headline">Every pane gets <em>hand-detailed</em>.</h2>
+    <p class="lede">Inside, outside, screens, sills, tracks. We work corners and edges where dust collects, then leave glass you can actually see through.</p>
+  </section>
+
+  <section class="right">
+    <div class="eyebrow">Step 03 · Try it</div>
+    <h2 class="headline">Click a window. <em>Watch it clean.</em></h2>
+    <p class="lede">This isn't a stock animation — every window in the scene is interactive. Tap the dirty pane and see the difference yourself.</p>
+  </section>
+</main>
+
+<section class="final-cta">
+  <h2>Ready for the real thing?</h2>
+  <p>Free quote, same-day. Backed by our 24-hour satisfaction guarantee.</p>
+  <div class="row">
+    <a class="cta" href="https://ocsllc.services/estimate/">
+      Get my estimate
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+    <a class="cta cta-ghost" href="tel:+14066072151">Call (406) 607-2151</a>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 OCS LLC · Insured · Locally owned · <a href="https://ocsllc.services/">Visit the main site</a></p>
+</footer>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+gsap.registerPlugin(ScrollTrigger);
+
+// ---------- Scene + renderer ----------
+const canvas = document.getElementById('scene');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight, false);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x05080f, 18, 60);
+scene.background = new THREE.Color(0x05080f);
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+// ---------- Camera ----------
+const camera = new THREE.PerspectiveCamera(38, window.innerWidth/window.innerHeight, 0.1, 200);
+camera.position.set(14, 6, 14);
+camera.lookAt(0, 2, 0);
+
+// ---------- Lights ----------
+const sun = new THREE.DirectionalLight(0xfff5e0, 1.6);
+sun.position.set(-12, 16, 8);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -16;
+sun.shadow.camera.right = 16;
+sun.shadow.camera.top = 16;
+sun.shadow.camera.bottom = -16;
+sun.shadow.camera.near = 1;
+sun.shadow.camera.far = 50;
+sun.shadow.bias = -0.0008;
+scene.add(sun);
+
+const rim = new THREE.DirectionalLight(0x0CC0DF, 0.7);
+rim.position.set(10, 8, -10);
+scene.add(rim);
+
+const fill = new THREE.HemisphereLight(0x88aaff, 0x202030, 0.4);
+scene.add(fill);
+
+// ---------- Ground ----------
+const groundGeo = new THREE.CircleGeometry(50, 64);
+const groundMat = new THREE.MeshStandardMaterial({ color: 0x0a1020, roughness: 1, metalness: 0 });
+const ground = new THREE.Mesh(groundGeo, groundMat);
+ground.rotation.x = -Math.PI/2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// Subtle grid
+const grid = new THREE.GridHelper(50, 50, 0x0CC0DF, 0x0a1428);
+grid.material.opacity = 0.18;
+grid.material.transparent = true;
+scene.add(grid);
+
+// ---------- Procedural house ----------
+const house = new THREE.Group();
+scene.add(house);
+
+const wallMat = new THREE.MeshStandardMaterial({ color: 0xe8e6dc, roughness: 0.85, metalness: 0 });
+const trimMat = new THREE.MeshStandardMaterial({ color: 0x2c3e50, roughness: 0.5, metalness: 0.1 });
+const roofMat = new THREE.MeshStandardMaterial({ color: 0x2a2520, roughness: 0.7, metalness: 0.05 });
+
+// Main body
+const bodyGeo = new THREE.BoxGeometry(8, 4, 6);
+const body = new THREE.Mesh(bodyGeo, wallMat);
+body.position.y = 2;
+body.castShadow = true;
+body.receiveShadow = true;
+house.add(body);
+
+// Foundation
+const foundGeo = new THREE.BoxGeometry(8.4, 0.4, 6.4);
+const foundMat = new THREE.MeshStandardMaterial({ color: 0x6b6258, roughness: 0.9 });
+const foundation = new THREE.Mesh(foundGeo, foundMat);
+foundation.position.y = 0.2;
+foundation.castShadow = true;
+foundation.receiveShadow = true;
+house.add(foundation);
+
+// Roof — gable
+function makeRoof() {
+  const shape = new THREE.Shape();
+  shape.moveTo(-4.4, 0);
+  shape.lineTo(4.4, 0);
+  shape.lineTo(0, 3);
+  shape.lineTo(-4.4, 0);
+  const extrudeSettings = { depth: 6.4, bevelEnabled: false };
+  const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+  geo.translate(0, 0, -3.2);
+  const mesh = new THREE.Mesh(geo, roofMat);
+  mesh.position.y = 4;
+  mesh.castShadow = true;
+  return mesh;
+}
+house.add(makeRoof());
+
+// Door
+const doorGeo = new THREE.BoxGeometry(1.2, 2.2, 0.1);
+const door = new THREE.Mesh(doorGeo, trimMat);
+door.position.set(0, 1.1, 3.05);
+house.add(door);
+
+// ---------- Windows (interactive) ----------
+const windows = [];
+const windowGeometry = new THREE.BoxGeometry(1.4, 1.5, 0.1);
+
+// Custom dirty/clean shader material
+function makeWindowMaterial(dirty = true) {
+  const m = new THREE.MeshPhysicalMaterial({
+    color: 0xc8d4dc,
+    roughness: dirty ? 0.85 : 0.05,
+    metalness: 0.1,
+    transmission: dirty ? 0.0 : 0.95,
+    transparent: true,
+    opacity: dirty ? 0.85 : 0.4,
+    ior: 1.5,
+    thickness: 0.5,
+    clearcoat: 1,
+    clearcoatRoughness: dirty ? 0.6 : 0.05,
+    envMapIntensity: dirty ? 0.4 : 1.4,
+    side: THREE.DoubleSide
+  });
+  return m;
+}
+
+const windowFrameMat = new THREE.MeshStandardMaterial({ color: 0x2c3e50, roughness: 0.4, metalness: 0.2 });
+
+function addWindow(x, y, z, rotY = 0) {
+  const grp = new THREE.Group();
+  // Frame
+  const frameOuter = new THREE.BoxGeometry(1.6, 1.7, 0.12);
+  const frame = new THREE.Mesh(frameOuter, windowFrameMat);
+  grp.add(frame);
+  // Glass
+  const glassMat = makeWindowMaterial(true);
+  const glass = new THREE.Mesh(windowGeometry, glassMat);
+  glass.position.z = 0.01;
+  grp.add(glass);
+  // Mullion (cross)
+  const mulV = new THREE.Mesh(new THREE.BoxGeometry(0.06, 1.5, 0.13), windowFrameMat);
+  const mulH = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.06, 0.13), windowFrameMat);
+  grp.add(mulV); grp.add(mulH);
+  grp.position.set(x, y, z);
+  grp.rotation.y = rotY;
+  grp.userData = { glass, glassMat, dirty: true };
+  windows.push(grp);
+  house.add(grp);
+}
+
+// Front-facing windows (z = +3.05)
+addWindow(-2.6, 2.4, 3.05);
+addWindow( 2.6, 2.4, 3.05);
+addWindow(-2.6, 2.4, -3.05, Math.PI);
+addWindow( 2.6, 2.4, -3.05, Math.PI);
+// Side
+addWindow( 4.05, 2.4,  1.5,  Math.PI/2);
+addWindow( 4.05, 2.4, -1.5,  Math.PI/2);
+addWindow(-4.05, 2.4,  1.5, -Math.PI/2);
+addWindow(-4.05, 2.4, -1.5, -Math.PI/2);
+
+// ---------- Truck (the Tacoma) ----------
+const truck = new THREE.Group();
+const truckBodyMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.4, metalness: 0.3 });
+const truckGlassMat = new THREE.MeshPhysicalMaterial({ color: 0x222a3a, roughness: 0.05, metalness: 0.1, transmission: 0.5, transparent: true, opacity: 0.7 });
+
+// Cab
+const cab = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.1, 1.8), truckBodyMat);
+cab.position.set(0, 1.1, 0.3);
+cab.castShadow = true;
+truck.add(cab);
+// Bed
+const bed = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.8, 1.6), truckBodyMat);
+bed.position.set(0, 0.95, -1.2);
+bed.castShadow = true;
+truck.add(bed);
+// Wheels
+function wheel(x,z){
+  const w = new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.35,0.3,16), new THREE.MeshStandardMaterial({color:0x111,roughness:0.9}));
+  w.rotation.z = Math.PI/2;
+  w.position.set(x, 0.35, z);
+  w.castShadow = true;
+  return w;
+}
+truck.add(wheel(-1, 0.6));
+truck.add(wheel( 1, 0.6));
+truck.add(wheel(-1,-1.6));
+truck.add(wheel( 1,-1.6));
+// Windshield
+const ws = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.8, 0.05), truckGlassMat);
+ws.position.set(0, 1.3, 1.2);
+ws.rotation.x = -0.25;
+truck.add(ws);
+
+truck.position.set(8, 0, 4);
+truck.rotation.y = -0.4;
+scene.add(truck);
+
+// ---------- Trees ----------
+function tree(x,z) {
+  const g = new THREE.Group();
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 1.2, 8), new THREE.MeshStandardMaterial({color:0x3a2818, roughness:1}));
+  trunk.position.y = 0.6;
+  trunk.castShadow = true;
+  g.add(trunk);
+  for (let i=0;i<3;i++){
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(0.9 - i*0.15, 1.4, 8), new THREE.MeshStandardMaterial({color:0x1a3a2a, roughness:1}));
+    cone.position.y = 1.2 + i*0.55;
+    cone.castShadow = true;
+    g.add(cone);
+  }
+  g.position.set(x, 0, z);
+  scene.add(g);
+}
+tree(-9, 5);
+tree(-11, -2);
+tree(10, -6);
+tree(-7, -7);
+
+// ---------- Ambient particles (slow drifting dust/sparkle) ----------
+const particleGeo = new THREE.BufferGeometry();
+const particleCount = 200;
+const positions = new Float32Array(particleCount * 3);
+for (let i = 0; i < particleCount; i++) {
+  positions[i*3] = (Math.random()-0.5) * 30;
+  positions[i*3+1] = Math.random() * 8 + 1;
+  positions[i*3+2] = (Math.random()-0.5) * 30;
+}
+particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+const particleMat = new THREE.PointsMaterial({ color: 0x0CC0DF, size: 0.04, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending });
+const particles = new THREE.Points(particleGeo, particleMat);
+scene.add(particles);
+
+// ---------- Post-processing (bloom for glow) ----------
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.5, 0.6, 0.85);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+// ---------- Resize ----------
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight, false);
+  composer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ---------- Click-to-clean ----------
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+const cleanupFx = document.getElementById('cleanupFx');
+const windowTip = document.getElementById('windowTip');
+let cleanedCount = 0;
+
+function cleanWindow(winGroup, screenX, screenY) {
+  if (!winGroup.userData.dirty) return;
+  winGroup.userData.dirty = false;
+  const oldMat = winGroup.userData.glassMat;
+  const newMat = makeWindowMaterial(false);
+  winGroup.userData.glass.material = newMat;
+  winGroup.userData.glassMat = newMat;
+  // Animate scale punch
+  gsap.fromTo(winGroup.userData.glass.scale, {x:0.9,y:0.9,z:0.9}, {x:1,y:1,z:1,duration:.6,ease:'elastic.out(1,0.4)'});
+  // Screen flash
+  cleanupFx.style.setProperty('--x', screenX + 'px');
+  cleanupFx.style.setProperty('--y', screenY + 'px');
+  cleanupFx.classList.remove('active');
+  void cleanupFx.offsetWidth;
+  cleanupFx.classList.add('active');
+  // Sparkle particles
+  spawnSparkles(winGroup.position);
+  cleanedCount++;
+  if (cleanedCount === 1) {
+    windowTip.classList.remove('show');
+  }
+  if (cleanedCount === windows.length) {
+    setTimeout(()=>{
+      windowTip.innerHTML = '<strong>All clear.</strong> Want this on your house?';
+      windowTip.classList.add('show');
+      setTimeout(()=>windowTip.classList.remove('show'), 4000);
+    }, 800);
+  }
+}
+
+const sparkleGroup = new THREE.Group();
+scene.add(sparkleGroup);
+function spawnSparkles(at) {
+  const n = 40;
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(n*3);
+  const vel = [];
+  for (let i=0;i<n;i++){
+    pos[i*3]=at.x; pos[i*3+1]=at.y; pos[i*3+2]=at.z;
+    vel.push(new THREE.Vector3((Math.random()-0.5)*0.08,(Math.random())*0.08,(Math.random()-0.5)*0.08));
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  const mat = new THREE.PointsMaterial({color:0x67e8f9,size:0.12,transparent:true,opacity:1,blending:THREE.AdditiveBlending});
+  const pts = new THREE.Points(geo, mat);
+  sparkleGroup.add(pts);
+  let life = 0;
+  const tick = () => {
+    life += 0.016;
+    const arr = geo.attributes.position.array;
+    for (let i=0;i<n;i++){
+      arr[i*3]   += vel[i].x;
+      arr[i*3+1] += vel[i].y;
+      arr[i*3+2] += vel[i].z;
+      vel[i].y -= 0.002;
+    }
+    geo.attributes.position.needsUpdate = true;
+    mat.opacity = Math.max(0, 1 - life/1.2);
+    if (life < 1.4) requestAnimationFrame(tick);
+    else sparkleGroup.remove(pts);
+  };
+  tick();
+}
+
+window.addEventListener('pointerdown', (e) => {
+  pointer.x = (e.clientX/window.innerWidth)*2 - 1;
+  pointer.y = -(e.clientY/window.innerHeight)*2 + 1;
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(windows.map(w => w.userData.glass));
+  if (hits.length) {
+    const win = hits[0].object.parent;
+    cleanWindow(win, e.clientX, e.clientY);
+  }
+});
+// Show hint after first scroll
+let tipShown = false;
+window.addEventListener('scroll', () => {
+  if (!tipShown && window.scrollY > window.innerHeight*0.5) {
+    tipShown = true;
+    setTimeout(()=>windowTip.classList.add('show'), 600);
+    setTimeout(()=>windowTip.classList.remove('show'), 5500);
+  }
+});
+
+// ---------- Scroll-driven camera ----------
+const scrollSections = document.querySelectorAll('.story section');
+const camStops = [
+  { pos: [14, 6, 14], look: [0, 2.5, 0] },         // Section 1: hero, distant 3/4
+  { pos: [-12, 4, 8], look: [-2, 2.4, 0] },        // Section 2: side angle, truck visible
+  { pos: [3, 3.5, 8.5], look: [2.6, 2.5, 3.05] },  // Section 3: zoom on a front window
+  { pos: [0.5, 2.6, 6], look: [-2.6, 2.4, 3.05] }, // Section 4: very close to window for clicking
+];
+
+scrollSections.forEach((sec, i) => {
+  ScrollTrigger.create({
+    trigger: sec,
+    start: 'top 70%',
+    end: 'bottom 30%',
+    onEnter: () => animCameraTo(camStops[i]),
+    onEnterBack: () => animCameraTo(camStops[i]),
+  });
+});
+
+function animCameraTo(stop) {
+  gsap.to(camera.position, {
+    x: stop.pos[0], y: stop.pos[1], z: stop.pos[2],
+    duration: 1.6, ease: 'power3.inOut',
+    onUpdate: () => camera.lookAt(stop.look[0], stop.look[1], stop.look[2])
+  });
+  gsap.to(lookTarget, {
+    x: stop.look[0], y: stop.look[1], z: stop.look[2],
+    duration: 1.6, ease: 'power3.inOut'
+  });
+}
+const lookTarget = new THREE.Vector3(0, 2.5, 0);
+
+// ---------- Truck idle anim ----------
+gsap.to(truck.position, { y: 0.02, duration: 2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+
+// ---------- Animate ----------
+const clock = new THREE.Clock();
+function tick() {
+  const dt = clock.getDelta();
+  const t  = clock.getElapsedTime();
+  // drift particles
+  const arr = particleGeo.attributes.position.array;
+  for (let i = 0; i < particleCount; i++) {
+    arr[i*3+1] += Math.sin(t + i) * 0.001;
+    arr[i*3]   += Math.cos(t*0.3 + i*0.1) * 0.002;
+  }
+  particleGeo.attributes.position.needsUpdate = true;
+  // make camera always look at lookTarget
+  camera.lookAt(lookTarget);
+  composer.render();
+  requestAnimationFrame(tick);
+}
+
+// ---------- Boot ----------
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('done');
+    requestAnimationFrame(tick);
+  }, 600);
+});
+</script>
+</body>
+</html>
