@@ -62,7 +62,24 @@
 <h2 class="text-3xl font-bold mb-2">Reserve a cleaning</h2>
 <p class="text-gray-600 mb-3">Pick a service and pick a day. I&rsquo;ll review your details, send a final quote before the appointment, and you approve before any work happens. No deposit. Quote turnaround is usually within a day &mdash; sometimes longer when I&rsquo;m on the road.</p>
 <div id="reserve" class="qf" style="text-align:left;max-width:760px;margin:1.25rem auto 0">
-<!-- SQUARE_EMBED -->
+<!-- HCP_BOOKING_EMBED -->
+<div class="hcp-embed-wrap" style="text-align:center;padding:1.5rem 0">
+  <button data-token="2f57b85c386d4991bfe6e76edaebcbcb" data-orgname="OCS-LLC" class="hcp-cta-btn" onClick="HCPWidget.openModal()">
+    Reserve Your Cleaning
+  </button>
+  <script async src="https://online-booking.housecallpro.com/script.js?token=2f57b85c386d4991bfe6e76edaebcbcb&orgName=OCS-LLC"></script>
+  <p class="hcp-embed-note">Pick a service, choose a day &mdash; I&rsquo;ll send the final quote within a day or two. No deposit. Your slot is held the whole time.</p>
+  <p class="hcp-embed-fallback">Prefer not to use the form? <a href="tel:+14066072151">Call (406) 607-2151</a>, text the same number, or email <a href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a>.</p>
+</div>
+<style>
+.hcp-cta-btn{background:#0CC0DF;color:#fff;font-weight:700;font-size:1.15rem;padding:1rem 2.2rem;border:none;border-radius:999px;cursor:pointer;box-shadow:0 6px 20px rgba(12,192,223,.35);transition:all .2s;font-family:inherit}
+.hcp-cta-btn:hover{background:#0aa3bd;transform:translateY(-1px);box-shadow:0 8px 24px rgba(12,192,223,.45)}
+.hcp-embed-note{margin-top:1.1rem;color:#475569;font-size:.95rem;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.5}
+.hcp-embed-fallback{margin-top:.6rem;color:#64748b;font-size:.85rem}
+.hcp-embed-fallback a{color:#0CC0DF;font-weight:600;text-decoration:none}
+.hcp-embed-fallback a:hover{text-decoration:underline}
+</style>
+<!-- /HCP_BOOKING_EMBED -->
 <!-- Paste your Square Appointments embed iframe code here. Get it from: Square Dashboard -> Appointments -> Online Booking -> Get embed code. Delete the placeholder block below when you do. -->
 <div style="padding:3rem 1.5rem;text-align:center;color:#64748b;background:#f8fafc;border:2px dashed #cbd5e1;border-radius:10px">
 <strong style="display:block;color:#0f172a;font-size:1.05rem;margin-bottom:.5rem">Booking widget loads here</strong>
