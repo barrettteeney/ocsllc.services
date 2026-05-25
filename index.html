@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>OCS LLC | Window Cleaning &amp; Pressure Washing - Flathead Valley, MT</title>
-<meta name="description" content="Professional window cleaning &amp; pressure washing throughout the Flathead Valley. Insured, locally owned, 5.0 stars on Google. Free same-day quotes - call (406) 607-2151.">
+<meta name="description" content="Professional window cleaning &amp; pressure washing throughout the Flathead Valley. Insured, locally owned, 5.0 stars on Google. Request a quote in under 2 minutes.">
 <link rel="canonical" href="https://ocsllc.services/">
 <meta name="theme-color" content="#0CC0DF">
 <meta property="og:type" content="website">
@@ -23,34 +23,86 @@
 .tb .text{font-size:.85rem;line-height:1.3}
 .tb .text strong{display:block;font-size:.95rem;color:#0f172a}
 .tb .text span{color:#6b7280}
-.qf{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;box-shadow:0 8px 24px rgba(15,23,42,.06);max-width:560px;margin:1.25rem auto 0}
-.qf label{display:block;font-weight:600;font-size:.82rem;margin:.6rem 0 .25rem;color:#0f172a}
-.qf input,.qf select,.qf textarea{width:100%;padding:.65rem .8rem;border:1px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit}
-.qf input:focus,.qf select:focus,.qf textarea:focus{outline:none;border-color:#0CC0DF;box-shadow:0 0 0 3px rgba(12,192,223,.15)}
-.qf textarea{min-height:60px;resize:vertical}
-.qf .row2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
-@media (max-width:520px){.qf .row2{grid-template-columns:1fr}}
-.qf button{background:#0CC0DF;color:#fff;padding:.85rem;border:0;border-radius:8px;font-weight:700;font-size:.95rem;cursor:pointer;margin-top:.85rem;width:100%}
-.qf button:hover{background:#0aa3bd}
-
 .service-map-wrap{max-width:760px;margin:0 auto;border-radius:14px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 8px 24px rgba(15,23,42,.06);background:#fff}
 .service-map{display:block;width:100%;height:auto}
-.map-cta{max-width:760px;margin:1rem auto 0;text-align:center}
-.map-note{color:#475569;font-size:.92rem;margin:0 0 .8rem}
-.map-btn{display:inline-block;background:#0CC0DF;color:#fff;font-weight:700;padding:.7rem 1.3rem;border-radius:999px;text-decoration:none}
-.map-btn:hover{background:#0aa3bd}
-iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!important;border:0!important}
-.hcp-widget iframe{height:100%!important;max-width:none!important}
+
+/* ===== Quote form (embedded) ===== */
+.qf-wrap{max-width:720px;margin:1.5rem auto 0;text-align:left}
+.qf-progress{display:flex;align-items:center;gap:.4rem;justify-content:center;margin:0 0 1.5rem;font-size:.78rem;color:#64748b;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.qf-progress .dot{width:9px;height:9px;border-radius:50%;background:#cbd5e1}
+.qf-progress .dot.on{background:#0CC0DF}
+.qf-progress .dot.done{background:#10b981}
+.qf-step{display:none;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1.5rem;box-shadow:0 2px 8px rgba(15,23,42,.04);margin-bottom:1rem}
+.qf-step.active{display:block}
+.qf-step h3{margin:0 0 1rem;font-size:1.2rem;color:#0f172a;font-weight:800;line-height:1.3}
+.qf-step .qf-hint{color:#64748b;font-size:.9rem;margin:0 0 1rem;line-height:1.5}
+.qf-tiles{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media(max-width:540px){.qf-tiles{grid-template-columns:1fr}}
+.qf-tile{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1.1rem 1rem;text-align:left;cursor:pointer;font-family:inherit;transition:all .15s ease;display:block;width:100%}
+.qf-tile:hover{border-color:#0CC0DF;background:#fff}
+.qf-tile strong{display:block;font-size:1rem;color:#0f172a;font-weight:700;margin-bottom:.25rem}
+.qf-tile span{color:#6b7280;font-size:.85rem;line-height:1.45}
+.qf-opts{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem}
+.qf-opts button{background:#fff;border:1.5px solid #d1d5db;border-radius:999px;padding:.5rem .95rem;font-size:.88rem;font-weight:600;color:#0f172a;cursor:pointer;font-family:inherit;transition:all .12s ease}
+.qf-opts button:hover{border-color:#0CC0DF}
+.qf-opts button.on{background:#0CC0DF;color:#fff;border-color:#0CC0DF}
+.qf-step fieldset{border:0;padding:0;margin:0 0 1.2rem}
+.qf-step fieldset legend{font-weight:700;color:#0f172a;font-size:.95rem;margin-bottom:.4rem;padding:0}
+.qf-followup{margin-top:.75rem;padding:.75rem;background:#f8fafc;border-radius:8px;border-left:3px solid #0CC0DF}
+.qf-followup-q{margin:0 0 .35rem;font-weight:600;font-size:.88rem;color:#0f172a}
+.qf-fld{display:block;font-weight:600;font-size:.85rem;margin:.85rem 0 .3rem;color:#0f172a}
+.qf-fld small{font-weight:400;color:#64748b;margin-left:.3rem}
+.qf-step input[type=number],.qf-step input[type=text],.qf-step input[type=tel],.qf-step input[type=email],.qf-step textarea{width:100%;padding:.65rem .85rem;border:1.5px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit;box-sizing:border-box;background:#fff}
+.qf-step input:focus,.qf-step textarea:focus{outline:none;border-color:#0CC0DF;box-shadow:0 0 0 3px rgba(12,192,223,.15)}
+.qf-step textarea{min-height:70px;resize:vertical}
+.qf-row2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+@media(max-width:540px){.qf-row2{grid-template-columns:1fr}}
+.qf-input-hint{font-size:.8rem;color:#6b7280;margin:.25rem 0 0}
+.qf-hidden{display:none !important}
+.qf-actions{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;gap:.75rem;flex-wrap:wrap}
+.qf-back{background:none;border:0;color:#6b7280;font-weight:600;cursor:pointer;font-family:inherit;font-size:.9rem;padding:.55rem .25rem}
+.qf-back:hover{color:#0f172a}
+.qf-next{background:#0CC0DF;color:#fff;font-weight:700;border:0;border-radius:999px;padding:.75rem 1.6rem;font-size:.98rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(12,192,223,.3);transition:all .15s ease}
+.qf-next:hover{background:#0aa3bd}
+.qf-next:disabled{background:#cbd5e1;cursor:not-allowed;box-shadow:none}
+.qf-oversize{margin-top:1rem;padding:1.1rem;background:#fef3c7;border:1.5px solid #f59e0b;border-radius:10px}
+.qf-oversize h4{margin:0 0 .4rem;font-size:1.05rem;color:#92400e}
+.qf-oversize p{margin:0 0 .8rem;color:#78350f;font-size:.9rem;line-height:1.5}
+.qf-oversize a{display:inline-block;background:#0f172a;color:#fff;padding:.55rem 1.1rem;border-radius:999px;font-weight:700;font-size:.9rem;text-decoration:none;margin-right:.4rem}
+.qf-recap{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:1rem 1.2rem;margin:.5rem 0 1rem;font-size:.9rem;line-height:1.7;color:#374151}
+.qf-recap .row{display:flex;justify-content:space-between;gap:1rem;padding:.25rem 0;border-bottom:1px solid #f3f4f6}
+.qf-recap .row:last-child{border-bottom:0}
+.qf-recap .label{color:#6b7280}
+.qf-recap .val{color:#0f172a;font-weight:600;text-align:right}
+.qf-error{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:8px;padding:.8rem 1rem;color:#b91c1c;font-size:.88rem;margin:.75rem 0;display:none}
+.qf-error.show{display:block}
+.qf-thanks{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1.75rem 1.5rem;box-shadow:0 2px 8px rgba(15,23,42,.04);text-align:center;margin-bottom:1rem}
+.qf-thanks-icon{width:60px;height:60px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:#16a34a}
+.qf-thanks h3{font-size:1.45rem;font-weight:800;color:#0f172a;margin:0 0 .5rem}
+.qf-thanks .lead{color:#475569;font-size:1rem;margin:0 0 1.2rem;line-height:1.55}
+.qf-range{background:#0f172a;color:#fff;border-radius:12px;padding:1.5rem;margin:1rem 0;text-align:center}
+.qf-range .label{font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;color:#94a3b8;font-weight:600;margin-bottom:.5rem}
+.qf-range .range{font-size:2rem;font-weight:800;color:#0CC0DF;line-height:1.1;margin:.25rem 0}
+.qf-range .range .sep{color:rgba(255,255,255,.4);margin:0 .15rem;font-weight:400}
+.qf-range .caveat{font-size:.82rem;color:rgba(255,255,255,.7);margin:.85rem 0 0;line-height:1.5;text-align:left}
+.qf-cta-row{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:1.25rem}
+.qf-cta-row a{display:inline-block;background:#0CC0DF;color:#fff;font-weight:700;padding:.65rem 1.2rem;border-radius:999px;text-decoration:none;font-size:.92rem}
+.qf-cta-row a.secondary{background:#fff;color:#0f172a;border:1.5px solid #d1d5db}
+.qf-cta-row a:hover{opacity:.92}
+.qf-loading{display:none;text-align:center;padding:1.5rem 0;color:#475569;font-weight:600}
+.qf-loading.show{display:block}
+.qf-spinner{display:inline-block;width:24px;height:24px;border:3px solid #e5e7eb;border-top-color:#0CC0DF;border-radius:50%;animation:qf-spin .8s linear infinite;vertical-align:middle;margin-right:.5rem}
+@keyframes qf-spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body class="bg-gray-50 text-black">
 <nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10"><div class="container nav-container"><a href="/" class="text-lg font-bold">OCS LLC</a><div class="contact-info"><p><a href="tel:+14066072151">(406) 607-2151</a></p><p><a href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a></p></div></div></nav>
 <main id="main">
-<section id="home" class="hero-mini hero-photo" style="background-image: url('/assets/photos/54649749362.jpg');">
+<section id="home" class="hero-mini hero-photo" style="background-image: url('/assets/photos/54650568676.jpg');">
 <h1>Crystal-clear windows in the Flathead Valley</h1>
 <p class="hero-tagline" style="font-style:italic;font-size:clamp(1rem,2vw,1.15rem);opacity:.95;margin:.5rem 0 1rem">"Work Done Well, Work Done Right."</p>
 <p>Insured. Locally owned. 5.0 stars on Google.</p>
-<div class="hero-cta-row"><a href="#reserve" class="bg-custom-cyan text-white px-6 py-3 rounded-lg font-bold" style="box-shadow:0 6px 20px rgba(12,192,223,.4)">Reserve a Cleaning</a><a href="#quote" class="bg-white text-black px-6 py-3 rounded-lg font-semibold">Get a Free Quote</a><a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a></div>
+<div class="hero-cta-row"><a href="#reserve" class="bg-custom-cyan text-white px-6 py-3 rounded-lg font-bold" style="box-shadow:0 6px 20px rgba(12,192,223,.4)">Reserve a Cleaning</a><a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a></div>
 </section>
 <section id="trust" class="bg-white" style="padding-top:1rem;padding-bottom:1rem">
 <div class="container"><div class="trust-badges">
@@ -59,33 +111,182 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
 <div class="tb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><div class="text"><strong>Locally owned</strong><span>Operated by Barrett Teeney</span></div></div>
 <div class="tb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div class="text"><strong>Same-day quotes</strong><span>Most replies under 1 hour</span></div></div>
 </div></div></section>
+
 <section id="quote" class="bg-gray-50">
 <div class="container" style="max-width:780px;text-align:center">
-<h2 class="text-3xl font-bold mb-2">Reserve a cleaning</h2>
-<p class="text-gray-600 mb-3">Pick a service and pick a day. I&rsquo;ll review your details, send a final quote before the appointment, and you approve before any work happens. No deposit. Quote turnaround is usually within a day &mdash; sometimes longer when I&rsquo;m on the road.</p>
-<div id="reserve" class="qf" style="text-align:left;max-width:760px;margin:1.25rem auto 0">
-<!-- HCP_BOOKING_EMBED -->
-<div class="hcp-embed-wrap" style="text-align:center;padding:1.5rem 0">
-  <button data-token="2f57b85c386d4991bfe6e76edaebcbcb" data-orgname="OCS-LLC" class="hcp-cta-btn" onClick="HCPWidget.openModal()">
-    Reserve Your Cleaning
-  </button>
-  <script async src="https://online-booking.housecallpro.com/script.js?token=2f57b85c386d4991bfe6e76edaebcbcb&orgName=OCS-LLC"></script>
-  <p class="hcp-embed-note">Pick a service, choose a day &mdash; I&rsquo;ll send the final quote within a day or two. No deposit. Your slot is held the whole time.</p>
-  <p class="hcp-embed-fallback">Prefer not to use the form? <a href="tel:+14066072151">Call (406) 607-2151</a>, text the same number, or email <a href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a>.</p>
+<h2 class="text-3xl font-bold mb-2" id="reserve">Reserve your cleaning</h2>
+<p class="text-gray-600 mb-3">A few quick questions and we'll get back to you within 24 hours with a price range. No spam, no commitment.</p>
+
+<div class="qf-wrap" id="qfFormWrap">
+<div class="qf-progress" id="qfProgress">
+  <span class="dot on" data-p="1"></span>
+  <span class="dot" data-p="2"></span>
+  <span class="dot" data-p="3"></span>
+  <span class="dot" data-p="4"></span>
+  <span class="dot" data-p="5"></span>
+  <span class="dot" data-p="6"></span>
 </div>
-<style>
-.hcp-cta-btn{background:#0CC0DF;color:#fff;font-weight:700;font-size:1.15rem;padding:1rem 2.2rem;border:none;border-radius:999px;cursor:pointer;box-shadow:0 6px 20px rgba(12,192,223,.35);transition:all .2s;font-family:inherit}
-.hcp-cta-btn:hover{background:#0aa3bd;transform:translateY(-1px);box-shadow:0 8px 24px rgba(12,192,223,.45)}
-.hcp-embed-note{margin-top:1.1rem;color:#475569;font-size:.95rem;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.5}
-.hcp-embed-fallback{margin-top:.6rem;color:#64748b;font-size:.85rem}
-.hcp-embed-fallback a{color:#0CC0DF;font-weight:600;text-decoration:none}
-.hcp-embed-fallback a:hover{text-decoration:underline}
-</style>
-<!-- /HCP_BOOKING_EMBED -->
+
+<section class="qf-step active" data-step="1">
+  <h3>1. What kind of cleaning?</h3>
+  <div class="qf-tiles">
+    <button class="qf-tile" data-set="service" data-val="both"><strong>Interior + Exterior</strong><span>Full clean &mdash; includes screens &amp; tracks. Most popular.</span></button>
+    <button class="qf-tile" data-set="service" data-val="ext"><strong>Exterior Only</strong><span>Outside glass only. Lower price.</span></button>
+  </div>
+</section>
+
+<section class="qf-step" data-step="2">
+  <h3>2. How would you like to be quoted?</h3>
+  <div class="qf-tiles">
+    <button class="qf-tile" data-set="method" data-val="sqft"><strong>By home size (recommended)</strong><span>Quickest way &mdash; we'll use your home's square footage.</span></button>
+    <button class="qf-tile" data-set="method" data-val="windows"><strong>By pane count</strong><span>Count each individual pane of glass &mdash; a double-hung window is 2 panes, a triple-pane is 3.</span></button>
+  </div>
+  <div class="qf-actions"><button class="qf-back" data-goto="1">&larr; Back</button><span></span></div>
+</section>
+
+<section class="qf-step" data-step="3a">
+  <h3>3. Your home's size</h3>
+  <label class="qf-fld">Approximate square footage</label>
+  <input type="number" id="qf-sqft" min="0" max="20000" placeholder="e.g. 2500" inputmode="numeric">
+  <p class="qf-input-hint">You can find this on Zillow, your county assessor's site, or your home's purchase paperwork. A close estimate is fine.</p>
+  <div id="qf-oversize" class="qf-oversize qf-hidden">
+    <h4>Homes over 6,000 sqft need an in-person quote</h4>
+    <p>For larger homes we visit the property so we can quote accurately. The visit is free &mdash; usually takes 20 minutes.</p>
+    <a href="tel:+14066072151">Call (406) 607-2151</a><a href="sms:+14066072151">Text us</a>
+  </div>
+  <div class="qf-actions"><button class="qf-back" data-goto="2">&larr; Back</button><button class="qf-next" data-goto="4" id="qf-next3a">Next &rarr;</button></div>
+</section>
+
+<section class="qf-step" data-step="3b">
+  <h3>3. Pane count</h3>
+  <p class="qf-hint">Count each <strong>individual pane of glass</strong>, not whole windows. A double-hung window has 2 panes, a triple-pane has 3, a sliding glass door has 2 large panes.</p>
+  <label class="qf-fld">How many panes of glass?</label>
+  <input type="number" id="qf-windowCount" min="0" max="500" placeholder="e.g. 30" inputmode="numeric">
+  <label class="qf-fld">How many screens? <small>(usually one per window opening, not per pane)</small></label>
+  <input type="number" id="qf-screenCount" min="0" max="500" placeholder="e.g. 15" inputmode="numeric">
+  <label class="qf-fld">Any French / divided-light windows? <small>(small panes inside a wood grid)</small></label>
+  <div class="qf-opts">
+    <button type="button" data-set="windowHasFrench" data-val="no" class="on">No</button>
+    <button type="button" data-set="windowHasFrench" data-val="yes">Yes</button>
+  </div>
+  <div id="qf-windowFrenchBlock" class="qf-hidden" style="margin-top:.6rem">
+    <label class="qf-fld">How many individual French panes?</label>
+    <input type="number" id="qf-windowFrenchCount" min="0" max="300" placeholder="e.g. 12" inputmode="numeric">
+  </div>
+  <div class="qf-actions"><button class="qf-back" data-goto="2">&larr; Back</button><button class="qf-next" data-goto="4" id="qf-next3b">Next &rarr;</button></div>
+</section>
+
+<section class="qf-step" data-step="4">
+  <h3>4. A few quick questions</h3>
+  <p class="qf-hint">These help us quote accurately and avoid surprises on the day of the appointment.</p>
+  <fieldset>
+    <legend>How many stories is your home?</legend>
+    <div class="qf-opts">
+      <button type="button" data-set="stories" data-val="1" class="on">1 story</button>
+      <button type="button" data-set="stories" data-val="2">2 or more stories</button>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Hard water staining on the windows?</legend>
+    <div class="qf-opts">
+      <button type="button" data-set="hardWater" data-val="none" class="on">None / not sure</button>
+      <button type="button" data-set="hardWater" data-val="light">Light</button>
+      <button type="button" data-set="hardWater" data-val="moderate">Moderate</button>
+      <button type="button" data-set="hardWater" data-val="heavy">Heavy</button>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>When was the last professional window cleaning?</legend>
+    <div class="qf-opts">
+      <button type="button" data-set="lastCleaned" data-val="recent" class="on">Within the past 5 years</button>
+      <button type="button" data-set="lastCleaned" data-val="over5">Longer than 5 years ago</button>
+      <button type="button" data-set="lastCleaned" data-val="never">Never</button>
+    </div>
+    <div id="qf-constructionFollowup" class="qf-followup qf-hidden">
+      <p class="qf-followup-q">Was the home professionally cleaned at construction?</p>
+      <div class="qf-opts">
+        <button type="button" data-set="constructionClean" data-val="yes" class="on">Yes</button>
+        <button type="button" data-set="constructionClean" data-val="no">No</button>
+        <button type="button" data-set="constructionClean" data-val="dontknow">Don't know</button>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Is this a post-construction cleanup? <small style="font-weight:400;color:#6b7280">(paint, stucco, sticker residue)</small></legend>
+    <div class="qf-opts">
+      <button type="button" data-set="postConstruction" data-val="no" class="on">No</button>
+      <button type="button" data-set="postConstruction" data-val="yes">Yes</button>
+    </div>
+  </fieldset>
+  <fieldset id="qf-sqftFrenchAsk">
+    <legend>Any French / divided-light windows? <small style="font-weight:400;color:#6b7280">(small panes in a wood grid)</small></legend>
+    <div class="qf-opts">
+      <button type="button" data-set="sqftHasFrench" data-val="no" class="on">No</button>
+      <button type="button" data-set="sqftHasFrench" data-val="yes">Yes</button>
+    </div>
+    <div id="qf-sqftFrenchBlock" class="qf-hidden" style="margin-top:.6rem">
+      <label class="qf-fld">How many individual French panes?</label>
+      <input type="number" id="qf-sqftFrenchCount" min="0" max="300" placeholder="e.g. 12" inputmode="numeric">
+    </div>
+  </fieldset>
+  <div class="qf-actions"><button class="qf-back" id="qf-back4">&larr; Back</button><button class="qf-next" data-goto="5">Next &rarr;</button></div>
+</section>
+
+<section class="qf-step" data-step="5">
+  <h3>5. Your contact info</h3>
+  <p class="qf-hint">So we can confirm your appointment and follow up if needed.</p>
+  <div class="qf-row2">
+    <div><label class="qf-fld">First name <small>*</small></label><input type="text" id="qf-firstName" required autocomplete="given-name"></div>
+    <div><label class="qf-fld">Last name <small>*</small></label><input type="text" id="qf-lastName" required autocomplete="family-name"></div>
+  </div>
+  <label class="qf-fld">Phone <small>*</small></label>
+  <input type="tel" id="qf-phone" required placeholder="(406) 555-1234" autocomplete="tel">
+  <label class="qf-fld">Email <small>*</small></label>
+  <input type="email" id="qf-email" required placeholder="you@example.com" autocomplete="email">
+  <label class="qf-fld">Service address <small>(street, city)</small></label>
+  <input type="text" id="qf-address" placeholder="123 Main St, Kalispell" autocomplete="street-address">
+  <label class="qf-fld">Preferred contact method</label>
+  <div class="qf-opts">
+    <button type="button" data-set="contactPref" data-val="text" class="on">Text</button>
+    <button type="button" data-set="contactPref" data-val="call">Call</button>
+    <button type="button" data-set="contactPref" data-val="email">Email</button>
+  </div>
+  <label class="qf-fld">Anything else we should know? <small>(optional)</small></label>
+  <textarea id="qf-notes" placeholder="Skylights, special access, scheduling preferences, pets, etc."></textarea>
+  <div class="qf-actions"><button class="qf-back" data-goto="4">&larr; Back</button><button class="qf-next" data-goto="6">Review &rarr;</button></div>
+</section>
+
+<section class="qf-step" data-step="6">
+  <h3>6. Review and send</h3>
+  <p class="qf-hint">Take a quick look. Once you send, we'll get back to you within 24 hours with a price range.</p>
+  <div class="qf-recap" id="qfRecap"></div>
+  <div class="qf-error" id="qfError"></div>
+  <div class="qf-loading" id="qfLoading"><span class="qf-spinner"></span> Sending your request...</div>
+  <div class="qf-actions"><button class="qf-back" data-goto="5">&larr; Edit my answers</button><button class="qf-next" id="qfSubmitBtn">Send my request &rarr;</button></div>
+</section>
 </div>
-<p class="text-sm text-gray-600 mt-4">Prefer to talk first? <a href="tel:+14066072151" class="text-custom-cyan font-bold">Call (406) 607-2151</a> or <a href="sms:+14066072151" class="text-custom-cyan font-bold">text us</a> &middot; <a href="/estimate/" class="text-custom-cyan font-bold underline">Try the instant calculator</a></p>
+
+<div class="qf-wrap qf-hidden" id="qfThanksWrap">
+<div class="qf-thanks">
+  <div class="qf-thanks-icon">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <h3>Thanks &mdash; we got it!</h3>
+  <p class="lead">We've received your request and will reach out within <strong>24 hours</strong> by your preferred method to confirm the details and schedule your visit.</p>
+  <div class="qf-range" id="qfRangeCard">
+    <div class="label">Estimated range</div>
+    <div class="range"><span id="qfRangeLow">$0</span> <span class="sep">&ndash;</span> <span id="qfRangeHigh">$0</span></div>
+    <p class="caveat">This range is based on the answers you gave. The exact price is confirmed when we visit the property so we can account for access, story height, hard water, and other site conditions. Free travel within the Flathead Valley, $150 service minimum, and a 72-hour streak-free guarantee on every job.</p>
+  </div>
+  <p style="color:#475569;font-size:.92rem;margin:1rem 0 0">Want to talk sooner?</p>
+  <div class="qf-cta-row"><a href="tel:+14066072151">Call (406) 607-2151</a><a href="sms:+14066072151" class="secondary">Text us</a></div>
+</div>
+</div>
+
+<p class="text-sm text-gray-600 mt-4">Prefer to talk first? <a href="tel:+14066072151" class="text-custom-cyan font-bold">Call (406) 607-2151</a> or <a href="sms:+14066072151" class="text-custom-cyan font-bold">text us</a></p>
 </div>
 </section>
+
 <section id="why-us" class="bg-white"><div class="container">
 <h2 class="text-3xl font-bold text-center mb-8">Why OCS LLC</h2>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -121,12 +322,13 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
 </div></section>
 <section id="final-cta" class="bg-custom-cyan text-white"><div class="container max-w-2xl text-center">
 <h2 class="text-3xl font-bold mb-3" style="color:#fff">Ready for crystal-clear windows?</h2>
-<p class="mb-6">Free quote, no obligation. Same-day response.</p>
-<div class="hero-cta-row"><a href="#quote" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Fill out form</a><a href="tel:+14066072151" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Call (406) 607-2151</a><a href="sms:+14066072151" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Text us</a></div>
+<p class="mb-6">Free quote, no obligation. We'll get back to you within 24 hours.</p>
+<div class="hero-cta-row"><a href="#reserve" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Request a quote</a><a href="tel:+14066072151" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Call (406) 607-2151</a><a href="sms:+14066072151" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Text us</a></div>
 </div></section>
 </main>
-<footer class="bg-custom-cyan text-white py-8 mt-auto"><div class="container text-center"><p>&copy; 2025 OCS LLC &middot; Insured &middot; Locally owned</p><p class="mt-2"><a class="underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="underline" href="tel:+14066072151">(406) 607-2151</a></p><p class="mt-2 text-sm">Serving Kalispell, Whitefish, Columbia Falls, Bigfork &amp; the Flathead Valley.</p><p class="mt-3 text-sm"><a class="underline" href="/">Home</a> &middot; <a class="underline" href="/pricing/">Pricing</a> &middot; <a class="underline" href="/estimate/">Instant Estimate</a> &middot; <a class="underline" href="/reviews/">Reviews</a> &middot; <a class="underline" href="/about/">About</a> &middot; <a class="underline" href="/services/additional/">Additional Services</a></p></div></footer>
+<footer class="bg-custom-cyan text-white py-8 mt-auto"><div class="container text-center"><p>&copy; 2025 OCS LLC &middot; Insured &middot; Locally owned</p><p class="mt-2"><a class="underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="underline" href="tel:+14066072151">(406) 607-2151</a></p><p class="mt-2 text-sm">Serving Kalispell, Whitefish, Columbia Falls, Bigfork &amp; the Flathead Valley.</p><p class="mt-3 text-sm"><a class="underline" href="/">Home</a> &middot; <a class="underline" href="/pricing/">Pricing</a> &middot; <a class="underline" href="/reviews/">Reviews</a> &middot; <a class="underline" href="/about/">About</a> &middot; <a class="underline" href="/services/additional/">Additional Services</a></p></div></footer>
 <div class="mobile-bottom-bar"><a href="tel:+14066072151" class="mobile-call-bar mcb-half">Call</a><a href="sms:+14066072151" class="mobile-call-bar mcb-half" style="border-left:1px solid rgba(255,255,255,0.3)">Text</a></div>
+
 <script>(function(){var c=document.getElementById('reviewCarousel');if(c){var cards=c.querySelectorAll('.review-card');var dots=document.querySelectorAll('#reviewDots .dot');var n=cards.length;var i=0;var t;function show(k){cards.forEach(function(card,idx){var on=idx===k;card.classList.toggle('active',on);card.style.opacity=on?'1':'0';card.style.position=on?'relative':'absolute';});dots.forEach(function(d,idx){d.classList.toggle('active',idx===k);});i=k;}function next(){show((i+1)%n);}function start(){t=setInterval(next,4500);}function reset(){clearInterval(t);start();}show(0);start();c.addEventListener('mouseenter',function(){clearInterval(t);});c.addEventListener('mouseleave',start);dots.forEach(function(d,idx){d.addEventListener('click',function(){show(idx);reset();});});}var els=document.querySelectorAll('.reveal');var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.08,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){io.observe(e);});})();</script>
 
 <script>
@@ -135,7 +337,6 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
   if(!hero) return;
   var photos=['54573533898.jpg','54649723797.jpg','54649749362.jpg','54650520711.jpg','54650568676.jpg','54650912485.jpg','54693602255.jpg','54701920038.jpg','54722974706.jpg','54723193839.jpg','54723284430.jpg','54723308610.jpg','54723308760.jpg'];
   var i=0;
-  // Preload next image then swap
   function next(){
     i=(i+1)%photos.length;
     var url='/assets/photos/'+photos[i];
@@ -147,6 +348,238 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
     img.src=url;
   }
   setInterval(next,7000);
+})();
+</script>
+
+<script>
+/* ===== Embedded quote form ===== */
+(function(){
+'use strict';
+const state = {
+  service:null, method:null, sqft:0,
+  windowCount:0, screenCount:0,
+  windowHasFrench:'no', windowFrenchCount:0,
+  sqftHasFrench:'no', sqftFrenchCount:0,
+  stories:'1', hardWater:'none',
+  lastCleaned:'recent', constructionClean:'yes',
+  postConstruction:'no', contactPref:'text',
+  firstName:'', lastName:'', phone:'', email:'', address:'', notes:''
+};
+const SQFT_TIERS = [
+  {label:'Tier 1 (≤1,000 sqft)', max:1000, both:0.15, ext:0.09},
+  {label:'Tier 2 (1,001–2,000 sqft)', max:2000, both:0.17, ext:0.10},
+  {label:'Tier 3 (2,001–3,000 sqft)', max:3000, both:0.19, ext:0.11},
+  {label:'Tier 4 (3,001–4,000 sqft)', max:4000, both:0.21, ext:0.13},
+  {label:'Tier 5 (4,001–5,000 sqft)', max:5000, both:0.23, ext:0.14},
+  {label:'Tier 6 (5,001–6,000 sqft)', max:6000, both:0.25, ext:0.15}
+];
+const PER_PANE = {ext:8, both:14, screen:2};
+const HW_PCT = {none:0, light:0.15, moderate:0.25, heavy:0.40};
+const HW_LABEL = {none:'None', light:'Light', moderate:'Moderate', heavy:'Heavy'};
+const MIN_CHARGE = 150;
+const FRENCH_PANE_FEE = 5;
+
+function $(s){return document.querySelector(s);}
+function $$(s){return Array.from(document.querySelectorAll(s));}
+
+function goto(stepId){
+  $$('.qf-step').forEach(s => s.classList.toggle('active', s.dataset.step === stepId));
+  const num = stepId.startsWith('3') ? 3 : parseInt(stepId, 10);
+  $$('#qfProgress .dot').forEach(d => {
+    const p = parseInt(d.dataset.p, 10);
+    d.classList.toggle('on', p === num);
+    d.classList.toggle('done', p < num);
+  });
+  if (stepId === '6') renderRecap();
+  document.getElementById('quote').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+$$('.qf-tile').forEach(t => t.addEventListener('click', () => {
+  const k = t.dataset.set, v = t.dataset.val;
+  state[k] = v;
+  if (k === 'service') goto('2');
+  else if (k === 'method') goto(v === 'sqft' ? '3a' : '3b');
+}));
+
+$$('button[data-set]').forEach(b => {
+  if (b.classList.contains('qf-tile')) return;
+  b.addEventListener('click', () => {
+    const k = b.dataset.set, v = b.dataset.val;
+    state[k] = v;
+    const group = b.closest('.qf-opts');
+    if (group) group.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    if (k === 'lastCleaned') $('#qf-constructionFollowup').classList.toggle('qf-hidden', v !== 'never');
+    if (k === 'windowHasFrench') $('#qf-windowFrenchBlock').classList.toggle('qf-hidden', v !== 'yes');
+    if (k === 'sqftHasFrench') $('#qf-sqftFrenchBlock').classList.toggle('qf-hidden', v !== 'yes');
+  });
+});
+
+$('#qf-sqft').addEventListener('input', e => {
+  state.sqft = parseInt(e.target.value, 10) || 0;
+  $('#qf-oversize').classList.toggle('qf-hidden', state.sqft <= 6000 || state.sqft === 0);
+  $('#qf-next3a').disabled = state.sqft <= 0 || state.sqft > 6000;
+});
+$('#qf-windowCount').addEventListener('input', e => { state.windowCount = parseInt(e.target.value, 10) || 0; $('#qf-next3b').disabled = state.windowCount <= 0; });
+$('#qf-screenCount').addEventListener('input', e => { state.screenCount = parseInt(e.target.value, 10) || 0; });
+$('#qf-windowFrenchCount').addEventListener('input', e => { state.windowFrenchCount = parseInt(e.target.value, 10) || 0; });
+$('#qf-sqftFrenchCount').addEventListener('input', e => { state.sqftFrenchCount = parseInt(e.target.value, 10) || 0; });
+$('#qf-next3a').disabled = true;
+$('#qf-next3b').disabled = true;
+
+['firstName','lastName','phone','email','address','notes'].forEach(id => {
+  $('#qf-'+id).addEventListener('input', e => { state[id] = e.target.value.trim(); });
+});
+
+$$('[data-goto]').forEach(b => b.addEventListener('click', () => {
+  const t = b.dataset.goto;
+  if (t === '4') $('#qf-sqftFrenchAsk').classList.toggle('qf-hidden', state.method !== 'sqft');
+  if (t === '6' && !validateContact()) return;
+  goto(t);
+}));
+$('#qf-back4').addEventListener('click', () => goto(state.method === 'sqft' ? '3a' : '3b'));
+
+function validateContact(){
+  if (!state.firstName) return alertField('First name is required.', 'qf-firstName');
+  if (!state.lastName) return alertField('Last name is required.', 'qf-lastName');
+  if (!state.phone || state.phone.replace(/\D/g,'').length < 10) return alertField('A valid phone number is required.', 'qf-phone');
+  if (!state.email || !/.+@.+\..+/.test(state.email)) return alertField('A valid email is required.', 'qf-email');
+  return true;
+}
+function alertField(msg, id){ alert(msg); $('#'+id).focus(); return false; }
+
+function fmtMoney(n){ return '$' + (Math.round(n*100)/100).toFixed(2).replace(/\.00$/, ''); }
+function roundTo5(n){ return Math.round(n/5)*5; }
+
+function compute(){
+  let base = 0;
+  if (state.method === 'sqft') {
+    if (state.sqft > 6000 || state.sqft <= 0) return {oversize:true};
+    const tier = SQFT_TIERS.find(t => state.sqft <= t.max);
+    const rate = state.service === 'both' ? tier.both : tier.ext;
+    base = state.sqft * rate;
+  } else {
+    const r = state.service === 'both' ? PER_PANE.both : PER_PANE.ext;
+    base += state.windowCount * r;
+    if (state.screenCount > 0) base += state.screenCount * PER_PANE.screen;
+  }
+  let total = base;
+  if (state.stories === '2') total += base * 0.10;
+  if (state.hardWater !== 'none') total += base * HW_PCT[state.hardWater];
+  let neverApplied = false;
+  if (state.lastCleaned === 'over5') neverApplied = true;
+  else if (state.lastCleaned === 'never' && state.constructionClean === 'no') neverApplied = true;
+  if (neverApplied) total += base * 0.15;
+  if (state.postConstruction === 'yes') total += base * 0.30;
+  let frenchPanes = 0;
+  if (state.method === 'sqft' && state.sqftHasFrench === 'yes') frenchPanes = state.sqftFrenchCount;
+  if (state.method === 'windows' && state.windowHasFrench === 'yes') frenchPanes = state.windowFrenchCount;
+  if (frenchPanes > 0) total += frenchPanes * FRENCH_PANE_FEE;
+  let minApplied = false;
+  if (total < MIN_CHARGE) { total = MIN_CHARGE; minApplied = true; }
+  return {base, total: Math.round(total*100)/100, minApplied, frenchPanes};
+}
+
+function priceRange(q){
+  if (q.oversize) return null;
+  let low = roundTo5(q.total * 0.85);
+  let high = roundTo5(q.total * 1.15);
+  if (low < MIN_CHARGE) low = MIN_CHARGE;
+  if (high < low + 25) high = low + 25;
+  return {low, high};
+}
+
+function renderRecap(){
+  const rows = [];
+  rows.push(['Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only']);
+  rows.push(['Pricing method', state.method === 'sqft' ? 'By home size' : 'By pane count']);
+  if (state.method === 'sqft') rows.push(['Home size', state.sqft.toLocaleString() + ' sqft']);
+  else {
+    rows.push(['Panes', state.windowCount]);
+    rows.push(['Screens', state.screenCount]);
+    if (state.windowHasFrench === 'yes') rows.push(['French panes', state.windowFrenchCount]);
+  }
+  rows.push(['Stories', state.stories === '2' ? '2+' : '1']);
+  rows.push(['Hard water', HW_LABEL[state.hardWater]]);
+  rows.push(['Last cleaned', ({recent:'Within 5 years', over5:'Over 5 years ago', never:'Never'})[state.lastCleaned]]);
+  if (state.lastCleaned === 'never') rows.push(['Construction clean?', ({yes:'Yes', no:'No', dontknow:"Don't know"})[state.constructionClean]]);
+  rows.push(['Post-construction', state.postConstruction === 'yes' ? 'Yes' : 'No']);
+  if (state.method === 'sqft' && state.sqftHasFrench === 'yes') rows.push(['French panes', state.sqftFrenchCount]);
+  rows.push(['Name', state.firstName + ' ' + state.lastName]);
+  rows.push(['Phone', state.phone]);
+  rows.push(['Email', state.email]);
+  if (state.address) rows.push(['Address', state.address]);
+  rows.push(['Preferred contact', state.contactPref]);
+  if (state.notes) rows.push(['Notes', state.notes]);
+  $('#qfRecap').innerHTML = rows.map(([l,v]) => `<div class="row"><span class="label">${l}</span><span class="val">${v}</span></div>`).join('');
+}
+
+$('#qfSubmitBtn').addEventListener('click', async () => {
+  const errBox = $('#qfError');
+  const loading = $('#qfLoading');
+  const btn = $('#qfSubmitBtn');
+  errBox.classList.remove('show');
+  errBox.textContent = '';
+  btn.disabled = true;
+  loading.classList.add('show');
+
+  const q = compute();
+  const range = priceRange(q);
+
+  const fd = new FormData();
+  fd.append('_subject', `New quote request from ${state.firstName} ${state.lastName}`);
+  fd.append('_template', 'table');
+  fd.append('_captcha', 'false');
+  fd.append('Name', state.firstName + ' ' + state.lastName);
+  fd.append('Phone', state.phone);
+  fd.append('Email', state.email);
+  fd.append('Address', state.address);
+  fd.append('Preferred contact', state.contactPref);
+  fd.append('Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only');
+  fd.append('Pricing method', state.method === 'sqft' ? 'By home size (sqft)' : 'By pane count');
+  if (state.method === 'sqft') fd.append('Home size (sqft)', state.sqft);
+  else {
+    fd.append('Pane count', state.windowCount);
+    fd.append('Screen count', state.screenCount);
+    if (state.windowHasFrench === 'yes') fd.append('French panes', state.windowFrenchCount);
+  }
+  fd.append('Stories', state.stories === '2' ? '2+' : '1');
+  fd.append('Hard water', HW_LABEL[state.hardWater]);
+  fd.append('Last professional cleaning', state.lastCleaned);
+  if (state.lastCleaned === 'never') fd.append('Cleaned at construction', state.constructionClean);
+  fd.append('Post-construction cleanup', state.postConstruction);
+  if (state.method === 'sqft' && state.sqftHasFrench === 'yes') fd.append('French panes', state.sqftFrenchCount);
+  if (state.notes) fd.append('Customer notes', state.notes);
+  if (q.oversize) {
+    fd.append('Calculated quote', 'OVER 6000 SQFT - IN PERSON REQUIRED');
+    fd.append('Range shown to customer', 'In-person quote (no range)');
+  } else {
+    fd.append('Calculated quote', fmtMoney(q.total) + (q.minApplied ? ' (min applied)' : ''));
+    fd.append('Range shown to customer', '$' + range.low + ' - $' + range.high);
+  }
+  fd.append('Source', 'ocsllc.services homepage form');
+  fd.append('Submitted at', new Date().toLocaleString('en-US', {timeZone:'America/Denver'}) + ' MT');
+
+  try {
+    const resp = await fetch('https://formsubmit.co/ajax/barrett@ocsllc.services', {
+      method:'POST', headers:{'Accept':'application/json'}, body:fd
+    });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    $('#qfFormWrap').classList.add('qf-hidden');
+    $('#qfThanksWrap').classList.remove('qf-hidden');
+    if (q.oversize) {
+      $('#qfRangeCard').innerHTML = '<div class="label">In-person quote required</div><p class="caveat" style="color:rgba(255,255,255,.9);margin-top:.75rem;text-align:center">Your home is over 6,000 sqft, so we visit in person to give an accurate quote. We\'ll call or text you within 24 hours to set up a free visit.</p>';
+    } else {
+      $('#qfRangeLow').textContent = '$' + range.low;
+      $('#qfRangeHigh').textContent = '$' + range.high;
+    }
+    document.getElementById('quote').scrollIntoView({behavior:'smooth', block:'start'});
+  } catch (e) {
+    loading.classList.remove('show');
+    btn.disabled = false;
+    errBox.textContent = "Couldn't send your request — please check your connection and try again, or call (406) 607-2151.";
+    errBox.classList.add('show');
+  }
+});
 })();
 </script>
 </body>
