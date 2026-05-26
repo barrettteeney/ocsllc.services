@@ -251,6 +251,17 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
 </section>
 </div>
 
+<div class="qf-wrap qf-hidden" id="qfContinuePrompt">
+<div class="qf-thanks">
+  <h3>Welcome back!</h3>
+  <p class="lead">When you're ready, see your estimated price range based on the answers you gave. You can also re-open the booking if you closed by mistake.</p>
+  <div class="qf-cta-row" style="margin-top:1rem">
+    <button id="qfShowEstimate" class="qf-book-btn" style="background:#0CC0DF;color:#fff;font-weight:700;border:0;border-radius:999px;padding:.85rem 1.4rem;font-size:1rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(12,192,223,.35)">Show my estimate &rarr;</button>
+    <button id="qfReopenHcp" data-token="2f57b85c386d4991bfe6e76edaebcbcb" data-orgname="OCS-LLC" onClick="HCPWidget.openModal()" style="background:#fff;color:#0f172a;border:1.5px solid #d1d5db;border-radius:999px;padding:.85rem 1.4rem;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit">Re-open booking</button>
+  </div>
+</div>
+</div>
+
 <div class="qf-wrap qf-hidden" id="qfThanksWrap">
 <div class="qf-thanks">
   <div class="qf-thanks-icon">
@@ -555,28 +566,39 @@ window.addEventListener('message', function(e) {
   }
 });
 
-// Fallback: if HCP modal stays open for 60+ seconds and then closes (suggesting
-// the customer interacted with it meaningfully), assume booking and reveal range.
-// This catches the case where HCP doesn't emit a recognizable postMessage.
-(function setupModalCloseFallback(){
-  let openedAt = 0;
+// Show "Continue to your estimate" prompt when HCP modal closes
+// (unless booking already auto-confirmed via postMessage).
+function showContinuePrompt() {
+  if (bookingComplete) return; // range already shown, don't re-prompt
+  $('#qfFormWrap').classList.add('qf-hidden');
+  $('#qfContinuePrompt').classList.remove('qf-hidden');
+  document.getElementById('quote').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+(function setupModalCloseObserver(){
+  let wasVisible = false;
   const observer = new MutationObserver(() => {
     const w = document.querySelector('.hcp-widget');
     if (!w) return;
     const visible = w.classList.contains('hcp-widget--visible');
-    if (visible && !openedAt) openedAt = Date.now();
-    if (!visible && openedAt) {
-      const wasOpenFor = Date.now() - openedAt;
-      openedAt = 0;
-      if (wasOpenFor > 60000) onBookingComplete();
+    if (visible && !wasVisible) { wasVisible = true; }
+    else if (!visible && wasVisible) {
+      wasVisible = false;
+      // Brief delay to let any postMessage fire first
+      setTimeout(showContinuePrompt, 300);
     }
   });
-  // Wait for HCP widget to mount, then observe
   const ready = setInterval(() => {
     const w = document.querySelector('.hcp-widget');
     if (w) { clearInterval(ready); observer.observe(w, {attributes:true, attributeFilter:['class']}); }
   }, 500);
 })();
+
+// "Show my estimate" button on the continue prompt → reveal range
+$('#qfShowEstimate').addEventListener('click', () => {
+  $('#qfContinuePrompt').classList.add('qf-hidden');
+  onBookingComplete();
+});
 })();
 </script>
 </body>

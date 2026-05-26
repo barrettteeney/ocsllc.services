@@ -288,6 +288,18 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
   </section>
 </div>
 
+<!-- Shown when HCP modal closes without an auto-detected booking confirmation -->
+<div class="calc-wrap hidden" id="continuePrompt">
+  <div class="thanks-card">
+    <h2>Welcome back!</h2>
+    <p class="lead">When you're ready, see your estimated price range based on the answers you gave. You can also re-open the booking if you closed by mistake.</p>
+    <div class="thanks-cta-row" style="margin-top:1rem">
+      <a href="javascript:void(0)" id="showEstimate" style="background:#0CC0DF;color:#fff;font-weight:700;border:0;border-radius:999px;padding:.85rem 1.4rem;font-size:1rem;text-decoration:none;cursor:pointer">Show my estimate &rarr;</a>
+      <a href="javascript:void(0)" id="reopenHcp" data-token="2f57b85c386d4991bfe6e76edaebcbcb" data-orgname="OCS-LLC" onclick="HCPWidget.openModal()" class="secondary" style="background:#fff;color:#0f172a;border:1.5px solid #d1d5db;border-radius:999px;padding:.85rem 1.4rem;font-size:1rem;font-weight:700;text-decoration:none;cursor:pointer">Re-open booking</a>
+    </div>
+  </div>
+</div>
+
 <!-- STEP 7: Thank-you + range (only shown after successful submit) -->
 <div class="calc-wrap hidden" id="thanksWrap">
   <div class="thanks-card">
@@ -543,18 +555,25 @@ window.addEventListener('message', function(e) {
   }
 });
 
-// Fallback: modal-open-then-closed-after-60s as a heuristic for completed booking
-(function setupModalCloseFallback(){
-  let openedAt = 0;
+// Show "Continue to your estimate" prompt when HCP modal closes
+// (unless booking already auto-confirmed via postMessage).
+function showContinuePrompt() {
+  if (bookingComplete) return;
+  $('#formWrap').classList.add('hidden');
+  $('#continuePrompt').classList.remove('hidden');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+(function setupModalCloseObserver(){
+  let wasVisible = false;
   const observer = new MutationObserver(() => {
     const w = document.querySelector('.hcp-widget');
     if (!w) return;
     const visible = w.classList.contains('hcp-widget--visible');
-    if (visible && !openedAt) openedAt = Date.now();
-    if (!visible && openedAt) {
-      const wasOpenFor = Date.now() - openedAt;
-      openedAt = 0;
-      if (wasOpenFor > 60000) onBookingComplete();
+    if (visible && !wasVisible) { wasVisible = true; }
+    else if (!visible && wasVisible) {
+      wasVisible = false;
+      setTimeout(showContinuePrompt, 300);
     }
   });
   const ready = setInterval(() => {
@@ -562,6 +581,12 @@ window.addEventListener('message', function(e) {
     if (w) { clearInterval(ready); observer.observe(w, {attributes:true, attributeFilter:['class']}); }
   }, 500);
 })();
+
+// "Show my estimate" button → reveal range
+$('#showEstimate').addEventListener('click', () => {
+  $('#continuePrompt').classList.add('hidden');
+  onBookingComplete();
+});
 
 })();
 </script>
