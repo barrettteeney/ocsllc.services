@@ -7,6 +7,8 @@
 <meta name="description" content="Request a window cleaning quote in the Flathead Valley. Tell us about your home, we'll get back to you within 24 hours with a price range.">
 <link rel="canonical" href="https://ocsllc.services/estimate/">
 <link rel="stylesheet" href="/assets/site.css">
+<!-- HCP booking widget script (used on thank-you screen after submit) -->
+<script async src="https://online-booking.housecallpro.com/script.js?token=2f57b85c386d4991bfe6e76edaebcbcb&orgName=OCS-LLC"></script>
 <style>
 .text-white{color:#fff}.text-lg{font-size:1.125rem;line-height:1.75rem}.font-bold{font-weight:700}.text-center{text-align:center}.py-8{padding-top:2rem;padding-bottom:2rem}.p-4{padding:1rem}.mt-auto{margin-top:auto}.sticky{position:sticky}.z-10{z-index:10}.top-0{top:0}.underline{text-decoration:underline}
 .nav-container a,.site-footer a{color:#fff}
@@ -86,6 +88,11 @@ textarea{min-height:70px;resize:vertical}
 .range-card .range .sep{color:rgba(255,255,255,.4);margin:0 .15rem;font-weight:400}
 .range-card .caveat{font-size:.82rem;color:rgba(255,255,255,.7);margin:.85rem 0 0;line-height:1.5;text-align:left}
 
+.book-block{background:#f0fdfa;border:1.5px solid #14b8a6;border-radius:12px;padding:1.25rem;margin:1.25rem 0 0;text-align:center}
+.book-h{margin:0 0 .25rem;font-size:1.1rem;font-weight:800;color:#0f172a}
+.book-sub{margin:0 0 .9rem;color:#475569;font-size:.88rem;line-height:1.5}
+.book-btn{background:#0CC0DF;color:#fff;font-weight:700;border:0;border-radius:999px;padding:.85rem 1.6rem;font-size:1rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(12,192,223,.35);transition:all .15s ease}
+.book-btn:hover{background:#0aa3bd;transform:translateY(-1px)}
 .thanks-cta-row{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:1.25rem}
 .thanks-cta-row a{display:inline-block;background:#0CC0DF;color:#fff;font-weight:700;padding:.65rem 1.2rem;border-radius:999px;text-decoration:none;font-size:.92rem}
 .thanks-cta-row a.secondary{background:#fff;color:#0f172a;border:1.5px solid #d1d5db}
@@ -309,7 +316,7 @@ textarea{min-height:70px;resize:vertical}
     </div>
     <div class="actions">
       <button class="back-btn" data-goto="5">&larr; Edit my answers</button>
-      <button class="next-btn" id="submitBtn">Send my request &rarr;</button>
+      <button class="next-btn" id="submitBtn">Reserve my appointment &rarr;</button>
     </div>
   </section>
 </div>
@@ -321,15 +328,21 @@ textarea{min-height:70px;resize:vertical}
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
     <h2>Thanks &mdash; we got it!</h2>
-    <p class="lead">We've received your request and will reach out within <strong>24 hours</strong> by your preferred method to confirm the details and schedule your visit.</p>
+    <p class="lead">Your request is in. Lock in your appointment time below, or we'll reach out within <strong>24 hours</strong> by your preferred method to schedule with you.</p>
 
     <div class="range-card" id="rangeCard">
       <div class="label">Estimated range</div>
       <div class="range"><span id="rangeLow">$0</span> <span class="sep">&ndash;</span> <span id="rangeHigh">$0</span></div>
-      <p class="caveat">This range is based on the answers you gave. The exact price is confirmed when we visit the property so we can account for access, story height, hard water, and other site conditions. Free travel within the Flathead Valley, $150 service minimum, and a 72-hour streak-free guarantee on every job.</p>
+      <p class="caveat">Based on the answers you gave. The exact price is confirmed when we visit so we can account for access, story height, hard water, and other site conditions. Free travel within the Flathead Valley, $150 service minimum, and a 72-hour streak-free guarantee on every job.</p>
     </div>
 
-    <p style="color:#475569;font-size:.92rem;margin:1rem 0 0">Want to talk sooner?</p>
+    <div class="book-block">
+      <h3 class="book-h">Pick your appointment time</h3>
+      <p class="book-sub">Choose from my available slots. No deposit. You'll get an instant confirmation.</p>
+      <button data-token="2f57b85c386d4991bfe6e76edaebcbcb" data-orgname="OCS-LLC" class="book-btn" onClick="HCPWidget.openModal()">Pick a time &rarr;</button>
+    </div>
+
+    <p style="color:#475569;font-size:.92rem;margin:1.25rem 0 0">Prefer to talk first?</p>
     <div class="thanks-cta-row">
       <a href="tel:+14066072151">Call (406) 607-2151</a>
       <a href="sms:+14066072151" class="secondary">Text us</a>
