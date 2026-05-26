@@ -129,7 +129,6 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
       <span class="dot" data-p="3"></span>
       <span class="dot" data-p="4"></span>
       <span class="dot" data-p="5"></span>
-      <span class="dot" data-p="6"></span>
     </div>
   </div>
 
@@ -275,52 +274,17 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
   </section>
 
   <!-- STEP 5: Contact info -->
+  <!-- STEP 5: Review + book a time via HCP -->
   <section class="step" data-step="5">
-    <h2>5. Your contact info</h2>
-    <p class="hint">So we can confirm your appointment and follow up if needed.</p>
-    <div class="row2">
-      <div>
-        <label class="fld">First name <small>*</small></label>
-        <input type="text" id="firstName" required autocomplete="given-name">
-      </div>
-      <div>
-        <label class="fld">Last name <small>*</small></label>
-        <input type="text" id="lastName" required autocomplete="family-name">
-      </div>
-    </div>
-    <label class="fld">Phone <small>*</small></label>
-    <input type="tel" id="phone" required placeholder="(406) 555-1234" autocomplete="tel">
-    <label class="fld">Email <small>*</small></label>
-    <input type="email" id="email" required placeholder="you@example.com" autocomplete="email">
-    <label class="fld">Service address <small>(street, city)</small></label>
-    <input type="text" id="address" placeholder="123 Main St, Kalispell" autocomplete="street-address">
-    <label class="fld">Preferred contact method</label>
-    <div class="opts">
-      <button type="button" data-set="contactPref" data-val="text" class="on">Text</button>
-      <button type="button" data-set="contactPref" data-val="call">Call</button>
-      <button type="button" data-set="contactPref" data-val="email">Email</button>
-    </div>
-    <label class="fld">Anything else we should know? <small>(optional)</small></label>
-    <textarea id="notes" placeholder="Skylights, special access, scheduling preferences, pets, etc."></textarea>
-    <div class="actions">
-      <button class="back-btn" data-goto="4">&larr; Back</button>
-      <button class="next-btn" data-goto="6">Review &rarr;</button>
-    </div>
-  </section>
-
-  <!-- STEP 6: Review + submit (NO PRICE SHOWN) -->
-  <section class="step" data-step="6">
-    <h2>6. Review and send</h2>
-    <p class="hint">Take a quick look. Once you send, we'll get back to you within 24 hours with a price range.</p>
+    <h2>5. Pick your appointment time</h2>
+    <p class="hint">Choose a time that works for you. We'll confirm your booking instantly and email you a quote range right after.</p>
     <div class="recap" id="recapBox"></div>
     <div class="submit-error" id="submitError"></div>
-    <div class="loading-overlay" id="loadingOverlay">
-      <span class="spinner"></span> Sending your request...
-    </div>
     <div class="actions">
-      <button class="back-btn" data-goto="5">&larr; Edit my answers</button>
-      <button class="next-btn" id="submitBtn">Reserve my appointment &rarr;</button>
+      <button class="back-btn" data-goto="4">&larr; Edit my answers</button>
+      <button data-token="2f57b85c386d4991bfe6e76edaebcbcb" data-orgname="OCS-LLC" class="next-btn" id="bookBtn" onClick="HCPWidget.openModal()">Pick a time &rarr;</button>
     </div>
+    <p style="color:#64748b;font-size:.85rem;text-align:center;margin:1rem 0 0">Prefer to talk first? <a href="tel:+14066072151" style="color:#0CC0DF;font-weight:700">Call (406) 607-2151</a> &middot; <a href="sms:+14066072151" style="color:#0CC0DF;font-weight:700">Text us</a></p>
   </section>
 </div>
 
@@ -330,22 +294,16 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
     <div class="thanks-icon">
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
-    <h2>Thanks &mdash; we got it!</h2>
-    <p class="lead">Your request is in. Lock in your appointment time below, or we'll reach out within <strong>24 hours</strong> by your preferred method to schedule with you.</p>
+    <h2>Booking confirmed &mdash; thanks!</h2>
+    <p class="lead">Your appointment is locked in. You should have an email confirmation in your inbox. Based on the answers you gave, here's your estimated price range:</p>
 
     <div class="range-card" id="rangeCard">
       <div class="label">Estimated range</div>
       <div class="range"><span id="rangeLow">$0</span> <span class="sep">&ndash;</span> <span id="rangeHigh">$0</span></div>
-      <p class="caveat">Based on the answers you gave. The exact price is confirmed when we visit so we can account for access, story height, hard water, and other site conditions. Free travel within the Flathead Valley, $150 service minimum, and a 72-hour streak-free guarantee on every job.</p>
+      <p class="caveat">Based on what you told us. The exact price is confirmed when we visit so we can account for access, story height, hard water, and other site conditions. Free travel within the Flathead Valley, $150 service minimum, and a 72-hour streak-free guarantee on every job.</p>
     </div>
 
-    <div class="book-block">
-      <h3 class="book-h">Pick your appointment time</h3>
-      <p class="book-sub">Choose from my available slots. No deposit. You'll get an instant confirmation.</p>
-      <button data-token="2f57b85c386d4991bfe6e76edaebcbcb" data-orgname="OCS-LLC" class="book-btn" onClick="HCPWidget.openModal()">Pick a time &rarr;</button>
-    </div>
-
-    <p style="color:#475569;font-size:.92rem;margin:1.25rem 0 0">Prefer to talk first?</p>
+    <p style="color:#475569;font-size:.92rem;margin:1.25rem 0 0">Questions before your appointment?</p>
     <div class="thanks-cta-row">
       <a href="tel:+14066072151">Call (406) 607-2151</a>
       <a href="sms:+14066072151" class="secondary">Text us</a>
@@ -376,8 +334,7 @@ const state = {
   sqftHasFrench: 'no', sqftFrenchCount: 0,
   stories: '1', hardWater: 'none',
   lastCleaned: 'recent', constructionClean: 'yes',
-  postConstruction: 'no', contactPref: 'text',
-  firstName:'', lastName:'', phone:'', email:'', address:'', notes:''
+  postConstruction: 'no'
 };
 
 // ---------- Pricing tables (v3) ----------
@@ -407,7 +364,7 @@ function goto(stepId){
     d.classList.toggle('on', p === num);
     d.classList.toggle('done', p < num);
   });
-  if (stepId === '6') renderRecap();
+  if (stepId === '5') renderRecap();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
@@ -444,26 +401,12 @@ $('#sqftFrenchCount').addEventListener('input', e => { state.sqftFrenchCount = p
 $('#next3a').disabled = true;
 $('#next3b').disabled = true;
 
-['firstName','lastName','phone','email','address','notes'].forEach(id => {
-  $('#'+id).addEventListener('input', e => { state[id] = e.target.value.trim(); });
-});
-
 $$('[data-goto]').forEach(b => b.addEventListener('click', () => {
   const t = b.dataset.goto;
   if (t === '4') $('#sqftFrenchAsk').classList.toggle('hidden', state.method !== 'sqft');
-  if (t === '6' && !validateContact()) return;
   goto(t);
 }));
 $('#back4').addEventListener('click', () => goto(state.method === 'sqft' ? '3a' : '3b'));
-
-function validateContact(){
-  if (!state.firstName) return alertField('First name is required.', 'firstName');
-  if (!state.lastName) return alertField('Last name is required.', 'lastName');
-  if (!state.phone || state.phone.replace(/\D/g,'').length < 10) return alertField('A valid phone number is required.', 'phone');
-  if (!state.email || !/.+@.+\..+/.test(state.email)) return alertField('A valid email is required.', 'email');
-  return true;
-}
-function alertField(msg, id){ alert(msg); $('#'+id).focus(); return false; }
 
 // ---------- Pricing ----------
 function fmtMoney(n){ return '$' + (Math.round(n*100)/100).toFixed(2).replace(/\.00$/, ''); }
@@ -525,39 +468,33 @@ function renderRecap(){
   if (state.lastCleaned === 'never') rows.push(['Construction clean?', ({yes:'Yes', no:'No', dontknow:"Don't know"})[state.constructionClean]]);
   rows.push(['Post-construction', state.postConstruction === 'yes' ? 'Yes' : 'No']);
   if (state.method === 'sqft' && state.sqftHasFrench === 'yes') rows.push(['French panes', state.sqftFrenchCount]);
-  rows.push(['Name', state.firstName + ' ' + state.lastName]);
-  rows.push(['Phone', state.phone]);
-  rows.push(['Email', state.email]);
-  if (state.address) rows.push(['Address', state.address]);
-  rows.push(['Preferred contact', state.contactPref]);
-  if (state.notes) rows.push(['Notes', state.notes]);
   recap.innerHTML = rows.map(([l,v]) => `<div class="row"><span class="label">${l}</span><span class="val">${v}</span></div>`).join('');
 }
 
-// ---------- Submit handler ----------
-$('#submitBtn').addEventListener('click', async () => {
-  const errBox = $('#submitError');
-  const loading = $('#loadingOverlay');
-  const btn = $('#submitBtn');
-  errBox.classList.remove('show');
-  errBox.textContent = '';
-  btn.disabled = true;
-  loading.classList.add('show');
+// ===== HCP booking integration =====
+// After customer picks a time + enters contact info in HCP modal, we listen
+// for booking-complete postMessage and reveal the price range. Their contact
+// info is captured by HCP (sent to Barrett's HCP Inbox).
+
+let bookingComplete = false;
+
+function onBookingComplete() {
+  if (bookingComplete) return;
+  bookingComplete = true;
 
   const q = compute();
   const range = priceRange(q);
   const submittedAt = new Date().toLocaleString('en-US', {timeZone:'America/Denver'}) + ' MT';
 
-  // FormData for FormSubmit.co (emails Barrett with a nicely formatted table)
+  // Email Barrett the calculated quote details (HCP doesn't capture these —
+  // sqft tier, surcharges, etc.) so he has full context alongside HCP booking.
   const fd = new FormData();
-  fd.append('_subject', `New quote request from ${state.firstName} ${state.lastName}`);
+  fd.append('_subject', 'New booking via website form (/estimate/)');
   fd.append('_template', 'table');
   fd.append('_captcha', 'false');
-  fd.append('Name', state.firstName + ' ' + state.lastName);
-  fd.append('Phone', state.phone);
-  fd.append('Email', state.email);
-  fd.append('Address', state.address);
-  fd.append('Preferred contact', state.contactPref);
+  fd.append('Source', 'ocsllc.services /estimate/ page + HCP booking');
+  fd.append('Submitted at', submittedAt);
+  fd.append('Note', 'Customer booked through HCP. Their contact info is in your HCP Inbox. Details from the website form below:');
   fd.append('Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only');
   fd.append('Pricing method', state.method === 'sqft' ? 'By home size (sqft)' : 'By pane count');
   if (state.method === 'sqft') fd.append('Home size (sqft)', state.sqft);
@@ -572,38 +509,59 @@ $('#submitBtn').addEventListener('click', async () => {
   if (state.lastCleaned === 'never') fd.append('Cleaned at construction', state.constructionClean);
   fd.append('Post-construction cleanup', state.postConstruction);
   if (state.method === 'sqft' && state.sqftHasFrench === 'yes') fd.append('French panes', state.sqftFrenchCount);
-  if (state.notes) fd.append('Customer notes', state.notes);
   if (q.oversize) {
     fd.append('Calculated quote', 'OVER 6000 SQFT - IN PERSON REQUIRED');
     fd.append('Range shown to customer', 'In-person quote (no range)');
   } else {
     fd.append('Calculated quote', fmtMoney(q.total) + (q.minApplied ? ' (min applied)' : ''));
-    fd.append('Range shown to customer', '$' + range.low + ' – $' + range.high);
+    fd.append('Range shown to customer', '$' + range.low + ' - $' + range.high);
   }
-  fd.append('Source', 'ocsllc.services quote form');
-  fd.append('Submitted at', submittedAt);
+  fetch('https://formsubmit.co/ajax/barrett@ocsllc.services', {
+    method:'POST', headers:{'Accept':'application/json'}, body:fd
+  }).catch(e => console.warn('FormSubmit failed (HCP booking still confirmed):', e));
 
-  try {
-    const resp = await fetch('https://formsubmit.co/ajax/barrett@ocsllc.services', {
-      method:'POST', headers:{'Accept':'application/json'}, body:fd
-    });
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    $('#formWrap').classList.add('hidden');
-    $('#thanksWrap').classList.remove('hidden');
-    if (q.oversize) {
-      $('#rangeCard').innerHTML = '<div class="label">In-person quote required</div><p class="caveat" style="color:rgba(255,255,255,.9);margin-top:.75rem">Your home is over 6,000 sqft, so we visit the property in person to give you an accurate quote. We\'ll call or text you within 24 hours to set up a free visit.</p>';
-    } else {
-      $('#rangeLow').textContent = '$' + range.low;
-      $('#rangeHigh').textContent = '$' + range.high;
-    }
-    window.scrollTo({top:0, behavior:'smooth'});
-  } catch (e) {
-    loading.classList.remove('show');
-    btn.disabled = false;
-    errBox.textContent = "Couldn't send your request — please check your connection and try again, or call us at (406) 607-2151.";
-    errBox.classList.add('show');
+  $('#formWrap').classList.add('hidden');
+  $('#thanksWrap').classList.remove('hidden');
+  if (q.oversize) {
+    $('#rangeCard').innerHTML = '<div class="label">In-person quote required</div><p class="caveat" style="color:rgba(255,255,255,.9);margin-top:.75rem">Your home is over 6,000 sqft — we\'ll visit in person to give you an accurate quote, and we\'ll be in touch within 24 hours about timing.</p>';
+  } else {
+    $('#rangeLow').textContent = '$' + range.low;
+    $('#rangeHigh').textContent = '$' + range.high;
+  }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// Listen for HCP postMessage events
+window.addEventListener('message', function(e) {
+  if (!e.origin || !/housecallpro\.com$/.test(new URL(e.origin).hostname || '')) return;
+  const data = e.data;
+  let signal = '';
+  if (typeof data === 'string') signal = data.toLowerCase();
+  else if (data && typeof data === 'object') signal = JSON.stringify(data).toLowerCase();
+  if (/booking.?complete|booking.?confirmed|booking.?success|appointment.?confirmed|reservation.?complete/.test(signal)) {
+    onBookingComplete();
   }
 });
+
+// Fallback: modal-open-then-closed-after-60s as a heuristic for completed booking
+(function setupModalCloseFallback(){
+  let openedAt = 0;
+  const observer = new MutationObserver(() => {
+    const w = document.querySelector('.hcp-widget');
+    if (!w) return;
+    const visible = w.classList.contains('hcp-widget--visible');
+    if (visible && !openedAt) openedAt = Date.now();
+    if (!visible && openedAt) {
+      const wasOpenFor = Date.now() - openedAt;
+      openedAt = 0;
+      if (wasOpenFor > 60000) onBookingComplete();
+    }
+  });
+  const ready = setInterval(() => {
+    const w = document.querySelector('.hcp-widget');
+    if (w) { clearInterval(ready); observer.observe(w, {attributes:true, attributeFilter:['class']}); }
+  }, 500);
+})();
 
 })();
 </script>
