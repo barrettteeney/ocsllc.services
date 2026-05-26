@@ -139,7 +139,7 @@
   <h3>2. How would you like to be quoted?</h3>
   <div class="qf-tiles">
     <button class="qf-tile" data-set="method" data-val="sqft"><strong>By home size (recommended)</strong><span>Quickest way &mdash; we'll use your home's square footage.</span></button>
-    <button class="qf-tile" data-set="method" data-val="windows"><strong>By pane count</strong><span>Count each individual pane of glass &mdash; a double-hung window is 2 panes, a triple-pane is 3.</span></button>
+    <button class="qf-tile" data-set="method" data-val="windows"><strong>By pane count</strong><span>Most precise &mdash; count each pane of glass yourself.</span></button>
   </div>
   <div class="qf-actions"><button class="qf-back" data-goto="1">&larr; Back</button><span></span></div>
 </section>
@@ -513,6 +513,46 @@ function renderRecap(){
   $('#qfRecap').innerHTML = rows.map(([l,v]) => `<div class="row"><span class="label">${l}</span><span class="val">${v}</span></div>`).join('');
 }
 
+// Zapier webhook (Webhooks by Zapier "Catch Hook" -> HCP Create Customer)
+const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27728956/4ox65qb/';
+
+function buildSummary(q, range, submittedAt){
+  const lines = [];
+  lines.push('Website quote request — ' + submittedAt);
+  lines.push('');
+  lines.push('Service: ' + (state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only'));
+  if (state.method === 'sqft') lines.push('Pricing method: By home size (' + state.sqft.toLocaleString() + ' sqft)');
+  else {
+    lines.push('Pricing method: By pane count');
+    lines.push('Panes: ' + state.windowCount + ', Screens: ' + state.screenCount);
+    if (state.windowHasFrench === 'yes') lines.push('French panes: ' + state.windowFrenchCount);
+  }
+  lines.push('');
+  lines.push('Stories: ' + (state.stories === '2' ? '2+' : '1'));
+  lines.push('Hard water: ' + HW_LABEL[state.hardWater]);
+  lines.push('Last cleaned: ' + ({recent:'Within 5 years', over5:'Over 5 years ago', never:'Never'})[state.lastCleaned]);
+  if (state.lastCleaned === 'never') lines.push('  Cleaned at construction: ' + ({yes:'Yes', no:'No', dontknow:"Don't know"})[state.constructionClean]);
+  lines.push('Post-construction cleanup: ' + (state.postConstruction === 'yes' ? 'Yes' : 'No'));
+  if (state.method === 'sqft' && state.sqftHasFrench === 'yes') lines.push('French panes: ' + state.sqftFrenchCount);
+  lines.push('');
+  if (q.oversize) {
+    lines.push('Calculated exact quote: OVER 6000 SQFT - IN PERSON REQUIRED');
+    lines.push('Range shown to customer: (in-person, no range shown)');
+  } else {
+    lines.push('Calculated exact quote: ' + fmtMoney(q.total) + (q.minApplied ? ' (min applied)' : ''));
+    lines.push('Range shown to customer: $' + range.low + ' – $' + range.high);
+  }
+  lines.push('');
+  lines.push('Preferred contact: ' + state.contactPref);
+  if (state.notes) {
+    lines.push('');
+    lines.push('Customer notes: ' + state.notes);
+  }
+  lines.push('');
+  lines.push('(Source: ocsllc.services homepage form)');
+  return lines.join('\n');
+}
+
 $('#qfSubmitBtn').addEventListener('click', async () => {
   const errBox = $('#qfError');
   const loading = $('#qfLoading');
@@ -524,7 +564,10 @@ $('#qfSubmitBtn').addEventListener('click', async () => {
 
   const q = compute();
   const range = priceRange(q);
+  const submittedAt = new Date().toLocaleString('en-US', {timeZone:'America/Denver'}) + ' MT';
+  const summary = buildSummary(q, range, submittedAt);
 
+  // FormData for FormSubmit.co (emails Barrett with a nicely formatted table)
   const fd = new FormData();
   fd.append('_subject', `New quote request from ${state.firstName} ${state.lastName}`);
   fd.append('_template', 'table');
@@ -557,13 +600,51 @@ $('#qfSubmitBtn').addEventListener('click', async () => {
     fd.append('Range shown to customer', '$' + range.low + ' - $' + range.high);
   }
   fd.append('Source', 'ocsllc.services homepage form');
-  fd.append('Submitted at', new Date().toLocaleString('en-US', {timeZone:'America/Denver'}) + ' MT');
+  fd.append('Submitted at', submittedAt);
 
-  try {
-    const resp = await fetch('https://formsubmit.co/ajax/barrett@ocsllc.services', {
-      method:'POST', headers:{'Accept':'application/json'}, body:fd
-    });
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+  // JSON payload for Zapier webhook (Zapier exposes each field as a variable for HCP mapping)
+  const zapierPayload = {
+    firstName: state.firstName,
+    lastName: state.lastName,
+    phone: state.phone,
+    email: state.email,
+    address: state.address,
+    contactPref: state.contactPref,
+    service: state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only',
+    method: state.method === 'sqft' ? 'By home size' : 'By pane count',
+    sqft: state.method === 'sqft' ? state.sqft : '',
+    paneCount: state.method === 'windows' ? state.windowCount : '',
+    screenCount: state.method === 'windows' ? state.screenCount : '',
+    frenchPanes: q.frenchPanes || 0,
+    stories: state.stories === '2' ? '2+' : '1',
+    hardWater: HW_LABEL[state.hardWater],
+    lastCleaned: state.lastCleaned,
+    constructionClean: state.lastCleaned === 'never' ? state.constructionClean : '',
+    postConstruction: state.postConstruction,
+    notes: state.notes,
+    calculatedQuote: q.oversize ? 'IN-PERSON REQUIRED (>6000 sqft)' : fmtMoney(q.total),
+    rangeLow: q.oversize ? '' : range.low,
+    rangeHigh: q.oversize ? '' : range.high,
+    minApplied: q.minApplied ? 'Yes' : 'No',
+    summary: summary,
+    submittedAt: submittedAt,
+    source: 'ocsllc.services homepage'
+  };
+
+  // Fire both POSTs in parallel; succeed if either completes
+  const emailPromise = fetch('https://formsubmit.co/ajax/barrett@ocsllc.services', {
+    method:'POST', headers:{'Accept':'application/json'}, body:fd
+  }).then(r => { if (!r.ok) throw new Error('email HTTP ' + r.status); return r; });
+
+  const zapierPromise = fetch(ZAPIER_WEBHOOK, {
+    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(zapierPayload)
+  }).then(r => { if (!r.ok) throw new Error('zapier HTTP ' + r.status); return r; });
+
+  const results = await Promise.allSettled([emailPromise, zapierPromise]);
+  const anyFulfilled = results.some(r => r.status === 'fulfilled');
+  results.forEach((r,i) => { if (r.status === 'rejected') console.warn((i===0?'FormSubmit':'Zapier')+' failed:', r.reason); });
+
+  if (anyFulfilled) {
     $('#qfFormWrap').classList.add('qf-hidden');
     $('#qfThanksWrap').classList.remove('qf-hidden');
     if (q.oversize) {
@@ -573,7 +654,7 @@ $('#qfSubmitBtn').addEventListener('click', async () => {
       $('#qfRangeHigh').textContent = '$' + range.high;
     }
     document.getElementById('quote').scrollIntoView({behavior:'smooth', block:'start'});
-  } catch (e) {
+  } else {
     loading.classList.remove('show');
     btn.disabled = false;
     errBox.textContent = "Couldn't send your request — please check your connection and try again, or call (406) 607-2151.";
