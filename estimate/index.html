@@ -178,6 +178,14 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
       <a href="tel:+14066072151">Call (406) 607-2151</a>
       <a href="sms:+14066072151">Text us</a>
     </div>
+    <div style="background:#f0fdfa;border-left:3px solid #14b8a6;padding:.85rem 1rem;border-radius:6px;margin:1.2rem 0">
+      <strong style="font-size:.92rem;color:#0f172a">Want an even more accurate quote?</strong>
+      <p style="font-size:.85rem;color:#475569;margin:.3rem 0 .6rem;line-height:1.5">If you also know how many panes of glass your home has, drop the count in below and we'll average both estimates. A double-hung window counts as 2 panes.</p>
+      <label class="fld" style="margin-top:.4rem">Pane count <small>(optional)</small></label>
+      <input type="number" id="secondaryPanes" min="0" max="500" placeholder="e.g. 30" inputmode="numeric">
+      <label class="fld">Screen count <small>(optional, usually one per window opening)</small></label>
+      <input type="number" id="secondaryScreens" min="0" max="500" placeholder="e.g. 15" inputmode="numeric">
+    </div>
     <div class="actions">
       <button class="back-btn" data-goto="2">&larr; Back</button>
       <button class="next-btn" data-goto="4" id="next3a">Next &rarr;</button>
@@ -200,6 +208,12 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
     <div id="windowFrenchPanesBlock" class="hidden" style="margin-top:.6rem">
       <label class="fld">How many individual French panes?</label>
       <input type="number" id="windowFrenchCount" min="0" max="300" placeholder="e.g. 12" inputmode="numeric">
+    </div>
+    <div style="background:#f0fdfa;border-left:3px solid #14b8a6;padding:.85rem 1rem;border-radius:6px;margin:1.2rem 0">
+      <strong style="font-size:.92rem;color:#0f172a">Want an even more accurate quote?</strong>
+      <p style="font-size:.85rem;color:#475569;margin:.3rem 0 .6rem;line-height:1.5">If you also know your home's approximate square footage, drop it in below and we'll average both estimates for the most accurate range.</p>
+      <label class="fld" style="margin-top:.4rem">Square footage <small>(optional)</small></label>
+      <input type="number" id="secondarySqft" min="0" max="20000" placeholder="e.g. 2500" inputmode="numeric">
     </div>
     <div class="actions">
       <button class="back-btn" data-goto="2">&larr; Back</button>
@@ -277,8 +291,12 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
   <!-- STEP 5: Review + book a time via HCP -->
   <section class="step" data-step="5">
     <h2>5. Pick your appointment time</h2>
-    <p class="hint">Choose a time that works for you. We'll confirm your booking instantly and email you a quote range right after.</p>
+    <p class="hint">Choose a time that works for you. We'll confirm your booking instantly.</p>
     <div class="recap" id="recapBox"></div>
+    <div style="background:linear-gradient(135deg,#0CC0DF 0%,#0aa3bd 100%);color:#fff;border-radius:12px;padding:1.2rem 1.25rem;margin:1.2rem 0;text-align:center;box-shadow:0 6px 20px rgba(12,192,223,.25)">
+      <strong style="font-size:1.05rem;display:block;line-height:1.3">Your estimated price range is waiting!</strong>
+      <p style="font-size:.9rem;margin:.4rem 0 0;opacity:.95;line-height:1.5">Lock in your appointment and we'll show your personalized estimate based on the answers you gave.</p>
+    </div>
     <div class="submit-error" id="submitError"></div>
     <div class="actions">
       <button class="back-btn" data-goto="4">&larr; Edit my answers</button>
@@ -346,7 +364,8 @@ const state = {
   sqftHasFrench: 'no', sqftFrenchCount: 0,
   stories: '1', hardWater: 'none',
   lastCleaned: 'recent', constructionClean: 'yes',
-  postConstruction: 'no'
+  postConstruction: 'no',
+  secondaryPanes: 0, secondaryScreens: 0, secondarySqft: 0
 };
 
 // ---------- Pricing tables (v3) ----------
@@ -410,6 +429,9 @@ $('#windowCount').addEventListener('input', e => { state.windowCount = parseInt(
 $('#screenCount').addEventListener('input', e => { state.screenCount = parseInt(e.target.value, 10) || 0; });
 $('#windowFrenchCount').addEventListener('input', e => { state.windowFrenchCount = parseInt(e.target.value, 10) || 0; });
 $('#sqftFrenchCount').addEventListener('input', e => { state.sqftFrenchCount = parseInt(e.target.value, 10) || 0; });
+$('#secondaryPanes').addEventListener('input', e => { state.secondaryPanes = parseInt(e.target.value, 10) || 0; });
+$('#secondaryScreens').addEventListener('input', e => { state.secondaryScreens = parseInt(e.target.value, 10) || 0; });
+$('#secondarySqft').addEventListener('input', e => { state.secondarySqft = parseInt(e.target.value, 10) || 0; });
 $('#next3a').disabled = true;
 $('#next3b').disabled = true;
 
@@ -424,33 +446,76 @@ $('#back4').addEventListener('click', () => goto(state.method === 'sqft' ? '3a' 
 function fmtMoney(n){ return '$' + (Math.round(n*100)/100).toFixed(2).replace(/\.00$/, ''); }
 function roundTo5(n){ return Math.round(n/5)*5; }
 
-function compute(){
-  let base = 0;
-  if (state.method === 'sqft') {
-    if (state.sqft > 6000 || state.sqft <= 0) return {oversize:true};
-    const tier = SQFT_TIERS.find(t => state.sqft <= t.max);
-    const rate = state.service === 'both' ? tier.both : tier.ext;
-    base = state.sqft * rate;
-  } else {
-    const r = state.service === 'both' ? PER_PANE.both : PER_PANE.ext;
-    base += state.windowCount * r;
-    if (state.screenCount > 0) base += state.screenCount * PER_PANE.screen;
-  }
-  let total = base;
-  if (state.stories === '2') total += base * 0.10;
-  if (state.hardWater !== 'none') total += base * HW_PCT[state.hardWater];
+function baseFromSqft(sqft) {
+  if (sqft <= 0 || sqft > 6000) return null;
+  const tier = SQFT_TIERS.find(t => sqft <= t.max);
+  const rate = state.service === 'both' ? tier.both : tier.ext;
+  return sqft * rate;
+}
+function baseFromPanes(panes, screens) {
+  if (panes <= 0) return null;
+  const r = state.service === 'both' ? PER_PANE.both : PER_PANE.ext;
+  let b = panes * r;
+  if (screens > 0) b += screens * PER_PANE.screen;
+  return b;
+}
+function applySurcharges(base, frenchPanes) {
+  let t = base;
+  if (state.stories === '2') t += base * 0.10;
+  if (state.hardWater !== 'none') t += base * HW_PCT[state.hardWater];
   let neverApplied = false;
   if (state.lastCleaned === 'over5') neverApplied = true;
   else if (state.lastCleaned === 'never' && state.constructionClean === 'no') neverApplied = true;
-  if (neverApplied) total += base * 0.15;
-  if (state.postConstruction === 'yes') total += base * 0.30;
+  if (neverApplied) t += base * 0.15;
+  if (state.postConstruction === 'yes') t += base * 0.30;
+  if (frenchPanes > 0) t += frenchPanes * FRENCH_PANE_FEE;
+  return t;
+}
+
+function compute(){
+  let primaryBase;
+  if (state.method === 'sqft') {
+    if (state.sqft > 6000) return {oversize:true};
+    primaryBase = baseFromSqft(state.sqft);
+  } else {
+    primaryBase = baseFromPanes(state.windowCount, state.screenCount);
+  }
+  if (primaryBase === null) return {oversize:false, invalid:true};
+
   let frenchPanes = 0;
   if (state.method === 'sqft' && state.sqftHasFrench === 'yes') frenchPanes = state.sqftFrenchCount;
   if (state.method === 'windows' && state.windowHasFrench === 'yes') frenchPanes = state.windowFrenchCount;
-  if (frenchPanes > 0) total += frenchPanes * FRENCH_PANE_FEE;
+
+  const primaryTotal = applySurcharges(primaryBase, frenchPanes);
+
+  // Optional secondary base for averaging
+  let secondaryTotal = null;
+  if (state.method === 'sqft' && state.secondaryPanes > 0) {
+    const sBase = baseFromPanes(state.secondaryPanes, state.secondaryScreens);
+    if (sBase !== null) secondaryTotal = applySurcharges(sBase, frenchPanes);
+  } else if (state.method === 'windows' && state.secondarySqft > 0 && state.secondarySqft <= 6000) {
+    const sBase = baseFromSqft(state.secondarySqft);
+    if (sBase !== null) secondaryTotal = applySurcharges(sBase, frenchPanes);
+  }
+
+  let total = primaryTotal;
+  let averaged = false;
+  if (secondaryTotal !== null) {
+    total = (primaryTotal + secondaryTotal) / 2;
+    averaged = true;
+  }
+  const base = primaryBase;
   let minApplied = false;
   if (total < MIN_CHARGE) { total = MIN_CHARGE; minApplied = true; }
-  return {base, total: Math.round(total*100)/100, minApplied, frenchPanes};
+  return {
+    base,
+    total: Math.round(total*100)/100,
+    minApplied,
+    frenchPanes,
+    averaged,
+    primaryTotal: Math.round(primaryTotal*100)/100,
+    secondaryTotal: secondaryTotal !== null ? Math.round(secondaryTotal*100)/100 : null
+  };
 }
 
 function priceRange(q){
@@ -468,11 +533,14 @@ function renderRecap(){
   const rows = [];
   rows.push(['Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only']);
   rows.push(['Pricing method', state.method === 'sqft' ? 'By home size' : 'By pane count']);
-  if (state.method === 'sqft') rows.push(['Home size', state.sqft.toLocaleString() + ' sqft']);
-  else {
+  if (state.method === 'sqft') {
+    rows.push(['Home size', state.sqft.toLocaleString() + ' sqft']);
+    if (state.secondaryPanes > 0) rows.push(['Pane count (also)', state.secondaryPanes + (state.secondaryScreens > 0 ? ' + ' + state.secondaryScreens + ' screens' : '')]);
+  } else {
     rows.push(['Panes', state.windowCount]);
     rows.push(['Screens', state.screenCount]);
     if (state.windowHasFrench === 'yes') rows.push(['French panes', state.windowFrenchCount]);
+    if (state.secondarySqft > 0) rows.push(['Home size (also)', state.secondarySqft.toLocaleString() + ' sqft']);
   }
   rows.push(['Stories', state.stories === '2' ? '2+' : '1']);
   rows.push(['Hard water', HW_LABEL[state.hardWater]]);
@@ -509,11 +577,15 @@ function onBookingComplete() {
   fd.append('Note', 'Customer booked through HCP. Their contact info is in your HCP Inbox. Details from the website form below:');
   fd.append('Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only');
   fd.append('Pricing method', state.method === 'sqft' ? 'By home size (sqft)' : 'By pane count');
-  if (state.method === 'sqft') fd.append('Home size (sqft)', state.sqft);
-  else {
+  if (state.method === 'sqft') {
+    fd.append('Home size (sqft)', state.sqft);
+    if (state.secondaryPanes > 0) fd.append('Pane count (also provided)', state.secondaryPanes);
+    if (state.secondaryScreens > 0) fd.append('Screen count (also provided)', state.secondaryScreens);
+  } else {
     fd.append('Pane count', state.windowCount);
     fd.append('Screen count', state.screenCount);
     if (state.windowHasFrench === 'yes') fd.append('French panes', state.windowFrenchCount);
+    if (state.secondarySqft > 0) fd.append('Home size (also provided, sqft)', state.secondarySqft);
   }
   fd.append('Stories', state.stories === '2' ? '2+' : '1');
   fd.append('Hard water', HW_LABEL[state.hardWater]);
@@ -525,7 +597,7 @@ function onBookingComplete() {
     fd.append('Calculated quote', 'OVER 6000 SQFT - IN PERSON REQUIRED');
     fd.append('Range shown to customer', 'In-person quote (no range)');
   } else {
-    fd.append('Calculated quote', fmtMoney(q.total) + (q.minApplied ? ' (min applied)' : ''));
+    fd.append('Calculated quote', fmtMoney(q.total) + (q.minApplied ? ' (min applied)' : '') + (q.averaged ? ' (averaged: primary ' + fmtMoney(q.primaryTotal) + ' + secondary ' + fmtMoney(q.secondaryTotal) + ')' : ''));
     fd.append('Range shown to customer', '$' + range.low + ' - $' + range.high);
   }
   fetch('https://formsubmit.co/ajax/barrett@ocsllc.services', {
