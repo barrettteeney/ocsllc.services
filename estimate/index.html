@@ -293,14 +293,18 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
     <h2>5. Pick your appointment time</h2>
     <p class="hint">Choose a time that works for you. We'll confirm your booking instantly.</p>
     <div class="recap" id="recapBox"></div>
-    <div style="background:linear-gradient(135deg,#0CC0DF 0%,#0aa3bd 100%);color:#fff;border-radius:12px;padding:1.2rem 1.25rem;margin:1.2rem 0;text-align:center;box-shadow:0 6px 20px rgba(12,192,223,.25)">
+    <div id="valuePropBanner" style="background:linear-gradient(135deg,#0CC0DF 0%,#0aa3bd 100%);color:#fff;border-radius:12px;padding:1.2rem 1.25rem;margin:1.2rem 0;text-align:center;box-shadow:0 6px 20px rgba(12,192,223,.25)">
       <strong style="font-size:1.05rem;display:block;line-height:1.3">Your estimated price range is waiting!</strong>
-      <p style="font-size:.9rem;margin:.4rem 0 0;opacity:.95;line-height:1.5">Lock in your appointment and we'll show your personalized estimate based on the answers you gave.</p>
+      <p id="durationLine" style="font-size:.9rem;margin:.4rem 0 0;opacity:.95;line-height:1.5">Lock in your appointment and we'll show your personalized estimate based on the answers you gave.</p>
     </div>
     <div class="submit-error" id="submitError"></div>
-    <div class="actions">
+    <div class="actions" id="bookActions">
       <button class="back-btn" data-goto="4">&larr; Edit my answers</button>
       <button data-token="2f57b85c386d4991bfe6e76edaebcbcb" data-orgname="OCS-LLC" class="next-btn" id="bookBtn" onClick="HCPWidget.openModal()">Pick a time &rarr;</button>
+    </div>
+    <div class="actions hidden" id="bookActionsBlocked">
+      <button class="back-btn" data-goto="4">&larr; Edit my answers</button>
+      <a href="tel:+14066072151" class="next-btn" style="text-decoration:none;display:inline-block;text-align:center">Call (406) 607-2151 &rarr;</a>
     </div>
     <p style="color:#64748b;font-size:.85rem;text-align:center;margin:1rem 0 0">Prefer to talk first? <a href="tel:+14066072151" style="color:#0CC0DF;font-weight:700">Call (406) 607-2151</a> &middot; <a href="sms:+14066072151" style="color:#0CC0DF;font-weight:700">Text us</a></p>
   </section>
@@ -395,8 +399,46 @@ function goto(stepId){
     d.classList.toggle('on', p === num);
     d.classList.toggle('done', p < num);
   });
-  if (stepId === '5') renderRecap();
+  if (stepId === '5') { renderRecap(); updateBookingInfo(); }
   window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ===== Appointment duration estimation =====
+// $125/hr ($1000/day rough), rounded to nearest $62.50 boundary.
+// Business window: 9:30 AM – 7 PM (closes 6 PM with 1 hr grace).
+function hoursFromQuote(total) {
+  return Math.max(1, Math.ceil((total - 62.5) / 125));
+}
+function latestStartTime(hours) {
+  const startMin = 19*60 - hours*60;
+  if (startMin < (9*60 + 30)) return null;
+  let hr = Math.floor(startMin / 60), mn = startMin % 60;
+  const ap = hr >= 12 ? 'PM' : 'AM';
+  if (hr > 12) hr -= 12;
+  if (hr === 0) hr = 12;
+  return `${hr}:${mn.toString().padStart(2,'0')} ${ap}`;
+}
+function updateBookingInfo() {
+  const q = compute();
+  let line = "Lock in your appointment and we'll show your personalized estimate based on the answers you gave.";
+  let canBook = true;
+  if (q.oversize) {
+    line = "Your home is over 6,000 sqft — we need to come visit to give you an accurate quote. Please call or text us to schedule.";
+    canBook = false;
+  } else if (!q.invalid) {
+    const h = hoursFromQuote(q.total);
+    const latest = latestStartTime(h);
+    if (latest === null) {
+      line = `Your appointment would take about ${h} hours — that's more than fits in our 9:30 AM – 7 PM single-day window. Please call or text us to schedule across two days.`;
+      canBook = false;
+    } else {
+      const word = h === 1 ? 'hour' : 'hours';
+      line = `Your appointment will take about <strong>${h} ${word}</strong>. Pick a start time between <strong>9:30 AM and ${latest}</strong> so we can wrap up by 7 PM.`;
+    }
+  }
+  $('#durationLine').innerHTML = line;
+  $('#bookActions').classList.toggle('hidden', !canBook);
+  $('#bookActionsBlocked').classList.toggle('hidden', canBook);
 }
 
 // ---------- Wiring ----------
