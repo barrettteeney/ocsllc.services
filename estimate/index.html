@@ -404,13 +404,21 @@ function goto(stepId){
 }
 
 // ===== Appointment duration estimation =====
-// $125/hr ($1000/day rough), rounded to nearest $62.50 boundary.
+// 30 minutes per $62.50 of estimated cost, rounded to nearest $62.50 increment.
 // Business window: 9:30 AM – 7 PM (closes 6 PM with 1 hr grace).
-function hoursFromQuote(total) {
-  return Math.max(1, Math.ceil((total - 62.5) / 125));
+function minutesFromQuote(total) {
+  // Round to nearest $62.50 increment, then 30 min per increment. Minimum 30 min.
+  return Math.max(30, Math.round(total / 62.5) * 30);
 }
-function latestStartTime(hours) {
-  const startMin = 19*60 - hours*60;
+function formatDuration(minutes) {
+  const h = minutes / 60;
+  if (minutes < 60) return `${minutes} minutes`;
+  if (h === 1) return '1 hour';
+  if (Number.isInteger(h)) return `${h} hours`;
+  return `${h} hours`; // e.g. "1.5 hours", "2.5 hours"
+}
+function latestStartTime(durationMinutes) {
+  const startMin = 19*60 - durationMinutes;
   if (startMin < (9*60 + 30)) return null;
   let hr = Math.floor(startMin / 60), mn = startMin % 60;
   const ap = hr >= 12 ? 'PM' : 'AM';
@@ -426,13 +434,13 @@ function updateBookingInfo() {
     line = "Your home is over 6,000 sqft — we need to come visit to give you an accurate quote. Please call or text us to schedule.";
     canBook = false;
   } else if (!q.invalid) {
-    const h = hoursFromQuote(q.total);
-    const word = h === 1 ? 'hour' : 'hours';
-    if (h >= 8) {
-      line = `Your appointment is a <strong>full-day job</strong> (about ${h} ${word}). Pick any day that works — we'll start at 9:30 AM. If we don't finish that day, we'll come back the next to wrap up.`;
+    const mins = minutesFromQuote(q.total);
+    const dur = formatDuration(mins);
+    if (mins >= 480) {
+      line = `Your appointment is a <strong>full-day job</strong> (about ${dur}). Pick any day that works — we'll start at 9:30 AM. If we don't finish that day, we'll come back the next to wrap up.`;
     } else {
-      const latest = latestStartTime(h);
-      line = `Your appointment will take about <strong>${h} ${word}</strong>. Pick a start time between <strong>9:30 AM and ${latest}</strong> so we can wrap up by 7 PM.`;
+      const latest = latestStartTime(mins);
+      line = `Your appointment will take about <strong>${dur}</strong>. Pick a start time between <strong>9:30 AM and ${latest}</strong> so we can wrap up by 7 PM.`;
     }
   }
   $('#durationLine').innerHTML = line;
