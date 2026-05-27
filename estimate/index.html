@@ -138,12 +138,27 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
     <div class="tile-grid">
       <button class="tile" data-set="service" data-val="both">
         <strong>Interior + Exterior</strong>
-        <span>Full clean &mdash; includes screens &amp; tracks. Most popular.</span>
+        <span>Full clean &mdash; inside &amp; outside glass plus tracks. Most popular.</span>
       </button>
       <button class="tile" data-set="service" data-val="ext">
         <strong>Exterior Only</strong>
         <span>Outside glass only. Lower price.</span>
       </button>
+    </div>
+    <div id="screensAsk" class="hidden" style="margin-top:1.25rem">
+      <label class="fld" style="margin-top:0">Do you want your screens cleaned as well?</label>
+      <div class="opts">
+        <button type="button" data-set="wantsScreens" data-val="yes">Yes</button>
+        <button type="button" data-set="wantsScreens" data-val="no" class="on">No</button>
+      </div>
+      <div id="screensCountBlock" class="hidden" style="margin-top:.75rem">
+        <label class="fld">How many screens? <small>(usually one per window opening)</small></label>
+        <input type="number" id="screenCountWanted" min="0" max="500" placeholder="e.g. 15" inputmode="numeric">
+      </div>
+      <div class="actions" style="margin-top:.9rem">
+        <span></span>
+        <button class="next-btn" data-goto="2">Next &rarr;</button>
+      </div>
     </div>
   </section>
 
@@ -183,8 +198,6 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
       <p style="font-size:.85rem;color:#475569;margin:.3rem 0 .6rem;line-height:1.5">If you also know how many panes of glass your home has, drop the count in below and we'll average both estimates. A double-hung window counts as 2 panes.</p>
       <label class="fld" style="margin-top:.4rem">Pane count <small>(optional)</small></label>
       <input type="number" id="secondaryPanes" min="0" max="500" placeholder="e.g. 30" inputmode="numeric">
-      <label class="fld">Screen count <small>(optional, usually one per window opening)</small></label>
-      <input type="number" id="secondaryScreens" min="0" max="500" placeholder="e.g. 15" inputmode="numeric">
     </div>
     <div class="actions">
       <button class="back-btn" data-goto="2">&larr; Back</button>
@@ -198,8 +211,6 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
     <p class="hint">Count each <strong>individual pane of glass</strong>, not whole windows. A double-hung window has 2 panes, a triple-pane has 3, a sliding glass door has 2 large panes.</p>
     <label class="fld">How many panes of glass?</label>
     <input type="number" id="windowCount" min="0" max="500" placeholder="e.g. 30" inputmode="numeric">
-    <label class="fld">How many screens? <small>(usually one per window opening, not per pane)</small></label>
-    <input type="number" id="screenCount" min="0" max="500" placeholder="e.g. 15" inputmode="numeric">
     <label class="fld">Any French / divided-light windows? <small>(small panes inside a wood grid)</small></label>
     <div class="opts">
       <button type="button" data-set="windowHasFrench" data-val="no" class="on">No</button>
@@ -363,13 +374,14 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
 const state = {
   service: null, method: null,
   sqft: 0,
-  windowCount: 0, screenCount: 0,
+  wantsScreens: 'no', screenCountWanted: 0,
+  windowCount: 0,
   windowHasFrench: 'no', windowFrenchCount: 0,
   sqftHasFrench: 'no', sqftFrenchCount: 0,
   stories: '1', hardWater: 'none',
   lastCleaned: 'recent', constructionClean: 'yes',
   postConstruction: 'no',
-  secondaryPanes: 0, secondaryScreens: 0, secondarySqft: 0
+  secondaryPanes: 0, secondarySqft: 0
 };
 
 // ---------- Pricing tables (v3) ----------
@@ -452,7 +464,12 @@ function updateBookingInfo() {
 $$('.tile').forEach(t => t.addEventListener('click', () => {
   const k = t.dataset.set, v = t.dataset.val;
   state[k] = v;
-  if (k === 'service') goto('2');
+  if (k === 'service') {
+    // Highlight chosen tile + reveal screens follow-up instead of auto-advancing
+    $$('.tile[data-set="service"]').forEach(x => x.classList.toggle('on', x === t));
+    $('#screensAsk').classList.remove('hidden');
+    $('#screensAsk').scrollIntoView({behavior:'smooth', block:'center'});
+  }
   else if (k === 'method') goto(v === 'sqft' ? '3a' : '3b');
 }));
 
@@ -466,6 +483,7 @@ $$('button[data-set]').forEach(b => {
     if (k === 'lastCleaned') $('#constructionFollowup').classList.toggle('hidden', v !== 'never');
     if (k === 'windowHasFrench') $('#windowFrenchPanesBlock').classList.toggle('hidden', v !== 'yes');
     if (k === 'sqftHasFrench') $('#sqftFrenchPanesBlock').classList.toggle('hidden', v !== 'yes');
+    if (k === 'wantsScreens') $('#screensCountBlock').classList.toggle('hidden', v !== 'yes');
   });
 });
 
@@ -475,12 +493,11 @@ $('#sqft').addEventListener('input', e => {
   $('#next3a').disabled = state.sqft <= 0 || state.sqft > 6000;
 });
 $('#windowCount').addEventListener('input', e => { state.windowCount = parseInt(e.target.value, 10) || 0; $('#next3b').disabled = state.windowCount <= 0; });
-$('#screenCount').addEventListener('input', e => { state.screenCount = parseInt(e.target.value, 10) || 0; });
 $('#windowFrenchCount').addEventListener('input', e => { state.windowFrenchCount = parseInt(e.target.value, 10) || 0; });
 $('#sqftFrenchCount').addEventListener('input', e => { state.sqftFrenchCount = parseInt(e.target.value, 10) || 0; });
 $('#secondaryPanes').addEventListener('input', e => { state.secondaryPanes = parseInt(e.target.value, 10) || 0; });
-$('#secondaryScreens').addEventListener('input', e => { state.secondaryScreens = parseInt(e.target.value, 10) || 0; });
 $('#secondarySqft').addEventListener('input', e => { state.secondarySqft = parseInt(e.target.value, 10) || 0; });
+$('#screenCountWanted').addEventListener('input', e => { state.screenCountWanted = parseInt(e.target.value, 10) || 0; });
 $('#next3a').disabled = true;
 $('#next3b').disabled = true;
 
@@ -501,12 +518,16 @@ function baseFromSqft(sqft) {
   const rate = state.service === 'both' ? tier.both : tier.ext;
   return sqft * rate;
 }
-function baseFromPanes(panes, screens) {
+function baseFromPanes(panes) {
   if (panes <= 0) return null;
   const r = state.service === 'both' ? PER_PANE.both : PER_PANE.ext;
-  let b = panes * r;
-  if (screens > 0) b += screens * PER_PANE.screen;
-  return b;
+  return panes * r;
+}
+function screensSurcharge() {
+  // Flat $2/screen add-on when customer opts in. Applied after % surcharges,
+  // before minimum-charge floor, so it stacks cleanly on the base estimate.
+  if (state.wantsScreens !== 'yes' || state.screenCountWanted <= 0) return 0;
+  return state.screenCountWanted * PER_PANE.screen;
 }
 function applySurcharges(base, frenchPanes) {
   let t = base;
@@ -527,7 +548,7 @@ function compute(){
     if (state.sqft > 6000) return {oversize:true};
     primaryBase = baseFromSqft(state.sqft);
   } else {
-    primaryBase = baseFromPanes(state.windowCount, state.screenCount);
+    primaryBase = baseFromPanes(state.windowCount);
   }
   if (primaryBase === null) return {oversize:false, invalid:true};
 
@@ -540,7 +561,7 @@ function compute(){
   // Optional secondary base for averaging
   let secondaryTotal = null;
   if (state.method === 'sqft' && state.secondaryPanes > 0) {
-    const sBase = baseFromPanes(state.secondaryPanes, state.secondaryScreens);
+    const sBase = baseFromPanes(state.secondaryPanes);
     if (sBase !== null) secondaryTotal = applySurcharges(sBase, frenchPanes);
   } else if (state.method === 'windows' && state.secondarySqft > 0 && state.secondarySqft <= 6000) {
     const sBase = baseFromSqft(state.secondarySqft);
@@ -553,6 +574,10 @@ function compute(){
     total = (primaryTotal + secondaryTotal) / 2;
     averaged = true;
   }
+  // Screens surcharge: flat $2/screen if customer opted in
+  const screensFee = screensSurcharge();
+  total += screensFee;
+
   const base = primaryBase;
   let minApplied = false;
   if (total < MIN_CHARGE) { total = MIN_CHARGE; minApplied = true; }
@@ -562,6 +587,7 @@ function compute(){
     minApplied,
     frenchPanes,
     averaged,
+    screensFee: Math.round(screensFee*100)/100,
     primaryTotal: Math.round(primaryTotal*100)/100,
     secondaryTotal: secondaryTotal !== null ? Math.round(secondaryTotal*100)/100 : null
   };
@@ -581,13 +607,15 @@ function renderRecap(){
   const recap = $('#recapBox');
   const rows = [];
   rows.push(['Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only']);
+  rows.push(['Screens', state.wantsScreens === 'yes'
+    ? (state.screenCountWanted > 0 ? `Yes (${state.screenCountWanted})` : 'Yes')
+    : 'No']);
   rows.push(['Pricing method', state.method === 'sqft' ? 'By home size' : 'By pane count']);
   if (state.method === 'sqft') {
     rows.push(['Home size', state.sqft.toLocaleString() + ' sqft']);
-    if (state.secondaryPanes > 0) rows.push(['Pane count (also)', state.secondaryPanes + (state.secondaryScreens > 0 ? ' + ' + state.secondaryScreens + ' screens' : '')]);
+    if (state.secondaryPanes > 0) rows.push(['Pane count (also)', state.secondaryPanes]);
   } else {
     rows.push(['Panes', state.windowCount]);
-    rows.push(['Screens', state.screenCount]);
     if (state.windowHasFrench === 'yes') rows.push(['French panes', state.windowFrenchCount]);
     if (state.secondarySqft > 0) rows.push(['Home size (also)', state.secondarySqft.toLocaleString() + ' sqft']);
   }
@@ -625,14 +653,15 @@ function onBookingComplete() {
   fd.append('Submitted at', submittedAt);
   fd.append('Note', 'Customer booked through HCP. Their contact info is in your HCP Inbox. Details from the website form below:');
   fd.append('Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only');
+  fd.append('Screens cleaned?', state.wantsScreens === 'yes'
+    ? `Yes (${state.screenCountWanted} screens, +$${state.screenCountWanted * 2})`
+    : 'No');
   fd.append('Pricing method', state.method === 'sqft' ? 'By home size (sqft)' : 'By pane count');
   if (state.method === 'sqft') {
     fd.append('Home size (sqft)', state.sqft);
     if (state.secondaryPanes > 0) fd.append('Pane count (also provided)', state.secondaryPanes);
-    if (state.secondaryScreens > 0) fd.append('Screen count (also provided)', state.secondaryScreens);
   } else {
     fd.append('Pane count', state.windowCount);
-    fd.append('Screen count', state.screenCount);
     if (state.windowHasFrench === 'yes') fd.append('French panes', state.windowFrenchCount);
     if (state.secondarySqft > 0) fd.append('Home size (also provided, sqft)', state.secondarySqft);
   }

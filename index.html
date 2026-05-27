@@ -108,7 +108,7 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
 <body class="bg-gray-50 text-black">
 <nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10"><div class="container nav-container"><a href="/" class="text-lg font-bold">OCS LLC</a><div class="contact-info"><p><a href="tel:+14066072151">(406) 607-2151</a></p><p><a href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a></p></div></div></nav>
 <main id="main">
-<section id="home" class="hero-mini hero-photo" style="background-image: url('/assets/photos/54649749362.jpg');">
+<section id="home" class="hero-mini hero-photo" style="background-image: url('/assets/photos/54650568676.jpg');">
 <h1>Crystal-clear windows in the Flathead Valley</h1>
 <p class="hero-tagline" style="font-style:italic;font-size:clamp(1rem,2vw,1.15rem);opacity:.95;margin:.5rem 0 1rem;text-align:center">"Work Done Well, Work Done Right."</p>
 <p>Insured. Locally owned. 5.0 stars on Google.</p>
@@ -139,8 +139,20 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
 <section class="qf-step active" data-step="1">
   <h3>1. What kind of cleaning?</h3>
   <div class="qf-tiles">
-    <button class="qf-tile" data-set="service" data-val="both"><strong>Interior + Exterior</strong><span>Full clean &mdash; includes screens &amp; tracks. Most popular.</span></button>
+    <button class="qf-tile" data-set="service" data-val="both"><strong>Interior + Exterior</strong><span>Full clean &mdash; inside &amp; outside glass plus tracks. Most popular.</span></button>
     <button class="qf-tile" data-set="service" data-val="ext"><strong>Exterior Only</strong><span>Outside glass only. Lower price.</span></button>
+  </div>
+  <div id="qf-screensAsk" class="qf-hidden" style="margin-top:1.25rem">
+    <label class="qf-fld" style="margin-top:0">Do you want your screens cleaned as well?</label>
+    <div class="qf-opts">
+      <button type="button" data-set="wantsScreens" data-val="yes">Yes</button>
+      <button type="button" data-set="wantsScreens" data-val="no" class="on">No</button>
+    </div>
+    <div id="qf-screensCountBlock" class="qf-hidden" style="margin-top:.75rem">
+      <label class="qf-fld">How many screens? <small>(usually one per window opening)</small></label>
+      <input type="number" id="qf-screenCountWanted" min="0" max="500" placeholder="e.g. 15" inputmode="numeric">
+    </div>
+    <div class="qf-actions" style="margin-top:.9rem"><span></span><button class="qf-next" data-goto="2">Next &rarr;</button></div>
   </div>
 </section>
 
@@ -168,8 +180,6 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
     <p style="font-size:.85rem;color:#475569;margin:.3rem 0 .6rem;line-height:1.5">If you also know how many panes of glass your home has, drop the count in below and we'll average both estimates. A double-hung window counts as 2 panes.</p>
     <label class="qf-fld" style="margin-top:.4rem">Pane count <small>(optional)</small></label>
     <input type="number" id="qf-secondaryPanes" min="0" max="500" placeholder="e.g. 30" inputmode="numeric">
-    <label class="qf-fld">Screen count <small>(optional, usually one per window opening)</small></label>
-    <input type="number" id="qf-secondaryScreens" min="0" max="500" placeholder="e.g. 15" inputmode="numeric">
   </div>
   <div class="qf-actions"><button class="qf-back" data-goto="2">&larr; Back</button><button class="qf-next" data-goto="4" id="qf-next3a">Next &rarr;</button></div>
 </section>
@@ -179,8 +189,6 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
   <p class="qf-hint">Count each <strong>individual pane of glass</strong>, not whole windows. A double-hung window has 2 panes, a triple-pane has 3, a sliding glass door has 2 large panes.</p>
   <label class="qf-fld">How many panes of glass?</label>
   <input type="number" id="qf-windowCount" min="0" max="500" placeholder="e.g. 30" inputmode="numeric">
-  <label class="qf-fld">How many screens? <small>(usually one per window opening, not per pane)</small></label>
-  <input type="number" id="qf-screenCount" min="0" max="500" placeholder="e.g. 15" inputmode="numeric">
   <label class="qf-fld">Any French / divided-light windows? <small>(small panes inside a wood grid)</small></label>
   <div class="qf-opts">
     <button type="button" data-set="windowHasFrench" data-val="no" class="on">No</button>
@@ -372,13 +380,14 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
 'use strict';
 const state = {
   service:null, method:null, sqft:0,
-  windowCount:0, screenCount:0,
+  wantsScreens:'no', screenCountWanted:0,
+  windowCount:0,
   windowHasFrench:'no', windowFrenchCount:0,
   sqftHasFrench:'no', sqftFrenchCount:0,
   stories:'1', hardWater:'none',
   lastCleaned:'recent', constructionClean:'yes',
   postConstruction:'no',
-  secondaryPanes:0, secondaryScreens:0, secondarySqft:0
+  secondaryPanes:0, secondarySqft:0
 };
 const SQFT_TIERS = [
   {label:'Tier 1 (≤1,000 sqft)', max:1000, both:0.15, ext:0.09},
@@ -458,7 +467,12 @@ function updateBookingInfo() {
 $$('.qf-tile').forEach(t => t.addEventListener('click', () => {
   const k = t.dataset.set, v = t.dataset.val;
   state[k] = v;
-  if (k === 'service') goto('2');
+  if (k === 'service') {
+    // Highlight chosen tile + reveal screens follow-up instead of auto-advancing
+    $$('.qf-tile[data-set="service"]').forEach(x => x.classList.toggle('on', x === t));
+    $('#qf-screensAsk').classList.remove('qf-hidden');
+    $('#qf-screensAsk').scrollIntoView({behavior:'smooth', block:'center'});
+  }
   else if (k === 'method') goto(v === 'sqft' ? '3a' : '3b');
 }));
 
@@ -472,6 +486,7 @@ $$('button[data-set]').forEach(b => {
     if (k === 'lastCleaned') $('#qf-constructionFollowup').classList.toggle('qf-hidden', v !== 'never');
     if (k === 'windowHasFrench') $('#qf-windowFrenchBlock').classList.toggle('qf-hidden', v !== 'yes');
     if (k === 'sqftHasFrench') $('#qf-sqftFrenchBlock').classList.toggle('qf-hidden', v !== 'yes');
+    if (k === 'wantsScreens') $('#qf-screensCountBlock').classList.toggle('qf-hidden', v !== 'yes');
   });
 });
 
@@ -481,12 +496,11 @@ $('#qf-sqft').addEventListener('input', e => {
   $('#qf-next3a').disabled = state.sqft <= 0 || state.sqft > 6000;
 });
 $('#qf-windowCount').addEventListener('input', e => { state.windowCount = parseInt(e.target.value, 10) || 0; $('#qf-next3b').disabled = state.windowCount <= 0; });
-$('#qf-screenCount').addEventListener('input', e => { state.screenCount = parseInt(e.target.value, 10) || 0; });
 $('#qf-windowFrenchCount').addEventListener('input', e => { state.windowFrenchCount = parseInt(e.target.value, 10) || 0; });
 $('#qf-sqftFrenchCount').addEventListener('input', e => { state.sqftFrenchCount = parseInt(e.target.value, 10) || 0; });
 $('#qf-secondaryPanes').addEventListener('input', e => { state.secondaryPanes = parseInt(e.target.value, 10) || 0; });
-$('#qf-secondaryScreens').addEventListener('input', e => { state.secondaryScreens = parseInt(e.target.value, 10) || 0; });
 $('#qf-secondarySqft').addEventListener('input', e => { state.secondarySqft = parseInt(e.target.value, 10) || 0; });
+$('#qf-screenCountWanted').addEventListener('input', e => { state.screenCountWanted = parseInt(e.target.value, 10) || 0; });
 $('#qf-next3a').disabled = true;
 $('#qf-next3b').disabled = true;
 
@@ -506,12 +520,16 @@ function baseFromSqft(sqft) {
   const rate = state.service === 'both' ? tier.both : tier.ext;
   return sqft * rate;
 }
-function baseFromPanes(panes, screens) {
+function baseFromPanes(panes) {
   if (panes <= 0) return null;
   const r = state.service === 'both' ? PER_PANE.both : PER_PANE.ext;
-  let b = panes * r;
-  if (screens > 0) b += screens * PER_PANE.screen;
-  return b;
+  return panes * r;
+}
+function screensSurcharge() {
+  // Flat $2/screen add-on when customer opts in. Applied after % surcharges,
+  // before minimum-charge floor, so it stacks cleanly on the base estimate.
+  if (state.wantsScreens !== 'yes' || state.screenCountWanted <= 0) return 0;
+  return state.screenCountWanted * PER_PANE.screen;
 }
 function applySurcharges(base, frenchPanes) {
   let t = base;
@@ -533,7 +551,7 @@ function compute(){
     if (state.sqft > 6000) return {oversize:true};
     primaryBase = baseFromSqft(state.sqft);
   } else {
-    primaryBase = baseFromPanes(state.windowCount, state.screenCount);
+    primaryBase = baseFromPanes(state.windowCount);
   }
   if (primaryBase === null) return {oversize:false, invalid:true};
 
@@ -547,7 +565,7 @@ function compute(){
   // Optional secondary base (averaging when customer provided both measurements)
   let secondaryTotal = null;
   if (state.method === 'sqft' && state.secondaryPanes > 0) {
-    const sBase = baseFromPanes(state.secondaryPanes, state.secondaryScreens);
+    const sBase = baseFromPanes(state.secondaryPanes);
     if (sBase !== null) secondaryTotal = applySurcharges(sBase, frenchPanes);
   } else if (state.method === 'windows' && state.secondarySqft > 0 && state.secondarySqft <= 6000) {
     const sBase = baseFromSqft(state.secondarySqft);
@@ -561,6 +579,10 @@ function compute(){
     total = (primaryTotal + secondaryTotal) / 2;
     averaged = true;
   }
+  // Screens surcharge: flat $2/screen if customer opted in
+  const screensFee = screensSurcharge();
+  total += screensFee;
+
   const base = primaryBase;
   let minApplied = false;
   if (total < MIN_CHARGE) { total = MIN_CHARGE; minApplied = true; }
@@ -570,6 +592,7 @@ function compute(){
     minApplied,
     frenchPanes,
     averaged,
+    screensFee: Math.round(screensFee*100)/100,
     primaryTotal: Math.round(primaryTotal*100)/100,
     secondaryTotal: secondaryTotal !== null ? Math.round(secondaryTotal*100)/100 : null
   };
@@ -587,13 +610,15 @@ function priceRange(q){
 function renderRecap(){
   const rows = [];
   rows.push(['Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only']);
+  rows.push(['Screens', state.wantsScreens === 'yes'
+    ? (state.screenCountWanted > 0 ? `Yes (${state.screenCountWanted})` : 'Yes')
+    : 'No']);
   rows.push(['Pricing method', state.method === 'sqft' ? 'By home size' : 'By pane count']);
   if (state.method === 'sqft') {
     rows.push(['Home size', state.sqft.toLocaleString() + ' sqft']);
-    if (state.secondaryPanes > 0) rows.push(['Pane count (also)', state.secondaryPanes + (state.secondaryScreens > 0 ? ' + ' + state.secondaryScreens + ' screens' : '')]);
+    if (state.secondaryPanes > 0) rows.push(['Pane count (also)', state.secondaryPanes]);
   } else {
     rows.push(['Panes', state.windowCount]);
-    rows.push(['Screens', state.screenCount]);
     if (state.windowHasFrench === 'yes') rows.push(['French panes', state.windowFrenchCount]);
     if (state.secondarySqft > 0) rows.push(['Home size (also)', state.secondarySqft.toLocaleString() + ' sqft']);
   }
@@ -631,14 +656,15 @@ function onBookingComplete() {
   fd.append('Submitted at', submittedAt);
   fd.append('Note', 'Customer booked through HCP. Their contact info is in your HCP Inbox. Details from the website form below:');
   fd.append('Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only');
+  fd.append('Screens cleaned?', state.wantsScreens === 'yes'
+    ? `Yes (${state.screenCountWanted} screens, +$${state.screenCountWanted * 2})`
+    : 'No');
   fd.append('Pricing method', state.method === 'sqft' ? 'By home size (sqft)' : 'By pane count');
   if (state.method === 'sqft') {
     fd.append('Home size (sqft)', state.sqft);
     if (state.secondaryPanes > 0) fd.append('Pane count (also provided)', state.secondaryPanes);
-    if (state.secondaryScreens > 0) fd.append('Screen count (also provided)', state.secondaryScreens);
   } else {
     fd.append('Pane count', state.windowCount);
-    fd.append('Screen count', state.screenCount);
     if (state.windowHasFrench === 'yes') fd.append('French panes', state.windowFrenchCount);
     if (state.secondarySqft > 0) fd.append('Home size (also provided, sqft)', state.secondarySqft);
   }
