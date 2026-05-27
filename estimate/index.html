@@ -427,12 +427,11 @@ function updateBookingInfo() {
     canBook = false;
   } else if (!q.invalid) {
     const h = hoursFromQuote(q.total);
-    const latest = latestStartTime(h);
-    if (latest === null) {
-      line = `Your appointment would take about ${h} hours — that's more than fits in our 9:30 AM – 7 PM single-day window. Please call or text us to schedule across two days.`;
-      canBook = false;
+    const word = h === 1 ? 'hour' : 'hours';
+    if (h >= 8) {
+      line = `Your appointment is a <strong>full-day job</strong> (about ${h} ${word}). Pick any day that works — we'll start at 9:30 AM. If we don't finish that day, we'll come back the next to wrap up.`;
     } else {
-      const word = h === 1 ? 'hour' : 'hours';
+      const latest = latestStartTime(h);
       line = `Your appointment will take about <strong>${h} ${word}</strong>. Pick a start time between <strong>9:30 AM and ${latest}</strong> so we can wrap up by 7 PM.`;
     }
   }

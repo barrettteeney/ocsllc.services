@@ -110,7 +110,7 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
 <main id="main">
 <section id="home" class="hero-mini hero-photo" style="background-image: url('/assets/photos/54650568676.jpg');">
 <h1>Crystal-clear windows in the Flathead Valley</h1>
-<p class="hero-tagline" style="font-style:italic;font-size:clamp(1rem,2vw,1.15rem);opacity:.95;margin:.5rem 0 1rem">"Work Done Well, Work Done Right."</p>
+<p class="hero-tagline" style="font-style:italic;font-size:clamp(1rem,2vw,1.15rem);opacity:.95;margin:.5rem 0 1rem;text-align:center">"Work Done Well, Work Done Right."</p>
 <p>Insured. Locally owned. 5.0 stars on Google.</p>
 <div class="hero-cta-row"><a href="#reserve" class="bg-custom-cyan text-white px-6 py-3 rounded-lg font-bold" style="box-shadow:0 6px 20px rgba(12,192,223,.4)">Reserve a Cleaning</a><a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a></div>
 </section>
@@ -433,12 +433,12 @@ function updateBookingInfo() {
     canBook = false;
   } else if (!q.invalid) {
     const h = hoursFromQuote(q.total);
-    const latest = latestStartTime(h);
-    if (latest === null) {
-      line = `Your appointment would take about ${h} hours — that's more than fits in our 9:30 AM – 7 PM single-day window. Please call or text us to schedule across two days.`;
-      canBook = false;
+    const word = h === 1 ? 'hour' : 'hours';
+    if (h >= 8) {
+      // Full-day appointment — book any day, we may need a second day
+      line = `Your appointment is a <strong>full-day job</strong> (about ${h} ${word}). Pick any day that works — we'll start at 9:30 AM. If we don't finish that day, we'll come back the next to wrap up.`;
     } else {
-      const word = h === 1 ? 'hour' : 'hours';
+      const latest = latestStartTime(h);
       line = `Your appointment will take about <strong>${h} ${word}</strong>. Pick a start time between <strong>9:30 AM and ${latest}</strong> so we can wrap up by 7 PM.`;
     }
   }
