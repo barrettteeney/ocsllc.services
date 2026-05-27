@@ -393,7 +393,7 @@ const SQFT_TIERS = [
   {label:'Tier 5 (4,001–5,000 sqft)', max:5000, both:0.23, ext:0.14},
   {label:'Tier 6 (5,001–6,000 sqft)', max:6000, both:0.25, ext:0.15}
 ];
-const PER_PANE = {ext:8, both:14, screen:2};
+const PER_PANE = {ext:8, both:14, screen:3};
 const HW_PCT = {none:0, light:0.15, moderate:0.25, heavy:0.40};
 const HW_LABEL = {none:'None', light:'Light', moderate:'Moderate', heavy:'Heavy'};
 const MIN_CHARGE = 150;
@@ -654,7 +654,7 @@ function onBookingComplete() {
   fd.append('Note', 'Customer booked through HCP. Their contact info is in your HCP Inbox. Details from the website form below:');
   fd.append('Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only');
   fd.append('Screens cleaned?', state.wantsScreens === 'yes'
-    ? `Yes (${state.screenCountWanted} screens, +$${state.screenCountWanted * 2})`
+    ? `Yes (${state.screenCountWanted} screens, +$${state.screenCountWanted * 3})`
     : 'No');
   fd.append('Pricing method', state.method === 'sqft' ? 'By home size (sqft)' : 'By pane count');
   if (state.method === 'sqft') {
