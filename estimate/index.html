@@ -392,7 +392,7 @@ const SQFT_TIERS = [
   {label:'Tier 6 (5,001–6,000 sqft)', max:6000, both:0.25, ext:0.15}
 ];
 const PER_PANE = {ext:8, both:14, screen:4};
-const HW_PCT = {none:0, yes:0.15};
+const HW_PCT = {none:0, yes:0.20};
 const HW_LABEL = {none:'No', yes:'Yes'};
 const MIN_CHARGE = 150;
 const FRENCH_PANE_FEE = 5;
@@ -535,7 +535,7 @@ function applySurcharges(base, frenchPanes) {
   if (state.lastCleaned === 'over5') neverApplied = true;
   else if (state.lastCleaned === 'never' && state.constructionClean === 'no') neverApplied = true;
   if (neverApplied) t += base * 0.15;
-  if (state.postConstruction === 'yes') t += base * 0.20;
+  if (state.postConstruction === 'yes') t += base * 0.25;
   if (frenchPanes > 0) t += frenchPanes * FRENCH_PANE_FEE;
   return t;
 }
