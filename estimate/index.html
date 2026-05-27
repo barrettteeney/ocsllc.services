@@ -248,10 +248,8 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
     <fieldset>
       <legend>Hard water staining on the windows?</legend>
       <div class="opts">
-        <button type="button" data-set="hardWater" data-val="none" class="on">None / not sure</button>
-        <button type="button" data-set="hardWater" data-val="light">Light</button>
-        <button type="button" data-set="hardWater" data-val="moderate">Moderate</button>
-        <button type="button" data-set="hardWater" data-val="heavy">Heavy</button>
+        <button type="button" data-set="hardWater" data-val="none" class="on">No / not sure</button>
+        <button type="button" data-set="hardWater" data-val="yes">Yes</button>
       </div>
     </fieldset>
 
@@ -393,9 +391,9 @@ const SQFT_TIERS = [
   {label:'Tier 5 (4,001–5,000 sqft)', max:5000, both:0.23, ext:0.14},
   {label:'Tier 6 (5,001–6,000 sqft)', max:6000, both:0.25, ext:0.15}
 ];
-const PER_PANE = {ext:8, both:14, screen:3};
-const HW_PCT = {none:0, light:0.15, moderate:0.25, heavy:0.40};
-const HW_LABEL = {none:'None', light:'Light', moderate:'Moderate', heavy:'Heavy'};
+const PER_PANE = {ext:8, both:14, screen:4};
+const HW_PCT = {none:0, yes:0.15};
+const HW_LABEL = {none:'No', yes:'Yes'};
 const MIN_CHARGE = 150;
 const FRENCH_PANE_FEE = 5;
 
@@ -537,7 +535,7 @@ function applySurcharges(base, frenchPanes) {
   if (state.lastCleaned === 'over5') neverApplied = true;
   else if (state.lastCleaned === 'never' && state.constructionClean === 'no') neverApplied = true;
   if (neverApplied) t += base * 0.15;
-  if (state.postConstruction === 'yes') t += base * 0.30;
+  if (state.postConstruction === 'yes') t += base * 0.20;
   if (frenchPanes > 0) t += frenchPanes * FRENCH_PANE_FEE;
   return t;
 }
@@ -654,7 +652,7 @@ function onBookingComplete() {
   fd.append('Note', 'Customer booked through HCP. Their contact info is in your HCP Inbox. Details from the website form below:');
   fd.append('Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only');
   fd.append('Screens cleaned?', state.wantsScreens === 'yes'
-    ? `Yes (${state.screenCountWanted} screens, +$${state.screenCountWanted * 3})`
+    ? `Yes (${state.screenCountWanted} screens, +$${state.screenCountWanted * 4})`
     : 'No');
   fd.append('Pricing method', state.method === 'sqft' ? 'By home size (sqft)' : 'By pane count');
   if (state.method === 'sqft') {
