@@ -55,8 +55,17 @@ Each surcharge multiplies against the **original base**, not the running total. 
 
 | Item | Cost |
 |------|------|
-| French / divided-light panes | $5 per individual pane |
 | Screens (if customer says "Yes" to the screens question) | $4 × screen count |
+| French / divided-light panes | **Flagged Yes/No only — not auto-priced.** Manual review on intake at **$2 per pane** ($8 per side per 4 panes, inside or outside, no bundle discount). |
+
+### Why French panes are flagged, not auto-priced
+
+The customer-facing form asks **"Do you have French / divided-light windows? Yes / No"** — no count. Because divided-light pane counts vary wildly (a single window can have 6, 9, 12, or 15 individual panes), and most homeowners don't know the count, asking would either produce inaccurate data or scare customers off. Instead:
+
+- Customer answers Yes or No.
+- If **No** → nothing added, nothing flagged.
+- If **Yes** → the submission email to Barrett includes a clear **"REVIEW: price may need adjustment depending on divided pane count"** flag so he knows to confirm the divided pane count during the on-site visit and adjust accordingly.
+- The rate Barrett applies manually: **$2 per individual French pane** (equivalent to $8 per side for every 4 panes, no bundle pricing for inside+outside).
 
 ## 6. Floors and rounding rules
 
@@ -101,11 +110,10 @@ STEP 2 — APPLY % SURCHARGES (each against original base, stacked additively)
 
   primary_total = base + surcharge_total
 
-STEP 3 — ADD FLAT ADD-ONS (french panes only here; screens added later)
-  french_fee  = french_pane_count × $5
-  primary_total += french_fee
+STEP 3 — (RESERVED — no flat add-ons here; French panes are flagged only,
+          not auto-priced; screens added in step 5)
 
-STEP 4 — IF AVERAGING, REPEAT 1–3 FOR SECONDARY MEASUREMENT, THEN AVERAGE
+STEP 4 — IF AVERAGING, REPEAT 1–2 FOR SECONDARY MEASUREMENT, THEN AVERAGE
   if customer entered both sqft AND pane_count:
       total = (primary_total + secondary_total) / 2
   else:
@@ -124,6 +132,10 @@ STEP 7 — DERIVE CUSTOMER-FACING RANGE
   high = round_to_$5( total × 1.15 )
   if low < $150: low = $150
   if high - low < $25: high = low + $25
+
+NOTE: French panes are NOT in the calculation. They are captured as
+a Yes/No flag and surfaced in the submission email so Barrett can
+adjust the booking price manually at $2/pane after counting on-site.
 ```
 
 ---
@@ -143,7 +155,7 @@ Step 2 — Surcharges (% against base):
   surcharge_total = $160.51
   primary_total   = $535.04 + $160.51 = $695.55
 
-Step 3 — No French panes.
+Step 3 — (No flat add-ons in this step.)
 Step 4 — No averaging.
 Step 5 — No screens.
 Step 6 — Above $150 minimum.
@@ -161,7 +173,7 @@ INTERNAL CALCULATION: $695.55
 ```
 Step 1: 2,328 × $0.11 = $256.08
 Step 2: no surcharges → primary_total = $256.08
-Step 3: no French panes
+Step 3: no flat add-ons here
 Step 4: no averaging
 Step 5: screens → +15 × $4 = +$60 → total = $316.08
 Step 6: above minimum
@@ -208,8 +220,10 @@ const SQFT_TIERS = [
 const PER_PANE        = {ext: 8, both: 14, screen: 4};
 const HW_PCT          = {none: 0, yes: 0.20};
 const HW_LABEL        = {none: 'No', yes: 'Yes'};
-const FRENCH_PANE_FEE = 5;
 const MIN_CHARGE      = 150;
+// NOTE: No FRENCH_PANE_FEE constant — French panes are intentionally not
+// auto-priced. The customer answers Yes/No; if Yes, the submission email
+// flags it for Barrett to adjust manually at $2/pane on the booking.
 
 // Surcharges (hardcoded in applySurcharges())
 STORIES_2_PLUS    = 0.10
@@ -240,7 +254,7 @@ FULL_DAY_THRESHOLD_MIN = 480   // ≥ 8 hours flags as full-day
 | Screens question | Implicit (per-pane only) | **Explicit Yes/No on Step 1, applies to both sqft and per-pane flows** |
 | 2-story | +10% | +10% (unchanged) |
 | Never cleaned 5+ yrs | +15% | +15% (unchanged) |
-| French panes | $5/pane | $5/pane (unchanged) |
+| French panes | $5/pane, auto-calculated in form (customer entered count) | **Yes/No flag only; manual review at $2/pane** ($8/side per 4 panes, no bundle pricing) |
 | Minimum charge | $150 | $150 (unchanged) |
 
 ---

@@ -211,14 +211,10 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
     <p class="hint">Count each <strong>individual pane of glass</strong>, not whole windows. A double-hung window has 2 panes, a triple-pane has 3, a sliding glass door has 2 large panes.</p>
     <label class="fld">How many panes of glass?</label>
     <input type="number" id="windowCount" min="0" max="500" placeholder="e.g. 30" inputmode="numeric">
-    <label class="fld">Any French / divided-light windows? <small>(small panes inside a wood grid)</small></label>
+    <label class="fld">Do you have French / divided-light windows? <small>(small panes inside a wood grid)</small></label>
     <div class="opts">
       <button type="button" data-set="windowHasFrench" data-val="no" class="on">No</button>
       <button type="button" data-set="windowHasFrench" data-val="yes">Yes</button>
-    </div>
-    <div id="windowFrenchPanesBlock" class="hidden" style="margin-top:.6rem">
-      <label class="fld">How many individual French panes?</label>
-      <input type="number" id="windowFrenchCount" min="0" max="300" placeholder="e.g. 12" inputmode="numeric">
     </div>
     <div style="background:#f0fdfa;border-left:3px solid #14b8a6;padding:.85rem 1rem;border-radius:6px;margin:1.2rem 0">
       <strong style="font-size:.92rem;color:#0f172a">Want an even more accurate quote?</strong>
@@ -279,14 +275,10 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
     </fieldset>
 
     <fieldset id="sqftFrenchAsk">
-      <legend>Any French / divided-light windows? <small style="font-weight:400;color:#6b7280">(small panes in a wood grid)</small></legend>
+      <legend>Do you have French / divided-light windows? <small style="font-weight:400;color:#6b7280">(small panes in a wood grid)</small></legend>
       <div class="opts">
         <button type="button" data-set="sqftHasFrench" data-val="no" class="on">No</button>
         <button type="button" data-set="sqftHasFrench" data-val="yes">Yes</button>
-      </div>
-      <div id="sqftFrenchPanesBlock" class="hidden" style="margin-top:.6rem">
-        <label class="fld">How many individual French panes?</label>
-        <input type="number" id="sqftFrenchCount" min="0" max="300" placeholder="e.g. 12" inputmode="numeric">
       </div>
     </fieldset>
 
@@ -374,8 +366,8 @@ const state = {
   sqft: 0,
   wantsScreens: 'no', screenCountWanted: 0,
   windowCount: 0,
-  windowHasFrench: 'no', windowFrenchCount: 0,
-  sqftHasFrench: 'no', sqftFrenchCount: 0,
+  windowHasFrench: 'no',
+  sqftHasFrench: 'no',
   stories: '1', hardWater: 'none',
   lastCleaned: 'recent', constructionClean: 'yes',
   postConstruction: 'no',
@@ -395,7 +387,8 @@ const PER_PANE = {ext:8, both:14, screen:4};
 const HW_PCT = {none:0, yes:0.20};
 const HW_LABEL = {none:'No', yes:'Yes'};
 const MIN_CHARGE = 150;
-const FRENCH_PANE_FEE = 5;
+// French panes: flagged Yes/No only; exact pricing ($8/side per 4 panes = $2/pane)
+// applied manually by Barrett when reviewing the booking. Not auto-calculated.
 
 // ---------- Helpers ----------
 function $(s, r){ return (r||document).querySelector(s); }
@@ -479,8 +472,6 @@ $$('button[data-set]').forEach(b => {
     const group = b.closest('.opts');
     if (group) group.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
     if (k === 'lastCleaned') $('#constructionFollowup').classList.toggle('hidden', v !== 'never');
-    if (k === 'windowHasFrench') $('#windowFrenchPanesBlock').classList.toggle('hidden', v !== 'yes');
-    if (k === 'sqftHasFrench') $('#sqftFrenchPanesBlock').classList.toggle('hidden', v !== 'yes');
     if (k === 'wantsScreens') $('#screensCountBlock').classList.toggle('hidden', v !== 'yes');
   });
 });
@@ -491,8 +482,6 @@ $('#sqft').addEventListener('input', e => {
   $('#next3a').disabled = state.sqft <= 0 || state.sqft > 6000;
 });
 $('#windowCount').addEventListener('input', e => { state.windowCount = parseInt(e.target.value, 10) || 0; $('#next3b').disabled = state.windowCount <= 0; });
-$('#windowFrenchCount').addEventListener('input', e => { state.windowFrenchCount = parseInt(e.target.value, 10) || 0; });
-$('#sqftFrenchCount').addEventListener('input', e => { state.sqftFrenchCount = parseInt(e.target.value, 10) || 0; });
 $('#secondaryPanes').addEventListener('input', e => { state.secondaryPanes = parseInt(e.target.value, 10) || 0; });
 $('#secondarySqft').addEventListener('input', e => { state.secondarySqft = parseInt(e.target.value, 10) || 0; });
 $('#screenCountWanted').addEventListener('input', e => { state.screenCountWanted = parseInt(e.target.value, 10) || 0; });
@@ -527,7 +516,7 @@ function screensSurcharge() {
   if (state.wantsScreens !== 'yes' || state.screenCountWanted <= 0) return 0;
   return state.screenCountWanted * PER_PANE.screen;
 }
-function applySurcharges(base, frenchPanes) {
+function applySurcharges(base) {
   let t = base;
   if (state.stories === '2') t += base * 0.10;
   if (state.hardWater !== 'none') t += base * HW_PCT[state.hardWater];
@@ -536,7 +525,7 @@ function applySurcharges(base, frenchPanes) {
   else if (state.lastCleaned === 'never' && state.constructionClean === 'no') neverApplied = true;
   if (neverApplied) t += base * 0.15;
   if (state.postConstruction === 'yes') t += base * 0.25;
-  if (frenchPanes > 0) t += frenchPanes * FRENCH_PANE_FEE;
+  // French panes intentionally NOT auto-priced — flagged in submission for manual review.
   return t;
 }
 
@@ -550,20 +539,16 @@ function compute(){
   }
   if (primaryBase === null) return {oversize:false, invalid:true};
 
-  let frenchPanes = 0;
-  if (state.method === 'sqft' && state.sqftHasFrench === 'yes') frenchPanes = state.sqftFrenchCount;
-  if (state.method === 'windows' && state.windowHasFrench === 'yes') frenchPanes = state.windowFrenchCount;
-
-  const primaryTotal = applySurcharges(primaryBase, frenchPanes);
+  const primaryTotal = applySurcharges(primaryBase);
 
   // Optional secondary base for averaging
   let secondaryTotal = null;
   if (state.method === 'sqft' && state.secondaryPanes > 0) {
     const sBase = baseFromPanes(state.secondaryPanes);
-    if (sBase !== null) secondaryTotal = applySurcharges(sBase, frenchPanes);
+    if (sBase !== null) secondaryTotal = applySurcharges(sBase);
   } else if (state.method === 'windows' && state.secondarySqft > 0 && state.secondarySqft <= 6000) {
     const sBase = baseFromSqft(state.secondarySqft);
-    if (sBase !== null) secondaryTotal = applySurcharges(sBase, frenchPanes);
+    if (sBase !== null) secondaryTotal = applySurcharges(sBase);
   }
 
   let total = primaryTotal;
@@ -572,9 +557,13 @@ function compute(){
     total = (primaryTotal + secondaryTotal) / 2;
     averaged = true;
   }
-  // Screens surcharge: flat $2/screen if customer opted in
+  // Screens surcharge: flat $4/screen if customer opted in
   const screensFee = screensSurcharge();
   total += screensFee;
+
+  // French panes are flagged Y/N only; not auto-priced. Barrett reviews on intake.
+  const hasFrench = (state.method === 'sqft' && state.sqftHasFrench === 'yes')
+                 || (state.method === 'windows' && state.windowHasFrench === 'yes');
 
   const base = primaryBase;
   let minApplied = false;
@@ -583,7 +572,7 @@ function compute(){
     base,
     total: Math.round(total*100)/100,
     minApplied,
-    frenchPanes,
+    hasFrench,
     averaged,
     screensFee: Math.round(screensFee*100)/100,
     primaryTotal: Math.round(primaryTotal*100)/100,
@@ -614,7 +603,6 @@ function renderRecap(){
     if (state.secondaryPanes > 0) rows.push(['Pane count (also)', state.secondaryPanes]);
   } else {
     rows.push(['Panes', state.windowCount]);
-    if (state.windowHasFrench === 'yes') rows.push(['French panes', state.windowFrenchCount]);
     if (state.secondarySqft > 0) rows.push(['Home size (also)', state.secondarySqft.toLocaleString() + ' sqft']);
   }
   rows.push(['Stories', state.stories === '2' ? '2+' : '1']);
@@ -622,7 +610,9 @@ function renderRecap(){
   rows.push(['Last cleaned', ({recent:'Within 5 years', over5:'Over 5 years ago', never:'Never'})[state.lastCleaned]]);
   if (state.lastCleaned === 'never') rows.push(['Construction clean?', ({yes:'Yes', no:'No', dontknow:"Don't know"})[state.constructionClean]]);
   rows.push(['Post-construction', state.postConstruction === 'yes' ? 'Yes' : 'No']);
-  if (state.method === 'sqft' && state.sqftHasFrench === 'yes') rows.push(['French panes', state.sqftFrenchCount]);
+  const hasFrenchUI = (state.method === 'sqft' && state.sqftHasFrench === 'yes')
+                   || (state.method === 'windows' && state.windowHasFrench === 'yes');
+  rows.push(['French panes', hasFrenchUI ? 'Yes' : 'No']);
   recap.innerHTML = rows.map(([l,v]) => `<div class="row"><span class="label">${l}</span><span class="val">${v}</span></div>`).join('');
 }
 
@@ -660,7 +650,6 @@ function onBookingComplete() {
     if (state.secondaryPanes > 0) fd.append('Pane count (also provided)', state.secondaryPanes);
   } else {
     fd.append('Pane count', state.windowCount);
-    if (state.windowHasFrench === 'yes') fd.append('French panes', state.windowFrenchCount);
     if (state.secondarySqft > 0) fd.append('Home size (also provided, sqft)', state.secondarySqft);
   }
   fd.append('Stories', state.stories === '2' ? '2+' : '1');
@@ -668,7 +657,9 @@ function onBookingComplete() {
   fd.append('Last professional cleaning', state.lastCleaned);
   if (state.lastCleaned === 'never') fd.append('Cleaned at construction', state.constructionClean);
   fd.append('Post-construction cleanup', state.postConstruction);
-  if (state.method === 'sqft' && state.sqftHasFrench === 'yes') fd.append('French panes', state.sqftFrenchCount);
+  fd.append('French panes', q.hasFrench
+    ? 'Yes — REVIEW: price may need adjustment depending on divided pane count ($2/pane = $8/side per 4 panes)'
+    : 'No');
   if (q.oversize) {
     fd.append('Calculated quote', 'OVER 6000 SQFT - IN PERSON REQUIRED');
     fd.append('Range shown to customer', 'In-person quote (no range)');
