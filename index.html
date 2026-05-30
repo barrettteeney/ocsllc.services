@@ -352,6 +352,27 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
       <button type="button" data-set="sqftHasFrench" data-val="yes">Yes</button>
     </div>
   </fieldset>
+  <fieldset>
+    <legend>Want to save with a recurring plan? <small style="font-weight:400;color:#6b7280">(optional)</small></legend>
+    <p class="qf-hint" style="margin:0 0 .6rem">Set up regular cleanings and save on every visit. You'll book your first visit next — we'll confirm your full schedule and apply the discount after.</p>
+    <div class="qf-opts">
+      <button type="button" data-set="recurring" data-val="no" class="on">No, one-time</button>
+      <button type="button" data-set="recurring" data-val="yes">Yes, save with recurring</button>
+    </div>
+    <div id="qf-recurringBlock" class="qf-followup qf-hidden" style="margin-top:.85rem">
+      <p class="qf-followup-q">How often? The discount applies to every visit.</p>
+      <div class="qf-opts" id="qf-frequencyOpts">
+        <button type="button" data-set="frequency" data-val="quarterly">Quarterly &middot; 4&times;/yr &middot; <strong>20% off</strong></button>
+        <button type="button" data-set="frequency" data-val="triannual">Every 4 months &middot; 3&times;/yr &middot; <strong>15% off</strong></button>
+        <button type="button" data-set="frequency" data-val="biannual">Twice a year &middot; 2&times;/yr &middot; <strong>10% off</strong></button>
+      </div>
+      <div id="qf-recurringDatesWrap" class="qf-hidden" style="margin-top:.85rem">
+        <label class="qf-fld">Your preferred dates <small>we'll confirm exact times after your first booking</small></label>
+        <div id="qf-recurringDates"></div>
+        <p id="qf-winterWarn" class="qf-hidden" style="margin-top:.5rem;padding:.6rem .8rem;background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;color:#92400e;font-size:.85rem;line-height:1.45">Heads up: window cleaning from December through February in the Flathead Valley is weather-dependent and may need to be rescheduled. We'll reach out to confirm.</p>
+      </div>
+    </div>
+  </fieldset>
   <div class="qf-actions"><button class="qf-back" id="qf-back4">&larr; Back</button><button class="qf-next" data-goto="5">Next &rarr;</button></div>
 </section>
 
@@ -508,7 +529,8 @@ const state = {
   stories:'1', hardWater:'none',
   lastCleaned:'recent', constructionClean:'yes',
   postConstruction:'no',
-  secondaryPanes:0, secondarySqft:0
+  secondaryPanes:0, secondarySqft:0,
+  recurring:'no', frequency:null, recurringDates:[]
 };
 const SQFT_TIERS = [
   {label:'Tier 1 (≤1,000 sqft)', max:1000, both:0.15, ext:0.09},
@@ -524,6 +546,11 @@ const HW_LABEL = {none:'No', yes:'Yes'};
 const MIN_CHARGE = 150;
 // French panes: flagged Yes/No only; exact pricing ($8/side per 4 panes = $2/pane)
 // applied manually by Barrett when reviewing the booking. Not auto-calculated.
+// Recurring plan discounts — applied to each visit's price. HCP's public widget only
+// books one appointment, so the customer books visit 1 and Barrett sets up the series.
+const RECUR_DISCOUNT = {quarterly:0.20, triannual:0.15, biannual:0.10};
+const RECUR_VISITS = {quarterly:4, triannual:3, biannual:2};
+const RECUR_LABEL = {quarterly:'Quarterly — 4×/yr (20% off)', triannual:'Every 4 months — 3×/yr (15% off)', biannual:'Twice a year — 2×/yr (10% off)'};
 
 function $(s){return document.querySelector(s);}
 function $$(s){return Array.from(document.querySelectorAll(s));}
@@ -607,6 +634,20 @@ $$('button[data-set]').forEach(b => {
     if (group) group.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
     if (k === 'lastCleaned') $('#qf-constructionFollowup').classList.toggle('qf-hidden', v !== 'never');
     if (k === 'wantsScreens') $('#qf-screensCountBlock').classList.toggle('qf-hidden', v !== 'yes');
+    if (k === 'recurring') {
+      const on = v === 'yes';
+      $('#qf-recurringBlock').classList.toggle('qf-hidden', !on);
+      if (!on) {
+        state.frequency = null; state.recurringDates = [];
+        $('#qf-recurringDatesWrap').classList.add('qf-hidden');
+        $$('#qf-frequencyOpts button').forEach(x => x.classList.remove('on'));
+        $('#qf-winterWarn').classList.add('qf-hidden');
+      }
+    }
+    if (k === 'frequency') {
+      $('#qf-recurringDatesWrap').classList.remove('qf-hidden');
+      renderRecurringDates();
+    }
   });
 });
 
@@ -628,6 +669,32 @@ $$('[data-goto]').forEach(b => b.addEventListener('click', () => {
   goto(t);
 }));
 $('#qf-back4').addEventListener('click', () => goto(state.method === 'sqft' ? '3a' : '3b'));
+
+// ===== Recurring plan: preferred-date pickers + winter advisory =====
+function renderRecurringDates(){
+  const wrap = $('#qf-recurringDates'); if (!wrap) return;
+  const n = RECUR_VISITS[state.frequency] || 0;
+  const today = new Date().toISOString().slice(0,10);
+  let html = '';
+  for (let i = 0; i < n; i++) {
+    html += '<input type="date" class="qf-recur-date" data-idx="' + i + '" min="' + today + '" '
+         + 'aria-label="Preferred date for visit ' + (i+1) + '" '
+         + 'style="display:block;width:auto;max-width:230px;padding:.55rem .7rem;border:1.5px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit;margin-bottom:.5rem;background:#fff">';
+  }
+  wrap.innerHTML = html;
+  state.recurringDates = new Array(n).fill('');
+  $$('.qf-recur-date').forEach(inp => {
+    inp.addEventListener('change', () => {
+      state.recurringDates[parseInt(inp.dataset.idx, 10)] = inp.value;
+      checkWinter();
+    });
+  });
+  checkWinter();
+}
+function checkWinter(){
+  const winter = state.recurringDates.some(d => { if (!d) return false; const m = parseInt(d.slice(5,7), 10); return m === 12 || m === 1 || m === 2; });
+  const w = $('#qf-winterWarn'); if (w) w.classList.toggle('qf-hidden', !winter);
+}
 
 function fmtMoney(n){ return '$' + (Math.round(n*100)/100).toFixed(2).replace(/\.00$/, ''); }
 function roundTo5(n){ return Math.round(n/5)*5; }
@@ -703,9 +770,17 @@ function compute(){
   const base = primaryBase;
   let minApplied = false;
   if (total < MIN_CHARGE) { total = MIN_CHARGE; minApplied = true; }
+  // Recurring per-visit discount, re-floored at the minimum charge.
+  let discountPct = 0, netPerVisit = total;
+  if (state.recurring === 'yes' && RECUR_DISCOUNT[state.frequency]) {
+    discountPct = RECUR_DISCOUNT[state.frequency];
+    netPerVisit = Math.max(total * (1 - discountPct), MIN_CHARGE);
+  }
   return {
     base,
     total: Math.round(total*100)/100,
+    discountPct,
+    netPerVisit: Math.round(netPerVisit*100)/100,
     minApplied,
     hasFrench,
     averaged,
@@ -717,8 +792,9 @@ function compute(){
 
 function priceRange(q){
   if (q.oversize) return null;
-  let low = roundTo5(q.total * 0.85);
-  let high = roundTo5(q.total * 1.15);
+  const dt = (q.netPerVisit != null) ? q.netPerVisit : q.total;
+  let low = roundTo5(dt * 0.85);
+  let high = roundTo5(dt * 1.15);
   if (low < MIN_CHARGE) low = MIN_CHARGE;
   if (high < low + 25) high = low + 25;
   return {low, high};
@@ -746,6 +822,13 @@ function renderRecap(){
   const hasFrenchUI = (state.method === 'sqft' && state.sqftHasFrench === 'yes')
                    || (state.method === 'windows' && state.windowHasFrench === 'yes');
   rows.push(['French panes', hasFrenchUI ? 'Yes' : 'No']);
+  if (state.recurring === 'yes' && RECUR_DISCOUNT[state.frequency]) {
+    rows.push(['Recurring plan', RECUR_LABEL[state.frequency]]);
+    const ds = state.recurringDates.filter(Boolean);
+    if (ds.length) rows.push(['Preferred dates', ds.join(', ')]);
+  } else {
+    rows.push(['Recurring plan', 'One-time clean']);
+  }
   $('#qfRecap').innerHTML = rows.map(([l,v]) => `<div class="row"><span class="label">${l}</span><span class="val">${v}</span></div>`).join('');
 }
 
@@ -793,6 +876,16 @@ function onBookingComplete() {
   fd.append('French panes', q.hasFrench
     ? 'Yes — REVIEW: price may need adjustment depending on divided pane count ($2/pane = $8/side per 4 panes)'
     : 'No');
+  if (state.recurring === 'yes' && q.discountPct > 0) {
+    fd.append('Recurring plan', RECUR_LABEL[state.frequency] + ' — REVIEW: set up the recurring series in HCP and apply ' + Math.round(q.discountPct*100) + '% to each visit.');
+    fd.append('Per-visit price (one-time)', fmtMoney(q.total));
+    fd.append('Per-visit price (recurring)', fmtMoney(q.netPerVisit));
+    fd.append('Est. annual total', fmtMoney(q.netPerVisit * RECUR_VISITS[state.frequency]) + ' (' + RECUR_VISITS[state.frequency] + ' visits)');
+    const rds = state.recurringDates.filter(Boolean);
+    fd.append('Preferred dates', rds.length ? rds.join(', ') : 'none provided — follow up to schedule');
+  } else {
+    fd.append('Recurring plan', 'One-time clean');
+  }
   if (q.oversize) {
     fd.append('Calculated quote', 'OVER 6000 SQFT - IN PERSON REQUIRED');
     fd.append('Range shown to customer', 'In-person quote (no range)');
@@ -812,6 +905,10 @@ function onBookingComplete() {
   } else {
     $('#qfRangeLow').textContent = '$' + range.low;
     $('#qfRangeHigh').textContent = '$' + range.high;
+    var rlbl = document.querySelector('#qfRangeCard .label');
+    if (rlbl) rlbl.textContent = (state.recurring === 'yes' && q.discountPct > 0)
+      ? 'Per visit — ' + Math.round(q.discountPct*100) + '% recurring discount applied'
+      : 'Estimated range';
   }
   document.getElementById('quote').scrollIntoView({behavior:'smooth', block:'start'});
 }
