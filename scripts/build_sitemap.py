@@ -10,7 +10,7 @@ import os, sys, datetime, pathlib
 BASE = "https://ocsllc.services"
 ROOT = pathlib.Path(os.environ.get("REPO_ROOT", ".")).resolve()
 
-SKIP_DIRS = {".git", ".github", "docs", "assets", "scripts", "node_modules"}
+SKIP_DIRS = {".git", ".github", "docs", "assets", "scripts", "node_modules", "admin"}
 
 def url_for(path: pathlib.Path) -> str:
     rel = path.relative_to(ROOT).as_posix()
