@@ -27,7 +27,7 @@ ROOT  = pathlib.Path(os.environ.get("REPO_ROOT", ".")).resolve()
 TOKEN = os.environ.get("IG_ACCESS_TOKEN", "").strip()
 UID   = os.environ.get("IG_USER_ID", "").strip()
 BASE  = os.environ.get("IG_API_BASE", "https://graph.instagram.com").rstrip("/")
-MAXC  = int(os.environ.get("MAX_CLIPS", "6"))
+MAXC  = int(os.environ.get("MAX_CLIPS", "60"))
 
 VID   = ROOT / "assets" / "videos"
 CLIPS = VID / "clips"
@@ -140,11 +140,11 @@ PAGE = '''<!DOCTYPE html>
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="theme-color" content="#0CC0DF">
     <title>Our Work | OCS LLC Window Cleaning</title>
-    <meta name="description" content="Real window-cleaning clips from across the Flathead Valley — Kalispell, Whitefish, Columbia Falls, and Bigfork. Auto-synced from our Instagram.">
+    <meta name="description" content="Real window-cleaning documentation from across the Flathead Valley — Kalispell, Whitefish, Columbia Falls, and Bigfork. Auto-synced from our Instagram.">
     <link rel="canonical" href="https://ocsllc.services/our-work/">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Our Work | OCS LLC Window Cleaning">
-    <meta property="og:description" content="Real clips from real jobs across the Flathead Valley.">
+    <meta property="og:description" content="Real documentation from real jobs across the Flathead Valley.">
     <meta property="og:url" content="https://ocsllc.services/our-work/">
     <meta property="og:image" content="https://ocsllc.services/assets/og.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -196,6 +196,8 @@ __BREADCRUMBS_LD__
         }
         @media (prefers-reduced-motion: reduce) { .vid-card video { } }
     </style>
+<link rel="stylesheet" href="/assets/ambient-hero.css">
+<script src="/assets/ambient-hero.js" defer></script>
 </head>
 <body class="bg-gray-50 text-black">
     <nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10">
@@ -208,9 +210,10 @@ __BREADCRUMBS_LD__
         </div>
     </nav>
 
-    <section class="hero-mini">
+    <section class="hero-mini hero-photo has-ambient">
+<video class="ambient-hero-video" autoplay muted loop playsinline preload="auto" poster="/assets/videos/bg/our-work.jpg"><source src="/assets/videos/bg/our-work.mp4" type="video/mp4"></video>
         <h1>Our work</h1>
-        <p>Real clips from real jobs across the Flathead Valley — fresh from our Instagram.</p>
+        <p>Real documentation from real jobs across the Flathead Valley — fresh from our Instagram.</p>
     </section>
 
     <section class="bg-white">

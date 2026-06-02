@@ -13,18 +13,18 @@
 <meta property="og:url" content="https://ocsllc.services/pricing/">
 <meta property="og:image" content="https://ocsllc.services/assets/og.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ocsllc.services/"},{"@type":"ListItem","position":2,"name":"Pricing","item":"https://ocsllc.services/pricing/"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Window Cleaning","provider":{"@id":"https://ocsllc.services/#business"},"areaServed":{"@type":"AdministrativeArea","name":"Flathead Valley, MT"},"offers":[{"@type":"Offer","name":"Small home (10-15 windows)","priceSpecification":{"@type":"PriceSpecification","minPrice":"150","maxPrice":"280","priceCurrency":"USD"}},{"@type":"Offer","name":"Mid-size home (20-30 windows)","priceSpecification":{"@type":"PriceSpecification","minPrice":"280","maxPrice":"450","priceCurrency":"USD"}},{"@type":"Offer","name":"Large home (30-45 windows)","priceSpecification":{"@type":"PriceSpecification","minPrice":"420","maxPrice":"700","priceCurrency":"USD"}},{"@type":"Offer","name":"Lake/luxury home","priceSpecification":{"@type":"PriceSpecification","minPrice":"650","maxPrice":"1500","priceCurrency":"USD"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Window Cleaning","provider":{"@id":"https://ocsllc.services/#business"},"areaServed":{"@type":"AdministrativeArea","name":"Flathead Valley, MT"},"offers":[{"@type":"Offer","name":"Small home (10-15 windows)","priceSpecification":{"@type":"PriceSpecification","minPrice":"150","maxPrice":"280","priceCurrency":"USD"}},{"@type":"Offer","name":"Mid-size home (20-30 windows)","priceSpecification":{"@type":"PriceSpecification","minPrice":"280","maxPrice":"450","priceCurrency":"USD"}},{"@type":"Offer","name":"Large home (30-45 windows)","priceSpecification":{"@type":"PriceSpecification","minPrice":"450","maxPrice":"700","priceCurrency":"USD"}},{"@type":"Offer","name":"Lake/luxury home","priceSpecification":{"@type":"PriceSpecification","minPrice":"650","priceCurrency":"USD"}}]}</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230CC0DF'/%3E%3Ctext x='50' y='62' font-family='Arial,sans-serif' font-size='44' font-weight='700' text-anchor='middle' fill='white'%3EO%3C/text%3E%3C/svg%3E">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/responsive.css">
 <style>
-.range-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;transition:transform .2s,box-shadow .2s}
-.range-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(12,192,223,.14);border-color:#0CC0DF}
-.range-card .price-big{font-size:1.85rem;font-weight:800;color:#0CC0DF;line-height:1;margin:.4rem 0}
-.range-card h3{font-size:1.05rem;font-weight:700;margin-bottom:.4rem;color:#0f172a}
-.range-card .desc{color:#475569;font-size:.85rem;line-height:1.5;margin-bottom:.5rem}
-.range-card .feat{font-size:.78rem;color:#64748b}
+.size-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;transition:transform .2s,box-shadow .2s}
+.size-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(12,192,223,.14);border-color:#0CC0DF}
+.size-card .price-big{font-size:1.85rem;font-weight:800;color:#0CC0DF;line-height:1;margin:.4rem 0}
+.size-card h3{font-size:1.05rem;font-weight:700;margin-bottom:.4rem;color:#0f172a}
+.size-card .desc{color:#475569;font-size:.85rem;line-height:1.5;margin-bottom:.5rem}
+.size-card .feat{font-size:.78rem;color:#64748b}
 .simple-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:1rem;margin:1rem 0}
 .simple-tile{background:#f9fafb;border-left:4px solid #0CC0DF;padding:1rem 1.25rem;border-radius:0 8px 8px 0}
 .simple-tile h4{font-weight:700;font-size:.95rem;margin:0 0 .25rem;color:#0f172a}
@@ -39,6 +39,101 @@
 .qf button{background:#0CC0DF;color:#fff;padding:.95rem 2rem;border:0;border-radius:8px;font-weight:700;font-size:1rem;cursor:pointer;margin-top:1rem;width:100%}
 .qf button:hover{background:#0aa3bd}
 .headline-rate{font-size:1.6rem;font-weight:800;color:#0CC0DF;text-align:center;margin:1rem 0}
+
+/* === real quote wizard (mirrored from /estimate) === */
+.calc-page{background:#f8fafc;padding:2rem 0 3rem;min-height:80vh}
+.calc-wrap{max-width:720px;margin:0 auto;padding:0 1rem}
+.calc-intro{text-align:center;max-width:600px;margin:0 auto 1rem;color:#475569}
+.calc-intro h1{font-size:clamp(1.7rem,4vw,2.2rem);font-weight:800;color:#0f172a;margin:0 0 .5rem}
+.calc-intro p{margin:.25rem 0 0;font-size:1rem;line-height:1.5}
+.progress{display:flex;align-items:center;gap:.4rem;justify-content:center;margin:1rem 0 1.5rem;font-size:.78rem;color:#64748b;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.progress .dot{width:9px;height:9px;border-radius:50%;background:#cbd5e1}
+.progress .dot.on{background:#0CC0DF}
+.progress .dot.done{background:#10b981}
+
+.step{display:none;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1.5rem;box-shadow:0 2px 8px rgba(15,23,42,.04);margin-bottom:1rem}
+.step.active{display:block}
+.step h2{margin:0 0 1rem;font-size:1.25rem;color:#0f172a;font-weight:800;line-height:1.3}
+.step .hint{color:#64748b;font-size:.9rem;margin:0 0 1rem;line-height:1.5}
+
+.tile-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media(max-width:540px){.tile-grid{grid-template-columns:1fr}}
+.tile{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1.1rem 1rem;text-align:left;cursor:pointer;font-family:inherit;transition:all .15s ease;display:block;width:100%}
+.tile:hover{border-color:#0CC0DF;background:#fff}
+.tile strong{display:block;font-size:1rem;color:#0f172a;font-weight:700;margin-bottom:.25rem}
+.tile span{color:#6b7280;font-size:.85rem;line-height:1.45}
+
+.opts{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem}
+.opts button{background:#fff;border:1.5px solid #d1d5db;border-radius:999px;padding:.5rem .95rem;font-size:.88rem;font-weight:600;color:#0f172a;cursor:pointer;font-family:inherit;transition:all .12s ease}
+.opts button:hover{border-color:#0CC0DF}
+.opts button.on{background:#0CC0DF;color:#fff;border-color:#0CC0DF}
+
+fieldset{border:0;padding:0;margin:0 0 1.2rem}
+fieldset legend{font-weight:700;color:#0f172a;font-size:.95rem;margin-bottom:.4rem;padding:0}
+.followup{margin-top:.75rem;padding:.75rem;background:#f8fafc;border-radius:8px;border-left:3px solid #0CC0DF}
+.followup-q{margin:0 0 .35rem;font-weight:600;font-size:.88rem;color:#0f172a}
+
+label.fld{display:block;font-weight:600;font-size:.85rem;margin:.85rem 0 .3rem;color:#0f172a}
+label.fld small{font-weight:400;color:#64748b;margin-left:.3rem}
+input[type=number],input[type=text],input[type=tel],input[type=email],textarea{width:100%;padding:.65rem .85rem;border:1.5px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit;box-sizing:border-box;background:#fff}
+input:focus,textarea:focus{outline:none;border-color:#0CC0DF;box-shadow:0 0 0 3px rgba(12,192,223,.15)}
+textarea{min-height:70px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+@media(max-width:540px){.row2{grid-template-columns:1fr}}
+.input-hint{font-size:.8rem;color:#6b7280;margin:.25rem 0 0}
+.hidden{display:none !important}
+
+.actions{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;gap:.75rem;flex-wrap:wrap}
+.back-btn{background:none;border:0;color:#6b7280;font-weight:600;cursor:pointer;font-family:inherit;font-size:.9rem;padding:.55rem .25rem}
+.back-btn:hover{color:#0f172a}
+.next-btn{background:#0CC0DF;color:#fff;font-weight:700;border:0;border-radius:999px;padding:.75rem 1.6rem;font-size:.98rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(12,192,223,.3);transition:all .15s ease}
+.next-btn:hover{background:#0aa3bd}
+.next-btn:disabled{background:#cbd5e1;cursor:not-allowed;box-shadow:none}
+
+.oversize-warn{margin-top:1rem;padding:1.1rem;background:#fef3c7;border:1.5px solid #f59e0b;border-radius:10px}
+.oversize-warn h3{margin:0 0 .4rem;font-size:1.05rem;color:#92400e}
+.oversize-warn p{margin:0 0 .8rem;color:#78350f;font-size:.9rem;line-height:1.5}
+.oversize-warn a{display:inline-block;background:#0f172a;color:#fff;padding:.55rem 1.1rem;border-radius:999px;font-weight:700;font-size:.9rem;text-decoration:none;margin-right:.4rem}
+.oversize-warn a:hover{background:#1e293b}
+
+.recap{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:1rem 1.2rem;margin:.5rem 0 1rem;font-size:.9rem;line-height:1.7;color:#374151}
+.recap strong{color:#0f172a;font-weight:700}
+.recap .row{display:flex;justify-content:space-between;gap:1rem;padding:.25rem 0;border-bottom:1px solid #f3f4f6}
+.recap .row:last-child{border-bottom:0}
+.recap .label{color:#6b7280}
+.recap .val{color:#0f172a;font-weight:600;text-align:right}
+
+.submit-error{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:8px;padding:.8rem 1rem;color:#b91c1c;font-size:.88rem;margin:.75rem 0;display:none}
+.submit-error.show{display:block}
+
+.thanks-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1.75rem 1.5rem;box-shadow:0 2px 8px rgba(15,23,42,.04);text-align:center;margin-bottom:1rem}
+.thanks-icon{width:60px;height:60px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:#16a34a}
+.thanks-card h2{font-size:1.45rem;font-weight:800;color:#0f172a;margin:0 0 .5rem}
+.thanks-card .lead{color:#475569;font-size:1rem;margin:0 0 1.2rem;line-height:1.55}
+
+.range-card{background:#0f172a;color:#fff;border-radius:12px;padding:1.5rem;margin:1rem 0;text-align:center}
+.range-card .label{font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;color:#94a3b8;font-weight:600;margin-bottom:.5rem}
+.range-card .range{font-size:2rem;font-weight:800;color:#0CC0DF;line-height:1.1;margin:.25rem 0}
+.range-card .range .sep{color:rgba(255,255,255,.4);margin:0 .15rem;font-weight:400}
+.range-card .caveat{font-size:.82rem;color:rgba(255,255,255,.7);margin:.85rem 0 0;line-height:1.5;text-align:left}
+
+/* HCP booking modal iframe sizing fix - prevents iframe from collapsing */
+
+.hcp-widget iframe{height:100%!important;max-width:none!important}
+.book-block{background:#f0fdfa;border:1.5px solid #14b8a6;border-radius:12px;padding:1.25rem;margin:1.25rem 0 0;text-align:center}
+.book-h{margin:0 0 .25rem;font-size:1.1rem;font-weight:800;color:#0f172a}
+.book-sub{margin:0 0 .9rem;color:#475569;font-size:.88rem;line-height:1.5}
+.book-btn{background:#0CC0DF;color:#fff;font-weight:700;border:0;border-radius:999px;padding:.85rem 1.6rem;font-size:1rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(12,192,223,.35);transition:all .15s ease}
+.book-btn:hover{background:#0aa3bd;transform:translateY(-1px)}
+.thanks-cta-row{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:1.25rem}
+.thanks-cta-row a{display:inline-block;background:#0CC0DF;color:#fff;font-weight:700;padding:.65rem 1.2rem;border-radius:999px;text-decoration:none;font-size:.92rem}
+.thanks-cta-row a.secondary{background:#fff;color:#0f172a;border:1.5px solid #d1d5db}
+.thanks-cta-row a:hover{opacity:.92}
+
+.loading-overlay{display:none;text-align:center;padding:1.5rem 0;color:#475569;font-weight:600}
+.loading-overlay.show{display:block}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid #e5e7eb;border-top-color:#0CC0DF;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:.5rem}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 <link rel="stylesheet" href="/assets/ambient-hero.css">
 <script src="/assets/ambient-hero.js" defer></script>
@@ -56,10 +151,10 @@
 <p class="breadcrumbs"><a href="/">Home</a> &rsaquo; Pricing</p>
 <p class="text-center text-gray-600 mb-6 max-w-2xl mx-auto">Real prices grouped by home size. <strong>You always get a firm price before we start &mdash; no surprises.</strong></p>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
-<div class="range-card"><h3>Small / condo</h3><p class="desc">~1,500 sq ft, 10-15 windows</p><div class="price-big">$150-$280</div><p class="feat">Townhouses, condos, cottages</p></div>
-<div class="range-card"><h3>Mid-size home</h3><p class="desc">~2,500 sq ft, 20-30 windows</p><div class="price-big">$280-$450</div><p class="feat">Most Flathead homes</p></div>
-<div class="range-card"><h3>Large home</h3><p class="desc">~3,500 sq ft, 30-45 windows</p><div class="price-big">$420-$700</div><p class="feat">2-3 story, mountain homes</p></div>
-<div class="range-card"><h3>Lake / luxury</h3><p class="desc">5,000+ sq ft, 40+ windows</p><div class="price-big">$650-$1,500</div><p class="feat">Lakefront, picture views</p></div>
+<div class="size-card"><h3>Small / condo</h3><p class="desc">Up to 1,500 sq ft, 10-15 windows</p><div class="price-big">$150-$280</div><p class="feat">Townhouses, condos, cottages</p></div>
+<div class="size-card"><h3>Mid-size home</h3><p class="desc">1,500–3,000 sq ft, 20-30 windows</p><div class="price-big">$280-$450</div><p class="feat">Most Flathead homes</p></div>
+<div class="size-card"><h3>Large home</h3><p class="desc">3,000–5,000 sq ft, 30-45 windows</p><div class="price-big">$450-$700</div><p class="feat">2-3 story, mountain homes</p></div>
+<div class="size-card"><h3>Lake / luxury</h3><p class="desc">5,000+ sq ft, 40+ windows</p><div class="price-big">$650+</div><p class="feat">Lakefront, picture views</p></div>
 </div>
 <div class="text-center mt-4 mb-10"><a href="/#reserve" class="bg-custom-cyan text-white px-6 py-3 rounded-lg font-bold inline-block">Get a Free Quote</a></div>
 <h2 class="text-2xl font-bold mb-3 mt-6 text-center">What we charge for</h2>
@@ -73,28 +168,633 @@
 <ul class="list-disc pl-6 mb-6 text-gray-700 max-w-2xl mx-auto">
 <li>Estimates - free, in person or by photo</li>
 <li>Travel within the Flathead Valley (within 25 mi of Kalispell)</li>
-<li>Going back up if we missed a streak (24-hour satisfaction guarantee)</li>
+<li>Going back up if we missed a streak (48-hour satisfaction guarantee)</li>
 <li>Drop cloths, shoe covers, supplies</li>
 <li>Weather reschedules</li>
 </ul>
-<div id="quote-form" class="qf" style="max-width:680px;margin:2.5rem auto">
-<h2 class="text-2xl font-bold mb-2" style="color:#0f172a">Get your specific quote</h2>
-<p class="text-gray-600 mb-4 text-sm">Most quotes back same-day. No obligation.</p>
-<form action="https://formsubmit.co/barrett@ocsllc.services" method="POST">
-<input type="hidden" name="_subject" value="OCS LLC pricing-page quote">
-<input type="hidden" name="_next" value="https://ocsllc.services/thanks/">
-<input type="hidden" name="_captcha" value="true">
-<input type="hidden" name="_template" value="table">
-<div class="row2"><div><label>Your name *</label><input name="name" required></div><div><label>Phone *</label><input name="phone" required type="tel"></div></div>
-<div class="row2"><div><label>Email *</label><input name="email" required type="email"></div><div><label>Town</label><input name="town" placeholder="Whitefish, Bigfork, etc."></div></div>
-<label>Service</label><select name="service"><option>Window cleaning - interior &amp; exterior</option><option>Window cleaning - exterior only</option><option>Commercial / storefront</option><option>Post-construction</option><option>Solar panels / skylights / chandeliers</option><option>Multiple - let's talk</option></select>
-<label>Anything else?</label><textarea name="details" placeholder="Approx # of windows, hard water, special access?"></textarea>
-<button type="submit">Send Quote Request &rarr;</button>
-</form>
+<div class="quote-embed" style="margin-top:2.5rem;padding-top:1.75rem;border-top:1px solid #e5e7eb">
+<div class="calc-wrap" id="formWrap">
+  <div class="calc-intro">
+    <h1>Request a quote</h1>
+    <p>A few quick questions about your home. We'll get back to you within a day with a price range. No spam, no commitment.</p>
+    <div class="progress" id="progress">
+      <span class="dot on" data-p="1"></span>
+      <span class="dot" data-p="2"></span>
+      <span class="dot" data-p="3"></span>
+      <span class="dot" data-p="4"></span>
+      <span class="dot" data-p="5"></span>
+    </div>
+  </div>
+
+  <!-- STEP 1: Service -->
+  <section class="step active" data-step="1">
+    <h2>1. What kind of cleaning?</h2>
+    <div class="tile-grid">
+      <button class="tile" data-set="service" data-val="both">
+        <strong>Interior + Exterior</strong>
+        <span>Full clean &mdash; inside &amp; outside glass plus tracks. Most popular.</span>
+      </button>
+      <button class="tile" data-set="service" data-val="ext">
+        <strong>Exterior Only</strong>
+        <span>Outside glass only. Lower price.</span>
+      </button>
+    </div>
+    <div id="screensAsk" class="hidden" style="margin-top:1.25rem">
+      <label class="fld" style="margin-top:0">Do you want your screens cleaned as well?</label>
+      <div class="opts">
+        <button type="button" data-set="wantsScreens" data-val="yes">Yes</button>
+        <button type="button" data-set="wantsScreens" data-val="no" class="on">No</button>
+      </div>
+      <div id="screensCountBlock" class="hidden" style="margin-top:.75rem">
+        <label class="fld">How many screens? <small>(usually one per window opening)</small></label>
+        <input type="number" id="screenCountWanted" min="0" max="500" placeholder="e.g. 15" inputmode="numeric">
+      </div>
+      <div class="actions" style="margin-top:.9rem">
+        <span></span>
+        <button class="next-btn" data-goto="2">Next &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2: Pricing path -->
+  <section class="step" data-step="2">
+    <h2>2. How would you like to be quoted?</h2>
+    <div class="tile-grid">
+      <button class="tile" data-set="method" data-val="sqft">
+        <strong>By home size (recommended)</strong>
+        <span>Quickest way &mdash; we'll use your home's square footage.</span>
+      </button>
+      <button class="tile" data-set="method" data-val="windows">
+        <strong>By pane count</strong>
+        <span>Most precise &mdash; count each pane of glass yourself.</span>
+      </button>
+    </div>
+    <div class="actions">
+      <button class="back-btn" data-goto="1">&larr; Back</button>
+      <span></span>
+    </div>
+  </section>
+
+  <!-- STEP 3a: Sqft -->
+  <section class="step" data-step="3a">
+    <h2>3. Your home's size</h2>
+    <label class="fld">Approximate square footage</label>
+    <input type="number" id="sqft" min="0" max="20000" placeholder="e.g. 2500" inputmode="numeric">
+    <p class="input-hint">You can find this on Zillow, your county assessor's site, or your home's purchase paperwork. A close estimate is fine.</p>
+    <div id="oversize-warn" class="oversize-warn hidden">
+      <h3>Homes over 6,000 sqft need an in-person quote</h3>
+      <p>For larger homes we visit the property so we can quote accurately and account for access, story height, and pane variation. The visit is free &mdash; usually takes 20 minutes.</p>
+      <a href="tel:+14066072151">Call (406) 607-2151</a>
+      <a href="sms:+14066072151">Text us</a>
+    </div>
+    <div style="background:#f0fdfa;border-left:3px solid #14b8a6;padding:.85rem 1rem;border-radius:6px;margin:1.2rem 0">
+      <strong style="font-size:.92rem;color:#0f172a">Want an even more accurate quote?</strong>
+      <p style="font-size:.85rem;color:#475569;margin:.3rem 0 .6rem;line-height:1.5">If you also know how many panes of glass your home has, drop the count in below and we'll average both estimates. A double-hung window counts as 2 panes.</p>
+      <label class="fld" style="margin-top:.4rem">Pane count <small>(optional)</small></label>
+      <input type="number" id="secondaryPanes" min="0" max="500" placeholder="e.g. 30" inputmode="numeric">
+    </div>
+    <div class="actions">
+      <button class="back-btn" data-goto="2">&larr; Back</button>
+      <button class="next-btn" data-goto="4" id="next3a">Next &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 3b: Per-pane -->
+  <section class="step" data-step="3b">
+    <h2>3. Pane count</h2>
+    <p class="hint">Count each <strong>individual pane of glass</strong>, not whole windows. A double-hung window has 2 panes, a triple-pane has 3, a sliding glass door has 2 large panes.</p>
+    <label class="fld">How many panes of glass?</label>
+    <input type="number" id="windowCount" min="0" max="500" placeholder="e.g. 30" inputmode="numeric">
+    <label class="fld">Do you have French / divided-light windows? <small>(small panes inside a wood grid)</small></label>
+    <div class="opts">
+      <button type="button" data-set="windowHasFrench" data-val="no" class="on">No</button>
+      <button type="button" data-set="windowHasFrench" data-val="yes">Yes</button>
+    </div>
+    <div style="background:#f0fdfa;border-left:3px solid #14b8a6;padding:.85rem 1rem;border-radius:6px;margin:1.2rem 0">
+      <strong style="font-size:.92rem;color:#0f172a">Want an even more accurate quote?</strong>
+      <p style="font-size:.85rem;color:#475569;margin:.3rem 0 .6rem;line-height:1.5">If you also know your home's approximate square footage, drop it in below and we'll average both estimates for the most accurate range.</p>
+      <label class="fld" style="margin-top:.4rem">Square footage <small>(optional)</small></label>
+      <input type="number" id="secondarySqft" min="0" max="20000" placeholder="e.g. 2500" inputmode="numeric">
+    </div>
+    <div class="actions">
+      <button class="back-btn" data-goto="2">&larr; Back</button>
+      <button class="next-btn" data-goto="4" id="next3b">Next &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 4: Clarifying questions -->
+  <section class="step" data-step="4">
+    <h2>4. A few quick questions</h2>
+    <p class="hint">These help us quote accurately and avoid surprises on the day of the appointment.</p>
+
+    <fieldset>
+      <legend>How many stories is your home?</legend>
+      <div class="opts">
+        <button type="button" data-set="stories" data-val="1" class="on">1 story</button>
+        <button type="button" data-set="stories" data-val="2">2 or more stories</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Hard water staining on the windows?</legend>
+      <div class="opts">
+        <button type="button" data-set="hardWater" data-val="none" class="on">No / not sure</button>
+        <button type="button" data-set="hardWater" data-val="yes">Yes</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>When was the last professional window cleaning?</legend>
+      <div class="opts">
+        <button type="button" data-set="lastCleaned" data-val="recent" class="on">Within the past 5 years</button>
+        <button type="button" data-set="lastCleaned" data-val="over5">Longer than 5 years ago</button>
+        <button type="button" data-set="lastCleaned" data-val="never">Never</button>
+      </div>
+      <div id="constructionFollowup" class="followup hidden">
+        <p class="followup-q">Was the home professionally cleaned at construction?</p>
+        <div class="opts">
+          <button type="button" data-set="constructionClean" data-val="yes" class="on">Yes</button>
+          <button type="button" data-set="constructionClean" data-val="no">No</button>
+          <button type="button" data-set="constructionClean" data-val="dontknow">Don't know</button>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Is this a post-construction cleanup? <small style="font-weight:400;color:#6b7280">(paint, stucco, sticker residue)</small></legend>
+      <div class="opts">
+        <button type="button" data-set="postConstruction" data-val="no" class="on">No</button>
+        <button type="button" data-set="postConstruction" data-val="yes">Yes</button>
+      </div>
+    </fieldset>
+
+    <fieldset id="sqftFrenchAsk">
+      <legend>Do you have French / divided-light windows? <small style="font-weight:400;color:#6b7280">(small panes in a wood grid)</small></legend>
+      <div class="opts">
+        <button type="button" data-set="sqftHasFrench" data-val="no" class="on">No</button>
+        <button type="button" data-set="sqftHasFrench" data-val="yes">Yes</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Want to save with a recurring plan? <small style="font-weight:400;color:#6b7280">(optional)</small></legend>
+      <p class="hint" style="margin:0 0 .6rem">Set up regular cleanings and save on every visit. You'll book your first visit next — we'll confirm your full schedule and apply the discount after.</p>
+      <div class="opts">
+        <button type="button" data-set="recurring" data-val="no" class="on">No, one-time</button>
+        <button type="button" data-set="recurring" data-val="yes">Yes, save with recurring</button>
+      </div>
+      <div id="recurringBlock" class="followup hidden" style="margin-top:.85rem">
+        <p style="font-weight:600;font-size:.88rem;color:#0f172a;margin:0 0 .35rem">How often? The discount applies to every visit.</p>
+        <div class="opts" id="frequencyOpts">
+          <button type="button" data-set="frequency" data-val="quarterly">Quarterly &middot; 4&times;/yr &middot; <strong>20% off</strong></button>
+          <button type="button" data-set="frequency" data-val="triannual">Every 4 months &middot; 3&times;/yr &middot; <strong>15% off</strong></button>
+          <button type="button" data-set="frequency" data-val="biannual">Twice a year &middot; 2&times;/yr &middot; <strong>10% off</strong></button>
+        </div>
+        <div id="recurringDatesWrap" class="hidden" style="margin-top:.85rem">
+          <label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .3rem;color:#0f172a">Your preferred dates <small style="font-weight:400;color:#64748b">we'll confirm exact times after your first booking</small></label>
+          <div id="recurringDates"></div>
+          <p id="winterWarn" class="hidden" style="margin-top:.5rem;padding:.6rem .8rem;background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;color:#92400e;font-size:.85rem;line-height:1.45">Heads up: window cleaning from December through February in the Flathead Valley is weather-dependent and may need to be rescheduled. We'll reach out to confirm.</p>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button class="back-btn" id="back4">&larr; Back</button>
+      <button class="next-btn" data-goto="5">Next &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 5: Contact info -->
+  <!-- STEP 5: Review + book a time via HCP -->
+  <section class="step" data-step="5">
+    <h2>5. Your estimate &amp; request</h2>
+    <p class="hint">Here's your estimated range based on your answers. Fill out the quick form below and we'll be in touch within 24 hours to confirm and schedule.</p>
+    <div class="recap" id="recapBox"></div>
+    <div class="range-card" id="rangeCard" style="margin:1.2rem 0"></div>
+    <div class="submit-error" id="submitError"></div>
+    <div id="formEmbed">
+      <h3 style="font-weight:800;color:#0f172a;font-size:1.05rem;margin:.5rem 0 .8rem">Request your cleaning</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+        <div><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Name *</label><input id="ldName" type="text" autocomplete="name"></div>
+        <div><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Phone *</label><input id="ldPhone" type="tel" autocomplete="tel"></div>
+        <div><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Email</label><input id="ldEmail" type="email" autocomplete="email"></div>
+        <div><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Town</label><input id="ldCity" type="text" placeholder="Kalispell, Whitefish…"></div>
+        <div style="grid-column:1/-1"><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Street address *</label><input id="ldAddr" type="text" autocomplete="street-address"></div>
+        <div style="grid-column:1/-1"><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Preferred dates / anything we should know</label><textarea id="ldNotes" rows="2"></textarea></div>
+      </div>
+      <button type="button" id="ldSubmit" class="next-btn" style="width:100%;margin-top:1rem">Send my request &rarr;</button>
+      <p style="color:#64748b;font-size:.8rem;text-align:center;margin:.6rem 0 0">No spam, no commitment. We'll reply within 24 hours.</p>
+    </div>
+    <div id="leadThanks" class="hidden" style="text-align:center;padding:1.25rem 0">
+      <div style="width:54px;height:54px;border-radius:50%;background:#dcfce7;color:#16a34a;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h3 style="font-weight:800;font-size:1.15rem;color:#0f172a;margin:0 0 .4rem">Request sent — thanks!</h3>
+      <p style="color:#475569;margin:0">We've got your details and your estimate. We'll reach out within 24 hours to confirm and schedule. Prefer to talk now? <a href="tel:+14066072151" style="color:#0CC0DF;font-weight:700">Call (406) 607-2151</a>.</p>
+    </div>
+    <div class="actions" style="margin-top:1rem"><button class="back-btn" data-goto="4">&larr; Edit my answers</button><span></span></div>
+    <p style="color:#64748b;font-size:.85rem;text-align:center;margin:1rem 0 0">Prefer to talk first? <a href="tel:+14066072151" style="color:#0CC0DF;font-weight:700">Call (406) 607-2151</a> &middot; <a href="sms:+14066072151" style="color:#0CC0DF;font-weight:700">Text us</a></p>
+  </section>
+</div>
 </div>
 <p class="text-center mt-6 text-gray-600">Or skip the form: <a href="tel:+14066072151" class="text-custom-cyan font-bold">call (406) 607-2151</a> or <a href="sms:+14066072151" class="text-custom-cyan font-bold">text us</a>.</p>
 </div></section></main>
-<footer class="bg-custom-cyan text-white py-8 mt-auto"><div class="container text-center"><p>&copy; 2025 OCS LLC · Insured · Locally owned</p><p class="mt-2"><a class="underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="underline" href="tel:+14066072151">(406) 607-2151</a></p><p class="mt-3 text-sm"><a class="underline" href="/">Home</a> · <a class="underline" href="/pricing/">Pricing</a> · <a class="underline" href="/estimate/">Quote Form</a> · <a class="underline" href="/reviews/">Reviews</a> · <a class="underline" href="/about/">About</a></p></div></footer>
+<footer class="bg-custom-cyan text-white py-8 mt-auto site-footer"><div class="container text-center">
+<p>&copy; 2025 OCS LLC &middot; Insured &middot; Locally owned</p>
+<p class="mt-2"><a class="underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="underline" href="tel:+14066072151">(406) 607-2151</a></p>
+<p class="mt-2 text-sm">Serving Kalispell, Whitefish, Columbia Falls, Bigfork &amp; the Flathead Valley.</p>
+<p class="mt-3 text-sm"><a class="underline" href="/">Home</a> &middot; <a class="underline" href="/about/">About</a> &middot; <a class="underline" href="/reviews/">Reviews</a> &middot; <a class="underline" href="/our-work/">Our Work</a> &middot; <a class="underline" href="/careers/">Careers</a></p>
+<p class="mt-2 text-sm"><a class="underline" href="/services/residential/">Residential</a> &middot; <a class="underline" href="/services/commercial/">Commercial</a> &middot; <a class="underline" href="/services/post-construction/">Post-Construction</a> &middot; <a class="underline" href="/services/additional/">Additional Services</a></p>
+<p class="mt-2 text-sm"><a class="underline" href="/pricing/">Pricing</a> &middot; <a class="underline" href="/estimate/">Quote Form</a> &middot; <a class="underline" href="/schedule/">Schedule</a></p>
+<p class="mt-2 text-sm"><a class="underline" href="/kalispell/">Kalispell</a> &middot; <a class="underline" href="/whitefish/">Whitefish</a> &middot; <a class="underline" href="/columbia-falls/">Columbia Falls</a> &middot; <a class="underline" href="/bigfork/">Bigfork</a> &middot; <a class="underline" href="/flathead-valley/">Flathead Valley</a></p>
+<p class="mt-2 text-sm"><a class="underline" href="/privacy/">Privacy</a> &middot; <a class="underline" href="/terms/">Terms</a> &middot; <a class="underline" href="/sitemap.html">Sitemap</a></p>
+</div></footer>
 <div class="mobile-bottom-bar"><a href="tel:+14066072151" class="mobile-call-bar mcb-half">Call</a><a href="sms:+14066072151" class="mobile-call-bar mcb-half" style="border-left:1px solid rgba(255,255,255,0.3)">Text</a></div>
+<script>
+(function(){
+'use strict';
+
+// ---------- State ----------
+const state = {
+  service: null, method: null,
+  sqft: 0,
+  wantsScreens: 'no', screenCountWanted: 0,
+  windowCount: 0,
+  windowHasFrench: 'no',
+  sqftHasFrench: 'no',
+  stories: '1', hardWater: 'none',
+  lastCleaned: 'recent', constructionClean: 'yes',
+  postConstruction: 'no',
+  secondaryPanes: 0, secondarySqft: 0,
+  recurring: 'no', frequency: null, recurringDates: []
+};
+
+// ---------- Pricing tables (v3) ----------
+const SQFT_TIERS = [
+  {label:'Tier 1 (≤1,000 sqft)', max:1000, both:0.15, ext:0.09},
+  {label:'Tier 2 (1,001–2,000 sqft)', max:2000, both:0.17, ext:0.10},
+  {label:'Tier 3 (2,001–3,000 sqft)', max:3000, both:0.19, ext:0.11},
+  {label:'Tier 4 (3,001–4,000 sqft)', max:4000, both:0.21, ext:0.13},
+  {label:'Tier 5 (4,001–5,000 sqft)', max:5000, both:0.23, ext:0.14},
+  {label:'Tier 6 (5,001–6,000 sqft)', max:6000, both:0.25, ext:0.15}
+];
+const PER_PANE = {ext:8, both:14, screen:4};
+const HW_PCT = {none:0, yes:0.20};
+const HW_LABEL = {none:'No', yes:'Yes'};
+const MIN_CHARGE = 150;
+// French panes: flagged Yes/No only; exact pricing ($8/side per 4 panes = $2/pane)
+// applied manually by Barrett when reviewing the booking. Not auto-calculated.
+// Recurring plan discounts — applied to each visit's price. HCP's public widget only
+// books one appointment, so the customer books visit 1 and Barrett sets up the series.
+const RECUR_DISCOUNT = {quarterly:0.20, triannual:0.15, biannual:0.10};
+const RECUR_VISITS = {quarterly:4, triannual:3, biannual:2};
+const RECUR_LABEL = {quarterly:'Quarterly — 4×/yr (20% off)', triannual:'Every 4 months — 3×/yr (15% off)', biannual:'Twice a year — 2×/yr (10% off)'};
+
+// ---------- Helpers ----------
+function $(s, r){ return (r||document).querySelector(s); }
+function $$(s, r){ return Array.from((r||document).querySelectorAll(s)); }
+
+var LEAD_ENDPOINT = 'https://ocs-crm.vercel.app/api/leads'; // OCS CRM lead intake
+function lv(id){ var e=document.getElementById(id); return e ? (e.value||'').trim() : ''; }
+function submitLead(){
+  var name=lv('ldName'), phone=lv('ldPhone'), email=lv('ldEmail'), city=lv('ldCity'), addr=lv('ldAddr'), notes=lv('ldNotes');
+  var err=document.getElementById('submitError');
+  if(!name || !phone || !addr){ if(err) err.textContent='Please add your name, phone, and street address.'; return; }
+  if(err) err.textContent='';
+  var q=compute(), range=priceRange(q);
+  // Shape matches the OCS app's submitLead({contact, booking}); booking = BookingInput.
+  var contact={ name:name, phone:phone, email:email, address:addr, city:city, notes:notes };
+  var booking={
+    service: state.service,
+    sqft: state.method==='sqft' ? (state.sqft||null) : (state.secondarySqft||null),
+    paneCount: state.method==='windows' ? (state.windowCount||null) : (state.secondaryPanes||null),
+    stories2plus: state.stories==='2',
+    hardWater: state.hardWater==='yes',
+    lastCleaned5yr: (state.lastCleaned==='over5') || (state.lastCleaned==='never' && state.constructionClean==='no'),
+    postConstruction: state.postConstruction==='yes',
+    wantsScreens: state.wantsScreens==='yes',
+    screenCount: state.screenCountWanted||0,
+    frenchPanes: q.hasFrench===true,
+    plan: state.recurring==='yes' ? state.frequency : 'onetime'
+  };
+  var sent=false;
+  if (LEAD_ENDPOINT && LEAD_ENDPOINT.indexOf('PASTE')<0){
+    try{ fetch(LEAD_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({contact:contact,booking:booking,source:'ocsllc.services /estimate form'})}); sent=true; }catch(e){}
+  }
+  if(!sent){
+    var flat={ name:name, phone:phone, email:email, town:city, address:addr, notes:notes,
+      service: state.service==='both'?'Interior + Exterior':'Exterior Only',
+      screens: booking.wantsScreens?(booking.screenCount+' screens'):'No',
+      home_sqft: booking.sqft||'', pane_count: booking.paneCount||'',
+      stories: booking.stories2plus?'2+':'1', hard_water: booking.hardWater?'Yes':'No',
+      last_cleaned: state.lastCleaned, post_construction: booking.postConstruction?'Yes':'No',
+      french_panes: booking.frenchPanes?'Yes':'No', recurring: booking.plan,
+      estimate: (q.oversize||!range)?'In-person quote':('$'+range.low+' - $'+range.high),
+      submitted_at: new Date().toLocaleString('en-US',{timeZone:'America/Denver'})+' MT', source:'ocsllc.services /estimate form' };
+    var fd=new FormData(); Object.keys(flat).forEach(function(k){fd.append(k,flat[k]);});
+    fd.append('_subject','New cleaning request — '+name); fd.append('_template','table'); fd.append('_captcha','false');
+    fetch('https://formsubmit.co/ajax/barrett@ocsllc.services',{method:'POST',headers:{'Accept':'application/json'},body:fd}).catch(function(){});
+  }
+  document.getElementById('formEmbed').classList.add('hidden');
+  document.getElementById('leadThanks').classList.remove('hidden');
+}
+(function(){ var b=document.getElementById('ldSubmit'); if(b) b.addEventListener('click', submitLead); })();
+
+function goto(stepId){
+  $$('.step').forEach(s => s.classList.toggle('active', s.dataset.step === stepId));
+  const num = stepId.startsWith('3') ? 3 : parseInt(stepId, 10);
+  $$('#progress .dot').forEach(d => {
+    const p = parseInt(d.dataset.p, 10);
+    d.classList.toggle('on', p === num);
+    d.classList.toggle('done', p < num);
+  });
+  if (stepId === '5') { renderRecap(); showEstimate(); }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ===== Appointment duration estimation =====
+// 30 minutes per $62.50 of estimated cost, rounded to nearest $62.50 increment.
+// Business window: 9:30 AM – 7 PM (closes 6 PM with 1 hr grace).
+function minutesFromQuote(total) {
+  // Round to nearest $62.50 increment, then 30 min per increment. Minimum 30 min.
+  return Math.max(30, Math.round(total / 62.5) * 30);
+}
+function formatDuration(minutes) {
+  const h = minutes / 60;
+  if (minutes < 60) return `${minutes} minutes`;
+  if (h === 1) return '1 hour';
+  if (Number.isInteger(h)) return `${h} hours`;
+  return `${h} hours`; // e.g. "1.5 hours", "2.5 hours"
+}
+function latestStartTime(durationMinutes) {
+  const startMin = 19*60 - durationMinutes;
+  if (startMin < (9*60 + 30)) return null;
+  let hr = Math.floor(startMin / 60), mn = startMin % 60;
+  const ap = hr >= 12 ? 'PM' : 'AM';
+  if (hr > 12) hr -= 12;
+  if (hr === 0) hr = 12;
+  return `${hr}:${mn.toString().padStart(2,'0')} ${ap}`;
+}
+function updateBookingInfo() {
+  const q = compute();
+  let line = "Lock in your appointment and we'll show your personalized estimate based on the answers you gave.";
+  let canBook = true;
+  if (q.oversize) {
+    line = "Your home is over 6,000 sqft — we need to come visit to give you an accurate quote. Please call or text us to schedule.";
+    canBook = false;
+  } else if (!q.invalid) {
+    const mins = minutesFromQuote(q.total);
+    const dur = formatDuration(mins);
+    if (mins >= 480) {
+      line = `Your appointment is a <strong>full-day job</strong> (about ${dur}). Pick any day that works — we'll start at 9:30 AM. If we don't finish that day, we'll come back the next to wrap up.`;
+    } else {
+      const latest = latestStartTime(mins);
+      line = `Your appointment will take about <strong>${dur}</strong>. Pick a start time between <strong>9:30 AM and ${latest}</strong> so we can wrap up by 7 PM.`;
+    }
+  }
+  $('#durationLine').innerHTML = line;
+  $('#bookActions').classList.toggle('hidden', !canBook);
+  $('#bookActionsBlocked').classList.toggle('hidden', canBook);
+}
+
+// ---------- Wiring ----------
+$$('.tile').forEach(t => t.addEventListener('click', () => {
+  const k = t.dataset.set, v = t.dataset.val;
+  state[k] = v;
+  if (k === 'service') {
+    // Highlight chosen tile + reveal screens follow-up instead of auto-advancing
+    $$('.tile[data-set="service"]').forEach(x => x.classList.toggle('on', x === t));
+    $('#screensAsk').classList.remove('hidden');
+    $('#screensAsk').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  else if (k === 'method') goto(v === 'sqft' ? '3a' : '3b');
+}));
+
+$$('button[data-set]').forEach(b => {
+  if (b.classList.contains('tile')) return;
+  b.addEventListener('click', () => {
+    const k = b.dataset.set, v = b.dataset.val;
+    state[k] = v;
+    const group = b.closest('.opts');
+    if (group) group.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    if (k === 'lastCleaned') $('#constructionFollowup').classList.toggle('hidden', v !== 'never');
+    if (k === 'wantsScreens') $('#screensCountBlock').classList.toggle('hidden', v !== 'yes');
+    if (k === 'recurring') {
+      const on = v === 'yes';
+      $('#recurringBlock').classList.toggle('hidden', !on);
+      if (!on) {
+        state.frequency = null; state.recurringDates = [];
+        $('#recurringDatesWrap').classList.add('hidden');
+        $$('#frequencyOpts button').forEach(x => x.classList.remove('on'));
+        $('#winterWarn').classList.add('hidden');
+      }
+    }
+    if (k === 'frequency') {
+      $('#recurringDatesWrap').classList.remove('hidden');
+      renderRecurringDates();
+    }
+  });
+});
+
+$('#sqft').addEventListener('input', e => {
+  state.sqft = parseInt(e.target.value, 10) || 0;
+  $('#oversize-warn').classList.toggle('hidden', state.sqft <= 6000 || state.sqft === 0);
+  $('#next3a').disabled = state.sqft <= 0 || state.sqft > 6000;
+});
+$('#windowCount').addEventListener('input', e => { state.windowCount = parseInt(e.target.value, 10) || 0; $('#next3b').disabled = state.windowCount <= 0; });
+$('#secondaryPanes').addEventListener('input', e => { state.secondaryPanes = parseInt(e.target.value, 10) || 0; });
+$('#secondarySqft').addEventListener('input', e => { state.secondarySqft = parseInt(e.target.value, 10) || 0; });
+$('#screenCountWanted').addEventListener('input', e => { state.screenCountWanted = parseInt(e.target.value, 10) || 0; });
+$('#next3a').disabled = true;
+$('#next3b').disabled = true;
+
+$$('[data-goto]').forEach(b => b.addEventListener('click', () => {
+  const t = b.dataset.goto;
+  if (t === '4') $('#sqftFrenchAsk').classList.toggle('hidden', state.method !== 'sqft');
+  goto(t);
+}));
+$('#back4').addEventListener('click', () => goto(state.method === 'sqft' ? '3a' : '3b'));
+
+// ===== Recurring plan: preferred-date pickers + winter advisory =====
+function renderRecurringDates(){
+  const wrap = $('#recurringDates'); if (!wrap) return;
+  const n = RECUR_VISITS[state.frequency] || 0;
+  const today = new Date().toISOString().slice(0,10);
+  let html = '';
+  for (let i = 0; i < n; i++) {
+    html += '<input type="date" class="recur-date" data-idx="' + i + '" min="' + today + '" '
+         + 'aria-label="Preferred date for visit ' + (i+1) + '" '
+         + 'style="display:block;width:auto;max-width:230px;padding:.55rem .7rem;border:1.5px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit;margin-bottom:.5rem;background:#fff">';
+  }
+  wrap.innerHTML = html;
+  state.recurringDates = new Array(n).fill('');
+  $$('.recur-date').forEach(inp => {
+    inp.addEventListener('change', () => {
+      state.recurringDates[parseInt(inp.dataset.idx, 10)] = inp.value;
+      checkWinter();
+    });
+  });
+  checkWinter();
+}
+function checkWinter(){
+  const winter = state.recurringDates.some(d => { if (!d) return false; const m = parseInt(d.slice(5,7), 10); return m === 12 || m === 1 || m === 2; });
+  const w = $('#winterWarn'); if (w) w.classList.toggle('hidden', !winter);
+}
+
+// ---------- Pricing ----------
+function fmtMoney(n){ return '$' + (Math.round(n*100)/100).toFixed(2).replace(/\.00$/, ''); }
+function roundTo5(n){ return Math.round(n/5)*5; }
+
+function baseFromSqft(sqft) {
+  if (sqft <= 0 || sqft > 6000) return null;
+  const tier = SQFT_TIERS.find(t => sqft <= t.max);
+  const rate = state.service === 'both' ? tier.both : tier.ext;
+  return sqft * rate;
+}
+function baseFromPanes(panes) {
+  if (panes <= 0) return null;
+  const r = state.service === 'both' ? PER_PANE.both : PER_PANE.ext;
+  return panes * r;
+}
+function screensSurcharge() {
+  // Flat $2/screen add-on when customer opts in. Applied after % surcharges,
+  // before minimum-charge floor, so it stacks cleanly on the base estimate.
+  if (state.wantsScreens !== 'yes' || state.screenCountWanted <= 0) return 0;
+  return state.screenCountWanted * PER_PANE.screen;
+}
+function applySurcharges(base) {
+  let t = base;
+  if (state.stories === '2') t += base * 0.10;
+  if (state.hardWater !== 'none') t += base * HW_PCT[state.hardWater];
+  let neverApplied = false;
+  if (state.lastCleaned === 'over5') neverApplied = true;
+  else if (state.lastCleaned === 'never' && state.constructionClean === 'no') neverApplied = true;
+  if (neverApplied) t += base * 0.15;
+  if (state.postConstruction === 'yes') t += base * 0.25;
+  // French panes intentionally NOT auto-priced — flagged in submission for manual review.
+  return t;
+}
+
+function compute(){
+  let primaryBase;
+  if (state.method === 'sqft') {
+    if (state.sqft > 6000) return {oversize:true};
+    primaryBase = baseFromSqft(state.sqft);
+  } else {
+    primaryBase = baseFromPanes(state.windowCount);
+  }
+  if (primaryBase === null) return {oversize:false, invalid:true};
+
+  const primaryTotal = applySurcharges(primaryBase);
+
+  // Optional secondary base for averaging
+  let secondaryTotal = null;
+  if (state.method === 'sqft' && state.secondaryPanes > 0) {
+    const sBase = baseFromPanes(state.secondaryPanes);
+    if (sBase !== null) secondaryTotal = applySurcharges(sBase);
+  } else if (state.method === 'windows' && state.secondarySqft > 0 && state.secondarySqft <= 6000) {
+    const sBase = baseFromSqft(state.secondarySqft);
+    if (sBase !== null) secondaryTotal = applySurcharges(sBase);
+  }
+
+  let total = primaryTotal;
+  let averaged = false;
+  if (secondaryTotal !== null) {
+    total = (primaryTotal + secondaryTotal) / 2;
+    averaged = true;
+  }
+  // Screens surcharge: flat $4/screen if customer opted in
+  const screensFee = screensSurcharge();
+  total += screensFee;
+
+  // French panes are flagged Y/N only; not auto-priced. Barrett reviews on intake.
+  const hasFrench = (state.method === 'sqft' && state.sqftHasFrench === 'yes')
+                 || (state.method === 'windows' && state.windowHasFrench === 'yes');
+
+  const base = primaryBase;
+  let minApplied = false;
+  if (total < MIN_CHARGE) { total = MIN_CHARGE; minApplied = true; }
+  // Recurring per-visit discount, re-floored at the minimum charge.
+  let discountPct = 0, netPerVisit = total;
+  if (state.recurring === 'yes' && RECUR_DISCOUNT[state.frequency]) {
+    discountPct = RECUR_DISCOUNT[state.frequency];
+    netPerVisit = Math.max(total * (1 - discountPct), MIN_CHARGE);
+  }
+  return {
+    base,
+    total: Math.round(total*100)/100,
+    discountPct,
+    netPerVisit: Math.round(netPerVisit*100)/100,
+    minApplied,
+    hasFrench,
+    averaged,
+    screensFee: Math.round(screensFee*100)/100,
+    primaryTotal: Math.round(primaryTotal*100)/100,
+    secondaryTotal: secondaryTotal !== null ? Math.round(secondaryTotal*100)/100 : null
+  };
+}
+
+function priceRange(q){
+  if (q.oversize) return null;
+  const dt = (q.netPerVisit != null) ? q.netPerVisit : q.total;
+  let low = roundTo5(dt * 0.85);
+  let high = roundTo5(dt * 1.15);
+  if (low < MIN_CHARGE) low = MIN_CHARGE;
+  if (high < low + 25) high = low + 25;
+  return {low, high};
+}
+
+// ---------- Recap (no price shown) ----------
+function renderRecap(){
+  const recap = $('#recapBox');
+  const rows = [];
+  rows.push(['Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only']);
+  rows.push(['Screens', state.wantsScreens === 'yes'
+    ? (state.screenCountWanted > 0 ? `Yes (${state.screenCountWanted})` : 'Yes')
+    : 'No']);
+  rows.push(['Pricing method', state.method === 'sqft' ? 'By home size' : 'By pane count']);
+  if (state.method === 'sqft') {
+    rows.push(['Home size', state.sqft.toLocaleString() + ' sqft']);
+    if (state.secondaryPanes > 0) rows.push(['Pane count (also)', state.secondaryPanes]);
+  } else {
+    rows.push(['Panes', state.windowCount]);
+    if (state.secondarySqft > 0) rows.push(['Home size (also)', state.secondarySqft.toLocaleString() + ' sqft']);
+  }
+  rows.push(['Stories', state.stories === '2' ? '2+' : '1']);
+  rows.push(['Hard water', HW_LABEL[state.hardWater]]);
+  rows.push(['Last cleaned', ({recent:'Within 5 years', over5:'Over 5 years ago', never:'Never'})[state.lastCleaned]]);
+  if (state.lastCleaned === 'never') rows.push(['Construction clean?', ({yes:'Yes', no:'No', dontknow:"Don't know"})[state.constructionClean]]);
+  rows.push(['Post-construction', state.postConstruction === 'yes' ? 'Yes' : 'No']);
+  const hasFrenchUI = (state.method === 'sqft' && state.sqftHasFrench === 'yes')
+                   || (state.method === 'windows' && state.windowHasFrench === 'yes');
+  rows.push(['French panes', hasFrenchUI ? 'Yes' : 'No']);
+  if (state.recurring === 'yes' && RECUR_DISCOUNT[state.frequency]) {
+    rows.push(['Recurring plan', RECUR_LABEL[state.frequency]]);
+    const ds = state.recurringDates.filter(Boolean);
+    if (ds.length) rows.push(['Preferred dates', ds.join(', ')]);
+  } else {
+    rows.push(['Recurring plan', 'One-time clean']);
+  }
+  recap.innerHTML = rows.map(([l,v]) => `<div class="row"><span class="label">${l}</span><span class="val">${v}</span></div>`).join('');
+}
+
+// Show the estimate range inline on step 5 (Google Form below captures contact info).
+function showEstimate(){
+  var q = compute(); var range = priceRange(q); var card = document.getElementById('rangeCard');
+  if (!card) return;
+  if (q.oversize || !range){
+    card.innerHTML = '<div class="label">In-person quote</div>'
+      + '<p class="caveat" style="margin-top:.6rem">Homes over 6,000 sqft get an in-person quote so we can be accurate. Fill out the form below (or call) and we\'ll be in touch within 24 hours.</p>';
+  } else {
+    var lbl = (state.recurring === 'yes' && q.discountPct > 0)
+      ? 'Per visit — ' + Math.round(q.discountPct*100) + '% recurring discount applied' : 'Estimated range';
+    card.innerHTML = '<div class="label">'+lbl+'</div>'
+      + '<div class="range"><span>$'+range.low+'</span> <span class="sep">&ndash;</span> <span>$'+range.high+'</span></div>'
+      + '<p class="caveat">Based on what you told us. The exact price is confirmed when we visit so we can account for access, story height, hard water, and other site conditions. Free travel within the Flathead Valley, $150 service minimum, and a 48-hour streak-free guarantee on every job.</p>';
+  }
+}
+
+
+
+})();
+</script>
 </body>
 </html>
