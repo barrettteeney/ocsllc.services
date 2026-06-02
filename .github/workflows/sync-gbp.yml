@@ -19,14 +19,17 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Sync from Google Business Profile
+      - name: Sync from Google Business Profile (OAuth)
         env:
-          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
-          PLACE_ID:              ${{ secrets.PLACE_ID }}
-          REPO_ROOT:             ${{ github.workspace }}
+          GBP_CLIENT_ID:     ${{ secrets.GBP_CLIENT_ID }}
+          GBP_CLIENT_SECRET: ${{ secrets.GBP_CLIENT_SECRET }}
+          GBP_REFRESH_TOKEN: ${{ secrets.GBP_REFRESH_TOKEN }}
+          GBP_ACCOUNT_ID:    ${{ secrets.GBP_ACCOUNT_ID }}
+          GBP_LOCATION_ID:   ${{ secrets.GBP_LOCATION_ID }}
+          REPO_ROOT:         ${{ github.workspace }}
         run: |
-          if [ -z "$GOOGLE_PLACES_API_KEY" ] || [ -z "$PLACE_ID" ]; then
-            echo "::warning::GBP secrets not set; skipping sync."
+          if [ -z "$GBP_REFRESH_TOKEN" ] || [ -z "$GBP_LOCATION_ID" ]; then
+            echo "::warning::GBP OAuth secrets not set; skipping sync."
             exit 0
           fi
           python scripts/sync_gbp.py

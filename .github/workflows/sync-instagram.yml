@@ -1,0 +1,36 @@
+name: Sync Instagram reels
+
+on:
+  schedule:
+    - cron: '30 14 * * 1'   # Mondays ~07:30 MT
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Pull newest reels from Instagram
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          MAX_CLIPS: '6'
+          REPO_ROOT: ${{ github.workspace }}
+        run: python scripts/sync_instagram.py
+      - name: Commit if changed
+        run: |
+          git config user.name  "ocs-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "auto: sync Instagram reels [skip ci]"
+            git push
+          fi

@@ -1,10 +1,7 @@
 {
-  "last_sync_utc": "2026-06-01T05:14:48.226796Z",
-  "place_id_raw": "0x2ba17fade10a7f9b:0x7b5721a0f9b3ddf4",
-  "name": null,
-  "rating": null,
-  "review_count": null,
-  "review_fetched": 0,
-  "photo_count": 0,
-  "google_maps_uri": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x2ba17fade10a7f9b:0x7b5721a0f9b3ddf4?hl=en"
+  "last_sync_utc": "2026-06-02T05:20:51.955767Z",
+  "rating": 5,
+  "review_count": 14,
+  "reviews_shown": 14,
+  "maps_uri": "https://www.google.com/maps/place/OCS+LLC/data=!4m2!3m1!1s0x2ba17fade10a7f9b:0x7b5721a0f9b3ddf4"
 }

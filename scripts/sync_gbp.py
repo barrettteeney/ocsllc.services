@@ -1,396 +1,204 @@
 #!/usr/bin/env python3
 """
-sync_gbp.py v2 — pulls live data from a Google Business Profile.
+sync_gbp.py v3 — pulls OCS LLC's Google Business Profile via the **OAuth Business
+Profile API** and bakes it into the static site. (Places API / Maps scrape can't see
+service-area businesses like OCS, so v3 uses owner-authenticated OAuth instead.)
 
-Two-tier strategy:
-1. Try the official Places API (New) using a Place ID.
-2. Fall back to scraping the public Google Maps page via the FID
-   (works for service-area businesses that the Places API filters out).
+Reads from environment (GitHub Secrets in CI):
+  GBP_CLIENT_ID, GBP_CLIENT_SECRET, GBP_REFRESH_TOKEN  — OAuth (scope business.manage)
+  GBP_ACCOUNT_ID, GBP_LOCATION_ID                      — numeric IDs
+  REPO_ROOT                                            — repo root (default ".")
 
-Reads from environment:
-  - PLACE_ID       — required. Either:
-                      * "ChIJ..."   Place ID (modern format), OR
-                      * "0x...:0x..." FID (Google Maps internal feature ID), OR
-                      * a https://www.google.com/maps/... URL containing either
-  - GOOGLE_PLACES_API_KEY — optional. If set, used for photo download.
-
-Updates:
-  - LocalBusiness JSON-LD on index.html (review, aggregateRating, openingHoursSpecification)
-  - Visible review carousel on index.html (between GBP_SYNC_REVIEWS markers)
-  - /reviews/index.html (full review list)
-  - assets/gbp/photo-{1..8}.jpg + assets/gbp/last-sync.json
-
-Idempotent: prints "no changes" if nothing differs.
+Updates (idempotent — prints "no changes" if nothing differs):
+  - index.html  #business JSON-LD : aggregateRating, openingHoursSpecification, review[]
+  - index.html  homepage carousel : between <!-- GBP_HOME:start/end -->
+  - reviews/index.html full list   : between <!-- GBP_LIST:start/end --> + last-update stamp
+  - assets/gbp/last-sync.json
 """
+import os, re, json, html, datetime, urllib.parse, urllib.request, urllib.error, pathlib
 
-import os, sys, re, json, html, hashlib, urllib.request, urllib.parse, datetime, pathlib, ssl
+ROOT = pathlib.Path(os.environ.get("REPO_ROOT", ".")).resolve()
+CID  = os.environ.get("GBP_CLIENT_ID", "").strip()
+SEC  = os.environ.get("GBP_CLIENT_SECRET", "").strip()
+RT   = os.environ.get("GBP_REFRESH_TOKEN", "").strip()
+ACC  = os.environ.get("GBP_ACCOUNT_ID", "").strip()
+LOC  = os.environ.get("GBP_LOCATION_ID", "").strip()
+MAPS_URI = "https://www.google.com/maps/place/OCS+LLC/data=!4m2!3m1!1s0x2ba17fade10a7f9b:0x7b5721a0f9b3ddf4"
 
-
-PLACE_ID_RAW = os.environ.get("PLACE_ID", "").strip()
-API_KEY      = os.environ.get("GOOGLE_PLACES_API_KEY", "").strip()
-ROOT         = pathlib.Path(os.environ.get("REPO_ROOT", ".")).resolve()
-
-if not PLACE_ID_RAW:
-    print("ERROR: PLACE_ID env var must be set.")
-    sys.exit(1)
-
-
-# -----------------------------------------------------------------
-# Resolve any input form to (api_id, ftid) where one or both may be set
-# -----------------------------------------------------------------
-
-def parse_place_id(raw):
-    """Return (api_place_id, ftid) — at least one will be non-None."""
-    raw = raw.strip()
-    # Maps URL?
-    if "google.com/maps" in raw:
-        m = re.search(r'!1s(0x[0-9a-fA-F]+:0x[0-9a-fA-F]+)', raw)
-        if m:
-            return None, m.group(1)
-        m = re.search(r'place_id=(ChIJ[A-Za-z0-9_-]+)', raw)
-        if m:
-            return m.group(1), None
-        m = re.search(r'ftid=(0x[0-9a-fA-F]+:0x[0-9a-fA-F]+)', raw)
-        if m:
-            return None, m.group(1)
-    # Pure FID?
-    if re.match(r'^0x[0-9a-fA-F]+:0x[0-9a-fA-F]+$', raw):
-        return None, raw
-    # ChIJ-like Place ID
-    if raw.startswith("ChIJ") or raw.startswith("Eo") or raw.startswith("G"):
-        return raw, None
-    raise SystemExit(f"PLACE_ID not in a recognised format: {raw[:40]}…")
+STAR = {"ONE": 1, "TWO": 2, "THREE": 3, "FOUR": 4, "FIVE": 5}
+DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+DAY_FROM_API = {"MONDAY": "Monday", "TUESDAY": "Tuesday", "WEDNESDAY": "Wednesday",
+                "THURSDAY": "Thursday", "FRIDAY": "Friday", "SATURDAY": "Saturday", "SUNDAY": "Sunday"}
 
 
-API_ID, FTID = parse_place_id(PLACE_ID_RAW)
-print(f"Resolved: api_id={API_ID}  ftid={FTID}")
+def access_token():
+    data = urllib.parse.urlencode({
+        "client_id": CID, "client_secret": SEC,
+        "refresh_token": RT, "grant_type": "refresh_token"}).encode()
+    r = json.load(urllib.request.urlopen(
+        urllib.request.Request("https://oauth2.googleapis.com/token", data=data), timeout=30))
+    return r["access_token"]
 
 
-UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
-
-
-def http_get(url, headers=None):
-    req = urllib.request.Request(url, headers={"User-Agent": UA, **(headers or {})})
-    ctx = ssl.create_default_context()
-    with urllib.request.urlopen(req, timeout=30, context=ctx) as r:
-        return r.read().decode("utf-8", errors="replace")
-
-
-# -----------------------------------------------------------------
-# Path 1: Places API (when available + API_ID present)
-# -----------------------------------------------------------------
-
-def fetch_via_places_api():
-    if not API_ID or not API_KEY:
-        return None
-    url = f"https://places.googleapis.com/v1/places/{urllib.parse.quote(API_ID)}"
-    fields = "id,displayName,formattedAddress,nationalPhoneNumber,websiteUri,regularOpeningHours,rating,userRatingCount,reviews,photos,googleMapsUri"
-    req = urllib.request.Request(
-        url,
-        headers={"X-Goog-Api-Key": API_KEY, "X-Goog-FieldMask": fields,
-                 "Accept": "application/json", "User-Agent": UA}
-    )
+def api(url, tok):
+    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {tok}"})
     try:
-        with urllib.request.urlopen(req, timeout=30) as r:
-            data = json.loads(r.read().decode("utf-8"))
+        return json.load(urllib.request.urlopen(req, timeout=30))
     except urllib.error.HTTPError as e:
-        print(f"  Places API HTTP {e.code}: {e.reason}; falling back to scrape.")
-        return None
-    except Exception as e:
-        print(f"  Places API error: {e}; falling back to scrape.")
+        print(f"  HTTP {e.code} {url}\n  {e.read().decode()[:300]}")
         return None
 
-    return normalise_places_api(data)
+
+def hhmm(t):
+    return f"{t.get('hours', 0):02d}:{t.get('minutes', 0):02d}"
 
 
-def normalise_places_api(p):
-    out = {
-        "name": (p.get("displayName") or {}).get("text"),
-        "address": p.get("formattedAddress"),
-        "phone": p.get("nationalPhoneNumber"),
-        "website": p.get("websiteUri"),
-        "google_maps_uri": p.get("googleMapsUri"),
-        "rating": p.get("rating"),
-        "review_count": p.get("userRatingCount"),
-        "hours": [],
-        "reviews": [],
-        "photos": []
-    }
-    rh = p.get("regularOpeningHours") or {}
-    DAY_MAP = {"MONDAY":"Monday","TUESDAY":"Tuesday","WEDNESDAY":"Wednesday",
-               "THURSDAY":"Thursday","FRIDAY":"Friday","SATURDAY":"Saturday","SUNDAY":"Sunday"}
-    for period in rh.get("periods", []):
-        opn = period.get("open", {}); cls = period.get("close", {})
-        d = DAY_MAP.get(opn.get("day", ""))
-        if not d:
-            continue
-        out["hours"].append({
-            "day": d,
-            "opens":  f"{opn.get('hour',0):02d}:{opn.get('minute',0):02d}",
-            "closes": f"{cls.get('hour',23):02d}:{cls.get('minute',59):02d}" if cls else "23:59"
-        })
-    for r in (p.get("reviews") or [])[:10]:
-        body = (r.get("text") or {}).get("text") or (r.get("originalText") or {}).get("text") or ""
-        if not body.strip():
-            continue
-        out["reviews"].append({
-            "author": (r.get("authorAttribution") or {}).get("displayName") or "Google customer",
-            "rating": r.get("rating", 5),
-            "body": body.strip()
-        })
-    for ph in (p.get("photos") or [])[:8]:
-        out["photos"].append({"name": ph.get("name")})
+def fetch():
+    tok = access_token()
+    out = {"rating": None, "review_count": None, "hours": [], "reviews": []}
+
+    # reviews (v4)
+    rev = api(f"https://mybusiness.googleapis.com/v4/accounts/{ACC}/locations/{LOC}/reviews", tok)
+    if rev:
+        out["rating"] = rev.get("averageRating")
+        out["review_count"] = rev.get("totalReviewCount")
+        for r in rev.get("reviews", []):
+            body = (r.get("comment") or "").strip()
+            if not body:
+                continue
+            out["reviews"].append({
+                "author": (r.get("reviewer") or {}).get("displayName") or "Google customer",
+                "rating": STAR.get(r.get("starRating", "FIVE"), 5),
+                "body": re.sub(r"\s+", " ", body),
+                "when": (r.get("createTime") or "")[:10],
+            })
+
+    # hours (Business Information v1)
+    loc = api(f"https://mybusinessbusinessinformation.googleapis.com/v1/locations/{LOC}?readMask=regularHours", tok)
+    if loc:
+        for p in (loc.get("regularHours") or {}).get("periods", []):
+            d = DAY_FROM_API.get(p.get("openDay", ""))
+            if d:
+                out["hours"].append({"day": d, "opens": hhmm(p.get("openTime", {})),
+                                     "closes": hhmm(p.get("closeTime", {}))})
     return out
 
 
-# -----------------------------------------------------------------
-# Path 2: Maps page scrape (works for SABs that Places API filters out)
-# -----------------------------------------------------------------
-
-def fetch_via_maps_scrape():
-    if not FTID:
-        return None
-    # Use a Maps URL that resolves to the place by ftid
-    url = f"https://www.google.com/maps/place/data=!4m2!3m1!1s{FTID}?hl=en"
-    print(f"  scraping {url[:80]}…")
-    try:
-        body = http_get(url, {"Accept-Language": "en-US,en;q=0.9"})
-    except Exception as e:
-        print(f"  scrape failed: {e}")
-        return None
-
-    # Maps embeds a giant array `window.APP_INITIALIZATION_STATE` containing
-    # most place data. The reviews array is at a known nested path.
-    out = {
-        "name": None, "address": None, "phone": None, "website": None,
-        "google_maps_uri": url, "rating": None, "review_count": None,
-        "hours": [], "reviews": [], "photos": []
-    }
-
-    # Page <title>: "OCS LLC - Google Maps"
-    t = re.search(r'<title>([^<]+?)\s*-\s*Google Maps</title>', body)
-    if t:
-        out["name"] = html.unescape(t.group(1).strip())
-
-    # Phone number — the page has aria-labels with phone number
-    p = re.search(r'href="tel:([+\d]+)"', body)
-    if p:
-        out["phone"] = p.group(1)
-
-    # Aggregate rating + review count from JSON-LD or text
-    # Maps doesn't embed JSON-LD, but the rating appears as text:
-    # "5.0 (14)" pattern in the JSON arrays
-    rating = re.search(r'\\"5\\\\\.\\d\\\\\s*\\\\\((\\d+)\\\\\)', body)
-    rcount = re.search(r'(\d+)\s+review', body, re.IGNORECASE)
-    rscore = re.search(r'rating-stars-container.*?aria-label=["\']([\d.]+) star', body, re.DOTALL)
-
-    # Try to extract from APP_INITIALIZATION_STATE
-    state = re.search(r'window\.APP_INITIALIZATION_STATE\s*=\s*(\[.*?\]);', body, re.DOTALL)
-    if state:
-        s = state.group(1)
-        # Reviews block: look for arrays starting with author + body
-        # Pattern: ["Some Reviewer Name", ..., null, [N stars, ...], "review body"]
-        # Maps obfuscates this; instead use the fallback: extract all ".jpg" CDN photo URLs
-        photo_urls = re.findall(r'https://lh\d\.googleusercontent\.com/[^"]+', s)
-        seen = set()
-        for u in photo_urls:
-            base = u.split('=')[0]
-            if base in seen: continue
-            seen.add(base)
-            if "photo" in u or "p/" in u or len(out["photos"]) < 8:
-                out["photos"].append({"url": base + "=w1200"})
-            if len(out["photos"]) >= 8:
-                break
-
-    # Reviews: simpler regex over the page body — Maps puts review text in
-    # base64-like JSON. We grab review bodies via the structured pattern:
-    # "Helpful (n)" / "Like" buttons are near each review. Reviews are in the JSON.
-    # Best-effort extraction:
-    rev_blocks = re.findall(r'\["([^"]{20,400})",\d{10,},(?:null|"[^"]*"),(\d)', body)
-    for bod, rating_s in rev_blocks[:10]:
-        out["reviews"].append({
-            "author": "Google customer",
-            "rating": int(rating_s),
-            "body": html.unescape(bod.replace("\\\\u003c", "<").replace("\\\\u003e", ">"))
-        })
-
-    return out
+def grouped_hours_spec(hours):
+    """Collapse identical day hours into schema.org OpeningHoursSpecification entries."""
+    by = {h["day"]: (h["opens"], h["closes"]) for h in hours}
+    buckets = {}
+    for day in DAYS:
+        if day in by:
+            buckets.setdefault(by[day], []).append(day)
+    specs = []
+    for (opens, closes), days in buckets.items():
+        specs.append({"@type": "OpeningHoursSpecification",
+                      "dayOfWeek": days if len(days) > 1 else days[0],
+                      "opens": opens, "closes": closes})
+    return specs
 
 
-# -----------------------------------------------------------------
-# Apply the resolved data to the site
-# -----------------------------------------------------------------
+def stars(n):
+    return "&#9733;" * int(n) + "&#9734;" * (5 - int(n))
 
-def update_index_html(d):
+
+def trim(s, n=150):
+    if len(s) <= n:
+        return s
+    cut = s[:n].rsplit(" ", 1)[0]
+    return cut.rstrip(".,;:") + "…"
+
+
+# ---------- site updates ----------
+
+def update_index(d):
     p = ROOT / "index.html"
-    if not p.exists():
-        return False
     text = p.read_text(); orig = text
 
-    # LocalBusiness JSON-LD block
-    m = re.search(
-        r'(<script type="application/ld\+json">\s*\{[^<]*?"@id":\s*"https://ocsllc\.services/#business"[^<]*?\})\s*</script>',
-        text, re.DOTALL
-    )
+    # 1) #business JSON-LD
+    m = re.search(r'<script type="application/ld\+json">\s*(\{.*?"@id":\s*"https://ocsllc\.services/#business".*?\})\s*</script>',
+                  text, re.DOTALL)
     if m:
         try:
-            block = json.loads(re.search(r'\{.*\}', m.group(1), re.DOTALL).group(0))
+            block = json.loads(m.group(1))
         except Exception:
             block = None
         if block is not None:
             if d.get("rating") and d.get("review_count"):
-                block["aggregateRating"] = {
-                    "@type": "AggregateRating",
-                    "ratingValue": str(d["rating"]),
-                    "bestRating": "5", "worstRating": "1",
-                    "reviewCount": str(d["review_count"])
-                }
+                block["aggregateRating"] = {"@type": "AggregateRating",
+                    "ratingValue": str(d["rating"]), "bestRating": "5", "worstRating": "1",
+                    "reviewCount": str(d["review_count"])}
             if d.get("hours"):
-                # group by hours into days
-                block["openingHoursSpecification"] = [
-                    {"@type": "OpeningHoursSpecification", "dayOfWeek": h["day"],
-                     "opens": h["opens"], "closes": h["closes"]}
-                    for h in d["hours"]
-                ]
-            if d.get("phone"):
-                ph = re.sub(r"\D", "", d["phone"])
-                if len(ph) == 10:
-                    block["telephone"] = "+1-" + ph
+                block["openingHoursSpecification"] = grouped_hours_spec(d["hours"])
             if d.get("reviews"):
                 block["review"] = [
                     {"@type": "Review",
                      "author": {"@type": "Person", "name": r["author"]},
                      "reviewRating": {"@type": "Rating", "ratingValue": str(r["rating"]), "bestRating": "5"},
                      "reviewBody": r["body"]}
-                    for r in d["reviews"][:8]
-                ]
-            new_block = json.dumps(block, indent=2)
-            new_script = f'<script type="application/ld+json">\n{new_block}\n    </script>'
-            text = text[:m.start()] + new_script + text[m.end():]
+                    for r in d["reviews"][:6]]
+            new = json.dumps(block, indent=2)
+            text = text[:m.start()] + f'<script type="application/ld+json">\n{new}\n    </script>' + text[m.end():]
 
-    # Visible review carousel
+    # 2) homepage carousel (between markers)
     if d.get("reviews"):
         cards = []
-        for r in d["reviews"][:3]:
-            cards.append(f'''                <div class="review-card">
-                    <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                    <p class="italic mt-1">"{html.escape(r["body"])}"</p>
-                    <p class="mt-2 text-sm font-semibold">— {html.escape(r["author"])}</p>
-                </div>''')
-        if cards:
-            new_section = "<!-- GBP_SYNC_REVIEWS:start -->\n" + "\n".join(cards) + "\n                <!-- GBP_SYNC_REVIEWS:end -->"
-            text = re.sub(
-                r'<!-- GBP_SYNC_REVIEWS:start -->.*?<!-- GBP_SYNC_REVIEWS:end -->',
-                new_section, text, flags=re.DOTALL
-            )
+        for i, r in enumerate(d["reviews"][:6]):
+            cls = "review-card active" if i == 0 else "review-card"
+            cards.append(f'<div class="{cls}"><div class="stars">{stars(r["rating"])}</div>'
+                         f'<p class="italic mt-1">"{html.escape(trim(r["body"]))}"</p>'
+                         f'<p class="mt-2 text-sm font-semibold">- {html.escape(r["author"])}</p></div>')
+        text = re.sub(r'<!-- GBP_HOME:start -->.*?<!-- GBP_HOME:end -->',
+                      "<!-- GBP_HOME:start -->\n" + "\n".join(cards) + "\n<!-- GBP_HOME:end -->",
+                      text, flags=re.DOTALL)
 
     if text != orig:
-        p.write_text(text)
-        print("  updated index.html")
-        return True
+        p.write_text(text); print("  updated index.html"); return True
     return False
 
 
 def update_reviews_page(d):
     p = ROOT / "reviews" / "index.html"
-    if not p.exists() or not d.get("reviews"):
+    if not d.get("reviews"):
         return False
     text = p.read_text(); orig = text
 
     cards = []
-    for r in d["reviews"][:50]:
-        cards.append(f'''            <div class="review-card">
-                <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p class="italic mt-1">"{html.escape(r["body"])}"</p>
-                <p class="mt-2 text-sm font-semibold">— {html.escape(r["author"])}</p>
-            </div>''')
+    for r in d["reviews"]:
+        cards.append(
+            '            <div class="review-card">\n'
+            f'                <div class="stars">{stars(r["rating"])}</div>\n'
+            f'                <p class="italic mt-1">"{html.escape(r["body"])}"</p>\n'
+            f'                <p class="mt-2 text-sm font-semibold">— {html.escape(r["author"])}</p>\n'
+            '            </div>')
+    text = re.sub(r'<!-- GBP_LIST:start -->.*?<!-- GBP_LIST:end -->',
+                  "<!-- GBP_LIST:start -->\n" + "\n".join(cards) + "\n            <!-- GBP_LIST:end -->",
+                  text, flags=re.DOTALL)
 
-    pattern = re.compile(
-        r'(<p class="breadcrumbs">.*?</p>\s*<p class="mb-4 text-gray-600 text-sm">[^<]*</p>\s*)(.*?)(<div class="cta-box)',
-        re.DOTALL
-    )
-    m = pattern.search(text)
-    if m:
-        last = datetime.datetime.utcnow().strftime("%B %-d, %Y")
-        text = re.sub(
-            r'<p class="mb-4 text-gray-600 text-sm">[^<]*</p>',
-            f'<p class="mb-4 text-gray-600 text-sm">Synced from Google Business Profile · last update {last} · <a class="underline text-custom-cyan" href="{html.escape(d.get("google_maps_uri") or "https://www.google.com/maps")}" target="_blank" rel="noopener">Read on Google</a></p>',
-            text, count=1
-        )
-        text = re.sub(pattern, lambda mm: mm.group(1) + "\n".join(cards) + "\n\n            " + mm.group(3), text, count=1)
+    stamp = datetime.datetime.utcnow().strftime("%B %d, %Y").replace(" 0", " ")
+    text = re.sub(r'(id="gbp-last-update">)[^<]*(</span>)', rf'\g<1>{stamp}\g<2>', text)
 
     if text != orig:
-        p.write_text(text)
-        print("  updated reviews/index.html")
-        return True
+        p.write_text(text); print("  updated reviews/index.html"); return True
     return False
 
 
-def update_photos(d):
-    photos = d.get("photos") or []
-    if not photos:
-        return False
-    out_dir = ROOT / "assets" / "gbp"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    changed = False
-    for i, ph in enumerate(photos[:8]):
-        url = ph.get("url")
-        if not url and ph.get("name") and API_KEY:
-            # Resolve via Places API
-            try:
-                meta_url = f"https://places.googleapis.com/v1/{ph['name']}/media?maxWidthPx=1200&key={urllib.parse.quote(API_KEY)}&skipHttpRedirect=true"
-                meta = json.loads(http_get(meta_url))
-                url = meta.get("photoUri")
-            except Exception as e:
-                print(f"  photo {i} resolve failed: {e}")
-        if not url:
-            continue
-        try:
-            data = urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA}), timeout=30).read()
-        except Exception as e:
-            print(f"  photo {i} download failed: {e}")
-            continue
-        path = out_dir / f"photo-{i+1}.jpg"
-        old = path.read_bytes() if path.exists() else b""
-        if hashlib.sha256(data).hexdigest() != hashlib.sha256(old).hexdigest():
-            path.write_bytes(data)
-            print(f"  saved {path.relative_to(ROOT)} ({len(data):,} bytes)")
-            changed = True
-    return changed
-
-
-def write_metadata(d):
-    out_dir = ROOT / "assets" / "gbp"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    meta = {
-        "last_sync_utc": datetime.datetime.utcnow().isoformat() + "Z",
-        "place_id_raw": PLACE_ID_RAW,
-        "name": d.get("name"),
-        "rating": d.get("rating"),
-        "review_count": d.get("review_count"),
-        "review_fetched": len(d.get("reviews") or []),
-        "photo_count": len(d.get("photos") or []),
-        "google_maps_uri": d.get("google_maps_uri")
-    }
-    (out_dir / "last-sync.json").write_text(json.dumps(meta, indent=2))
-
-
 def main():
-    d = fetch_via_places_api()
-    if not d:
-        d = fetch_via_maps_scrape()
-    if not d:
-        print("ERROR: could not fetch place via API or scrape.")
-        sys.exit(1)
+    if not all([CID, SEC, RT, ACC, LOC]):
+        print("::warning::GBP OAuth env not set; skipping sync."); return
+    d = fetch()
+    print(f"  rating={d['rating']} count={d['review_count']} reviews={len(d['reviews'])} hours={len(d['hours'])}")
+    if not d["reviews"]:
+        print("no reviews fetched — aborting (nothing written)."); return
 
-    print(f"  name={d.get('name')!r} rating={d.get('rating')} reviews={len(d.get('reviews') or [])} photos={len(d.get('photos') or [])}")
+    changed = update_index(d) | update_reviews_page(d)
 
-    changed = False
-    changed |= update_index_html(d)
-    changed |= update_reviews_page(d)
-    changed |= update_photos(d)
-    write_metadata(d)
+    out_dir = ROOT / "assets" / "gbp"; out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "last-sync.json").write_text(json.dumps({
+        "last_sync_utc": datetime.datetime.utcnow().isoformat() + "Z",
+        "rating": d["rating"], "review_count": d["review_count"],
+        "reviews_shown": len(d["reviews"]), "maps_uri": MAPS_URI}, indent=2))
 
     print("CHANGED" if changed else "no changes")
 

@@ -48,6 +48,10 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/responsive.css">
+<link rel="stylesheet" href="/assets/feature-splits.css">
+<script src="/assets/feature-splits.js" defer></script>
+<link rel="stylesheet" href="/assets/ambient-hero.css">
+<script src="/assets/ambient-hero.js" defer></script>
 </head>
 <body class="bg-gray-50 text-black">
 <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-black px-3 py-2 rounded z-50">Skip to content</a>
@@ -61,11 +65,12 @@
   </div>
 </nav>
 <main id="main">
-<section class="hero-mini hero-photo">
+<section class="hero-mini hero-photo has-ambient">
+<video class="ambient-hero-video" autoplay muted loop playsinline preload="auto" poster="/assets/videos/bg/services-additional.jpg"><source src="/assets/videos/bg/services-additional.mp4" type="video/mp4"></video>
   <h1>Additional Services</h1>
   <p>Beyond glass &mdash; everything else we hand-detail.</p>
   <div class="hero-cta-row">
-    <a href="/#reserve" class="bg-white text-black px-6 py-3 rounded-lg hover:bg-gray-200 transition font-semibold">Reserve a Cleaning</a>
+    <a href="/#reserve" class="bg-white text-black px-6 py-3 rounded-lg hover:bg-gray-200 transition font-semibold">Get a Free Quote</a>
     <a href="tel:+14066072151" class="tel-link" aria-label="Call OCS LLC at (406) 607-2151">Or call (406) 607-2151</a>
   </div>
   <div class="trust-row" aria-label="Trust signals">
@@ -148,6 +153,12 @@
 
 </main>
 
+<!-- Feature split: window cleaning in action -->
+<section class="vsplit-wrap bg-white">
+<div class="container vsplit-head"><p class="vs-eyebrow">On the glass</p><h2 class="text-2xl font-bold" style="margin:.3rem 0">See the work, up close</h2></div>
+<div class="vsplit"><div class="vsplit-media"><div class="vframe"><video data-vs muted loop playsinline preload="none" poster="/assets/videos/posters/ig-DU1SU7dkg2h.jpg"><source src="/assets/videos/clips/ig-DU1SU7dkg2h.mp4" type="video/mp4"></video><span class="vframe-sound">tap for sound</span></div></div>
+<div class="vsplit-copy"><h3>Beyond the windows.</h3><p>Skylights, solar panels, chandeliers, and the hard-to-reach glass others skip.</p><a href="/estimate/" class="vbtn">Get a free quote</a></div></div>
+</section>
 <footer class="bg-custom-cyan text-white py-8">
   <div class="container text-center">
     <p>&copy; 2025 OCS LLC &middot; Insured</p>

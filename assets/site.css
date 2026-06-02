@@ -217,7 +217,7 @@ section { padding: clamp(2rem, 5vw, 4rem) 0; }
   font-style: italic;
   font-size: clamp(1rem, 2vw, 1.15rem);
   opacity: 0.95;
-  margin: 0.5rem 0 1rem;
+  margin: 0.5rem auto 1rem;
 }
 
 

@@ -6,7 +6,7 @@
 /* === Reset / base === */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-html, body { overflow-x: hidden; }
+html, body { overflow-x: clip; }
 img, video, iframe, svg { max-width: 100%; height: auto; }
 img[loading="lazy"] { content-visibility: auto; }
 picture { display: inline-block; max-width: 100%; }
@@ -56,14 +56,20 @@ a.bg-custom-cyan, a[href^="tel:"].btn-white,
 }
 
 /* === Sticky nav / mobile call bar === */
-nav.bg-custom-cyan { padding: 0.75rem 0; }
+/* Compact, low-profile nav so it doesn't crowd the title video */
+nav.bg-custom-cyan { padding: 0.3rem 0 !important; }
 .nav-container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+    padding-top: 0.15rem !important;
+    padding-bottom: 0.15rem !important;
     padding-left:  clamp(0.85rem, 4vw, 2rem);
     padding-right: clamp(0.85rem, 4vw, 2rem);
 }
+.nav-container > a.text-lg { font-size: 1.02rem !important; line-height: 1.1; }
+/* one-line, lighter contact info on desktop */
+.contact-info { flex-direction: row !important; align-items: center !important; gap: 0.85rem !important; font-size: 0.8rem !important; opacity: 0.95; }
 
 /* === Service grid breakpoints === */
 .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 {

@@ -8,7 +8,6 @@
 <link rel="canonical" href="https://ocsllc.services/estimate/">
 <link rel="stylesheet" href="/assets/site.css">
 <!-- HCP booking widget script (used on thank-you screen after submit) -->
-<script async src="https://online-booking.housecallpro.com/script.js?token=2f57b85c386d4991bfe6e76edaebcbcb&orgName=OCS-LLC"></script>
 <style>
 .text-white{color:#fff}.text-lg{font-size:1.125rem;line-height:1.75rem}.font-bold{font-weight:700}.text-center{text-align:center}.py-8{padding-top:2rem;padding-bottom:2rem}.p-4{padding:1rem}.mt-auto{margin-top:auto}.sticky{position:sticky}.z-10{z-index:10}.top-0{top:0}.underline{text-decoration:underline}
 .nav-container a,.site-footer a{color:#fff}
@@ -89,7 +88,7 @@ textarea{min-height:70px;resize:vertical}
 .range-card .caveat{font-size:.82rem;color:rgba(255,255,255,.7);margin:.85rem 0 0;line-height:1.5;text-align:left}
 
 /* HCP booking modal iframe sizing fix - prevents iframe from collapsing */
-iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!important;border:0!important}
+
 .hcp-widget iframe{height:100%!important;max-width:none!important}
 .book-block{background:#f0fdfa;border:1.5px solid #14b8a6;border-radius:12px;padding:1.25rem;margin:1.25rem 0 0;text-align:center}
 .book-h{margin:0 0 .25rem;font-size:1.1rem;font-weight:800;color:#0f172a}
@@ -313,60 +312,34 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
   <!-- STEP 5: Contact info -->
   <!-- STEP 5: Review + book a time via HCP -->
   <section class="step" data-step="5">
-    <h2>5. Pick your appointment time</h2>
-    <p class="hint">Choose a time that works for you. We'll confirm your booking instantly.</p>
+    <h2>5. Your estimate &amp; request</h2>
+    <p class="hint">Here's your estimated range based on your answers. Fill out the quick form below and we'll be in touch within 24 hours to confirm and schedule.</p>
     <div class="recap" id="recapBox"></div>
-    <div id="valuePropBanner" style="background:linear-gradient(135deg,#0CC0DF 0%,#0aa3bd 100%);color:#fff;border-radius:12px;padding:1.2rem 1.25rem;margin:1.2rem 0;text-align:center;box-shadow:0 6px 20px rgba(12,192,223,.25)">
-      <strong style="font-size:1.05rem;display:block;line-height:1.3">Your estimated price range is waiting!</strong>
-      <p id="durationLine" style="font-size:.9rem;margin:.4rem 0 0;opacity:.95;line-height:1.5">Lock in your appointment and we'll show your personalized estimate based on the answers you gave.</p>
-    </div>
+    <div class="range-card" id="rangeCard" style="margin:1.2rem 0"></div>
     <div class="submit-error" id="submitError"></div>
-    <div class="actions" id="bookActions">
-      <button class="back-btn" data-goto="4">&larr; Edit my answers</button>
-      <button data-token="2f57b85c386d4991bfe6e76edaebcbcb" data-orgname="OCS-LLC" class="next-btn" id="bookBtn" onClick="HCPWidget.openModal()">Pick a time &rarr;</button>
+    <div id="formEmbed">
+      <h3 style="font-weight:800;color:#0f172a;font-size:1.05rem;margin:.5rem 0 .8rem">Request your cleaning</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+        <div><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Name *</label><input id="ldName" type="text" autocomplete="name"></div>
+        <div><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Phone *</label><input id="ldPhone" type="tel" autocomplete="tel"></div>
+        <div><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Email</label><input id="ldEmail" type="email" autocomplete="email"></div>
+        <div><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Town</label><input id="ldCity" type="text" placeholder="Kalispell, Whitefish…"></div>
+        <div style="grid-column:1/-1"><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Street address *</label><input id="ldAddr" type="text" autocomplete="street-address"></div>
+        <div style="grid-column:1/-1"><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Preferred dates / anything we should know</label><textarea id="ldNotes" rows="2"></textarea></div>
+      </div>
+      <button type="button" id="ldSubmit" class="next-btn" style="width:100%;margin-top:1rem">Send my request &rarr;</button>
+      <p style="color:#64748b;font-size:.8rem;text-align:center;margin:.6rem 0 0">No spam, no commitment. We'll reply within 24 hours.</p>
     </div>
-    <div class="actions hidden" id="bookActionsBlocked">
-      <button class="back-btn" data-goto="4">&larr; Edit my answers</button>
-      <a href="tel:+14066072151" class="next-btn" style="text-decoration:none;display:inline-block;text-align:center">Call (406) 607-2151 &rarr;</a>
+    <div id="leadThanks" class="hidden" style="text-align:center;padding:1.25rem 0">
+      <div style="width:54px;height:54px;border-radius:50%;background:#dcfce7;color:#16a34a;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h3 style="font-weight:800;font-size:1.15rem;color:#0f172a;margin:0 0 .4rem">Request sent — thanks!</h3>
+      <p style="color:#475569;margin:0">We've got your details and your estimate. We'll reach out within 24 hours to confirm and schedule. Prefer to talk now? <a href="tel:+14066072151" style="color:#0CC0DF;font-weight:700">Call (406) 607-2151</a>.</p>
     </div>
+    <div class="actions" style="margin-top:1rem"><button class="back-btn" data-goto="4">&larr; Edit my answers</button><span></span></div>
     <p style="color:#64748b;font-size:.85rem;text-align:center;margin:1rem 0 0">Prefer to talk first? <a href="tel:+14066072151" style="color:#0CC0DF;font-weight:700">Call (406) 607-2151</a> &middot; <a href="sms:+14066072151" style="color:#0CC0DF;font-weight:700">Text us</a></p>
   </section>
 </div>
 
-<!-- Shown when HCP modal closes without an auto-detected booking confirmation -->
-<div class="calc-wrap hidden" id="continuePrompt">
-  <div class="thanks-card">
-    <h2>Welcome back!</h2>
-    <p class="lead">When you're ready, see your estimated price range based on the answers you gave. You can also re-open the booking if you closed by mistake.</p>
-    <div class="thanks-cta-row" style="margin-top:1rem">
-      <a href="javascript:void(0)" id="showEstimate" style="background:#0CC0DF;color:#fff;font-weight:700;border:0;border-radius:999px;padding:.85rem 1.4rem;font-size:1rem;text-decoration:none;cursor:pointer">Show my estimate &rarr;</a>
-      <a href="javascript:void(0)" id="reopenHcp" data-token="2f57b85c386d4991bfe6e76edaebcbcb" data-orgname="OCS-LLC" onclick="HCPWidget.openModal()" class="secondary" style="background:#fff;color:#0f172a;border:1.5px solid #d1d5db;border-radius:999px;padding:.85rem 1.4rem;font-size:1rem;font-weight:700;text-decoration:none;cursor:pointer">Re-open booking</a>
-    </div>
-  </div>
-</div>
-
-<!-- STEP 7: Thank-you + range (only shown after successful submit) -->
-<div class="calc-wrap hidden" id="thanksWrap">
-  <div class="thanks-card">
-    <div class="thanks-icon">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <h2>Booking confirmed &mdash; thanks!</h2>
-    <p class="lead">Your appointment is locked in. You should have an email confirmation in your inbox. Based on the answers you gave, here's your estimated price range:</p>
-
-    <div class="range-card" id="rangeCard">
-      <div class="label">Estimated range</div>
-      <div class="range"><span id="rangeLow">$0</span> <span class="sep">&ndash;</span> <span id="rangeHigh">$0</span></div>
-      <p class="caveat">Based on what you told us. The exact price is confirmed when we visit so we can account for access, story height, hard water, and other site conditions. Free travel within the Flathead Valley, $150 service minimum, and a 72-hour streak-free guarantee on every job.</p>
-    </div>
-
-    <p style="color:#475569;font-size:.92rem;margin:1.25rem 0 0">Questions before your appointment?</p>
-    <div class="thanks-cta-row">
-      <a href="tel:+14066072151">Call (406) 607-2151</a>
-      <a href="sms:+14066072151" class="secondary">Text us</a>
-    </div>
-  </div>
-</div>
 </main>
 
 <footer class="bg-custom-cyan text-white py-8 mt-auto site-footer">
@@ -422,6 +395,52 @@ const RECUR_LABEL = {quarterly:'Quarterly — 4×/yr (20% off)', triannual:'Ever
 function $(s, r){ return (r||document).querySelector(s); }
 function $$(s, r){ return Array.from((r||document).querySelectorAll(s)); }
 
+var LEAD_ENDPOINT = 'https://ocs-crm.vercel.app/api/leads'; // OCS CRM lead intake
+function lv(id){ var e=document.getElementById(id); return e ? (e.value||'').trim() : ''; }
+function submitLead(){
+  var name=lv('ldName'), phone=lv('ldPhone'), email=lv('ldEmail'), city=lv('ldCity'), addr=lv('ldAddr'), notes=lv('ldNotes');
+  var err=document.getElementById('submitError');
+  if(!name || !phone || !addr){ if(err) err.textContent='Please add your name, phone, and street address.'; return; }
+  if(err) err.textContent='';
+  var q=compute(), range=priceRange(q);
+  // Shape matches the OCS app's submitLead({contact, booking}); booking = BookingInput.
+  var contact={ name:name, phone:phone, email:email, address:addr, city:city, notes:notes };
+  var booking={
+    service: state.service,
+    sqft: state.method==='sqft' ? (state.sqft||null) : (state.secondarySqft||null),
+    paneCount: state.method==='windows' ? (state.windowCount||null) : (state.secondaryPanes||null),
+    stories2plus: state.stories==='2',
+    hardWater: state.hardWater==='yes',
+    lastCleaned5yr: (state.lastCleaned==='over5') || (state.lastCleaned==='never' && state.constructionClean==='no'),
+    postConstruction: state.postConstruction==='yes',
+    wantsScreens: state.wantsScreens==='yes',
+    screenCount: state.screenCountWanted||0,
+    frenchPanes: q.hasFrench===true,
+    plan: state.recurring==='yes' ? state.frequency : 'onetime'
+  };
+  var sent=false;
+  if (LEAD_ENDPOINT && LEAD_ENDPOINT.indexOf('PASTE')<0){
+    try{ fetch(LEAD_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({contact:contact,booking:booking,source:'ocsllc.services /estimate form'})}); sent=true; }catch(e){}
+  }
+  if(!sent){
+    var flat={ name:name, phone:phone, email:email, town:city, address:addr, notes:notes,
+      service: state.service==='both'?'Interior + Exterior':'Exterior Only',
+      screens: booking.wantsScreens?(booking.screenCount+' screens'):'No',
+      home_sqft: booking.sqft||'', pane_count: booking.paneCount||'',
+      stories: booking.stories2plus?'2+':'1', hard_water: booking.hardWater?'Yes':'No',
+      last_cleaned: state.lastCleaned, post_construction: booking.postConstruction?'Yes':'No',
+      french_panes: booking.frenchPanes?'Yes':'No', recurring: booking.plan,
+      estimate: (q.oversize||!range)?'In-person quote':('$'+range.low+' - $'+range.high),
+      submitted_at: new Date().toLocaleString('en-US',{timeZone:'America/Denver'})+' MT', source:'ocsllc.services /estimate form' };
+    var fd=new FormData(); Object.keys(flat).forEach(function(k){fd.append(k,flat[k]);});
+    fd.append('_subject','New cleaning request — '+name); fd.append('_template','table'); fd.append('_captcha','false');
+    fetch('https://formsubmit.co/ajax/barrett@ocsllc.services',{method:'POST',headers:{'Accept':'application/json'},body:fd}).catch(function(){});
+  }
+  document.getElementById('formEmbed').classList.add('hidden');
+  document.getElementById('leadThanks').classList.remove('hidden');
+}
+(function(){ var b=document.getElementById('ldSubmit'); if(b) b.addEventListener('click', submitLead); })();
+
 function goto(stepId){
   $$('.step').forEach(s => s.classList.toggle('active', s.dataset.step === stepId));
   const num = stepId.startsWith('3') ? 3 : parseInt(stepId, 10);
@@ -430,7 +449,7 @@ function goto(stepId){
     d.classList.toggle('on', p === num);
     d.classList.toggle('done', p < num);
   });
-  if (stepId === '5') { renderRecap(); updateBookingInfo(); }
+  if (stepId === '5') { renderRecap(); showEstimate(); }
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
@@ -700,130 +719,23 @@ function renderRecap(){
   recap.innerHTML = rows.map(([l,v]) => `<div class="row"><span class="label">${l}</span><span class="val">${v}</span></div>`).join('');
 }
 
-// ===== HCP booking integration =====
-// After customer picks a time + enters contact info in HCP modal, we listen
-// for booking-complete postMessage and reveal the price range. Their contact
-// info is captured by HCP (sent to Barrett's HCP Inbox).
-
-let bookingComplete = false;
-
-function onBookingComplete() {
-  if (bookingComplete) return;
-  bookingComplete = true;
-
-  const q = compute();
-  const range = priceRange(q);
-  const submittedAt = new Date().toLocaleString('en-US', {timeZone:'America/Denver'}) + ' MT';
-
-  // Email Barrett the calculated quote details (HCP doesn't capture these —
-  // sqft tier, surcharges, etc.) so he has full context alongside HCP booking.
-  const fd = new FormData();
-  fd.append('_subject', 'New booking via website form (/estimate/)');
-  fd.append('_template', 'table');
-  fd.append('_captcha', 'false');
-  fd.append('Source', 'ocsllc.services /estimate/ page + HCP booking');
-  fd.append('Submitted at', submittedAt);
-  fd.append('Note', 'Customer booked through HCP. Their contact info is in your HCP Inbox. Details from the website form below:');
-  fd.append('Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only');
-  fd.append('Screens cleaned?', state.wantsScreens === 'yes'
-    ? `Yes (${state.screenCountWanted} screens, +$${state.screenCountWanted * 4})`
-    : 'No');
-  fd.append('Pricing method', state.method === 'sqft' ? 'By home size (sqft)' : 'By pane count');
-  if (state.method === 'sqft') {
-    fd.append('Home size (sqft)', state.sqft);
-    if (state.secondaryPanes > 0) fd.append('Pane count (also provided)', state.secondaryPanes);
+// Show the estimate range inline on step 5 (Google Form below captures contact info).
+function showEstimate(){
+  var q = compute(); var range = priceRange(q); var card = document.getElementById('rangeCard');
+  if (!card) return;
+  if (q.oversize || !range){
+    card.innerHTML = '<div class="label">In-person quote</div>'
+      + '<p class="caveat" style="margin-top:.6rem">Homes over 6,000 sqft get an in-person quote so we can be accurate. Fill out the form below (or call) and we\'ll be in touch within 24 hours.</p>';
   } else {
-    fd.append('Pane count', state.windowCount);
-    if (state.secondarySqft > 0) fd.append('Home size (also provided, sqft)', state.secondarySqft);
+    var lbl = (state.recurring === 'yes' && q.discountPct > 0)
+      ? 'Per visit — ' + Math.round(q.discountPct*100) + '% recurring discount applied' : 'Estimated range';
+    card.innerHTML = '<div class="label">'+lbl+'</div>'
+      + '<div class="range"><span>$'+range.low+'</span> <span class="sep">&ndash;</span> <span>$'+range.high+'</span></div>'
+      + '<p class="caveat">Based on what you told us. The exact price is confirmed when we visit so we can account for access, story height, hard water, and other site conditions. Free travel within the Flathead Valley, $150 service minimum, and a 72-hour streak-free guarantee on every job.</p>';
   }
-  fd.append('Stories', state.stories === '2' ? '2+' : '1');
-  fd.append('Hard water', HW_LABEL[state.hardWater]);
-  fd.append('Last professional cleaning', state.lastCleaned);
-  if (state.lastCleaned === 'never') fd.append('Cleaned at construction', state.constructionClean);
-  fd.append('Post-construction cleanup', state.postConstruction);
-  fd.append('French panes', q.hasFrench
-    ? 'Yes — REVIEW: price may need adjustment depending on divided pane count ($2/pane = $8/side per 4 panes)'
-    : 'No');
-  if (state.recurring === 'yes' && q.discountPct > 0) {
-    fd.append('Recurring plan', RECUR_LABEL[state.frequency] + ' — REVIEW: set up the recurring series in HCP and apply ' + Math.round(q.discountPct*100) + '% to each visit.');
-    fd.append('Per-visit price (one-time)', fmtMoney(q.total));
-    fd.append('Per-visit price (recurring)', fmtMoney(q.netPerVisit));
-    fd.append('Est. annual total', fmtMoney(q.netPerVisit * RECUR_VISITS[state.frequency]) + ' (' + RECUR_VISITS[state.frequency] + ' visits)');
-    const rds = state.recurringDates.filter(Boolean);
-    fd.append('Preferred dates', rds.length ? rds.join(', ') : 'none provided — follow up to schedule');
-  } else {
-    fd.append('Recurring plan', 'One-time clean');
-  }
-  if (q.oversize) {
-    fd.append('Calculated quote', 'OVER 6000 SQFT - IN PERSON REQUIRED');
-    fd.append('Range shown to customer', 'In-person quote (no range)');
-  } else {
-    fd.append('Calculated quote', fmtMoney(q.total) + (q.minApplied ? ' (min applied)' : '') + (q.averaged ? ' (averaged: primary ' + fmtMoney(q.primaryTotal) + ' + secondary ' + fmtMoney(q.secondaryTotal) + ')' : ''));
-    fd.append('Range shown to customer', '$' + range.low + ' - $' + range.high);
-  }
-  fetch('https://formsubmit.co/ajax/barrett@ocsllc.services', {
-    method:'POST', headers:{'Accept':'application/json'}, body:fd
-  }).catch(e => console.warn('FormSubmit failed (HCP booking still confirmed):', e));
-
-  $('#formWrap').classList.add('hidden');
-  $('#thanksWrap').classList.remove('hidden');
-  if (q.oversize) {
-    $('#rangeCard').innerHTML = '<div class="label">In-person quote required</div><p class="caveat" style="color:rgba(255,255,255,.9);margin-top:.75rem">Your home is over 6,000 sqft — we\'ll visit in person to give you an accurate quote, and we\'ll be in touch within 24 hours about timing.</p>';
-  } else {
-    $('#rangeLow').textContent = '$' + range.low;
-    $('#rangeHigh').textContent = '$' + range.high;
-    var rlbl = document.querySelector('#rangeCard .label');
-    if (rlbl) rlbl.textContent = (state.recurring === 'yes' && q.discountPct > 0)
-      ? 'Per visit — ' + Math.round(q.discountPct*100) + '% recurring discount applied'
-      : 'Estimated range';
-  }
-  window.scrollTo({top:0, behavior:'smooth'});
 }
 
-// Listen for HCP postMessage events
-window.addEventListener('message', function(e) {
-  if (!e.origin || !/housecallpro\.com$/.test(new URL(e.origin).hostname || '')) return;
-  const data = e.data;
-  let signal = '';
-  if (typeof data === 'string') signal = data.toLowerCase();
-  else if (data && typeof data === 'object') signal = JSON.stringify(data).toLowerCase();
-  if (/booking.?complete|booking.?confirmed|booking.?success|appointment.?confirmed|reservation.?complete/.test(signal)) {
-    onBookingComplete();
-  }
-});
 
-// Show "Continue to your estimate" prompt when HCP modal closes
-// (unless booking already auto-confirmed via postMessage).
-function showContinuePrompt() {
-  if (bookingComplete) return;
-  $('#formWrap').classList.add('hidden');
-  $('#continuePrompt').classList.remove('hidden');
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-(function setupModalCloseObserver(){
-  let wasVisible = false;
-  const observer = new MutationObserver(() => {
-    const w = document.querySelector('.hcp-widget');
-    if (!w) return;
-    const visible = w.classList.contains('hcp-widget--visible');
-    if (visible && !wasVisible) { wasVisible = true; }
-    else if (!visible && wasVisible) {
-      wasVisible = false;
-      setTimeout(showContinuePrompt, 300);
-    }
-  });
-  const ready = setInterval(() => {
-    const w = document.querySelector('.hcp-widget');
-    if (w) { clearInterval(ready); observer.observe(w, {attributes:true, attributeFilter:['class']}); }
-  }, 500);
-})();
-
-// "Show my estimate" button → reveal range
-$('#showEstimate').addEventListener('click', () => {
-  $('#continuePrompt').classList.add('hidden');
-  onBookingComplete();
-});
 
 })();
 </script>

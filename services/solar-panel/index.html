@@ -28,6 +28,10 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/responsive.css">
+<link rel="stylesheet" href="/assets/feature-splits.css">
+<script src="/assets/feature-splits.js" defer></script>
+<link rel="stylesheet" href="/assets/ambient-hero.css">
+<script src="/assets/ambient-hero.js" defer></script>
 </head>
 <body class="bg-gray-50 text-black">
 <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-black px-3 py-2 rounded z-50">Skip to content</a>
@@ -41,11 +45,12 @@
   </div>
 </nav>
 <main id="main">
-<section class="hero-mini hero-photo">
+<section class="hero-mini hero-photo has-ambient">
+<video class="ambient-hero-video" autoplay muted loop playsinline preload="auto" poster="/assets/videos/bg/services-solar-panel.jpg"><source src="/assets/videos/bg/services-solar-panel.mp4" type="video/mp4"></video>
   <h1>Solar Panel Cleaning</h1>
   <p>Restore lost efficiency. Hand-cleaned, streak-free.</p>
   <div class="hero-cta-row">
-    <a href="/#reserve" class="bg-white text-black px-6 py-3 rounded-lg hover:bg-gray-200 transition font-semibold">Reserve a Cleaning</a>
+    <a href="/#reserve" class="bg-white text-black px-6 py-3 rounded-lg hover:bg-gray-200 transition font-semibold">Get a Free Quote</a>
     <a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a>
   </div>
   <div class="trust-row" aria-label="Trust signals">
@@ -85,6 +90,12 @@
   </div>
 </section>
 </main>
+<!-- Feature split: window cleaning in action -->
+<section class="vsplit-wrap bg-white">
+<div class="container vsplit-head"><p class="vs-eyebrow">On the glass</p><h2 class="text-2xl font-bold" style="margin:.3rem 0">See the work, up close</h2></div>
+<div class="vsplit"><div class="vsplit-media"><div class="vframe"><video data-vs muted loop playsinline preload="none" poster="/assets/videos/posters/ig-DR4tMzKlDXU.jpg"><source src="/assets/videos/clips/ig-DR4tMzKlDXU.mp4" type="video/mp4"></video><span class="vframe-sound">tap for sound</span></div></div>
+<div class="vsplit-copy"><h3>Cleaner panels, more power.</h3><p>Gentle, streak-free solar-panel cleaning that keeps your output high.</p><a href="/estimate/" class="vbtn">Get a free quote</a></div></div>
+</section>
 <footer class="bg-custom-cyan text-white py-8">
   <div class="container text-center">
     <p>&copy; 2025 OCS LLC · Insured · Locally owned</p>

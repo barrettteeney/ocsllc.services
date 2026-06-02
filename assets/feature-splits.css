@@ -1,0 +1,64 @@
+/* OCS LLC — "feature split" video rows: portrait reel + benefit, alternating sides.
+   Reusable on any page. Reels stay native 9:16 (no cropping/quality loss). */
+
+.vsplit-wrap { padding: clamp(2.5rem, 6vw, 4.5rem) 0; }
+.vsplit-head { text-align: center; margin-bottom: clamp(1.5rem, 4vw, 2.75rem); }
+.vs-eyebrow { color: #0CC0DF; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; margin: 0 0 .35rem; }
+
+.vsplit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: center;
+  width: 90%; max-width: 980px; margin: 0 auto;
+  padding: clamp(1.25rem, 3vw, 2.25rem) 0;
+  opacity: 0; transform: translateY(28px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.vsplit.in { opacity: 1; transform: none; }
+.vsplit-media { display: flex; justify-content: center; }
+.vsplit.rev .vsplit-media { order: 2; }   /* alternate the video to the right */
+
+.vframe {
+  position: relative;
+  width: min(330px, 80vw);
+  aspect-ratio: 9 / 16;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #0b1220;
+  border: 6px solid #fff;
+  box-shadow: 0 22px 55px rgba(15,42,62,.20);
+  cursor: pointer;
+}
+.vframe video { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* site-wide dark tint over the reel (matches the hero treatment) */
+.vframe::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(26,28,31,0.42) 0%, rgba(18,20,22,0.55) 100%);
+}
+.vframe-sound { z-index: 2; }
+.vframe-sound {
+  position: absolute; right: 10px; bottom: 10px;
+  background: rgba(0,0,0,.55); color: #fff; font-size: .7rem; font-weight: 600;
+  padding: .3rem .65rem; border-radius: 999px; pointer-events: none; transition: opacity .3s;
+}
+.vframe.unmuted .vframe-sound { opacity: 0; }
+
+.vsplit-copy h3 { font-size: clamp(1.5rem, 3.4vw, 2.2rem); font-weight: 800; color: #0f172a; line-height: 1.12; margin: 0; }
+.vsplit-copy .accent { color: #0CC0DF; }
+.vsplit-copy p { color: #475569; font-size: 1.06rem; line-height: 1.6; margin: .8rem 0 1.3rem; max-width: 42ch; }
+.vbtn {
+  display: inline-block; background: #0CC0DF; color: #fff; font-weight: 700;
+  padding: .8rem 1.5rem; border-radius: 999px; text-decoration: none;
+  box-shadow: 0 8px 22px rgba(12,192,223,.4);
+}
+.vbtn:hover { background: #0aa3bd; }
+
+@media (max-width: 760px) {
+  .vsplit { grid-template-columns: 1fr; gap: 1.25rem; text-align: center; }
+  .vsplit.rev .vsplit-media { order: 0; }
+  .vsplit-copy p { margin-left: auto; margin-right: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vsplit { opacity: 1; transform: none; }
+}

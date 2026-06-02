@@ -31,12 +31,6 @@
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://ocsllc.services/bigfork/pressure-washing/</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
     <loc>https://ocsllc.services/bigfork/residential/</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>
@@ -68,12 +62,6 @@
   </url>
   <url>
     <loc>https://ocsllc.services/columbia-falls/post-construction/</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://ocsllc.services/columbia-falls/pressure-washing/</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
@@ -116,12 +104,6 @@
   </url>
   <url>
     <loc>https://ocsllc.services/kalispell/post-construction/</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://ocsllc.services/kalispell/pressure-washing/</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
@@ -181,12 +163,6 @@
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://ocsllc.services/services/pressure-washing/</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
     <loc>https://ocsllc.services/services/residential/</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>
@@ -230,12 +206,6 @@
   </url>
   <url>
     <loc>https://ocsllc.services/whitefish/post-construction/</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://ocsllc.services/whitefish/pressure-washing/</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>

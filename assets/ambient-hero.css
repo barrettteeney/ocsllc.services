@@ -1,0 +1,31 @@
+/* Ambient 16:9 hero background video — subtle "background noise" behind the title.
+   Layers behind .hero-photo content; swaps the cyan scrim for a soft dark-grey one.
+   The page's existing hero background-image stays as the poster/fallback. */
+
+.hero-photo > .ambient-hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;  /* show the TOP THIRD of the footage, not the center */
+  z-index: -2;                 /* behind ::before scrim (-1), above element background photo */
+  pointer-events: none;
+  /* de-blue: drop the footage to neutral grayscale; the dark tint scrim below stays */
+  filter: grayscale(1) brightness(0.82) contrast(1.03) blur(1.4px);
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+/* fade the clip in only once it's actually playing (no black flash) */
+.hero-photo.ambient-ready > .ambient-hero-video { opacity: 1; }
+
+/* when ambient video is on, replace the cyan hero scrim with a subtle dark-grey one */
+.hero-photo.has-ambient::before {
+  background: linear-gradient(180deg, rgba(26,28,31,0.52) 0%, rgba(18,20,22,0.66) 100%) !important;
+}
+
+/* respect reduced-motion: hide the clip, keep the photo + dark-grey scrim */
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo > .ambient-hero-video { display: none; }
+}

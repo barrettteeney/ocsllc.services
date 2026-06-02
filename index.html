@@ -28,8 +28,11 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/responsive.css">
+<link rel="stylesheet" href="/assets/feature-splits.css">
+<script src="/assets/feature-splits.js" defer></script>
+<link rel="stylesheet" href="/assets/ambient-hero.css">
+<script src="/assets/ambient-hero.js" defer></script>
 <!-- HCP booking widget script (used on thank-you screen after submit) -->
-<script async src="https://online-booking.housecallpro.com/script.js?token=2f57b85c386d4991bfe6e76edaebcbcb&orgName=OCS-LLC"></script>
 <style>
 .trust-badges{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:1rem}
 .tb{display:flex;align-items:center;gap:.85rem;padding:.95rem 1.1rem;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px}
@@ -100,7 +103,7 @@
 .qf-range .range .sep{color:rgba(255,255,255,.4);margin:0 .15rem;font-weight:400}
 .qf-range .caveat{font-size:.82rem;color:rgba(255,255,255,.7);margin:.85rem 0 0;line-height:1.5;text-align:left}
 /* HCP booking modal iframe sizing fix - prevents iframe from collapsing */
-iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!important;border:0!important}
+
 .hcp-widget iframe{height:100%!important;max-width:none!important}
 .qf-book-block{background:#f0fdfa;border:1.5px solid #14b8a6;border-radius:12px;padding:1.25rem;margin:1.25rem 0 0;text-align:center}
 .qf-book-h{margin:0 0 .25rem;font-size:1.1rem;font-weight:800;color:#0f172a}
@@ -192,15 +195,15 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
         "Sunday"
       ],
       "opens": "09:30",
-      "closes": "19:00"
+      "closes": "21:30"
     }
   ],
   "aggregateRating": {
     "@type": "AggregateRating",
-    "ratingValue": "5.0",
-    "reviewCount": "14",
+    "ratingValue": "5",
     "bestRating": "5",
-    "worstRating": "1"
+    "worstRating": "1",
+    "reviewCount": "14"
   },
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
@@ -245,6 +248,86 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
   },
   "sameAs": [
     "https://www.google.com/maps/place/data=!4m2!3m1!1s0x2ba17fade10a7f9b:0x7b5721a0f9b3ddf4"
+  ],
+  "review": [
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "Stacie Sanders"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "Barrett did a fantastic job on our windows and reasonably priced. We will for sure being hiring him again! \ud83d\udc4d"
+    },
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "Noah Thiel"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "Barrett did a fantastic job! He is super professional and my windows are SPOTLESS!!!!!"
+    },
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "Geri Josephsen"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "OCS LLC came this morning to clean my windows. He was very personable, on time, kept me updated on what was happening. Plus did a very thorough and great job! I will definitely be getting in touch with him again come spring!"
+    },
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "Josh Steffen"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "Did a great job! Easy to communicate with, very impressed with the work done."
+    },
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "Angela Fleshman"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "What a treat!!! It\u2019s funny how it just feels a little brighter when the window and screens are clean! Don\u2019t hesitate, book your service ASAP!!!"
+    },
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "Jill Teeney"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "The poor birds!!!!! They keep flying into my windows now!!!! Barrett worked so hard to get all my windows clean...they hadn't been cleaned in years so I'm sure that was fun. He said we had so much dust etc. in our backyard screens from the lawn mower and neighboring farm machinery that it looked like someone literally threw dirt at the windows. So, yes...we are apparently disgusting. I sit and stare out my windows all the day now. I love me a good unobstructed view! Ok...granted...Barrett is my son\u2764\ufe0f...but that just means I'm pickier than the rest of you. And this kid...he's smart and kind and funny and thorough...a pleasure to have working at my house...well, just being in my life. Hire Barrett to clean your windows!!! He's the BEST!!! (Sorry, birds.)"
+    }
   ]
 }
     </script>
@@ -287,11 +370,12 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
 <body class="bg-gray-50 text-black">
 <nav class="bg-custom-cyan text-white p-4 sticky top-0 z-10"><div class="container nav-container"><a href="/" class="text-lg font-bold">OCS LLC</a><div class="contact-info"><p><a href="tel:+14066072151">(406) 607-2151</a></p><p><a href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a></p></div></div></nav>
 <main id="main">
-<section id="home" class="hero-mini hero-photo" style="background-image: url('/assets/photos/54650912485.jpg');">
+<section id="home" class="hero-mini hero-photo has-ambient" style="background-image: url('/assets/photos/54650912485.jpg');">
+<video class="ambient-hero-video" autoplay muted loop playsinline preload="auto" poster="/assets/videos/bg/home.jpg"><source src="/assets/videos/bg/home.mp4" type="video/mp4"></video>
 <h1>Crystal-clear windows in the Flathead Valley</h1>
-<p class="hero-tagline" style="font-style:italic;font-size:clamp(1rem,2vw,1.15rem);opacity:.95;margin:.5rem 0 1rem;text-align:center">"Work Done Well, Work Done Right."</p>
+<p class="hero-tagline" style="font-style:italic;font-size:clamp(1rem,2vw,1.15rem);opacity:.95;margin:.5rem auto 1rem;text-align:center">"Work Done Well, Work Done Right."</p>
 <p>Insured. Locally owned. 5.0 stars on Google.</p>
-<div class="hero-cta-row"><a href="#reserve" class="bg-custom-cyan text-white px-6 py-3 rounded-lg font-bold" style="box-shadow:0 6px 20px rgba(12,192,223,.4)">Reserve a Cleaning</a><a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a></div>
+<div class="hero-cta-row"><a href="#reserve" class="bg-custom-cyan text-white px-6 py-3 rounded-lg font-bold" style="box-shadow:0 6px 20px rgba(12,192,223,.4)">Get a Free Quote</a><a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a></div>
 </section>
 <section id="trust" class="bg-white" style="padding-top:1rem;padding-bottom:1rem">
 <div class="container"><div class="trust-badges">
@@ -303,7 +387,7 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
 
 <section id="quote" class="bg-gray-50">
 <div class="container" style="max-width:780px;text-align:center">
-<h2 class="text-3xl font-bold mb-2" id="reserve">Reserve your cleaning</h2>
+<h2 class="text-3xl font-bold mb-2" id="reserve">Get your free quote</h2>
 <p class="text-gray-600 mb-3">A few quick questions and we'll get back to you within 24 hours with a price range. No spam, no commitment.</p>
 
 <div class="qf-wrap" id="qfFormWrap">
@@ -454,46 +538,32 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
 </section>
 
 <section class="qf-step" data-step="5">
-  <h3>5. Pick your appointment time</h3>
-  <p class="qf-hint">Choose a time that works for you. We'll confirm your booking instantly.</p>
+  <h3>5. Your estimate &amp; request</h3>
+  <p class="qf-hint">Here's your estimated range based on your answers. Fill out the quick form below and we'll be in touch within 24 hours to confirm and schedule.</p>
   <div class="qf-recap" id="qfRecap"></div>
-  <div id="qfValuePropBanner" style="background:linear-gradient(135deg,#0CC0DF 0%,#0aa3bd 100%);color:#fff;border-radius:12px;padding:1.2rem 1.25rem;margin:1.2rem 0;text-align:center;box-shadow:0 6px 20px rgba(12,192,223,.25)">
-    <strong style="font-size:1.05rem;display:block;line-height:1.3">Your estimated price range is waiting!</strong>
-    <p id="qfDurationLine" style="font-size:.9rem;margin:.4rem 0 0;opacity:.95;line-height:1.5">Lock in your appointment and we'll show your personalized estimate based on the answers you gave.</p>
-  </div>
+  <div class="qf-range" id="qfRangeCard" style="margin:1.2rem 0"></div>
   <div class="qf-error" id="qfError"></div>
-  <div class="qf-actions" id="qfBookActions"><button class="qf-back" data-goto="4">&larr; Edit my answers</button><button data-token="2f57b85c386d4991bfe6e76edaebcbcb" data-orgname="OCS-LLC" class="qf-next" id="qfBookBtn" onClick="HCPWidget.openModal()">Pick a time &rarr;</button></div>
-  <div class="qf-actions qf-hidden" id="qfBookActionsBlocked"><button class="qf-back" data-goto="4">&larr; Edit my answers</button><a href="tel:+14066072151" class="qf-next" style="text-decoration:none;display:inline-block;text-align:center">Call (406) 607-2151 &rarr;</a></div>
+  <div id="qfFormEmbed">
+    <h4 style="font-weight:800;color:#0f172a;font-size:1.05rem;margin:.5rem 0 .8rem">Request your cleaning</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+      <div><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Name *</label><input id="ldName" type="text" autocomplete="name"></div>
+      <div><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Phone *</label><input id="ldPhone" type="tel" autocomplete="tel"></div>
+      <div><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Email</label><input id="ldEmail" type="email" autocomplete="email"></div>
+      <div><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Town</label><input id="ldCity" type="text" placeholder="Kalispell, Whitefish…"></div>
+      <div style="grid-column:1/-1"><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Street address *</label><input id="ldAddr" type="text" autocomplete="street-address"></div>
+      <div style="grid-column:1/-1"><label style="display:block;font-weight:600;font-size:.85rem;margin:0 0 .25rem">Preferred dates / anything we should know</label><textarea id="ldNotes" rows="2"></textarea></div>
+    </div>
+    <button type="button" id="ldSubmit" class="qf-next" style="width:100%;margin-top:1rem">Send my request &rarr;</button>
+    <p style="color:#64748b;font-size:.8rem;text-align:center;margin:.6rem 0 0">No spam, no commitment. We'll reply within 24 hours.</p>
+  </div>
+  <div id="qfThanks" class="qf-hidden" style="text-align:center;padding:1.25rem 0">
+    <div style="width:54px;height:54px;border-radius:50%;background:#dcfce7;color:#16a34a;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <h4 style="font-weight:800;font-size:1.15rem;color:#0f172a;margin:0 0 .4rem">Request sent — thanks!</h4>
+    <p style="color:#475569;margin:0">We've got your details and your estimate. We'll reach out within 24 hours to confirm and schedule. Prefer to talk now? <a href="tel:+14066072151" style="color:#0CC0DF;font-weight:700">Call (406) 607-2151</a>.</p>
+  </div>
+  <div class="qf-actions" style="margin-top:1rem"><button class="qf-back" data-goto="4">&larr; Edit my answers</button><span></span></div>
   <p style="color:#64748b;font-size:.85rem;text-align:center;margin:1rem 0 0">Prefer to talk first? <a href="tel:+14066072151" style="color:#0CC0DF;font-weight:700">Call (406) 607-2151</a> &middot; <a href="sms:+14066072151" style="color:#0CC0DF;font-weight:700">Text us</a></p>
 </section>
-</div>
-
-<div class="qf-wrap qf-hidden" id="qfContinuePrompt">
-<div class="qf-thanks">
-  <h3>Welcome back!</h3>
-  <p class="lead">When you're ready, see your estimated price range based on the answers you gave. You can also re-open the booking if you closed by mistake.</p>
-  <div class="qf-cta-row" style="margin-top:1rem">
-    <button id="qfShowEstimate" class="qf-book-btn" style="background:#0CC0DF;color:#fff;font-weight:700;border:0;border-radius:999px;padding:.85rem 1.4rem;font-size:1rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(12,192,223,.35)">Show my estimate &rarr;</button>
-    <button id="qfReopenHcp" data-token="2f57b85c386d4991bfe6e76edaebcbcb" data-orgname="OCS-LLC" onClick="HCPWidget.openModal()" style="background:#fff;color:#0f172a;border:1.5px solid #d1d5db;border-radius:999px;padding:.85rem 1.4rem;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit">Re-open booking</button>
-  </div>
-</div>
-</div>
-
-<div class="qf-wrap qf-hidden" id="qfThanksWrap">
-<div class="qf-thanks">
-  <div class="qf-thanks-icon">
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-  </div>
-  <h3>Booking confirmed &mdash; thanks!</h3>
-  <p class="lead">Your appointment is locked in. You should have an email confirmation in your inbox. Based on the answers you gave, here's your estimated price range:</p>
-  <div class="qf-range" id="qfRangeCard">
-    <div class="label">Estimated range</div>
-    <div class="range"><span id="qfRangeLow">$0</span> <span class="sep">&ndash;</span> <span id="qfRangeHigh">$0</span></div>
-    <p class="caveat">Based on what you told us. The exact price is confirmed when we visit so we can account for access, story height, hard water, and other site conditions. Free travel within the Flathead Valley, $150 service minimum, and a 72-hour streak-free guarantee on every job.</p>
-  </div>
-  <p style="color:#475569;font-size:.92rem;margin:1.25rem 0 0">Questions before your appointment?</p>
-  <div class="qf-cta-row"><a href="tel:+14066072151">Call (406) 607-2151</a><a href="sms:+14066072151" class="secondary">Text us</a></div>
-</div>
 </div>
 
 <p class="text-sm text-gray-600 mt-4">Prefer to talk first? <a href="tel:+14066072151" class="text-custom-cyan font-bold">Call (406) 607-2151</a> or <a href="sms:+14066072151" class="text-custom-cyan font-bold">text us</a></p>
@@ -507,6 +577,26 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
 <div class="why-card"><img src="/assets/icons/leaf.svg" alt="" width="40" height="40" class="why-icon"><h3 class="why-title">Eco-friendly, pet &amp; plant safe</h3><p class="why-desc">Biodegradable detergents. Safe around dogs, kids, and prized gardens.</p></div>
 <div class="why-card"><img src="/assets/icons/shield.svg" alt="" width="40" height="40" class="why-icon"><h3 class="why-title">72-hour guarantee</h3><p class="why-desc">Streak-free promise. Anything off within 72 hours, we come back and fix it.</p></div>
 </div></div></section>
+<!-- Feature splits: portrait reels + benefits -->
+<section id="in-action" class="vsplit-wrap bg-white">
+<div class="container vsplit-head">
+<p class="vs-eyebrow">On the glass</p>
+<h2 class="text-3xl font-bold" style="margin:.4rem 0">See the difference, up close</h2>
+<p style="color:#475569;margin:0">Real clips from real Flathead Valley jobs &mdash; interior, exterior, screens &amp; tracks.</p>
+</div>
+<div class="vsplit">
+<div class="vsplit-media"><div class="vframe"><video data-vs muted loop playsinline preload="none" poster="/assets/videos/posters/ig-DUmkneGkWSq.jpg"><source src="/assets/videos/clips/ig-DUmkneGkWSq.mp4" type="video/mp4"></video><span class="vframe-sound">tap for sound</span></div></div>
+<div class="vsplit-copy"><h3>Streak-free, <span class="accent">every pane.</span></h3><p>Interior and exterior glass, frames, and tracks &mdash; cleaned by hand and done right the first time.</p><a href="#reserve" class="vbtn">Get a free quote</a></div>
+</div>
+<div class="vsplit rev">
+<div class="vsplit-media"><div class="vframe"><video data-vs muted loop playsinline preload="none" poster="/assets/videos/posters/ig-DYEC6_vtN4I.jpg"><source src="/assets/videos/clips/ig-DYEC6_vtN4I.mp4" type="video/mp4"></video><span class="vframe-sound">tap for sound</span></div></div>
+<div class="vsplit-copy"><h3>Screens &amp; tracks, <span class="accent">detailed.</span></h3><p>Screens cleaned on request, sills and tracks wiped down so grime doesn&rsquo;t show when the morning sun comes through.</p><a href="#reserve" class="vbtn">Get a free quote</a></div>
+</div>
+<div class="vsplit">
+<div class="vsplit-media"><div class="vframe"><video data-vs muted loop playsinline preload="none" poster="/assets/videos/posters/ig-DO9vcnwD35P.jpg"><source src="/assets/videos/clips/ig-DO9vcnwD35P.mp4" type="video/mp4"></video><span class="vframe-sound">tap for sound</span></div></div>
+<div class="vsplit-copy"><h3>Crystal-clear views, <span class="accent">every season.</span></h3><p>From sunny great rooms to snowy mountain mornings &mdash; real work across the Flathead Valley.</p><a href="/our-work/" class="vbtn">See our work</a></div>
+</div>
+</section>
 <section id="services" class="bg-gray-100"><div class="container">
 <h2 class="text-3xl font-bold text-center mb-2">What We Do</h2>
 <p class="text-center text-gray-600 mb-8"><a href="/pricing/" class="text-custom-cyan font-semibold underline">See pricing &rarr;</a></p>
@@ -514,18 +604,20 @@ iframe.hcp-iframe{width:100%!important;height:100%!important;max-width:none!impo
 <a href="/services/residential/" class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition"><img src="/assets/icons/residential.jpg" alt="Residential" width="80" height="80" class="service-icon mx-auto mb-3"><h3 class="text-xl font-semibold mb-2">Residential</h3><p class="text-sm text-gray-600">Hand-cleaned, frames and tracks wiped.</p></a>
 <a href="/services/commercial/" class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition"><img src="/assets/icons/commercial.jpg" alt="Commercial" width="80" height="80" class="service-icon mx-auto mb-3"><h3 class="text-xl font-semibold mb-2">Commercial</h3><p class="text-sm text-gray-600">Storefronts, multi-story, recurring contracts.</p></a>
 <a href="/services/post-construction/" class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition"><img src="/assets/icons/post-construction.jpg" alt="Post-construction" width="80" height="80" class="service-icon mx-auto mb-3"><h3 class="text-xl font-semibold mb-2">Post-Construction</h3><p class="text-sm text-gray-600">Stucco, paint, debris removed clean.</p></a>
-<a href="/services/pressure-washing/" class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition"><img src="/assets/icons/pressure-washing.jpg" alt="Pressure washing" width="80" height="80" class="service-icon mx-auto mb-3"><h3 class="text-xl font-semibold mb-2">Pressure Washing</h3><p class="text-sm text-gray-600">Driveways, decks, siding, fences.</p></a>
 </div>
 <a href="/services/additional/" class="additional-strip"><div class="additional-icons"><img src="/assets/icons/solar.svg" alt="" width="28" height="28"><img src="/assets/icons/skylight.svg" alt="" width="28" height="28"><img src="/assets/icons/chandelier.svg" alt="" width="28" height="28"><img src="/assets/icons/hand.svg" alt="" width="28" height="28"></div><div class="additional-text"><p class="additional-label">Additional Services</p><p class="additional-desc">Solar panels, skylights, chandeliers, hard-to-reach interior glass</p></div><span class="additional-arrow">&rsaquo;</span></a>
 </div></section>
 <section id="testimonials" class="bg-white"><div class="container">
 <h2 class="text-3xl font-bold text-center mb-8">What customers say</h2>
 <div class="max-w-3xl mx-auto"><div class="review-carousel" id="reviewCarousel">
-<div class="review-card active"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Highly recommended, fantastic service in all ways; the window cleaning itself and the customer service. Great price as well."</p><p class="mt-2 text-sm font-semibold">- Jayden Jacobson</p></div>
-<div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Barrett did a fantastic job on my building, prompt, prepared and professional. My windows look amazing."</p><p class="mt-2 text-sm font-semibold">- Katerina Robinson</p></div>
-<div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Interior and exterior our windows look so clear and beautiful! Exceeded our expectations."</p><p class="mt-2 text-sm font-semibold">- Addie C</p></div>
-<div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Competitive pricing, thorough job, very friendly. Will use you guys again."</p><p class="mt-2 text-sm font-semibold">- Darel Handley</p></div>
-<div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Barrett did such a great job. Took his time, was thorough. Recommend his business to anyone."</p><p class="mt-2 text-sm font-semibold">- Cheryl Klippenstein</p></div>
+<!-- GBP_HOME:start -->
+<div class="review-card active"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Barrett did a fantastic job on our windows and reasonably priced. We will for sure being hiring him again! 👍"</p><p class="mt-2 text-sm font-semibold">- Stacie Sanders</p></div>
+<div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Barrett did a fantastic job! He is super professional and my windows are SPOTLESS!!!!!"</p><p class="mt-2 text-sm font-semibold">- Noah Thiel</p></div>
+<div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"OCS LLC came this morning to clean my windows. He was very personable, on time, kept me updated on what was happening. Plus did a very thorough and…"</p><p class="mt-2 text-sm font-semibold">- Geri Josephsen</p></div>
+<div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"Did a great job! Easy to communicate with, very impressed with the work done."</p><p class="mt-2 text-sm font-semibold">- Josh Steffen</p></div>
+<div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"What a treat!!! It’s funny how it just feels a little brighter when the window and screens are clean! Don’t hesitate, book your service ASAP!!!"</p><p class="mt-2 text-sm font-semibold">- Angela Fleshman</p></div>
+<div class="review-card"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="italic mt-1">"The poor birds!!!!! They keep flying into my windows now!!!! Barrett worked so hard to get all my windows clean...they hadn&#x27;t been cleaned in years…"</p><p class="mt-2 text-sm font-semibold">- Jill Teeney</p></div>
+<!-- GBP_HOME:end -->
 </div><div class="review-dots" id="reviewDots"></div>
 <p class="text-center mt-6"><a href="/reviews/" class="text-custom-cyan font-semibold underline">Read all reviews &rarr;</a></p></div></div></section>
 <section id="window-cleaning" class="bg-gray-100"><div class="container" style="max-width:820px">
@@ -632,6 +724,53 @@ const RECUR_LABEL = {quarterly:'Quarterly — 4×/yr (20% off)', triannual:'Ever
 function $(s){return document.querySelector(s);}
 function $$(s){return Array.from(document.querySelectorAll(s));}
 
+var LEAD_ENDPOINT = 'https://ocs-crm.vercel.app/api/leads'; // OCS CRM lead intake
+function lv(id){ var e=document.getElementById(id); return e ? (e.value||'').trim() : ''; }
+function submitLead(){
+  var name=lv('ldName'), phone=lv('ldPhone'), email=lv('ldEmail'), city=lv('ldCity'), addr=lv('ldAddr'), notes=lv('ldNotes');
+  var err=document.getElementById('qfError');
+  if(!name || !phone || !addr){ if(err) err.textContent='Please add your name, phone, and street address.'; return; }
+  if(err) err.textContent='';
+  var q=compute(), range=priceRange(q);
+  // Shape matches the OCS app's submitLead({contact, booking}); booking = BookingInput.
+  var contact={ name:name, phone:phone, email:email, address:addr, city:city, notes:notes };
+  var booking={
+    service: state.service,
+    sqft: state.method==='sqft' ? (state.sqft||null) : (state.secondarySqft||null),
+    paneCount: state.method==='windows' ? (state.windowCount||null) : (state.secondaryPanes||null),
+    stories2plus: state.stories==='2',
+    hardWater: state.hardWater==='yes',
+    lastCleaned5yr: (state.lastCleaned==='over5') || (state.lastCleaned==='never' && state.constructionClean==='no'),
+    postConstruction: state.postConstruction==='yes',
+    wantsScreens: state.wantsScreens==='yes',
+    screenCount: state.screenCountWanted||0,
+    frenchPanes: q.hasFrench===true,
+    plan: state.recurring==='yes' ? state.frequency : 'onetime'
+  };
+  var sent=false;
+  if (LEAD_ENDPOINT && LEAD_ENDPOINT.indexOf('PASTE')<0){
+    try{ fetch(LEAD_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({contact:contact,booking:booking,source:'ocsllc.services quote form'})}); sent=true; }catch(e){}
+  }
+  if(!sent){
+    var flat={ name:name, phone:phone, email:email, town:city, address:addr, notes:notes,
+      service: state.service==='both'?'Interior + Exterior':'Exterior Only',
+      screens: booking.wantsScreens?(booking.screenCount+' screens'):'No',
+      home_sqft: booking.sqft||'', pane_count: booking.paneCount||'',
+      stories: booking.stories2plus?'2+':'1', hard_water: booking.hardWater?'Yes':'No',
+      last_cleaned: state.lastCleaned, post_construction: booking.postConstruction?'Yes':'No',
+      french_panes: booking.frenchPanes?'Yes':'No', recurring: booking.plan,
+      estimate: (q.oversize||!range)?'In-person quote':('$'+range.low+' - $'+range.high),
+      submitted_at: new Date().toLocaleString('en-US',{timeZone:'America/Denver'})+' MT', source:'ocsllc.services quote form' };
+    var fd=new FormData(); Object.keys(flat).forEach(function(k){fd.append(k,flat[k]);});
+    fd.append('_subject','New cleaning request — '+name); fd.append('_template','table'); fd.append('_captcha','false');
+    fetch('https://formsubmit.co/ajax/barrett@ocsllc.services',{method:'POST',headers:{'Accept':'application/json'},body:fd}).catch(function(){});
+  }
+  document.getElementById('qfFormEmbed').classList.add('qf-hidden');
+  document.getElementById('qfThanks').classList.remove('qf-hidden');
+  document.getElementById('quote').scrollIntoView({behavior:'smooth',block:'start'});
+}
+(function(){ var b=document.getElementById('ldSubmit'); if(b) b.addEventListener('click', submitLead); })();
+
 function goto(stepId){
   $$('.qf-step').forEach(s => s.classList.toggle('active', s.dataset.step === stepId));
   const num = stepId.startsWith('3') ? 3 : parseInt(stepId, 10);
@@ -640,7 +779,7 @@ function goto(stepId){
     d.classList.toggle('on', p === num);
     d.classList.toggle('done', p < num);
   });
-  if (stepId === '5') { renderRecap(); updateBookingInfo(); }
+  if (stepId === '5') { renderRecap(); showEstimate(); }
   document.getElementById('quote').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
@@ -909,137 +1048,23 @@ function renderRecap(){
   $('#qfRecap').innerHTML = rows.map(([l,v]) => `<div class="row"><span class="label">${l}</span><span class="val">${v}</span></div>`).join('');
 }
 
-// ===== HCP booking integration =====
-// After customer picks a time + enters contact info in HCP modal, we listen
-// for booking-complete postMessage and reveal the price range. Their contact
-// info is captured by HCP (sent to Barrett's HCP Inbox).
-
-let bookingComplete = false; // guard against double-firing
-
-function onBookingComplete() {
-  if (bookingComplete) return;
-  bookingComplete = true;
-
-  const q = compute();
-  const range = priceRange(q);
-  const submittedAt = new Date().toLocaleString('en-US', {timeZone:'America/Denver'}) + ' MT';
-
-  // Also email Barrett the calculated quote details (HCP doesn't capture
-  // these — sqft tier, surcharges, etc.) so he has full context.
-  const fd = new FormData();
-  fd.append('_subject', 'New booking via website form');
-  fd.append('_template', 'table');
-  fd.append('_captcha', 'false');
-  fd.append('Source', 'ocsllc.services homepage form + HCP booking');
-  fd.append('Submitted at', submittedAt);
-  fd.append('Note', 'Customer booked through HCP. Their contact info is in your HCP Inbox. Details from the website form below:');
-  fd.append('Service', state.service === 'both' ? 'Interior + Exterior' : 'Exterior Only');
-  fd.append('Screens cleaned?', state.wantsScreens === 'yes'
-    ? `Yes (${state.screenCountWanted} screens, +$${state.screenCountWanted * 4})`
-    : 'No');
-  fd.append('Pricing method', state.method === 'sqft' ? 'By home size (sqft)' : 'By pane count');
-  if (state.method === 'sqft') {
-    fd.append('Home size (sqft)', state.sqft);
-    if (state.secondaryPanes > 0) fd.append('Pane count (also provided)', state.secondaryPanes);
+// Show the estimate range inline on step 5 (no HCP; Google Form below captures contact info).
+function showEstimate(){
+  var q = compute(); var range = priceRange(q); var card = document.getElementById('qfRangeCard');
+  if (!card) return;
+  if (q.oversize || !range){
+    card.innerHTML = '<div class="label">In-person quote</div>'
+      + '<p class="caveat" style="margin-top:.6rem">Homes over 6,000 sqft get an in-person quote so we can be accurate. Fill out the form below (or call) and we\'ll be in touch within 24 hours.</p>';
   } else {
-    fd.append('Pane count', state.windowCount);
-    if (state.secondarySqft > 0) fd.append('Home size (also provided, sqft)', state.secondarySqft);
+    var lbl = (state.recurring === 'yes' && q.discountPct > 0)
+      ? 'Per visit — ' + Math.round(q.discountPct*100) + '% recurring discount applied' : 'Estimated range';
+    card.innerHTML = '<div class="label">'+lbl+'</div>'
+      + '<div class="range"><span>$'+range.low+'</span> <span class="sep">&ndash;</span> <span>$'+range.high+'</span></div>'
+      + '<p class="caveat">Based on what you told us. The exact price is confirmed when we visit so we can account for access, story height, hard water, and other site conditions. Free travel within the Flathead Valley, $150 service minimum, and a 72-hour streak-free guarantee on every job.</p>';
   }
-  fd.append('Stories', state.stories === '2' ? '2+' : '1');
-  fd.append('Hard water', HW_LABEL[state.hardWater]);
-  fd.append('Last professional cleaning', state.lastCleaned);
-  if (state.lastCleaned === 'never') fd.append('Cleaned at construction', state.constructionClean);
-  fd.append('Post-construction cleanup', state.postConstruction);
-  fd.append('French panes', q.hasFrench
-    ? 'Yes — REVIEW: price may need adjustment depending on divided pane count ($2/pane = $8/side per 4 panes)'
-    : 'No');
-  if (state.recurring === 'yes' && q.discountPct > 0) {
-    fd.append('Recurring plan', RECUR_LABEL[state.frequency] + ' — REVIEW: set up the recurring series in HCP and apply ' + Math.round(q.discountPct*100) + '% to each visit.');
-    fd.append('Per-visit price (one-time)', fmtMoney(q.total));
-    fd.append('Per-visit price (recurring)', fmtMoney(q.netPerVisit));
-    fd.append('Est. annual total', fmtMoney(q.netPerVisit * RECUR_VISITS[state.frequency]) + ' (' + RECUR_VISITS[state.frequency] + ' visits)');
-    const rds = state.recurringDates.filter(Boolean);
-    fd.append('Preferred dates', rds.length ? rds.join(', ') : 'none provided — follow up to schedule');
-  } else {
-    fd.append('Recurring plan', 'One-time clean');
-  }
-  if (q.oversize) {
-    fd.append('Calculated quote', 'OVER 6000 SQFT - IN PERSON REQUIRED');
-    fd.append('Range shown to customer', 'In-person quote (no range)');
-  } else {
-    fd.append('Calculated quote', fmtMoney(q.total) + (q.minApplied ? ' (min applied)' : '') + (q.averaged ? ' (averaged: primary ' + fmtMoney(q.primaryTotal) + ' + secondary ' + fmtMoney(q.secondaryTotal) + ')' : ''));
-    fd.append('Range shown to customer', '$' + range.low + ' - $' + range.high);
-  }
-  fetch('https://formsubmit.co/ajax/barrett@ocsllc.services', {
-    method:'POST', headers:{'Accept':'application/json'}, body:fd
-  }).catch(e => console.warn('FormSubmit failed (HCP booking still confirmed):', e));
-
-  // Reveal range to the customer
-  $('#qfFormWrap').classList.add('qf-hidden');
-  $('#qfThanksWrap').classList.remove('qf-hidden');
-  if (q.oversize) {
-    $('#qfRangeCard').innerHTML = '<div class="label">In-person quote required</div><p class="caveat" style="color:rgba(255,255,255,.9);margin-top:.75rem;text-align:center">Your home is over 6,000 sqft — we\'ll visit in person to give you an accurate quote, and we\'ll be in touch within 24 hours about timing.</p>';
-  } else {
-    $('#qfRangeLow').textContent = '$' + range.low;
-    $('#qfRangeHigh').textContent = '$' + range.high;
-    var rlbl = document.querySelector('#qfRangeCard .label');
-    if (rlbl) rlbl.textContent = (state.recurring === 'yes' && q.discountPct > 0)
-      ? 'Per visit — ' + Math.round(q.discountPct*100) + '% recurring discount applied'
-      : 'Estimated range';
-  }
-  document.getElementById('quote').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-// Listen for HCP postMessage events. HCP doesn't publicly document the exact
-// payload, so we accept any message from the HCP origins that looks like a
-// completion signal (booking-complete, success, confirmed, etc.).
-window.addEventListener('message', function(e) {
-  if (!e.origin || !/housecallpro\.com$/.test(new URL(e.origin).hostname || '')) return;
-  const data = e.data;
-  let signal = '';
-  if (typeof data === 'string') signal = data.toLowerCase();
-  else if (data && typeof data === 'object') {
-    signal = JSON.stringify(data).toLowerCase();
-  }
-  // Match common completion keywords
-  if (/booking.?complete|booking.?confirmed|booking.?success|appointment.?confirmed|reservation.?complete/.test(signal)) {
-    onBookingComplete();
-  }
-});
 
-// Show "Continue to your estimate" prompt when HCP modal closes
-// (unless booking already auto-confirmed via postMessage).
-function showContinuePrompt() {
-  if (bookingComplete) return; // range already shown, don't re-prompt
-  $('#qfFormWrap').classList.add('qf-hidden');
-  $('#qfContinuePrompt').classList.remove('qf-hidden');
-  document.getElementById('quote').scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-(function setupModalCloseObserver(){
-  let wasVisible = false;
-  const observer = new MutationObserver(() => {
-    const w = document.querySelector('.hcp-widget');
-    if (!w) return;
-    const visible = w.classList.contains('hcp-widget--visible');
-    if (visible && !wasVisible) { wasVisible = true; }
-    else if (!visible && wasVisible) {
-      wasVisible = false;
-      // Brief delay to let any postMessage fire first
-      setTimeout(showContinuePrompt, 300);
-    }
-  });
-  const ready = setInterval(() => {
-    const w = document.querySelector('.hcp-widget');
-    if (w) { clearInterval(ready); observer.observe(w, {attributes:true, attributeFilter:['class']}); }
-  }, 500);
-})();
-
-// "Show my estimate" button on the continue prompt → reveal range
-$('#qfShowEstimate').addEventListener('click', () => {
-  $('#qfContinuePrompt').classList.add('qf-hidden');
-  onBookingComplete();
-});
 })();
 </script>
 </body>
