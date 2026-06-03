@@ -20,15 +20,9 @@
 /* fade the clip in only once it's actually playing (no black flash) */
 .hero-photo.ambient-ready > .ambient-hero-video { opacity: 1; }
 
-/* taller heroes so more of the 16:9 ambient footage is visible.
-   Fluid across every screen size: never cramped (floor 440px), scales with the
-   viewport (78vh), never absurd on huge displays (cap 860px). Identical on all pages. */
+/* taller heroes so more of the 16:9 ambient footage is visible */
 .hero-photo.has-ambient {
-  /* self-sufficient: don't depend on site.css for the positioning context,
-     so the ambient video works even on pages that only load Tailwind (e.g. /our-work) */
-  position: relative;
-  isolation: isolate;
-  min-height: clamp(440px, 78vh, 860px);
+  min-height: min(70vh, 760px);
   display: flex;
   flex-direction: column;
   justify-content: center;
