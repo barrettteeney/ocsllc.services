@@ -1,0 +1,66 @@
+/* OCS LLC — top navigation menu (desktop bar + dropdowns, mobile hamburger). */
+
+.site-nav { background:#0CC0DF; color:#fff; position:sticky; top:0; z-index:50; box-shadow:0 1px 0 rgba(0,0,0,.06); }
+.site-nav-inner { display:flex; align-items:center; gap:1.1rem; width:90%; max-width:1200px; margin:0 auto; padding:.45rem 0; }
+.site-brand { font-size:1.15rem; font-weight:800; color:#fff; text-decoration:none; white-space:nowrap; }
+
+/* ---- desktop menu (centered in the bar) ---- */
+.nav-menu { display:flex; align-items:center; gap:1.05rem; margin:0 auto; }
+.nav-menu > a, .nav-drop-btn {
+  color:#fff; text-decoration:none; font-weight:600; font-size:.92rem; line-height:1;
+  background:none; border:0; font-family:inherit; cursor:pointer; padding:.35rem 0; white-space:nowrap;
+}
+.nav-menu > a:hover, .nav-drop-btn:hover { opacity:.82; }
+.nav-drop-btn .caret { font-size:.7rem; margin-left:.15rem; }
+
+.nav-drop { position:relative; }
+.nav-drop-panel {
+  position:absolute; top:calc(100% + .35rem); left:0; min-width:210px; background:#fff;
+  border-radius:10px; box-shadow:0 12px 30px rgba(15,42,62,.18); padding:.4rem; display:none; z-index:60;
+}
+.nav-drop:hover .nav-drop-panel, .nav-drop.open .nav-drop-panel { display:block; }
+.nav-drop-panel a {
+  display:block; color:#0f172a; text-decoration:none; padding:.55rem .8rem; border-radius:7px;
+  font-size:.9rem; font-weight:600; white-space:nowrap;
+}
+.nav-drop-panel a:hover { background:#e0f7fb; color:#0aa3bd; }
+
+.nav-menu > a.nav-cta {
+  background:#0f172a; color:#fff !important; padding:.5rem 1.1rem; border-radius:999px;
+  font-weight:800; font-size:.9rem; box-shadow:0 4px 12px rgba(15,23,42,.25); opacity:1;
+}
+.nav-menu > a.nav-cta:hover { background:#1e293b; opacity:1; }
+
+.nav-phone { color:#fff; text-decoration:none; font-weight:700; font-size:.92rem; white-space:nowrap; }
+.nav-phone:hover { opacity:.85; }
+.nav-phone-m { display:none; }            /* phone link shown only inside the mobile menu */
+
+/* ---- hamburger (hidden on desktop) ---- */
+.nav-toggle { display:none; margin-left:auto; flex-direction:column; gap:4px; background:none; border:0; cursor:pointer; padding:.4rem; }
+.nav-toggle span { display:block; width:22px; height:2px; background:#fff; border-radius:2px; transition:.2s; }
+
+/* ---- mobile ---- */
+@media (max-width: 900px) {
+  .nav-toggle { display:flex; }
+  .nav-phone { display:none; }
+  .nav-menu {
+    display:none; position:absolute; top:100%; left:0; right:0; margin:0;
+    flex-direction:column; align-items:stretch; gap:0; background:#0aa3bd;
+    padding:.25rem 5% 1rem; box-shadow:0 14px 28px rgba(0,0,0,.22);
+  }
+  .nav-menu.open { display:flex; }
+  .nav-menu > a, .nav-drop-btn {
+    width:100%; text-align:left; padding:.8rem .25rem; font-size:1rem;
+    border-bottom:1px solid rgba(255,255,255,.15); justify-content:space-between; display:flex; align-items:center;
+  }
+  .nav-drop { width:100%; }
+  .nav-drop-panel {
+    position:static; display:none; box-shadow:none; background:rgba(255,255,255,.08);
+    border-radius:8px; margin:.15rem 0 .35rem; padding:.2rem;
+  }
+  .nav-drop.open .nav-drop-panel { display:block; }
+  .nav-drop-panel a { color:#fff; }
+  .nav-drop-panel a:hover { background:rgba(255,255,255,.15); color:#fff; }
+  .nav-phone-m { display:flex; }
+  .nav-cta { display:inline-block; text-align:center; margin-top:.7rem; border:0; }
+}
