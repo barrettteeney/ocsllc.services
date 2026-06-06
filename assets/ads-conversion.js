@@ -14,8 +14,8 @@
    (see APP-ADD-CONVERSION-POSTMESSAGE.md). Both sides must be in place.
    =========================================================================== */
 (function () {
-  var ADS_ID = "AW-XXXXXXXXX";              // <-- paste your Google Ads conversion ID
-  var CONVERSION_LABEL = "XXXXXXXXXXXXXXXX"; // <-- paste your conversion label
+  var ADS_ID = "AW-18072622126";              // OCS LLC Google Ads conversion ID
+  var CONVERSION_LABEL = "-t31CJXghLkcEK6o2alD"; // "Book appointment" conversion label
   var APP_ORIGIN = "https://ocs-crm.vercel.app";
 
   var configured = ADS_ID.indexOf("XXXX") < 0 && CONVERSION_LABEL.indexOf("XXXX") < 0;
