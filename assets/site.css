@@ -117,7 +117,7 @@ section { padding: clamp(2rem, 5vw, 4rem) 0; }
         display: block;
     }
     .mobile-bottom-bar .mcb-half:hover { background: rgba(255,255,255,0.1); }
-    .mobile-call-bar { display: none !important; } /* hide the original single-bar version */
+    .mobile-call-bar:not(.mcb-half) { display: none !important; } /* hide the original single-bar version */
 }
 
 /* === Monoline icon system === */
@@ -441,3 +441,14 @@ img.fade-on-load.loaded { opacity: 1; }
 /* Trust badge: keep star icon inline with text on city/service pages */
 .trust-row span:has(>svg){display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}
 .trust-row span svg{display:inline-block;vertical-align:middle}
+
+/* === Keyboard focus visibility (a11y) === */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid #0CC0DF;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
