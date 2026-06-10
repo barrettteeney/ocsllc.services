@@ -31,7 +31,7 @@ jobs:
               "https://ocsllc.services/about/",
               "https://ocsllc.services/reviews/",
               "https://ocsllc.services/kalispell/",
-              "https://ocsllc.services/services/pressure-washing/",
+              "https://ocsllc.services/services/residential/",
               "https://ocsllc.services/kalispell/residential/",
           ]
           fail = False

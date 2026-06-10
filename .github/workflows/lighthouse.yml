@@ -21,7 +21,6 @@ jobs:
             https://ocsllc.services/
             https://ocsllc.services/kalispell/
             https://ocsllc.services/services/residential/
-            https://ocsllc.services/services/pressure-washing/
             https://ocsllc.services/about/
             https://ocsllc.services/reviews/
           uploadArtifacts: true
