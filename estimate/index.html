@@ -128,6 +128,7 @@ textarea{min-height:70px;resize:vertical}
       <input type="hidden" name="estimate_accuracy">
       <input type="hidden" name="estimate_review_flags">
       <input type="hidden" name="estimate_notes">
+      <input type="hidden" name="sqft_tier">
 
       <div class="estimate-grid">
         <fieldset class="estimate-fieldset">
@@ -148,14 +149,14 @@ textarea{min-height:70px;resize:vertical}
           <label>
             <span class="estimate-label">Home size</span>
             <input class="estimate-input" type="number" name="sqft" min="200" max="9000" step="50" inputmode="numeric" placeholder="Example: 2200">
-            <span class="estimate-note">A rough size is enough to start. Use a tier midpoint if you are not sure.</span>
-            <span class="estimate-kicker" aria-label="Common home size presets">
-              <button class="estimate-chip" type="button" data-sqft-preset="500">500</button>
-              <button class="estimate-chip" type="button" data-sqft-preset="1500">1,500</button>
-              <button class="estimate-chip" type="button" data-sqft-preset="2500">2,500</button>
-              <button class="estimate-chip" type="button" data-sqft-preset="3500">3,500</button>
-              <button class="estimate-chip" type="button" data-sqft-preset="4500">4,500</button>
-              <button class="estimate-chip" type="button" data-sqft-preset="5500">5,500</button>
+            <span class="estimate-note">Know the square footage? Enter it above. If not, choose the range your home falls in.</span>
+            <span class="estimate-kicker" aria-label="Home square-footage tiers">
+              <button class="estimate-chip" type="button" data-sqft-tier-value="500" data-sqft-tier-label="Up to 1,000 sqft">Up to 1,000</button>
+              <button class="estimate-chip" type="button" data-sqft-tier-value="1500" data-sqft-tier-label="1,001-2,000 sqft">1,001-2,000</button>
+              <button class="estimate-chip" type="button" data-sqft-tier-value="2500" data-sqft-tier-label="2,001-3,000 sqft">2,001-3,000</button>
+              <button class="estimate-chip" type="button" data-sqft-tier-value="3500" data-sqft-tier-label="3,001-4,000 sqft">3,001-4,000</button>
+              <button class="estimate-chip" type="button" data-sqft-tier-value="4500" data-sqft-tier-label="4,001-5,000 sqft">4,001-5,000</button>
+              <button class="estimate-chip" type="button" data-sqft-tier-value="5500" data-sqft-tier-label="5,001-6,000 sqft">5,001-6,000</button>
             </span>
           </label>
           <label>

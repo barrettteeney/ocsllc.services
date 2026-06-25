@@ -214,10 +214,11 @@
     renderConfidence(result);
   }
 
-  function setPresetState(form, inputName, value) {
-    form.querySelectorAll("[data-" + inputName + "-preset]").forEach(function (button) {
-      button.classList.toggle("is-active", button.getAttribute("data-" + inputName + "-preset") === String(value));
+  function setSqftTierState(form, value, label) {
+    form.querySelectorAll("[data-sqft-tier-value]").forEach(function (button) {
+      button.classList.toggle("is-active", button.getAttribute("data-sqft-tier-value") === String(value));
     });
+    if (form.elements.sqft_tier) form.elements.sqft_tier.value = label || "";
   }
 
   function makeWizard(form) {
@@ -345,6 +346,7 @@
     if (data.estimate_accuracy) pieces.push("Accuracy: " + data.estimate_accuracy);
     if (data.estimate_review_flags) pieces.push("Review flags: " + data.estimate_review_flags);
     if (data.estimate_service) pieces.push("Service: " + data.estimate_service);
+    if (data.sqft_tier) pieces.push("Home size tier: " + data.sqft_tier);
     if (data.sqft) pieces.push("Sqft: " + data.sqft);
     if (data.panes) pieces.push("Panes: " + data.panes);
     if (data.screens) pieces.push("Screens: " + data.screens);
@@ -444,17 +446,18 @@
   function init(form) {
     form.addEventListener("input", function () { render(form); });
     form.addEventListener("change", function () { render(form); });
-    form.querySelectorAll("[data-sqft-preset]").forEach(function (button) {
+    form.querySelectorAll("[data-sqft-tier-value]").forEach(function (button) {
       button.addEventListener("click", function () {
-        var value = button.getAttribute("data-sqft-preset");
+        var value = button.getAttribute("data-sqft-tier-value");
+        var label = button.getAttribute("data-sqft-tier-label");
         if (form.elements.sqft) form.elements.sqft.value = value;
-        setPresetState(form, "sqft", value);
+        setSqftTierState(form, value, label);
         render(form);
       });
     });
     if (form.elements.sqft) {
       form.elements.sqft.addEventListener("input", function () {
-        setPresetState(form, "sqft", form.elements.sqft.value);
+        setSqftTierState(form, "", "");
       });
     }
     makeWizard(form);
