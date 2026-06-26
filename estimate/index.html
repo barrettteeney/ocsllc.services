@@ -145,8 +145,8 @@ textarea{min-height:70px;resize:vertical}
         <div class="estimate-row">
           <label>
             <span class="estimate-label">Home size</span>
-            <input class="estimate-input" type="number" name="sqft" min="200" max="9000" step="50" inputmode="numeric" placeholder="Example: 2200">
-            <span class="estimate-note">Know the square footage? Enter it above. If not, choose the range your home falls in.</span>
+            <input class="estimate-input" type="number" name="sqft" min="200" step="50" inputmode="numeric" placeholder="Example: 2200">
+            <span class="estimate-note" data-sqft-note>Know the square footage? Enter it above. If not, choose the range your home falls in.</span>
             <span class="estimate-kicker" aria-label="Home square-footage tiers">
               <button class="estimate-chip" type="button" data-sqft-tier-value="500" data-sqft-tier-label="Up to 1,000 sqft">Up to 1,000</button>
               <button class="estimate-chip" type="button" data-sqft-tier-value="1500" data-sqft-tier-label="1,001-2,000 sqft">1,001-2,000</button>
@@ -154,11 +154,12 @@ textarea{min-height:70px;resize:vertical}
               <button class="estimate-chip" type="button" data-sqft-tier-value="3500" data-sqft-tier-label="3,001-4,000 sqft">3,001-4,000</button>
               <button class="estimate-chip" type="button" data-sqft-tier-value="4500" data-sqft-tier-label="4,001-5,000 sqft">4,001-5,000</button>
               <button class="estimate-chip" type="button" data-sqft-tier-value="5500" data-sqft-tier-label="5,001-6,000 sqft">5,001-6,000</button>
+              <button class="estimate-chip" type="button" data-sqft-tier-value="6000plus" data-sqft-tier-label="6,000+ sqft" data-sqft-tier-oversize="true">6,000+</button>
             </span>
           </label>
           <label>
             <span class="estimate-label">Pane count</span>
-            <input class="estimate-input" type="number" name="panes" min="1" max="400" step="1" inputmode="numeric" placeholder="Example: 32">
+            <input class="estimate-input" type="number" name="panes" min="1" step="1" inputmode="numeric" placeholder="Example: 32">
             <span class="estimate-note" data-pane-note>Pick a home size above and we will suggest common pane-count ranges.</span>
             <span class="estimate-kicker estimate-dynamic-kicker" data-pane-options aria-label="Suggested pane-count ranges"></span>
           </label>
@@ -167,7 +168,7 @@ textarea{min-height:70px;resize:vertical}
         <div class="estimate-row">
           <label>
             <span class="estimate-label">Screens to clean</span>
-            <input class="estimate-input" type="number" name="screens" min="0" max="200" step="1" inputmode="numeric" placeholder="0">
+            <input class="estimate-input" type="number" name="screens" min="0" step="1" inputmode="numeric" placeholder="0">
             <span class="estimate-note" data-screen-note>Choose no screens or tap a common range after selecting home size.</span>
             <span class="estimate-kicker estimate-dynamic-kicker" data-screen-options aria-label="Suggested screen-count ranges"></span>
           </label>
@@ -210,7 +211,7 @@ textarea{min-height:70px;resize:vertical}
           <div class="estimate-price" data-estimate-price>Enter a size</div>
           <div class="estimate-detail" data-estimate-detail>Use square footage if you know it. Pane count is optional and helps tighten the range.</div>
         </div>
-        <div class="estimate-warning" data-estimate-warning>Homes over 6,000 sqft need a custom quote. Call or text Barrett and he will price it directly.</div>
+        <div class="estimate-warning" data-estimate-warning>Homes over 6,000 sqft get a custom confirmed quote. Keep going with your best sqft, pane range, and screen range so Barrett can price it faster.</div>
 
         <div class="estimate-row">
           <label>

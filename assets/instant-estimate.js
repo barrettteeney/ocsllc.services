@@ -102,6 +102,9 @@
       ]
     }
   ];
+  var DEFAULT_SQFT_NOTE = "Know the square footage? Enter it above. If not, choose the range your home falls in.";
+  var OVERSIZE_SQFT_LABEL = "6,000+ sqft";
+  var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage for the home, then choose the closest pane and screen ranges below.";
   var PER_PANE = { ext: 8, both: 14, screen: 4 };
   var MIN_CHARGE = 150;
 
@@ -131,6 +134,51 @@
     return field.value || "";
   }
 
+  function makeRangeLabel(low, high, unit, isPlus) {
+    return low.toLocaleString() + "-" + high.toLocaleString() + (isPlus ? "+" : "") + " " + unit;
+  }
+
+  function makeRange(low, high, unit, factor, isPlus, keepLow) {
+    var scaledLow = keepLow ? low : Math.max(1, Math.round(low * factor));
+    var scaledHigh = Math.max(scaledLow, Math.round(high * factor));
+    return {
+      label: makeRangeLabel(scaledLow, scaledHigh, unit, isPlus),
+      value: Math.round((scaledLow + scaledHigh) / 2)
+    };
+  }
+
+  function makeExplicitRange(low, high, unit, isPlus) {
+    return {
+      label: makeRangeLabel(low, high, unit, isPlus),
+      value: Math.round((low + high) / 2)
+    };
+  }
+
+  function getOversizeGuidanceTier(sqft) {
+    var factor = sqft && sqft > 6000 ? sqft / 6000 : 1;
+    var paneHigh1 = Math.round(110 * factor);
+    var paneHigh2 = Math.max(paneHigh1 + 1, Math.round(150 * factor));
+    var paneHigh3 = Math.max(paneHigh2 + 1, Math.round(200 * factor));
+    var screenHigh1 = Math.round(30 * factor);
+    var screenHigh2 = Math.max(screenHigh1 + 1, Math.round(60 * factor));
+    var screenHigh3 = Math.max(screenHigh2 + 1, Math.round(90 * factor));
+    return {
+      max: Infinity,
+      sqftLabel: sqft && sqft > 6000 ? sqft.toLocaleString() + " sqft / 6,000+ home" : OVERSIZE_SQFT_LABEL,
+      panes: [
+        makeRange(80, 110, "panes", factor, false, false),
+        makeExplicitRange(paneHigh1 + 1, paneHigh2, "panes", false),
+        makeExplicitRange(paneHigh2 + 1, paneHigh3, "panes", true)
+      ],
+      screens: [
+        { label: "No screens", value: 0 },
+        makeExplicitRange(1, screenHigh1, "screens", false),
+        makeExplicitRange(screenHigh1 + 1, screenHigh2, "screens", false),
+        makeExplicitRange(screenHigh2 + 1, screenHigh3, "screens", true)
+      ]
+    };
+  }
+
   function getService(form) {
     var checked = form.querySelector('input[name="service"]:checked');
     return checked ? checked.value : "both";
@@ -145,12 +193,26 @@
 
   function getTierForSqft(sqft) {
     if (!sqft) return null;
-    return SQFT_TIERS.find(function (item) { return sqft <= item.max; }) || null;
+    return SQFT_TIERS.find(function (item) { return sqft <= item.max; }) || getOversizeGuidanceTier(sqft);
+  }
+
+  function isOversizeTierSelected(form) {
+    return getValue(form, "sqft_tier") === OVERSIZE_SQFT_LABEL;
+  }
+
+  function getGuidanceTier(form) {
+    if (isOversizeTierSelected(form)) return getOversizeGuidanceTier(getNumber(form, "sqft"));
+    return getTierForSqft(getNumber(form, "sqft"));
   }
 
   function setHiddenValue(form, name, value) {
     var field = form.elements[name];
     if (field) field.value = value || "";
+  }
+
+  function setSqftNote(form, message) {
+    var note = form.querySelector("[data-sqft-note]");
+    if (note) note.textContent = message || DEFAULT_SQFT_NOTE;
   }
 
   function setCountChoice(form, name, value, label) {
@@ -163,8 +225,7 @@
   }
 
   function renderCountOptions(form) {
-    var sqft = getNumber(form, "sqft");
-    var tier = getTierForSqft(sqft);
+    var tier = getGuidanceTier(form);
     var paneWrap = form.querySelector("[data-pane-options]");
     var screenWrap = form.querySelector("[data-screen-options]");
     var paneNote = form.querySelector("[data-pane-note]");
@@ -346,7 +407,7 @@
     if (result.oversized) {
       box.classList.add("is-empty");
       price.textContent = "Custom quote";
-      detail.textContent = "Homes over 6,000 sqft need a quick review so the price is accurate.";
+      detail.textContent = "Large homes need Barrett to confirm the final price. Your sqft, pane range, and screen range still help tighten the quote.";
       return;
     }
 
@@ -371,7 +432,7 @@
   }
 
   function applyTierDefaults(form, value) {
-    var tier = getTierForSqft(parseFloat(value));
+    var tier = value === "6000plus" ? getOversizeGuidanceTier(getNumber(form, "sqft")) : getTierForSqft(parseFloat(value));
     if (!tier) return;
     var middlePane = tier.panes[1] || tier.panes[0];
     var noScreens = tier.screens[0];
@@ -456,9 +517,15 @@
     }
 
     function canLeaveStep(index) {
-      if (steps[index] && steps[index].title === "Home size" && !getNumber(form, "sqft") && !getNumber(form, "panes")) {
-        setError("Add a rough home size or pane count so the estimate stays useful.");
-        return false;
+      if (steps[index] && steps[index].title === "Home size") {
+        if (isOversizeTierSelected(form) && getNumber(form, "sqft") <= 6000) {
+          setError("Enter your best estimated square footage above 6,000 so Barrett has enough context.");
+          return false;
+        }
+        if (!getNumber(form, "sqft") && !getNumber(form, "panes")) {
+          setError("Add a rough home size or pane count so the estimate stays useful.");
+          return false;
+        }
       }
       setError("");
       return true;
@@ -515,7 +582,7 @@
     if (data.estimate_review_flags) pieces.push("Review flags: " + data.estimate_review_flags);
     if (data.estimate_service) pieces.push("Service: " + data.estimate_service);
     if (data.sqft_tier) pieces.push("Home size tier: " + data.sqft_tier);
-    if (data.sqft) pieces.push("Sqft midpoint: " + data.sqft);
+    if (data.sqft) pieces.push("Square footage: " + data.sqft);
     if (data.pane_range) pieces.push("Pane range: " + data.pane_range);
     else if (data.panes) pieces.push("Panes: " + data.panes);
     if (data.screen_range) pieces.push("Screen range: " + data.screen_range);
@@ -620,14 +687,32 @@
       button.addEventListener("click", function () {
         var value = button.getAttribute("data-sqft-tier-value");
         var label = button.getAttribute("data-sqft-tier-label");
-        if (form.elements.sqft) form.elements.sqft.value = value;
+        var isOversize = button.getAttribute("data-sqft-tier-oversize") === "true";
+        if (form.elements.sqft) {
+          if (isOversize) {
+            if (getNumber(form, "sqft") <= 6000) form.elements.sqft.value = "";
+            form.elements.sqft.placeholder = "Example: 7200";
+          } else {
+            form.elements.sqft.value = value;
+            form.elements.sqft.placeholder = "Example: 2200";
+          }
+        }
         setSqftTierState(form, value, label);
+        setSqftNote(form, isOversize ? OVERSIZE_SQFT_NOTE : DEFAULT_SQFT_NOTE);
         applyTierDefaults(form, value);
         render(form);
+        if (isOversize && form.elements.sqft) form.elements.sqft.focus();
       });
     });
     if (form.elements.sqft) {
       form.elements.sqft.addEventListener("input", function () {
+        if (isOversizeTierSelected(form)) {
+          setSqftNote(form, OVERSIZE_SQFT_NOTE);
+          if (getNumber(form, "sqft") > 6000) applyTierDefaults(form, "6000plus");
+          return;
+        }
+        form.elements.sqft.placeholder = "Example: 2200";
+        setSqftNote(form, DEFAULT_SQFT_NOTE);
         setSqftTierState(form, "", "");
         setHiddenValue(form, "pane_range", "");
         setHiddenValue(form, "screen_range", "");
