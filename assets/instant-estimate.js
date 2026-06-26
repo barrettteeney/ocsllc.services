@@ -28,6 +28,7 @@
       ],
       screens: [
         { label: "No screens", value: 0 },
+        { label: "1-5 screens", value: 3 },
         { label: "6-12 screens", value: 9 },
         { label: "13-20 screens", value: 16 }
       ]
@@ -44,6 +45,7 @@
       ],
       screens: [
         { label: "No screens", value: 0 },
+        { label: "1-9 screens", value: 5 },
         { label: "10-18 screens", value: 14 },
         { label: "19-28 screens", value: 24 }
       ]
@@ -60,6 +62,7 @@
       ],
       screens: [
         { label: "No screens", value: 0 },
+        { label: "1-14 screens", value: 7 },
         { label: "15-25 screens", value: 20 },
         { label: "26-38 screens", value: 32 }
       ]
@@ -76,6 +79,7 @@
       ],
       screens: [
         { label: "No screens", value: 0 },
+        { label: "1-19 screens", value: 10 },
         { label: "20-32 screens", value: 26 },
         { label: "33-48 screens", value: 40 }
       ]
@@ -92,6 +96,7 @@
       ],
       screens: [
         { label: "No screens", value: 0 },
+        { label: "1-24 screens", value: 12 },
         { label: "25-40 screens", value: 32 },
         { label: "41-60 screens", value: 50 }
       ]
