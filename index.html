@@ -25,7 +25,6 @@
 <meta name="twitter:description" content="Interior, exterior, screens &amp; tracks. Insured, 5.0 stars on Google. Free same-day quotes.">
 <meta name="twitter:image" content="https://ocsllc.services/assets/og.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230CC0DF'/%3E%3Ctext x='50' y='62' font-family='Arial,sans-serif' font-size='44' font-weight='700' text-anchor='middle' fill='white'%3EO%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://ocs-crm.vercel.app">
 <link rel="dns-prefetch" href="https://www.googletagmanager.com">
 <link rel="stylesheet" href="/assets/tailwind.css">
 <link rel="stylesheet" href="/assets/site.css">
@@ -34,7 +33,6 @@
 <script src="/assets/feature-splits.js" defer></script>
 <link rel="stylesheet" href="/assets/ambient-hero.css">
 <script src="/assets/ambient-hero.js" defer></script>
-<!-- HCP booking widget script (used on thank-you screen after submit) -->
 <style>
 .trust-badges{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:1rem}
 .tb{display:flex;align-items:center;gap:.85rem;padding:.95rem 1.1rem;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px}
@@ -104,14 +102,6 @@
 .qf-range .range{font-size:2rem;font-weight:800;color:#0CC0DF;line-height:1.1;margin:.25rem 0}
 .qf-range .range .sep{color:rgba(255,255,255,.4);margin:0 .15rem;font-weight:400}
 .qf-range .caveat{font-size:.82rem;color:rgba(255,255,255,.7);margin:.85rem 0 0;line-height:1.5;text-align:left}
-/* HCP booking modal iframe sizing fix - prevents iframe from collapsing */
-
-.hcp-widget iframe{height:100%!important;max-width:none!important}
-.qf-book-block{background:#f0fdfa;border:1.5px solid #14b8a6;border-radius:12px;padding:1.25rem;margin:1.25rem 0 0;text-align:center}
-.qf-book-h{margin:0 0 .25rem;font-size:1.1rem;font-weight:800;color:#0f172a}
-.qf-book-sub{margin:0 0 .9rem;color:#475569;font-size:.88rem;line-height:1.5}
-.qf-book-btn{background:#0CC0DF;color:#fff;font-weight:700;border:0;border-radius:999px;padding:.85rem 1.6rem;font-size:1rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(12,192,223,.35);transition:all .15s ease}
-.qf-book-btn:hover{background:#0aa3bd;transform:translateY(-1px)}
 .qf-cta-row{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:1.25rem}
 .qf-cta-row a{display:inline-block;background:#0CC0DF;color:#fff;font-weight:700;padding:.65rem 1.2rem;border-radius:999px;text-decoration:none;font-size:.92rem}
 .qf-cta-row a.secondary{background:#fff;color:#0f172a;border:1.5px solid #d1d5db}
@@ -352,7 +342,7 @@
   "@id": "https://ocsllc.services/#faq",
   "mainEntity": [
     { "@type": "Question", "name": "How much does window cleaning cost in Kalispell?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Most homes land between $150 and $400 depending on size, number of panes, and whether you add interior cleaning, screens, or tracks. There is a $150 service minimum. You see your personalized price range as soon as you pick a booking time — no waiting on a callback." } },
+      "acceptedAnswer": { "@type": "Answer", "text": "Most homes land between $150 and $400 depending on size, number of panes, and whether you add interior cleaning, screens, or tracks. There is a $150 service minimum. The estimate request form gives a personalized range before Barrett confirms the final quote." } },
     { "@type": "Question", "name": "Do you clean both interior and exterior windows?",
       "acceptedAnswer": { "@type": "Answer", "text": "Yes. You can choose interior + exterior (inside and outside glass, plus frames and tracks wiped) or exterior-only. Screens and tracks can be added to either option." } },
     { "@type": "Question", "name": "Do you clean window screens and tracks?",
@@ -362,7 +352,7 @@
     { "@type": "Question", "name": "Is OCS LLC insured?",
       "acceptedAnswer": { "@type": "Answer", "text": "Yes. OCS LLC carries general liability insurance and is locally owned and operated by Barrett Teeney. You talk to the same person who shows up to do the work." } },
     { "@type": "Question", "name": "How soon can you clean my windows?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Most quotes come back the same day, and we typically schedule one to two weeks out depending on the season. You can lock in a time instantly through the booking form." } },
+      "acceptedAnswer": { "@type": "Answer", "text": "Most quotes come back the same day, and we typically schedule one to two weeks out depending on the season. Start with the estimate request form and Barrett will confirm the details before scheduling." } },
     { "@type": "Question", "name": "Do you offer a guarantee?",
       "acceptedAnswer": { "@type": "Answer", "text": "Yes. Every job comes with a 48-hour streak-free guarantee. If anything looks off within 48 hours, we come back and make it right." } }
   ]
@@ -380,7 +370,7 @@
 <h1>Clean windows in the Flathead Valley</h1>
 <p class="hero-tagline" style="font-style:italic;font-size:clamp(1rem,2vw,1.15rem);opacity:.95;margin:.5rem auto 1rem;text-align:center">"Work Done Well, Work Done Right."</p>
 <p>Insured. Locally owned. 5.0 stars on Google.</p>
-<div class="hero-cta-row"><a href="#reserve" class="bg-custom-cyan text-white px-6 py-3 rounded-lg font-bold" style="box-shadow:0 6px 20px rgba(12,192,223,.4)">Get a Free Quote</a><a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a></div>
+<div class="hero-cta-row"><a href="/estimate/" class="bg-custom-cyan text-white px-6 py-3 rounded-lg font-bold" style="box-shadow:0 6px 20px rgba(12,192,223,.4)">Get a Free Quote</a><a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a></div>
 </section>
 <section id="trust" class="bg-white" style="padding-top:1rem;padding-bottom:1rem">
 <div class="container"><div class="trust-badges">
@@ -392,9 +382,12 @@
 
 <section id="quote" class="bg-gray-50"><div class="container" style="max-width:780px">
 <h2 class="text-3xl font-bold mb-2 text-center" id="reserve">Get your free quote</h2>
-<p class="text-center text-gray-600 mb-6">Answer a few quick questions for an instant price range &mdash; then book a time right here.</p>
-<iframe id="ocsBook" scrolling="no" src="https://ocs-crm.vercel.app/book?v=2" title="Get your free quote &amp; book — OCS LLC" style="width:100%;height:1200px;border:0;border-radius:14px;background:#fff;box-shadow:0 6px 24px rgba(15,42,62,.10)" allow="clipboard-write"></iframe>
-<p id="ocsBookFallback" style="display:none;text-align:center;margin:.75rem 0 0;font-size:.9rem;color:#475569">Trouble seeing the form? <a href="https://ocs-crm.vercel.app/book" target="_blank" rel="noopener" style="color:#0CC0DF;font-weight:700">Open the quote form &rarr;</a></p>
+<p class="text-center text-gray-600 mb-6">Answer one quick question at a time for an instant range. Barrett will confirm the details before scheduling.</p>
+<div class="related-card" style="text-align:center;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1.5rem;box-shadow:0 6px 24px rgba(15,42,62,.08)">
+<h3 class="text-2xl font-bold mb-2" style="color:#0f172a">Start the estimate request</h3>
+<p class="text-gray-600" style="margin:0 auto 1.25rem;max-width:560px;line-height:1.55">The form opens as a normal mobile-friendly page, so it works cleanly on iPhone, Android, tablets, and desktop browsers.</p>
+<a href="/estimate/" class="bg-custom-cyan text-white px-6 py-3 rounded-lg font-bold inline-block" style="text-decoration:none">Open estimate form</a>
+</div>
 <p class="text-center text-gray-600 mt-4 text-sm">Prefer to talk? <a href="tel:+14066072151" class="text-custom-cyan font-bold">Call (406) 607-2151</a> or <a href="sms:+14066072151" class="text-custom-cyan font-bold">text us</a>.</p>
 </div></section>
 <section id="why-us" class="bg-white"><div class="container">
@@ -413,11 +406,11 @@
 </div>
 <div class="vsplit">
 <div class="vsplit-media"><div class="vframe"><video data-vs muted loop playsinline preload="none" poster="/assets/videos/posters/ig-DUmkneGkWSq.jpg"><source src="/assets/videos/clips/ig-DUmkneGkWSq.mp4" type="video/mp4"></video><span class="vframe-sound">tap for sound</span></div></div>
-<div class="vsplit-copy"><h3>Streak-free, <span class="accent">every pane.</span></h3><p>Interior and exterior glass, frames, and tracks &mdash; cleaned by hand and done right the first time.</p><a href="#reserve" class="vbtn">Get a free quote</a></div>
+<div class="vsplit-copy"><h3>Streak-free, <span class="accent">every pane.</span></h3><p>Interior and exterior glass, frames, and tracks &mdash; cleaned by hand and done right the first time.</p><a href="/estimate/" class="vbtn">Get a free quote</a></div>
 </div>
 <div class="vsplit rev">
 <div class="vsplit-media"><div class="vframe"><video data-vs muted loop playsinline preload="none" poster="/assets/videos/posters/ig-DYEC6_vtN4I.jpg"><source src="/assets/videos/clips/ig-DYEC6_vtN4I.mp4" type="video/mp4"></video><span class="vframe-sound">tap for sound</span></div></div>
-<div class="vsplit-copy"><h3>Screens &amp; tracks, <span class="accent">detailed.</span></h3><p>Screens cleaned on request, sills and tracks wiped down so grime doesn&rsquo;t show when the morning sun comes through.</p><a href="#reserve" class="vbtn">Get a free quote</a></div>
+<div class="vsplit-copy"><h3>Screens &amp; tracks, <span class="accent">detailed.</span></h3><p>Screens cleaned on request, sills and tracks wiped down so grime doesn&rsquo;t show when the morning sun comes through.</p><a href="/estimate/" class="vbtn">Get a free quote</a></div>
 </div>
 <div class="vsplit">
 <div class="vsplit-media"><div class="vframe"><video data-vs muted loop playsinline preload="none" poster="/assets/videos/posters/ig-DO9vcnwD35P.jpg"><source src="/assets/videos/clips/ig-DO9vcnwD35P.mp4" type="video/mp4"></video><span class="vframe-sound">tap for sound</span></div></div>
@@ -458,15 +451,15 @@
 </div>
 <h3 class="text-2xl font-bold text-center mb-4" id="faq">Window cleaning FAQ</h3>
 <div style="max-width:720px;margin:0 auto">
-<details style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem 1.1rem;margin-bottom:.6rem"><summary style="font-weight:700;cursor:pointer;color:#0f172a">How much does window cleaning cost in Kalispell?</summary><p class="text-gray-600 mt-2" style="line-height:1.6">Most homes land between $150 and $400 depending on size, number of panes, and whether you add interior cleaning, screens, or tracks. There is a $150 service minimum. You see your personalized price range as soon as you pick a booking time — no waiting on a callback.</p></details>
+<details style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem 1.1rem;margin-bottom:.6rem"><summary style="font-weight:700;cursor:pointer;color:#0f172a">How much does window cleaning cost in Kalispell?</summary><p class="text-gray-600 mt-2" style="line-height:1.6">Most homes land between $150 and $400 depending on size, number of panes, and whether you add interior cleaning, screens, or tracks. There is a $150 service minimum. The estimate request form gives a personalized range before Barrett confirms the final quote.</p></details>
 <details style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem 1.1rem;margin-bottom:.6rem"><summary style="font-weight:700;cursor:pointer;color:#0f172a">Do you clean both interior and exterior windows?</summary><p class="text-gray-600 mt-2" style="line-height:1.6">Yes. You can choose interior + exterior (inside and outside glass, plus frames and tracks wiped) or exterior-only. Screens and tracks can be added to either option.</p></details>
 <details style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem 1.1rem;margin-bottom:.6rem"><summary style="font-weight:700;cursor:pointer;color:#0f172a">Do you clean window screens and tracks?</summary><p class="text-gray-600 mt-2" style="line-height:1.6">Yes. Screens are cleaned on request, and window tracks and sills are detailed so you don't see grime when the morning sun comes through the glass.</p></details>
 <details style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem 1.1rem;margin-bottom:.6rem"><summary style="font-weight:700;cursor:pointer;color:#0f172a">What areas do you serve?</summary><p class="text-gray-600 mt-2" style="line-height:1.6">Kalispell, Whitefish, Columbia Falls, Bigfork, Lakeside, and the wider Flathead Valley. Travel anywhere in the valley is free — there is no trip surcharge.</p></details>
 <details style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem 1.1rem;margin-bottom:.6rem"><summary style="font-weight:700;cursor:pointer;color:#0f172a">Is OCS LLC insured?</summary><p class="text-gray-600 mt-2" style="line-height:1.6">Yes. OCS LLC carries general liability insurance and is locally owned and operated by Barrett Teeney. You talk to the same person who shows up to do the work.</p></details>
-<details style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem 1.1rem;margin-bottom:.6rem"><summary style="font-weight:700;cursor:pointer;color:#0f172a">How soon can you clean my windows?</summary><p class="text-gray-600 mt-2" style="line-height:1.6">Most quotes come back the same day, and we typically schedule one to two weeks out depending on the season. You can lock in a time instantly through the booking form.</p></details>
+<details style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem 1.1rem;margin-bottom:.6rem"><summary style="font-weight:700;cursor:pointer;color:#0f172a">How soon can you clean my windows?</summary><p class="text-gray-600 mt-2" style="line-height:1.6">Most quotes come back the same day, and we typically schedule one to two weeks out depending on the season. Start with the estimate request form and Barrett will confirm the details before scheduling.</p></details>
 <details style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem 1.1rem;margin-bottom:.6rem"><summary style="font-weight:700;cursor:pointer;color:#0f172a">Do you offer a guarantee?</summary><p class="text-gray-600 mt-2" style="line-height:1.6">Yes. Every job comes with a 48-hour streak-free guarantee. If anything looks off within 48 hours, we come back and make it right.</p></details>
 </div>
-<p class="text-center mt-6"><a href="#reserve" class="bg-custom-cyan text-white px-6 py-3 rounded-lg font-bold" style="text-decoration:none;display:inline-block">Get your free quote &rarr;</a></p>
+<p class="text-center mt-6"><a href="/estimate/" class="bg-custom-cyan text-white px-6 py-3 rounded-lg font-bold" style="text-decoration:none;display:inline-block">Get your free quote &rarr;</a></p>
 </div></section>
 <section id="map" class="bg-gray-50"><div class="container">
 <h2 class="text-3xl font-bold text-center mb-2">Where we work</h2>
@@ -484,7 +477,7 @@
 <section id="final-cta" class="bg-custom-cyan text-white"><div class="container max-w-2xl text-center">
 <h2 class="text-3xl font-bold mb-3" style="color:#fff">Ready for crystal-clear windows?</h2>
 <p class="mb-6">Free quote, no obligation. We'll get back to you within 24 hours.</p>
-<div class="hero-cta-row"><a href="#reserve" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Request a quote</a><a href="tel:+14066072151" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Call (406) 607-2151</a><a href="sms:+14066072151" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Text us</a></div>
+<div class="hero-cta-row"><a href="/estimate/" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Request a quote</a><a href="tel:+14066072151" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Call (406) 607-2151</a><a href="sms:+14066072151" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Text us</a></div>
 </div></section>
 </main>
 <footer class="bg-custom-cyan text-white py-8 mt-auto site-footer"><div class="container text-center">
@@ -519,6 +512,5 @@
 </script>
 
 
-<script>(function(){var got=false;function fb(){var p=document.getElementById("ocsBookFallback");if(p&&!got)p.style.display="block";}var t=setTimeout(fb,4500);window.addEventListener("message",function(e){if(e.origin!=="https://ocs-crm.vercel.app")return;var d=e.data||{};if(d&&d.type==="ocs-book-height"&&typeof d.height==="number"){got=true;clearTimeout(t);var p=document.getElementById("ocsBookFallback");if(p)p.style.display="none";var f=document.getElementById("ocsBook");if(f)f.style.height=Math.max(640,d.height)+"px";}});})();</script>
 </body>
 </html>
