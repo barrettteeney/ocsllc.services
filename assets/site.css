@@ -46,6 +46,48 @@ section { padding: clamp(2rem, 5vw, 4rem) 0; }
 .cta-box .btn-white { background: #fff; color: #000; padding: 0.85rem 1.6rem; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block; margin-top: 0.5rem; min-height: 44px; }
 .cta-box .tel-link { color: #fff; text-decoration: underline; display: block; margin-top: 0.75rem; font-weight: 600; }
 
+/* Full-width service quote bands */
+section#quote.bg-custom-cyan {
+  color: #fff;
+}
+
+section#quote.bg-custom-cyan .container {
+  max-width: 760px;
+}
+
+section#quote.bg-custom-cyan h2 {
+  color: #fff;
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  font-weight: 850;
+  line-height: 1.12;
+  margin: 0 0 .65rem;
+}
+
+section#quote.bg-custom-cyan p {
+  color: rgba(255, 255, 255, .96);
+  font-size: clamp(1rem, 1.5vw, 1.12rem);
+  line-height: 1.55;
+  margin: 0 0 1.1rem;
+  max-width: 720px;
+}
+
+section#quote.bg-custom-cyan .cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .65rem;
+  margin-top: .25rem;
+}
+
+section#quote.bg-custom-cyan .cta-row a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  min-height: 44px;
+  text-decoration: none;
+}
+
 /* Lists with checkmarks */
 .checklist { list-style: none; padding: 0; }
 .checklist li { padding-left: 1.75rem; position: relative; margin-bottom: 0.5rem; }

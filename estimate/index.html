@@ -124,6 +124,8 @@ textarea{min-height:70px;resize:vertical}
       <input type="hidden" name="estimate_review_flags">
       <input type="hidden" name="estimate_notes">
       <input type="hidden" name="sqft_tier">
+      <input type="hidden" name="pane_range">
+      <input type="hidden" name="screen_range">
 
       <div class="estimate-grid">
         <fieldset class="estimate-fieldset">
@@ -155,9 +157,10 @@ textarea{min-height:70px;resize:vertical}
             </span>
           </label>
           <label>
-            <span class="estimate-label">Pane count <span style="font-weight:500;color:#64748b">(optional)</span></span>
+            <span class="estimate-label">Pane count</span>
             <input class="estimate-input" type="number" name="panes" min="1" max="400" step="1" inputmode="numeric" placeholder="Example: 32">
-            <span class="estimate-note">Add this if you know it. It tightens the range without making the form longer.</span>
+            <span class="estimate-note" data-pane-note>Pick a home size above and we will suggest common pane-count ranges.</span>
+            <span class="estimate-kicker estimate-dynamic-kicker" data-pane-options aria-label="Suggested pane-count ranges"></span>
           </label>
         </div>
 
@@ -165,6 +168,8 @@ textarea{min-height:70px;resize:vertical}
           <label>
             <span class="estimate-label">Screens to clean</span>
             <input class="estimate-input" type="number" name="screens" min="0" max="200" step="1" inputmode="numeric" placeholder="0">
+            <span class="estimate-note" data-screen-note>Choose no screens or tap a common range after selecting home size.</span>
+            <span class="estimate-kicker estimate-dynamic-kicker" data-screen-options aria-label="Suggested screen-count ranges"></span>
           </label>
           <label>
             <span class="estimate-label">Town</span>
@@ -204,11 +209,6 @@ textarea{min-height:70px;resize:vertical}
           <div class="estimate-result-label">Estimated range</div>
           <div class="estimate-price" data-estimate-price>Enter a size</div>
           <div class="estimate-detail" data-estimate-detail>Use square footage if you know it. Pane count is optional and helps tighten the range.</div>
-        </div>
-        <div class="estimate-confidence is-low" data-estimate-confidence>
-          <strong data-confidence-label>Needs review</strong>
-          <p data-confidence-text>Enter a home size to start. Large or unusual jobs are best confirmed by Barrett.</p>
-          <small data-estimate-flags>No accuracy flags selected.</small>
         </div>
         <div class="estimate-warning" data-estimate-warning>Homes over 6,000 sqft need a custom quote. Call or text Barrett and he will price it directly.</div>
 

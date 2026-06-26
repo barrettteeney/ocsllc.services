@@ -111,6 +111,7 @@
   margin-bottom: 1rem;
   display: grid;
   gap: .45rem;
+  scroll-margin-top: 72px;
 }
 
 .estimate-progress span:first-child {

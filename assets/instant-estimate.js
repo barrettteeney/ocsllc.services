@@ -1,11 +1,101 @@
 (function () {
   var SQFT_TIERS = [
-    { max: 1000, both: 0.15, ext: 0.09 },
-    { max: 2000, both: 0.17, ext: 0.10 },
-    { max: 3000, both: 0.19, ext: 0.11 },
-    { max: 4000, both: 0.21, ext: 0.13 },
-    { max: 5000, both: 0.23, ext: 0.14 },
-    { max: 6000, both: 0.25, ext: 0.15 }
+    {
+      max: 1000,
+      both: 0.15,
+      ext: 0.09,
+      sqftLabel: "Up to 1,000 sqft",
+      panes: [
+        { label: "6-10 panes", value: 8 },
+        { label: "11-15 panes", value: 13 },
+        { label: "16-20 panes", value: 18 }
+      ],
+      screens: [
+        { label: "No screens", value: 0 },
+        { label: "1-6 screens", value: 4 },
+        { label: "7-12 screens", value: 10 }
+      ]
+    },
+    {
+      max: 2000,
+      both: 0.17,
+      ext: 0.10,
+      sqftLabel: "1,001-2,000 sqft",
+      panes: [
+        { label: "12-18 panes", value: 15 },
+        { label: "19-25 panes", value: 22 },
+        { label: "26-32 panes", value: 29 }
+      ],
+      screens: [
+        { label: "No screens", value: 0 },
+        { label: "6-12 screens", value: 9 },
+        { label: "13-20 screens", value: 16 }
+      ]
+    },
+    {
+      max: 3000,
+      both: 0.19,
+      ext: 0.11,
+      sqftLabel: "2,001-3,000 sqft",
+      panes: [
+        { label: "20-28 panes", value: 24 },
+        { label: "29-36 panes", value: 33 },
+        { label: "37-45 panes", value: 41 }
+      ],
+      screens: [
+        { label: "No screens", value: 0 },
+        { label: "10-18 screens", value: 14 },
+        { label: "19-28 screens", value: 24 }
+      ]
+    },
+    {
+      max: 4000,
+      both: 0.21,
+      ext: 0.13,
+      sqftLabel: "3,001-4,000 sqft",
+      panes: [
+        { label: "30-38 panes", value: 34 },
+        { label: "39-48 panes", value: 44 },
+        { label: "49-60 panes", value: 55 }
+      ],
+      screens: [
+        { label: "No screens", value: 0 },
+        { label: "15-25 screens", value: 20 },
+        { label: "26-38 screens", value: 32 }
+      ]
+    },
+    {
+      max: 5000,
+      both: 0.23,
+      ext: 0.14,
+      sqftLabel: "4,001-5,000 sqft",
+      panes: [
+        { label: "40-50 panes", value: 45 },
+        { label: "51-62 panes", value: 56 },
+        { label: "63-75 panes", value: 69 }
+      ],
+      screens: [
+        { label: "No screens", value: 0 },
+        { label: "20-32 screens", value: 26 },
+        { label: "33-48 screens", value: 40 }
+      ]
+    },
+    {
+      max: 6000,
+      both: 0.25,
+      ext: 0.15,
+      sqftLabel: "5,001-6,000 sqft",
+      panes: [
+        { label: "50-65 panes", value: 58 },
+        { label: "66-80 panes", value: 73 },
+        { label: "81-100 panes", value: 90 }
+      ],
+      screens: [
+        { label: "No screens", value: 0 },
+        { label: "25-40 screens", value: 32 },
+        { label: "41-60 screens", value: 50 }
+      ]
+    }
   ];
   var PER_PANE = { ext: 8, both: 14, screen: 4 };
   var MIN_CHARGE = 150;
@@ -48,6 +138,79 @@
     return sqft * tier[service];
   }
 
+  function getTierForSqft(sqft) {
+    if (!sqft) return null;
+    return SQFT_TIERS.find(function (item) { return sqft <= item.max; }) || null;
+  }
+
+  function setHiddenValue(form, name, value) {
+    var field = form.elements[name];
+    if (field) field.value = value || "";
+  }
+
+  function setCountChoice(form, name, value, label) {
+    if (form.elements[name]) form.elements[name].value = String(value);
+    setHiddenValue(form, name === "panes" ? "pane_range" : "screen_range", label);
+    form.querySelectorAll('[data-count-name="' + name + '"]').forEach(function (button) {
+      button.classList.toggle("is-active", button.getAttribute("data-count-label") === label);
+    });
+    render(form);
+  }
+
+  function renderCountOptions(form) {
+    var sqft = getNumber(form, "sqft");
+    var tier = getTierForSqft(sqft);
+    var paneWrap = form.querySelector("[data-pane-options]");
+    var screenWrap = form.querySelector("[data-screen-options]");
+    var paneNote = form.querySelector("[data-pane-note]");
+    var screenNote = form.querySelector("[data-screen-note]");
+
+    function paint(wrap, name, options) {
+      if (!wrap) return;
+      wrap.innerHTML = "";
+      if (!options || !options.length) return;
+      options.forEach(function (option) {
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "estimate-chip";
+        button.setAttribute("data-count-name", name);
+        button.setAttribute("data-count-label", option.label);
+        button.setAttribute("data-count-value", String(option.value));
+        button.textContent = option.label;
+        button.addEventListener("click", function () {
+          setCountChoice(form, name, option.value, option.label);
+        });
+        wrap.appendChild(button);
+      });
+    }
+
+    if (!tier) {
+      if (paneWrap) paneWrap.innerHTML = "";
+      if (screenWrap) screenWrap.innerHTML = "";
+      if (paneNote) paneNote.textContent = "Pick a home size above and we will suggest common pane-count ranges.";
+      if (screenNote) screenNote.textContent = "Choose no screens or tap a common range after selecting home size.";
+      return;
+    }
+
+    if (paneNote) paneNote.textContent = "Common pane-count ranges for " + tier.sqftLabel + ". Choose the closest one.";
+    if (screenNote) screenNote.textContent = "Screen ranges for " + tier.sqftLabel + ". Choose no screens if you do not want screens cleaned.";
+    paint(paneWrap, "panes", tier.panes);
+    paint(screenWrap, "screens", tier.screens);
+
+    var currentPaneRange = getValue(form, "pane_range");
+    var currentScreenRange = getValue(form, "screen_range");
+    if (currentPaneRange) {
+      form.querySelectorAll('[data-count-name="panes"]').forEach(function (button) {
+        button.classList.toggle("is-active", button.getAttribute("data-count-label") === currentPaneRange);
+      });
+    }
+    if (currentScreenRange) {
+      form.querySelectorAll('[data-count-name="screens"]').forEach(function (button) {
+        button.classList.toggle("is-active", button.getAttribute("data-count-label") === currentScreenRange);
+      });
+    }
+  }
+
   function withSurcharges(base, form) {
     var pct = 0;
     if (form.elements.stories && form.elements.stories.checked) pct += 0.10;
@@ -71,7 +234,7 @@
   function getConfidence(form, result) {
     if (!result || result.oversized) {
       return {
-        label: "Needs review",
+        label: "Needs details",
         text: "Enter a home size to start. Large or unusual jobs are best confirmed by Barrett.",
         level: "low"
       };
@@ -161,34 +324,17 @@
     var price = form.querySelector("[data-estimate-price]");
     var detail = form.querySelector("[data-estimate-detail]");
     var warning = form.querySelector("[data-estimate-warning]");
-    var confidenceBox = form.querySelector("[data-estimate-confidence]");
-    var confidenceLabel = form.querySelector("[data-confidence-label]");
-    var confidenceText = form.querySelector("[data-confidence-text]");
-    var flagsList = form.querySelector("[data-estimate-flags]");
+    renderCountOptions(form);
 
     if (!box || !price || !detail) return;
     updateHidden(form, result);
 
     if (warning) warning.classList.toggle("show", !!(result && result.oversized));
 
-    function renderConfidence(current) {
-      var confidence = getConfidence(form, current);
-      if (confidenceBox) {
-        confidenceBox.className = "estimate-confidence is-" + confidence.level;
-      }
-      if (confidenceLabel) confidenceLabel.textContent = confidence.label;
-      if (confidenceText) confidenceText.textContent = confidence.text;
-      if (flagsList) {
-        var flags = current ? getReviewFlags(form, current) : [];
-        flagsList.textContent = flags.length ? "Review flags: " + flags.join(", ") : "No accuracy flags selected.";
-      }
-    }
-
     if (!result) {
       box.classList.add("is-empty");
       price.textContent = "Enter a size";
       detail.textContent = "Use a rough square footage or tap one of the common home sizes.";
-      renderConfidence(result);
       return;
     }
 
@@ -196,7 +342,6 @@
       box.classList.add("is-empty");
       price.textContent = "Custom quote";
       detail.textContent = "Homes over 6,000 sqft need a quick review so the price is accurate.";
-      renderConfidence(result);
       return;
     }
 
@@ -211,7 +356,6 @@
     if (result.averaged) parts.push("sqft + pane count averaged");
     if (result.french) parts.push("divided panes flagged for review");
     detail.textContent = parts.join(" • ") + ". Final price may change after an on-site look.";
-    renderConfidence(result);
   }
 
   function setSqftTierState(form, value, label) {
@@ -219,6 +363,21 @@
       button.classList.toggle("is-active", button.getAttribute("data-sqft-tier-value") === String(value));
     });
     if (form.elements.sqft_tier) form.elements.sqft_tier.value = label || "";
+  }
+
+  function applyTierDefaults(form, value) {
+    var tier = getTierForSqft(parseFloat(value));
+    if (!tier) return;
+    var middlePane = tier.panes[1] || tier.panes[0];
+    var noScreens = tier.screens[0];
+    if (middlePane) {
+      if (form.elements.panes) form.elements.panes.value = String(middlePane.value);
+      setHiddenValue(form, "pane_range", middlePane.label);
+    }
+    if (noScreens && form.elements.screens && !form.elements.screens.value) {
+      form.elements.screens.value = String(noScreens.value);
+      setHiddenValue(form, "screen_range", noScreens.label);
+    }
   }
 
   function makeWizard(form) {
@@ -232,14 +391,13 @@
     var notes = grid.querySelector(":scope > label .estimate-textarea");
     var noteWrap = notes ? notes.closest("label") : null;
     var result = grid.querySelector(":scope > [data-estimate-result]");
-    var confidence = grid.querySelector(":scope > [data-estimate-confidence]");
     var warning = grid.querySelector(":scope > [data-estimate-warning]");
     var steps = [
       { title: "Service", items: [fieldsets[0]] },
       { title: "Home size", items: [rows[0]] },
       { title: "Screens + town", items: [rows[1]] },
       { title: "Condition", items: [fieldsets[1]] },
-      { title: "Estimate", items: [result, confidence, warning] },
+      { title: "Estimate", items: [result, warning] },
       { title: "Contact", items: [rows[2], rows[3], noteWrap] }
     ].map(function (step) {
       step.items = step.items.filter(Boolean);
@@ -301,7 +459,7 @@
       return true;
     }
 
-    function showStep(index) {
+    function showStep(index, shouldScroll) {
       current = Math.max(0, Math.min(index, steps.length - 1));
       steps.forEach(function (step, stepIndex) {
         step.items.forEach(function (item) {
@@ -320,17 +478,22 @@
       next.hidden = current === steps.length - 1;
       submit.hidden = current !== steps.length - 1;
       if (current === steps.length - 1) submit.textContent = "Send estimate request";
+      if (shouldScroll && progress.scrollIntoView) {
+        setTimeout(function () {
+          progress.scrollIntoView({ block: "start", behavior: "smooth" });
+        }, 0);
+      }
     }
 
     prev.addEventListener("click", function () {
       setError("");
-      showStep(current - 1);
+      showStep(current - 1, true);
     });
 
     next.addEventListener("click", function () {
       if (!canLeaveStep(current)) return;
       render(form);
-      showStep(current + 1);
+      showStep(current + 1, true);
     });
 
     form.addEventListener("input", function () {
@@ -347,9 +510,11 @@
     if (data.estimate_review_flags) pieces.push("Review flags: " + data.estimate_review_flags);
     if (data.estimate_service) pieces.push("Service: " + data.estimate_service);
     if (data.sqft_tier) pieces.push("Home size tier: " + data.sqft_tier);
-    if (data.sqft) pieces.push("Sqft: " + data.sqft);
-    if (data.panes) pieces.push("Panes: " + data.panes);
-    if (data.screens) pieces.push("Screens: " + data.screens);
+    if (data.sqft) pieces.push("Sqft midpoint: " + data.sqft);
+    if (data.pane_range) pieces.push("Pane range: " + data.pane_range);
+    else if (data.panes) pieces.push("Panes: " + data.panes);
+    if (data.screen_range) pieces.push("Screen range: " + data.screen_range);
+    else if (data.screens) pieces.push("Screens: " + data.screens);
     if (data.town) pieces.push("Town: " + data.town);
     if (data.last_cleaned) pieces.push("Last cleaned: " + data.last_cleaned);
     if (data.preferred_timing) pieces.push("Timing: " + data.preferred_timing);
@@ -452,14 +617,26 @@
         var label = button.getAttribute("data-sqft-tier-label");
         if (form.elements.sqft) form.elements.sqft.value = value;
         setSqftTierState(form, value, label);
+        applyTierDefaults(form, value);
         render(form);
       });
     });
     if (form.elements.sqft) {
       form.elements.sqft.addEventListener("input", function () {
         setSqftTierState(form, "", "");
+        setHiddenValue(form, "pane_range", "");
+        setHiddenValue(form, "screen_range", "");
       });
     }
+    ["panes", "screens"].forEach(function (name) {
+      if (!form.elements[name]) return;
+      form.elements[name].addEventListener("input", function () {
+        setHiddenValue(form, name === "panes" ? "pane_range" : "screen_range", "");
+        form.querySelectorAll('[data-count-name="' + name + '"]').forEach(function (button) {
+          button.classList.remove("is-active");
+        });
+      });
+    });
     makeWizard(form);
     wireSubmit(form);
     render(form);
