@@ -6,7 +6,7 @@ Paste this into Gmail / Apple Mail / Outlook signature settings.
 
 ```
 Barrett Teeney
-OCS LLC — Window Cleaning & Pressure Washing
+OCS LLC — Window Cleaning
 Kalispell · Whitefish · Columbia Falls · Bigfork · Flathead Valley
 
 📞 (406) 607-2151  ·  💬 Text the same number
@@ -22,7 +22,7 @@ Kalispell · Whitefish · Columbia Falls · Bigfork · Flathead Valley
 <table cellpadding="0" cellspacing="0" border="0" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:#333;line-height:1.5">
   <tr><td>
     <strong style="font-size:16px;color:#0CC0DF">Barrett Teeney</strong><br>
-    <strong>OCS LLC</strong> — Window Cleaning &amp; Pressure Washing<br>
+    <strong>OCS LLC</strong> — Window Cleaning<br>
     <span style="color:#666">Kalispell · Whitefish · Columbia Falls · Bigfork</span>
   </td></tr>
   <tr><td style="padding-top:8px;border-top:2px solid #0CC0DF">

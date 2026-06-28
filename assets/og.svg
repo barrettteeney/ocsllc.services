@@ -37,7 +37,7 @@
   <text x="600" y="320" font-family="Arial Black, Arial, sans-serif" font-size="68" font-weight="900" text-anchor="middle" fill="white" letter-spacing="2">OCS LLC</text>
 
   <!-- Tagline -->
-  <text x="600" y="380" font-family="Arial, sans-serif" font-size="34" font-weight="600" text-anchor="middle" fill="white">Window Cleaning &amp; Pressure Washing</text>
+  <text x="600" y="380" font-family="Arial, sans-serif" font-size="34" font-weight="600" text-anchor="middle" fill="white">Window Cleaning</text>
 
   <!-- Service area -->
   <text x="600" y="430" font-family="Arial, sans-serif" font-size="22" font-weight="400" text-anchor="middle" fill="white" opacity="0.92">Kalispell · Whitefish · Columbia Falls · Bigfork</text>

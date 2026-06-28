@@ -16,10 +16,10 @@ Email:       barrett@ocsllc.services
 Website:     https://ocsllc.services
 Address:     Kalispell, MT 59901
 Service area: Kalispell, Whitefish, Columbia Falls, Bigfork, Flathead Valley
-Categories:  Window cleaning service, Pressure washing service
+Categories:  Window cleaning service
 Hours:       (use whatever you have set on Google Business Profile)
 Description: Professional residential, commercial, and post-construction
-             window cleaning and pressure washing serving the Flathead Valley.
+             window cleaning serving the Flathead Valley.
              Licensed, insured, and 5-star reviewed.
 Year est.:   (your start year)
 Owner:       Barrett Teeney
