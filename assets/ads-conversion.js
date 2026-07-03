@@ -20,8 +20,8 @@
   // ── PASTE YOUR CONVERSION LABELS HERE ────────────────────────────────────
   var ADS_ID          = "AW-18072622126";      // Google Ads conversion ID (existing)
   var CONV_FORM_LABEL = "-t31CJXghLkcEK6o2alD"; // "Book appointment" action (form submit fires it)
-  var CONV_CALL_LABEL = "XXXXXXXXXXXXXXXXXXX"; // label for "Phone call click"
-  var CONV_SMS_LABEL  = "XXXXXXXXXXXXXXXXXXX"; // label for "Text/SMS click"
+  var CONV_CALL_LABEL = "biVwCIGj-skcEK6o2alD"; // "Phone call click" action
+  var CONV_SMS_LABEL  = "L837CNfP4MkcEK6o2alD"; // "Text message click" action
   // ─────────────────────────────────────────────────────────────────────────
 
   function isSet(v) { return v && v.indexOf("XXXX") < 0; }
