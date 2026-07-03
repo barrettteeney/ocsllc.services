@@ -1,28 +1,34 @@
 /* ===========================================================================
-   OCS LLC — Google Ads conversion tracking.
+   OCS LLC — Google tag + Google Ads conversion tracking (v2).
 
-   Fires a Google Ads conversion when a customer COMPLETES a booking in the
-   embedded app form (ocs-crm.vercel.app/book), which postMessages a success
-   event up to this page. This is the accurate "actually booked a job" signal.
+   Loads gtag.js site-wide (promo requirement: "install the Google tag"),
+   then fires Google Ads conversions for the three ways a customer converts:
 
-   TO ACTIVATE — paste your two Google Ads values below:
-     1. ADS_ID            e.g. "AW-123456789"   (Google Ads > Goals > Conversions > Tag setup)
-     2. CONVERSION_LABEL  e.g. "AbC-D_efG12hIjkLM"  (the label of your "Booking" conversion action)
-   Until both are set (no "XXXX"), this stays dormant and loads nothing.
+     1. FORM  — /estimate/ form submitted successfully. instant-estimate.js
+                redirects to /thanks/ on success, so we fire when /thanks/
+                loads. Guarded by sessionStorage so a refresh of /thanks/
+                doesn't double-count.
+     2. CALL  — customer taps any tel: link (click-to-call).
+     3. SMS   — customer taps any sms: link (click-to-text).
 
-   NOTE: it also requires the app's /book form to send the success message
-   (see APP-ADD-CONVERSION-POSTMESSAGE.md). Both sides must be in place.
+   TO ACTIVATE the three conversion events, create the matching conversion
+   actions in Google Ads (Goals > Conversions > New conversion action >
+   Website) and paste each action's conversion label below. Any label still
+   containing "XXXX" simply stays dormant — safe to deploy with placeholders.
    =========================================================================== */
 (function () {
-  var ADS_ID = "AW-18072622126";              // OCS LLC Google Ads conversion ID
-  var CONVERSION_LABEL = "-t31CJXghLkcEK6o2alD"; // "Book appointment" conversion label
-  var APP_ORIGIN = "https://ocs-crm.vercel.app";
+  // ── PASTE YOUR CONVERSION LABELS HERE ────────────────────────────────────
+  var ADS_ID          = "AW-18072622126";      // Google Ads conversion ID (existing)
+  var CONV_FORM_LABEL = "XXXXXXXXXXXXXXXXXXX"; // label for "Estimate form submit"
+  var CONV_CALL_LABEL = "XXXXXXXXXXXXXXXXXXX"; // label for "Phone call click"
+  var CONV_SMS_LABEL  = "XXXXXXXXXXXXXXXXXXX"; // label for "Text/SMS click"
+  // ─────────────────────────────────────────────────────────────────────────
 
-  var configured = ADS_ID.indexOf("XXXX") < 0 && CONVERSION_LABEL.indexOf("XXXX") < 0;
+  function isSet(v) { return v && v.indexOf("XXXX") < 0; }
+  if (!isSet(ADS_ID)) return; // nothing to do without an Ads ID
 
-  // Load gtag.js once (only when configured), site-wide, so ad clicks are tracked
-  // and the conversion linker is in place on whatever page the ad lands on.
-  if (configured && !window.__ocsGtag) {
+  // 1) Load gtag.js once, site-wide.
+  if (!window.__ocsGtag) {
     window.__ocsGtag = true;
     var s = document.createElement("script");
     s.async = true;
@@ -34,22 +40,30 @@
     window.gtag("config", ADS_ID);
   }
 
-  // Fire the conversion when the embedded booking form reports a completed booking.
-  window.addEventListener("message", function (e) {
-    if (e.origin !== APP_ORIGIN) return;
-    var d = e.data || {};
-    if (d.type !== "ocs-booking-complete") return;
+  function fire(label, dedupeKey) {
+    if (!isSet(label) || typeof window.gtag !== "function") return;
+    if (dedupeKey) {
+      try {
+        if (sessionStorage.getItem(dedupeKey)) return;
+        sessionStorage.setItem(dedupeKey, "1");
+      } catch (e) { /* private-mode: fire anyway */ }
+    }
+    window.gtag("event", "conversion", { send_to: ADS_ID + "/" + label });
+  }
 
-    if (configured && typeof window.gtag === "function") {
-      window.gtag("event", "conversion", {
-        send_to: ADS_ID + "/" + CONVERSION_LABEL,
-        value: typeof d.value === "number" ? d.value : undefined,
-        currency: "USD",
-        transaction_id: d.id || undefined, // de-dupes if the message arrives twice
-      });
-    }
-    if (window.console && window.console.log) {
-      console.log("[OCS] booking-complete received", d, configured ? "(conversion fired)" : "(Ads ID not set yet)");
-    }
-  });
+  // 2) FORM conversion — /thanks/ is only reachable after a successful submit.
+  var path = (location.pathname || "").toLowerCase();
+  if (path === "/thanks" || path.indexOf("/thanks/") === 0) {
+    fire(CONV_FORM_LABEL, "ocs_conv_form");
+  }
+
+  // 3) CALL + SMS conversions — delegated listener catches every tel:/sms:
+  //    link on any page, including ones added later.
+  document.addEventListener("click", function (e) {
+    var a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
+    if (!a) return;
+    var href = (a.getAttribute("href") || "").toLowerCase();
+    if (href.indexOf("tel:") === 0) fire(CONV_CALL_LABEL, "ocs_conv_call");
+    else if (href.indexOf("sms:") === 0) fire(CONV_SMS_LABEL, "ocs_conv_sms");
+  }, true);
 })();
