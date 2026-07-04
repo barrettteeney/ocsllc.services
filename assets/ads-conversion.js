@@ -60,6 +60,7 @@
   // 3) CALL + SMS conversions — delegated listener catches every tel:/sms:
   //    link on any page, including ones added later.
   document.addEventListener("click", function (e) {
+    if ((location.pathname || "").indexOf("/sandbox") === 0) return; // sandbox pages never fire tap conversions
     var a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
     if (!a) return;
     var href = (a.getAttribute("href") || "").toLowerCase();
