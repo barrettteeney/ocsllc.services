@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Window Cleaning Services | OCS LLC - Flathead Valley</title>
+<meta name="description" content="Residential, commercial, post-construction window cleaning plus solar panels, skylights and chandeliers. Serving the Flathead Valley.">
+<meta name="theme-color" content="#0CC0DF">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pricing - OCS LLC">
+<meta property="og:description" content="Real ranges by home size. Free same-day quotes.">
+<meta property="og:url" content="https://ocsllc.services/pricing/">
+<meta property="og:image" content="https://ocsllc.services/assets/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ocsllc.services/"},{"@type":"ListItem","position":2,"name":"Pricing","item":"https://ocsllc.services/pricing/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Window Cleaning","provider":{"@id":"https://ocsllc.services/#business"},"areaServed":{"@type":"AdministrativeArea","name":"Flathead Valley, MT"},"offers":[{"@type":"Offer","name":"Small home (10-15 windows)","priceSpecification":{"@type":"PriceSpecification","minPrice":"150","maxPrice":"280","priceCurrency":"USD"}},{"@type":"Offer","name":"Mid-size home (20-30 windows)","priceSpecification":{"@type":"PriceSpecification","minPrice":"280","maxPrice":"450","priceCurrency":"USD"}},{"@type":"Offer","name":"Large home (30-45 windows)","priceSpecification":{"@type":"PriceSpecification","minPrice":"450","maxPrice":"700","priceCurrency":"USD"}},{"@type":"Offer","name":"Lake/luxury home","priceSpecification":{"@type":"PriceSpecification","minPrice":"650","priceCurrency":"USD"}}]}</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230CC0DF'/%3E%3Ctext x='50' y='62' font-family='Arial,sans-serif' font-size='44' font-weight='700' text-anchor='middle' fill='white'%3EO%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/assets/tailwind.css">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/responsive.css">
+<style>
+.size-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;transition:transform .2s,box-shadow .2s}
+.size-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(12,192,223,.14);border-color:#0CC0DF}
+.size-card .price-big{font-size:1.85rem;font-weight:800;color:#0CC0DF;line-height:1;margin:.4rem 0}
+.size-card h3{font-size:1.05rem;font-weight:700;margin-bottom:.4rem;color:#0f172a}
+.size-card .desc{color:#475569;font-size:.85rem;line-height:1.5;margin-bottom:.5rem}
+.size-card .feat{font-size:.78rem;color:#64748b}
+.simple-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:1rem;margin:1rem 0}
+.simple-tile{background:#f9fafb;border-left:4px solid #0CC0DF;padding:1rem 1.25rem;border-radius:0 8px 8px 0}
+.simple-tile h4{font-weight:700;font-size:.95rem;margin:0 0 .25rem;color:#0f172a}
+.simple-tile p{color:#64748b;font-size:.85rem;margin:.25rem 0 0}
+.qf{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,.04)}
+.qf label{display:block;font-weight:600;font-size:.85rem;margin:.7rem 0 .3rem;color:#0f172a}
+.qf input,.qf select,.qf textarea{width:100%;padding:.7rem .85rem;border:1px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit}
+.qf input:focus,.qf select:focus,.qf textarea:focus{outline:none;border-color:#0CC0DF;box-shadow:0 0 0 3px rgba(12,192,223,.15)}
+.qf textarea{min-height:70px}
+.qf .row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media (max-width:600px){.qf .row2{grid-template-columns:1fr}}
+.qf button{background:#0CC0DF;color:#fff;padding:.95rem 2rem;border:0;border-radius:8px;font-weight:700;font-size:1rem;cursor:pointer;margin-top:1rem;width:100%}
+.qf button:hover{background:#0aa3bd}
+.headline-rate{font-size:1.6rem;font-weight:800;color:#0CC0DF;text-align:center;margin:1rem 0}
+
+/* === real quote wizard (mirrored from /estimate) === */
+.calc-page{background:#f8fafc;padding:2rem 0 3rem;min-height:80vh}
+.calc-wrap{max-width:720px;margin:0 auto;padding:0 1rem}
+.calc-intro{text-align:center;max-width:600px;margin:0 auto 1rem;color:#475569}
+.calc-intro h1{font-size:clamp(1.7rem,4vw,2.2rem);font-weight:800;color:#0f172a;margin:0 0 .5rem}
+.calc-intro p{margin:.25rem 0 0;font-size:1rem;line-height:1.5}
+.progress{display:flex;align-items:center;gap:.4rem;justify-content:center;margin:1rem 0 1.5rem;font-size:.78rem;color:#64748b;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.progress .dot{width:9px;height:9px;border-radius:50%;background:#cbd5e1}
+.progress .dot.on{background:#0CC0DF}
+.progress .dot.done{background:#10b981}
+
+.step{display:none;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1.5rem;box-shadow:0 2px 8px rgba(15,23,42,.04);margin-bottom:1rem}
+.step.active{display:block}
+.step h2{margin:0 0 1rem;font-size:1.25rem;color:#0f172a;font-weight:800;line-height:1.3}
+.step .hint{color:#64748b;font-size:.9rem;margin:0 0 1rem;line-height:1.5}
+
+.tile-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media(max-width:540px){.tile-grid{grid-template-columns:1fr}}
+.tile{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1.1rem 1rem;text-align:left;cursor:pointer;font-family:inherit;transition:all .15s ease;display:block;width:100%}
+.tile:hover{border-color:#0CC0DF;background:#fff}
+.tile strong{display:block;font-size:1rem;color:#0f172a;font-weight:700;margin-bottom:.25rem}
+.tile span{color:#6b7280;font-size:.85rem;line-height:1.45}
+
+.opts{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem}
+.opts button{background:#fff;border:1.5px solid #d1d5db;border-radius:999px;padding:.5rem .95rem;font-size:.88rem;font-weight:600;color:#0f172a;cursor:pointer;font-family:inherit;transition:all .12s ease}
+.opts button:hover{border-color:#0CC0DF}
+.opts button.on{background:#0CC0DF;color:#fff;border-color:#0CC0DF}
+
+fieldset{border:0;padding:0;margin:0 0 1.2rem}
+fieldset legend{font-weight:700;color:#0f172a;font-size:.95rem;margin-bottom:.4rem;padding:0}
+.followup{margin-top:.75rem;padding:.75rem;background:#f8fafc;border-radius:8px;border-left:3px solid #0CC0DF}
+.followup-q{margin:0 0 .35rem;font-weight:600;font-size:.88rem;color:#0f172a}
+
+label.fld{display:block;font-weight:600;font-size:.85rem;margin:.85rem 0 .3rem;color:#0f172a}
+label.fld small{font-weight:400;color:#64748b;margin-left:.3rem}
+input[type=number],input[type=text],input[type=tel],input[type=email],textarea{width:100%;padding:.65rem .85rem;border:1.5px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit;box-sizing:border-box;background:#fff}
+input:focus,textarea:focus{outline:none;border-color:#0CC0DF;box-shadow:0 0 0 3px rgba(12,192,223,.15)}
+textarea{min-height:70px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+@media(max-width:540px){.row2{grid-template-columns:1fr}}
+.input-hint{font-size:.8rem;color:#6b7280;margin:.25rem 0 0}
+.hidden{display:none !important}
+
+.actions{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;gap:.75rem;flex-wrap:wrap}
+.back-btn{background:none;border:0;color:#6b7280;font-weight:600;cursor:pointer;font-family:inherit;font-size:.9rem;padding:.55rem .25rem}
+.back-btn:hover{color:#0f172a}
+.next-btn{background:#0CC0DF;color:#fff;font-weight:700;border:0;border-radius:999px;padding:.75rem 1.6rem;font-size:.98rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(12,192,223,.3);transition:all .15s ease}
+.next-btn:hover{background:#0aa3bd}
+.next-btn:disabled{background:#cbd5e1;cursor:not-allowed;box-shadow:none}
+
+.oversize-warn{margin-top:1rem;padding:1.1rem;background:#fef3c7;border:1.5px solid #f59e0b;border-radius:10px}
+.oversize-warn h3{margin:0 0 .4rem;font-size:1.05rem;color:#92400e}
+.oversize-warn p{margin:0 0 .8rem;color:#78350f;font-size:.9rem;line-height:1.5}
+.oversize-warn a{display:inline-block;background:#0f172a;color:#fff;padding:.55rem 1.1rem;border-radius:999px;font-weight:700;font-size:.9rem;text-decoration:none;margin-right:.4rem}
+.oversize-warn a:hover{background:#1e293b}
+
+.recap{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:1rem 1.2rem;margin:.5rem 0 1rem;font-size:.9rem;line-height:1.7;color:#374151}
+.recap strong{color:#0f172a;font-weight:700}
+.recap .row{display:flex;justify-content:space-between;gap:1rem;padding:.25rem 0;border-bottom:1px solid #f3f4f6}
+.recap .row:last-child{border-bottom:0}
+.recap .label{color:#6b7280}
+.recap .val{color:#0f172a;font-weight:600;text-align:right}
+
+.submit-error{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:8px;padding:.8rem 1rem;color:#b91c1c;font-size:.88rem;margin:.75rem 0;display:none}
+.submit-error.show{display:block}
+
+.thanks-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1.75rem 1.5rem;box-shadow:0 2px 8px rgba(15,23,42,.04);text-align:center;margin-bottom:1rem}
+.thanks-icon{width:60px;height:60px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:#16a34a}
+.thanks-card h2{font-size:1.45rem;font-weight:800;color:#0f172a;margin:0 0 .5rem}
+.thanks-card .lead{color:#475569;font-size:1rem;margin:0 0 1.2rem;line-height:1.55}
+
+.range-card{background:#0f172a;color:#fff;border-radius:12px;padding:1.5rem;margin:1rem 0;text-align:center}
+.range-card .label{font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;color:#94a3b8;font-weight:600;margin-bottom:.5rem}
+.range-card .range{font-size:2rem;font-weight:800;color:#0CC0DF;line-height:1.1;margin:.25rem 0}
+.range-card .range .sep{color:rgba(255,255,255,.4);margin:0 .15rem;font-weight:400}
+.range-card .caveat{font-size:.82rem;color:rgba(255,255,255,.7);margin:.85rem 0 0;line-height:1.5;text-align:left}
+
+.thanks-cta-row{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:1.25rem}
+.thanks-cta-row a{display:inline-block;background:#0CC0DF;color:#fff;font-weight:700;padding:.65rem 1.2rem;border-radius:999px;text-decoration:none;font-size:.92rem}
+.thanks-cta-row a.secondary{background:#fff;color:#0f172a;border:1.5px solid #d1d5db}
+.thanks-cta-row a:hover{opacity:.92}
+
+.loading-overlay{display:none;text-align:center;padding:1.5rem 0;color:#475569;font-weight:600}
+.loading-overlay.show{display:block}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid #e5e7eb;border-top-color:#0CC0DF;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:.5rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+<link rel="stylesheet" href="/assets/ambient-hero.css">
+<script src="/assets/ambient-hero.js" defer></script>
+<link rel="stylesheet" href="/assets/site-nav.css">
+<script src="/assets/site-nav.js" defer></script>
+<script src="/assets/ads-conversion.js" defer></script>
+</head>
+<body class="bg-gray-50 text-black">
+<div style="background:#0f172a;color:#fff;text-align:center;font-size:.8rem;padding:.4rem .5rem;position:relative;z-index:9999">Sandbox v2 &mdash; simplified site concept, not the live site. <a href="/" style="color:#7fe3f5;text-decoration:underline">View live site</a></div>
+<nav class="site-nav"><div class="site-nav-inner"><a href="/sandbox/v2/" class="site-brand">OCS LLC</a><button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button><div class="nav-menu"><a href="/sandbox/v2/">Home</a><a href="/sandbox/v2/services/">Services</a><a href="/sandbox/v2/pricing/">Pricing</a><a href="/sandbox/v2/our-work/">Our Work</a><a href="tel:+14066072151" class="nav-phone-m">Call (406) 607-2151</a><a href="/sandbox/v2/estimate/" class="nav-cta">Get a Quote</a></div><a href="tel:+14066072151" class="nav-phone">(406) 607-2151</a></div></nav>
+<main id="main">
+<section class="hero-mini hero-photo has-ambient" style="background-image: url('/assets/photos/54723284430.jpg');">
+<h1>Window cleaning services</h1>
+<p>Everything we clean, one page. Hand-cleaned, insured, backed by a 48-hour streak-free guarantee.</p>
+<div class="hero-cta-row"><a href="/sandbox/v2/estimate/" class="bg-white text-black px-6 py-3 rounded-lg font-semibold">Get a Free Quote</a><a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a></div>
+</section>
+
+<section class="bg-white"><div class="container" style="max-width:56rem">
+
+<div style="margin-bottom:2.2rem">
+<h2>Residential</h2>
+<p>Interior and exterior glass, hand-cleaned with squeegee and scrubber. Frames wiped, tracks and sills detailed, screens cleaned on request. Water-fed pole only where ladders aren't safe, so second-story glass still comes out clear. Most homes land between $150&ndash;$400.</p>
+<p><a href="/sandbox/v2/estimate/" style="font-weight:700;color:#0891b2">Get a residential quote &rarr;</a></p>
+</div>
+
+<div style="margin-bottom:2.2rem">
+<h2>Commercial</h2>
+<p>Storefronts, offices and multi-story buildings across the valley &mdash; one-time cleans or recurring contracts. Early-morning scheduling available so your glass shines before customers arrive.</p>
+<p><a href="/sandbox/v2/estimate/" style="font-weight:700;color:#0891b2">Get a commercial quote &rarr;</a></p>
+</div>
+
+<div style="margin-bottom:2.2rem">
+<h2>Post-construction</h2>
+<p>New builds and remodels: stucco splatter, paint specks, sticker residue and construction debris removed safely, without scratching the glass. The final step before your project actually looks finished.</p>
+<p><a href="/sandbox/v2/estimate/" style="font-weight:700;color:#0891b2">Get a post-construction quote &rarr;</a></p>
+</div>
+
+<div style="margin-bottom:2.2rem">
+<h2>Additional services</h2>
+<p>Solar panels (restore output lost to dust and pollen), skylights, chandeliers and hard-to-reach interior glass. We also inspect for hard-water staining from sprinkler overspray and treat it so glass looks clean, not just wet.</p>
+<p><a href="/sandbox/v2/estimate/" style="font-weight:700;color:#0891b2">Ask about add-ons &rarr;</a></p>
+</div>
+
+<div style="background:#f0fdff;border:1px solid #bae6fd;border-radius:12px;padding:1.2rem 1.4rem">
+<h3 style="margin-top:0">Every job includes</h3>
+<p style="margin-bottom:0">Streak-free hand cleaning &middot; frames wiped &middot; eco-friendly, pet-safe detergents &middot; general liability insurance &middot; 48-hour guarantee &mdash; anything off, we come back and fix it free. $150 service minimum, no trip charge anywhere in the Flathead Valley.</p>
+</div>
+
+</div></section>
+
+<section class="bg-custom-cyan text-white" style="text-align:center">
+<div class="container">
+<h2>Ready for crystal-clear windows?</h2>
+<p>Free quote in about 2 minutes &mdash; no site visit needed.</p>
+<div class="hero-cta-row" style="justify-content:center"><a href="/sandbox/v2/estimate/" class="bg-white text-black px-6 py-3 rounded-lg font-bold">Get a Free Quote</a><a href="tel:+14066072151" style="color:#fff;text-decoration:underline;margin-left:1rem">Call (406) 607-2151</a></div>
+</div>
+</section>
+</main>
+<footer class="bg-custom-cyan text-white py-8 mt-auto site-footer"><div class="container text-center">
+<p>&copy; 2025 OCS LLC &middot; Insured &middot; Locally owned</p>
+<p class="mt-2"><a class="underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="underline" href="tel:+14066072151">(406) 607-2151</a></p>
+<p class="mt-2 text-sm">Serving Kalispell, Whitefish, Columbia Falls, Bigfork &amp; the Flathead Valley.</p>
+<p class="mt-3 text-sm"><a class="underline" href="/sandbox/v2/">Home</a> &middot; <a class="underline" href="/sandbox/v2/services/">Services</a> &middot; <a class="underline" href="/sandbox/v2/pricing/">Pricing</a> &middot; <a class="underline" href="/sandbox/v2/our-work/">Our Work</a> &middot; <a class="underline" href="/sandbox/v2/estimate/">Get a Quote</a></p>
+<p class="mt-2 text-sm"><a class="underline" href="/privacy/">Privacy</a> &middot; <a class="underline" href="/terms/">Terms</a></p>
+</div></footer>
+<div class="mobile-bottom-bar"><a href="tel:+14066072151" class="mobile-call-bar mcb-half">Call</a><a href="sms:+14066072151" class="mobile-call-bar mcb-half" style="border-left:1px solid rgba(255,255,255,0.3)">Text</a></div>
+
+</body>
+</html>
