@@ -193,6 +193,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://ocsllc.services/sandbox/v2/thanks/</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://ocsllc.services/schedule/</loc>
     <lastmod>2026-07-04</lastmod>
     <changefreq>weekly</changefreq>
