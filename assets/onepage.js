@@ -67,53 +67,108 @@
   }
 
   /* ================= Hero ambient video =================
-   * Two clips alternate: A is the base layer, B stacks above it and
-   * crossfades in/out via the .ready opacity transition. B's source is
-   * data-src so it costs nothing until A is half done playing. */
+   * Two equal-length clips alternate in 20-second windows. Each clip
+   * resumes where it left off on its next turn; once both are exhausted
+   * the whole cycle restarts from the top. B stacks above A and
+   * crossfades via the .ready opacity transition; B's source is data-src
+   * so it costs nothing until A's first window is half done. */
   var heroA = document.querySelector("[data-hero-video]");
   var heroB = document.querySelector("[data-hero-video-alt]");
-  if (heroA && !REDUCED_MOTION) {
-    var startHeroA = function () {
+  if (heroA && !REDUCED_MOTION && !heroB) {
+    heroA.loop = true;
+    var soloHero = function () {
       heroA.classList.add("ready");
       heroA.play().catch(function () {});
     };
-    heroA.addEventListener("loadeddata", startHeroA);
-    if (heroA.readyState >= 2) startHeroA();
+    heroA.addEventListener("loadeddata", soloHero);
+    if (heroA.readyState >= 2) soloHero();
+  } else if (heroA && !REDUCED_MOTION) {
+    var HERO_WINDOW = 20;
+    var heroPos = { a: 0, b: 0 };
+    var heroDone = { a: false, b: false };
+    var heroTurnStart = 0;
+    var heroActive = null;
 
-    if (heroB) {
-      var armHeroB = function () {
-        if (heroB.dataset.armed === "true") return;
-        heroB.dataset.armed = "true";
-        heroB.querySelectorAll("source[data-src]").forEach(function (source) {
-          source.src = source.getAttribute("data-src");
-        });
-        heroB.preload = "auto";
-        heroB.load();
+    var heroKey = function (video) { return video === heroA ? "a" : "b"; };
+
+    var armHeroB = function () {
+      if (heroB.dataset.armed === "true") return;
+      heroB.dataset.armed = "true";
+      heroB.querySelectorAll("source[data-src]").forEach(function (source) {
+        source.src = source.getAttribute("data-src");
+      });
+      heroB.preload = "auto";
+      heroB.load();
+    };
+
+    var beginHeroTurn = function (video) {
+      heroActive = video;
+      heroTurnStart = heroPos[heroKey(video)];
+      var go = function () {
+        heroA.classList.add("ready");
+        video.play().catch(function () {});
+        /* B above A: adding .ready fades B in, removing fades it out */
+        heroB.classList.toggle("ready", video === heroB);
+        setTimeout(function () {
+          (video === heroA ? heroB : heroA).pause();
+        }, 1300);
       };
-      heroA.addEventListener("timeupdate", function () {
-        if (heroA.duration && heroA.currentTime > heroA.duration / 2) armHeroB();
-      });
-      heroA.addEventListener("ended", function () {
-        if (heroB.readyState >= 2) {
-          heroB.currentTime = 0;
-          heroB.play().catch(function () {});
-          heroB.classList.add("ready");
-          setTimeout(function () { heroA.pause(); }, 1300);
-        } else {
-          armHeroB();
-          heroA.currentTime = 0;
-          heroA.play().catch(function () {});
+      if (Math.abs(video.currentTime - heroTurnStart) > 0.3) {
+        var onSeeked = function () {
+          video.removeEventListener("seeked", onSeeked);
+          go();
+        };
+        video.addEventListener("seeked", onSeeked);
+        try { video.currentTime = heroTurnStart; } catch (e) { go(); }
+      } else {
+        go();
+      }
+    };
+
+    var endHeroTurn = function (video, ended) {
+      if (video !== heroActive) return;
+      heroActive = null;
+      var key = heroKey(video);
+      heroPos[key] = heroTurnStart + HERO_WINDOW;
+      if (ended || (video.duration && heroPos[key] >= video.duration - 1)) heroDone[key] = true;
+
+      if (heroDone.a && heroDone.b) {
+        /* Both clips fully shown — restart the whole cycle */
+        heroPos.a = 0; heroPos.b = 0;
+        heroDone.a = false; heroDone.b = false;
+      }
+
+      var next = video === heroA ? heroB : heroA;
+      var nextKey = heroKey(next);
+      if (next === heroB && next.readyState < 2) {
+        /* Partner not loaded yet — keep rolling on the same clip */
+        armHeroB();
+        if (heroDone[key]) { heroPos[key] = 0; heroDone[key] = false; }
+        beginHeroTurn(video);
+      } else if (heroDone[nextKey]) {
+        if (heroDone[key]) { heroPos[key] = 0; heroDone[key] = false; }
+        beginHeroTurn(video);
+      } else {
+        beginHeroTurn(next);
+      }
+    };
+
+    [heroA, heroB].forEach(function (video) {
+      video.addEventListener("timeupdate", function () {
+        if (video === heroActive && video.currentTime >= heroTurnStart + HERO_WINDOW) {
+          endHeroTurn(video, false);
         }
+        if (video === heroA && video.currentTime > heroTurnStart + 8) armHeroB();
       });
-      heroB.addEventListener("ended", function () {
-        heroA.currentTime = 0;
-        heroA.play().catch(function () {});
-        heroB.classList.remove("ready");
-        setTimeout(function () { heroB.pause(); }, 1300);
-      });
-    } else {
-      heroA.loop = true;
-    }
+      video.addEventListener("ended", function () { endHeroTurn(video, true); });
+    });
+
+    var startHero = function () {
+      if (heroActive) return;
+      beginHeroTurn(heroA);
+    };
+    heroA.addEventListener("loadeddata", startHero);
+    if (heroA.readyState >= 2) startHero();
   }
 
   /* ================= In-view muted video loops =================
