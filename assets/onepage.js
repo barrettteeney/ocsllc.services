@@ -385,16 +385,16 @@
   }
   function getConfidence(result) {
     if (!result || result.oversized) {
-      return { label: "Needs details", text: "Large or unusual jobs are best confirmed by Barrett.", level: "low" };
+      return { label: "Needs details", text: "Large or unusual jobs are best confirmed by our team.", level: "low" };
     }
     var flags = getReviewFlags(result);
     if (result.sqft && result.panes && !flags.length) {
       return { label: "Tighter range", text: "Square footage and pane count are both included.", level: "high" };
     }
     if (result.sqft && !flags.length) {
-      return { label: "Good starting range", text: "Text photos if you want Barrett to tighten it further.", level: "medium" };
+      return { label: "Good starting range", text: "Text photos if you want us to tighten it further.", level: "medium" };
     }
-    return { label: "Barrett will confirm", text: flags.length ? "Flagged for " + flags.join(", ") + "." : "A quick review keeps the quote accurate.", level: "review" };
+    return { label: "We’ll confirm", text: flags.length ? "Flagged for " + flags.join(", ") + "." : "A quick review keeps the quote accurate.", level: "review" };
   }
   function compute() {
     var service = getService();
@@ -598,7 +598,7 @@
   function canLeaveStep(index) {
     if (index === 1) {
       if (isOversizeTierSelected() && getNumber("sqft") <= 6000) {
-        setError("Enter your best estimated square footage above 6,000 so Barrett has enough context.");
+        setError("Enter your best estimated square footage above 6,000 so we have enough context.");
         return false;
       }
       if (!getNumber("sqft") && !getNumber("panes")) {
@@ -718,7 +718,7 @@
     if (result && result.oversized) {
       eyebrowEl.textContent = "Your quote";
       priceEl.textContent = "Custom quote";
-      detailEl.textContent = "Large homes get a custom confirmed price. Your square footage, pane range, and screen range are already with Barrett — he’ll come back with a firm number.";
+      detailEl.textContent = "Large homes get a custom confirmed price. Your square footage, pane range, and screen range are already with our team — we’ll come back with a firm number.";
     } else if (result) {
       eyebrowEl.textContent = "Your estimated range";
       priceEl.textContent = money(result.low) + " – " + money(result.high);
@@ -735,8 +735,8 @@
     confEl.textContent = confidence.label + " — " + confidence.text;
 
     var firstName = (getValue("name") || "").trim().split(/\s+/)[0];
-    nextEl.textContent = (firstName ? firstName + ", " : "") +
-      "Barrett will text or call you the same day to confirm your final number and find a time that works. Most jobs schedule one to two weeks out.";
+    nextEl.textContent = (firstName ? firstName + ", we" : "We") +
+      "’ll text or call you the same day to confirm your final number and find a time that works. Most jobs schedule one to two weeks out.";
   }
 
   form.addEventListener("submit", function (event) {
@@ -768,7 +768,7 @@
     sendLead(data).then(function (ok) {
       if (ok) {
         note.className = "q-submit-note ok";
-        note.textContent = "Sent — Barrett has your details and will confirm your final number.";
+        note.textContent = "Sent — we have your details and will confirm your final number.";
         fireFormConversion();
       } else {
         note.className = "q-submit-note err";
