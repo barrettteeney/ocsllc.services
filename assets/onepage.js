@@ -66,16 +66,53 @@
     revealables.forEach(function (el) { revealObserver.observe(el); });
   }
 
-  /* ================= Hero ambient video ================= */
-  var heroVideo = document.querySelector("[data-hero-video]");
-  if (heroVideo && !REDUCED_MOTION) {
-    heroVideo.addEventListener("loadeddata", function () {
-      heroVideo.classList.add("ready");
-      heroVideo.play().catch(function () {});
-    });
-    if (heroVideo.readyState >= 2) {
-      heroVideo.classList.add("ready");
-      heroVideo.play().catch(function () {});
+  /* ================= Hero ambient video =================
+   * Two clips alternate: A is the base layer, B stacks above it and
+   * crossfades in/out via the .ready opacity transition. B's source is
+   * data-src so it costs nothing until A is half done playing. */
+  var heroA = document.querySelector("[data-hero-video]");
+  var heroB = document.querySelector("[data-hero-video-alt]");
+  if (heroA && !REDUCED_MOTION) {
+    var startHeroA = function () {
+      heroA.classList.add("ready");
+      heroA.play().catch(function () {});
+    };
+    heroA.addEventListener("loadeddata", startHeroA);
+    if (heroA.readyState >= 2) startHeroA();
+
+    if (heroB) {
+      var armHeroB = function () {
+        if (heroB.dataset.armed === "true") return;
+        heroB.dataset.armed = "true";
+        heroB.querySelectorAll("source[data-src]").forEach(function (source) {
+          source.src = source.getAttribute("data-src");
+        });
+        heroB.preload = "auto";
+        heroB.load();
+      };
+      heroA.addEventListener("timeupdate", function () {
+        if (heroA.duration && heroA.currentTime > heroA.duration / 2) armHeroB();
+      });
+      heroA.addEventListener("ended", function () {
+        if (heroB.readyState >= 2) {
+          heroB.currentTime = 0;
+          heroB.play().catch(function () {});
+          heroB.classList.add("ready");
+          setTimeout(function () { heroA.pause(); }, 1300);
+        } else {
+          armHeroB();
+          heroA.currentTime = 0;
+          heroA.play().catch(function () {});
+        }
+      });
+      heroB.addEventListener("ended", function () {
+        heroA.currentTime = 0;
+        heroA.play().catch(function () {});
+        heroB.classList.remove("ready");
+        setTimeout(function () { heroB.pause(); }, 1300);
+      });
+    } else {
+      heroA.loop = true;
     }
   }
 
