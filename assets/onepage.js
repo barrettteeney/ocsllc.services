@@ -370,10 +370,16 @@
       screens: [{ label: "No screens", value: 0 }, { label: "1-19 screens", value: 10 }, { label: "20-32 screens", value: 26 }, { label: "33-48 screens", value: 40 }] },
     { max: 6000, both: 0.25, ext: 0.15, sqftLabel: "5,001-6,000 sqft",
       panes: [{ label: "50-65 panes", value: 58 }, { label: "66-80 panes", value: 73 }, { label: "81-100 panes", value: 90 }],
-      screens: [{ label: "No screens", value: 0 }, { label: "1-24 screens", value: 12 }, { label: "25-40 screens", value: 32 }, { label: "41-60 screens", value: 50 }] }
+      screens: [{ label: "No screens", value: 0 }, { label: "1-24 screens", value: 12 }, { label: "25-40 screens", value: 32 }, { label: "41-60 screens", value: 50 }] },
+    { max: 7000, both: 0.27, ext: 0.16, sqftLabel: "6,001-7,000 sqft",
+      panes: [{ label: "60-78 panes", value: 69 }, { label: "79-96 panes", value: 88 }, { label: "97-120 panes", value: 108 }],
+      screens: [{ label: "No screens", value: 0 }, { label: "1-29 screens", value: 15 }, { label: "30-48 screens", value: 39 }, { label: "49-72 screens", value: 60 }] },
+    { max: 8000, both: 0.29, ext: 0.17, sqftLabel: "7,001-8,000 sqft",
+      panes: [{ label: "70-90 panes", value: 80 }, { label: "91-112 panes", value: 101 }, { label: "113-140 panes", value: 126 }],
+      screens: [{ label: "No screens", value: 0 }, { label: "1-34 screens", value: 17 }, { label: "35-56 screens", value: 45 }, { label: "57-84 screens", value: 70 }] }
   ];
   var DEFAULT_SQFT_NOTE = "Know the square footage? Enter it below. If not, choose the range your home falls in.";
-  var OVERSIZE_SQFT_LABEL = "6,000+ sqft";
+  var OVERSIZE_SQFT_LABEL = "8,000+ sqft";
   var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage for the home, then choose the closest pane and screen ranges.";
   var PER_PANE = { ext: 8, both: 14, screen: 4 };
   var MIN_CHARGE = 150;
@@ -415,7 +421,7 @@
     return { label: makeRangeLabel(low, high, unit, isPlus), value: Math.round((low + high) / 2) };
   }
   function getOversizeGuidanceTier(sqft) {
-    var factor = sqft && sqft > 6000 ? sqft / 6000 : 1;
+    var factor = sqft && sqft > 8000 ? sqft / 8000 : 1;
     var paneHigh1 = Math.round(110 * factor);
     var paneHigh2 = Math.max(paneHigh1 + 1, Math.round(150 * factor));
     var paneHigh3 = Math.max(paneHigh2 + 1, Math.round(200 * factor));
@@ -424,7 +430,7 @@
     var screenHigh3 = Math.max(screenHigh2 + 1, Math.round(90 * factor));
     return {
       max: Infinity,
-      sqftLabel: sqft && sqft > 6000 ? sqft.toLocaleString() + " sqft / 6,000+ home" : OVERSIZE_SQFT_LABEL,
+      sqftLabel: sqft && sqft > 8000 ? sqft.toLocaleString() + " sqft / 8,000+ home" : OVERSIZE_SQFT_LABEL,
       panes: [
         makeRange(80, 110, "panes", factor, false, false),
         makeExplicitRange(paneHigh1 + 1, paneHigh2, "panes", false),
@@ -467,7 +473,7 @@
   }
   function getReviewFlags(result) {
     var flags = [];
-    if (result && result.oversized) flags.push("over 6,000 sqft");
+    if (result && result.oversized) flags.push("over 8,000 sqft");
     if (form.elements.hard_water && form.elements.hard_water.checked) flags.push("hard water");
     if (getValue("last_cleaned") === "5+ years") flags.push("5+ years since cleaning");
     if (form.elements.post_construction && form.elements.post_construction.checked) flags.push("post-construction");
@@ -614,8 +620,8 @@
       var isOversize = button.getAttribute("data-sqft-tier-oversize") === "true";
       if (form.elements.sqft) {
         if (isOversize) {
-          if (getNumber("sqft") <= 6000) form.elements.sqft.value = "";
-          form.elements.sqft.placeholder = "Example: 7200";
+          if (getNumber("sqft") <= 8000) form.elements.sqft.value = "";
+          form.elements.sqft.placeholder = "Example: 9200";
         } else {
           form.elements.sqft.value = value;
           form.elements.sqft.placeholder = "Example: 2200";
@@ -632,7 +638,7 @@
     form.elements.sqft.addEventListener("input", function () {
       if (isOversizeTierSelected()) {
         setSqftNote(OVERSIZE_SQFT_NOTE);
-        if (getNumber("sqft") > 6000) applyTierDefaults("6000plus");
+        if (getNumber("sqft") > 8000) applyTierDefaults("6000plus");
         renderCountOptions();
         return;
       }
@@ -689,8 +695,8 @@
   }
   function canLeaveStep(index) {
     if (index === 1) {
-      if (isOversizeTierSelected() && getNumber("sqft") <= 6000) {
-        setError("Enter your best estimated square footage above 6,000 so we have enough context.");
+      if (isOversizeTierSelected() && getNumber("sqft") <= 8000) {
+        setError("Enter your best estimated square footage above 8,000 so we have enough context.");
         return false;
       }
       if (!getNumber("sqft") && !getNumber("panes")) {
@@ -742,10 +748,57 @@
     if (data.screen_range) pieces.push("Screen range: " + data.screen_range);
     else if (data.screens) pieces.push("Screens: " + data.screens);
     if (data.town) pieces.push("Town: " + data.town);
+    if (data.service_address) pieces.push("Service address: " + data.service_address);
     if (data.last_cleaned) pieces.push("Last cleaned: " + data.last_cleaned);
+    if (data.photos_available) pieces.push("Photos available: Yes");
     if (data.preferred_timing) pieces.push("Timing: " + data.preferred_timing);
     if (data.message) pieces.push("Notes: " + data.message);
     return pieces.join(" · ");
+  }
+
+  function optionalNumber(value) {
+    var parsed = Number(value);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+  }
+
+  function crmLeadPayload(data) {
+    var screenCount = Number(data.screens) || 0;
+    var lastCleaned = data.last_cleaned === "1-4 years"
+      ? "1-4 years"
+      : data.last_cleaned === "5+ years"
+        ? "5+ years"
+        : data.last_cleaned === "Not sure" ? "not sure" : "recent";
+    return {
+      contact: {
+        name: data.name || "",
+        phone: data.phone || "",
+        email: data.email || "",
+        address: data.service_address || "",
+        city: data.town || "",
+        notes: data.message || "",
+        company: data._honey || ""
+      },
+      booking: {
+        service: data.service === "ext" ? "ext" : "both",
+        sqft: optionalNumber(data.sqft),
+        paneCount: optionalNumber(data.panes),
+        stories2plus: data.stories === "Yes",
+        hardWater: data.hard_water === "Yes",
+        lastCleaned5yr: data.last_cleaned === "5+ years",
+        postConstruction: data.post_construction === "Yes",
+        wantsScreens: screenCount > 0,
+        screenCount: screenCount,
+        frenchPanes: data.french === "Yes",
+        plan: "onetime",
+        town: data.town || null,
+        lastCleaned: lastCleaned,
+        photosAvailable: data.photos_available === "Yes",
+        preferredTiming: data.preferred_timing || null,
+        serviceAddress: data.service_address || null,
+        notes: data.message || null
+      },
+      source: "form"
+    };
   }
 
   /* Fires the Google Ads form conversion the /thanks/ page normally fires.
@@ -761,7 +814,6 @@
   }
 
   function sendLead(data) {
-    var leadMessage = getLeadMessage(data);
     var tasks = [];
 
     var fd = new FormData();
@@ -779,15 +831,7 @@
     tasks.push(fetch("https://ocs-crm.vercel.app/api/leads", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: data.name || "",
-        phone: data.phone || "",
-        email: data.email || "",
-        city: data.town || "",
-        message: leadMessage,
-        source: "form",
-        company: data._honey || ""
-      })
+      body: JSON.stringify(crmLeadPayload(data))
     }).then(function (r) { return r.ok ? "ocs:ok" : "ocs:" + r.status; })
       .catch(function () { return "ocs:err"; }));
 
@@ -837,8 +881,13 @@
 
     var name = (getValue("name") || "").trim();
     var phone = (getValue("phone") || "").trim();
+    var serviceAddress = (getValue("service_address") || "").trim();
     if (!name || !phone) {
       setError("Add your name and phone number — that’s all it takes to unlock your range.");
+      return;
+    }
+    if (!serviceAddress) {
+      setError("Add the service address so we can prepare an accurate estimate.");
       return;
     }
     var emailField = form.elements.email;
