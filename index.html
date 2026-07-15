@@ -596,7 +596,9 @@
             <button type="button" class="q-chip" data-sqft-tier-value="3500" data-sqft-tier-label="3,001-4,000 sqft">3,001&ndash;4,000</button>
             <button type="button" class="q-chip" data-sqft-tier-value="4500" data-sqft-tier-label="4,001-5,000 sqft">4,001&ndash;5,000</button>
             <button type="button" class="q-chip" data-sqft-tier-value="5500" data-sqft-tier-label="5,001-6,000 sqft">5,001&ndash;6,000</button>
-            <button type="button" class="q-chip" data-sqft-tier-value="6000plus" data-sqft-tier-label="6,000+ sqft" data-sqft-tier-oversize="true">6,000+</button>
+            <button type="button" class="q-chip" data-sqft-tier-value="6500" data-sqft-tier-label="6,001-7,000 sqft">6,001&ndash;7,000</button>
+            <button type="button" class="q-chip" data-sqft-tier-value="7500" data-sqft-tier-label="7,001-8,000 sqft">7,001&ndash;8,000</button>
+            <button type="button" class="q-chip" data-sqft-tier-value="6000plus" data-sqft-tier-label="8,000+ sqft" data-sqft-tier-oversize="true">8,000+</button>
           </div>
           <p class="q-hint" data-sqft-note>Know the square footage? Enter it below. If not, choose the range your home falls in.</p>
           <div class="q-field">
@@ -687,6 +689,12 @@
           </div>
           <div class="q-field">
             <label>
+              <span class="q-label" style="font-size:0.9rem">Service address</span>
+              <input class="q-input" type="text" name="service_address" autocomplete="street-address" placeholder="Street address, City, ZIP" required>
+            </label>
+          </div>
+          <div class="q-field">
+            <label>
               <span class="q-label" style="font-size:0.9rem">When are you hoping for? <small style="color:var(--muted);font-weight:500">(optional)</small></span>
               <input class="q-input" type="text" name="preferred_timing" placeholder="This week, next month, flexible">
             </label>
@@ -703,7 +711,7 @@
         <!-- STEP 5: Reveal -->
         <div class="q-step" data-step="4">
           <div class="q-result">
-            <div class="q-oversize-badge" data-q-oversize hidden>Homes over 6,000 sqft get a custom confirmed quote — your details are already on their way to our team.</div>
+            <div class="q-oversize-badge" data-q-oversize hidden>Homes over 8,000 sqft get a custom confirmed quote — your details are already on their way to our team.</div>
             <p class="q-result-eyebrow" data-result-eyebrow>Your estimated range</p>
             <p class="q-result-price" data-result-price>$0 – $0</p>
             <span class="q-confidence" data-result-confidence></span>
