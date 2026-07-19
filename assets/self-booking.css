@@ -61,7 +61,8 @@
   font-weight: 750;
 }
 
-.self-booking-fields select {
+.self-booking-fields select,
+.self-booking-fields input[type="date"] {
   width: 100%;
   min-height: 48px;
   padding: 0.7rem 2.2rem 0.7rem 0.8rem;
@@ -90,7 +91,8 @@
 }
 
 .self-booking-submit:focus-visible,
-.self-booking-fields select:focus-visible {
+.self-booking-fields select:focus-visible,
+.self-booking-fields input[type="date"]:focus-visible {
   outline: 3px solid rgba(12, 192, 223, 0.35);
   outline-offset: 2px;
 }
