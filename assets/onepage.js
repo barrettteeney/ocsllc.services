@@ -813,7 +813,7 @@
     } catch (e) { /* never block the reveal */ }
   }
 
-  function sendLead(data) {
+  function sendLead(data, leadIdempotencyKey) {
     var tasks = [];
 
     var fd = new FormData();
@@ -830,13 +830,19 @@
 
     tasks.push(fetch("https://ocs-crm.vercel.app/api/leads", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": leadIdempotencyKey
+      },
       body: JSON.stringify(crmLeadPayload(data))
     }).then(function (r) { return r.ok ? "ocs:ok" : "ocs:" + r.status; })
       .catch(function () { return "ocs:err"; }));
 
     return Promise.all(tasks).then(function (results) {
-      return results.some(function (result) { return result.slice(-3) === ":ok"; });
+      return {
+        ok: results.some(function (result) { return result.slice(-3) === ":ok"; }),
+        crmOk: results.indexOf("ocs:ok") !== -1
+      };
     });
   }
 
@@ -871,8 +877,8 @@
     confEl.textContent = confidence.label + " — " + confidence.text;
 
     var firstName = (getValue("name") || "").trim().split(/\s+/)[0];
-    nextEl.textContent = (firstName ? firstName + ", we" : "We") +
-      "’ll text or call you the same day to confirm your final number and find a time that works. Most jobs schedule one to two weeks out.";
+    nextEl.textContent = (firstName ? firstName + ", choose" : "Choose") +
+      " an available time below, or we’ll text or call you the same day to help schedule it.";
   }
 
   form.addEventListener("submit", function (event) {
@@ -901,16 +907,27 @@
     updateHidden(result);
     var data = Object.fromEntries(new FormData(form).entries());
     if (data._honey) return;
+    var leadIdempotencyKey = window.OCSSelfBooking
+      ? window.OCSSelfBooking.createKey("lead")
+      : "lead_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2);
 
     revealBtn.disabled = true;
     revealBtn.textContent = "Unlocking…";
 
     var note = form.querySelector("[data-submit-note]");
-    sendLead(data).then(function (ok) {
-      if (ok) {
+    sendLead(data, leadIdempotencyKey).then(function (submission) {
+      if (submission.ok) {
         note.className = "q-submit-note ok";
         note.textContent = "Sent — we have your details and will confirm your final number.";
         fireFormConversion();
+        if (submission.crmOk && window.OCSSelfBooking) {
+          var payload = crmLeadPayload(data);
+          window.OCSSelfBooking.open(form, {
+            contact: payload.contact,
+            booking: payload.booking,
+            leadIdempotencyKey: leadIdempotencyKey
+          });
+        }
       } else {
         note.className = "q-submit-note err";
         note.textContent = "We couldn’t auto-send your request — please call or text (406) 607-2151 to lock it in.";

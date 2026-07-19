@@ -113,7 +113,9 @@ textarea{min-height:70px;resize:vertical}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 <link rel="stylesheet" href="/assets/site-nav.css">
+<link rel="stylesheet" href="/assets/self-booking.css">
 <script src="/assets/site-nav.js" defer></script>
+<script src="/assets/self-booking.js" defer></script>
 <script src="/assets/instant-estimate.js" defer></script>
 <script src="/assets/ads-conversion.js" defer></script>
 </head>
@@ -265,6 +267,23 @@ textarea{min-height:70px;resize:vertical}
 
         <div class="estimate-actions">
           <button class="estimate-submit" type="submit">Send estimate request</button>
+        </div>
+        <div class="self-booking" data-self-booking hidden>
+          <p class="self-booking-eyebrow">Optional next step</p>
+          <h3>Choose an available time</h3>
+          <p class="self-booking-duration" data-self-booking-duration></p>
+          <div class="self-booking-fields" data-self-booking-fields hidden>
+            <label>
+              <span>Available day</span>
+              <select data-self-booking-day aria-label="Available day"></select>
+            </label>
+            <label>
+              <span>Start time</span>
+              <select data-self-booking-time aria-label="Available start time"></select>
+            </label>
+          </div>
+          <button class="self-booking-submit" type="button" data-self-booking-submit hidden>Request this time</button>
+          <p class="self-booking-status" data-self-booking-status aria-live="polite"></p>
         </div>
       </div>
     </form>
