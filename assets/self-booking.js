@@ -42,28 +42,73 @@
     if (!panel || !options.booking || !options.leadIdempotencyKey) return;
 
     var fields = panel.querySelector("[data-self-booking-fields]");
-    var daySelect = panel.querySelector("[data-self-booking-day]");
+    var dayInput = panel.querySelector("[data-self-booking-day]");
     var timeSelect = panel.querySelector("[data-self-booking-time]");
     var submit = panel.querySelector("[data-self-booking-submit]");
     var duration = panel.querySelector("[data-self-booking-duration]");
-    var days = [];
     var bookingKey = createKey("booking");
+    var slotRequestId = 0;
 
     panel.hidden = false;
     fields.hidden = true;
     submit.hidden = true;
     setStatus(panel, "Checking the calendar for times that fit your quoted job…");
 
-    function renderTimes() {
-      var selected = days.filter(function (day) { return day.dateISO === daySelect.value; })[0];
+    function renderTimes(slots) {
       timeSelect.innerHTML = "";
-      (selected ? selected.slots : []).forEach(function (slot) {
+      var prompt = document.createElement("option");
+      prompt.value = "";
+      prompt.textContent = slots.length ? "Choose a start time" : "No times available";
+      prompt.disabled = true;
+      prompt.selected = true;
+      timeSelect.appendChild(prompt);
+      slots.forEach(function (slot) {
         var option = document.createElement("option");
         option.value = slot.startISO;
         option.textContent = slot.label;
         timeSelect.appendChild(option);
       });
+      timeSelect.disabled = !slots.length;
       submit.disabled = !timeSelect.value;
+    }
+
+    timeSelect.onchange = function () {
+      submit.disabled = !timeSelect.value;
+    };
+
+    function loadSlotsForDay(message) {
+      if (!dayInput.value) {
+        renderTimes([]);
+        submit.disabled = true;
+        setStatus(panel, "Choose a date to see every available start time.");
+        return Promise.resolve();
+      }
+
+      var requestId = ++slotRequestId;
+      timeSelect.disabled = true;
+      submit.disabled = true;
+      submit.textContent = "Request this time";
+      setStatus(panel, message || "Checking every available time for that date…");
+      return requestJson("/api/booking/slots", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ booking: options.booking, dateISO: dayInput.value })
+      }).then(function (response) {
+        if (requestId !== slotRequestId) return;
+        var slots = response.slots || [];
+        renderTimes(slots);
+        fields.hidden = false;
+        submit.hidden = false;
+        if (!slots.length) {
+          setStatus(panel, "No times fit this job on that date. Choose another day from the calendar.", "error");
+          return;
+        }
+        setStatus(panel, "Choose any available start time shown for this date.");
+      }).catch(function (error) {
+        if (requestId !== slotRequestId) return;
+        renderTimes([]);
+        setStatus(panel, error.message + " You can still call or text (406) 607-2151.", "error");
+      });
     }
 
     function loadAvailability(message) {
@@ -84,26 +129,24 @@
           return;
         }
 
-        days = response.days || [];
+        var days = response.days || [];
         if (!days.length) {
           setStatus(panel, "No online times currently fit this job. Call or text (406) 607-2151 and we’ll find a time with you.", "error");
           return;
         }
 
-        daySelect.innerHTML = "";
-        days.forEach(function (day) {
-          var option = document.createElement("option");
-          option.value = day.dateISO;
-          option.textContent = day.dayLabel;
-          daySelect.appendChild(option);
-        });
-        renderTimes();
-        daySelect.onchange = renderTimes;
+        if (response.bookingWindow) {
+          dayInput.min = response.bookingWindow.minDate || "";
+          dayInput.max = response.bookingWindow.maxDate || "";
+        }
+        dayInput.value = days[0].dateISO;
+        renderTimes(days[0].slots || []);
+        dayInput.onchange = function () { loadSlotsForDay(); };
         fields.hidden = false;
         submit.hidden = false;
         submit.disabled = !timeSelect.value;
         submit.textContent = "Request this time";
-        setStatus(panel, "Select a day and start time. We’ll reserve it with this quote.");
+        setStatus(panel, "Choose any date in the calendar, then select an available start time.");
       }).catch(function (error) {
         if (error.body && error.body.quote && error.body.quote.durationNote) {
           duration.textContent = error.body.quote.durationNote;
@@ -142,7 +185,7 @@
         submit.textContent = "Request this time";
         if (error.status === 409 && /time|reserved/i.test(error.message || "")) {
           bookingKey = createKey("booking");
-          loadAvailability("That time was just taken. Refreshing the available times…");
+          loadSlotsForDay("That time was just taken. Refreshing this date’s available times…");
         }
       });
     };
