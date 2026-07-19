@@ -675,6 +675,16 @@
     };
   }
 
+  function fireFormConversion() {
+    try {
+      if (window.location.pathname.indexOf("/sandbox") === 0) return;
+      if (sessionStorage.getItem("ocs_conv_form")) return;
+      if (typeof window.gtag !== "function") return;
+      window.gtag("event", "conversion", { send_to: "AW-18072622126/Ng3vCL_dgMocEK6o2alD" });
+      sessionStorage.setItem("ocs_conv_form", "1");
+    } catch (error) { /* analytics must never block the quote or booking */ }
+  }
+
   function wireSubmit(form) {
     if (form.dataset.submitReady === "true") return;
     form.dataset.submitReady = "true";
@@ -702,6 +712,9 @@
       }
       status.className = "estimate-submit-status";
       status.textContent = "Sending your estimate request...";
+      var leadIdempotencyKey = window.OCSSelfBooking
+        ? window.OCSSelfBooking.createKey("lead")
+        : "lead_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2);
 
       var tasks = [];
 
@@ -723,7 +736,10 @@
 
       tasks.push(fetch("https://ocs-crm.vercel.app/api/leads", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Idempotency-Key": leadIdempotencyKey
+        },
         body: JSON.stringify(crmLeadPayload(data))
       }).then(function (response) {
         return response.ok ? "ocs:ok" : "ocs:" + response.status;
@@ -736,6 +752,18 @@
         if (!ok) throw new Error("All lead endpoints failed");
         status.className = "estimate-submit-status is-success";
         status.textContent = "Thanks. We got it and will text or call you back the same day.";
+        fireFormConversion();
+        var crmOk = results.indexOf("ocs:ok") !== -1;
+        if (crmOk && window.OCSSelfBooking) {
+          var payload = crmLeadPayload(data);
+          window.OCSSelfBooking.open(form, {
+            contact: payload.contact,
+            booking: payload.booking,
+            leadIdempotencyKey: leadIdempotencyKey
+          });
+          if (submit) submit.textContent = "Quote sent";
+          return;
+        }
         form.reset();
         render(form);
         setTimeout(function () {

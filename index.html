@@ -195,6 +195,8 @@
 }
     </script>
   <script defer src="/assets/ads-conversion.js"></script>
+  <link rel="stylesheet" href="/assets/self-booking.css">
+  <script defer src="/assets/self-booking.js"></script>
   <script defer src="/assets/onepage.js"></script>
 </head>
 <body>
@@ -718,7 +720,24 @@
             <p class="q-result-detail" data-result-detail></p>
             <div class="q-next-steps">
               <b>What happens next</b>
-              <p data-result-next>We’ll text or call you the same day to confirm your final number and find a time that works. Most jobs schedule one to two weeks out.</p>
+              <p data-result-next>Choose an available time below, or we’ll text or call you the same day to help schedule it.</p>
+            </div>
+            <div class="self-booking" data-self-booking hidden>
+              <p class="self-booking-eyebrow">Optional next step</p>
+              <h3>Choose an available time</h3>
+              <p class="self-booking-duration" data-self-booking-duration></p>
+              <div class="self-booking-fields" data-self-booking-fields hidden>
+                <label>
+                  <span>Available day</span>
+                  <select data-self-booking-day aria-label="Available day"></select>
+                </label>
+                <label>
+                  <span>Start time</span>
+                  <select data-self-booking-time aria-label="Available start time"></select>
+                </label>
+              </div>
+              <button class="self-booking-submit" type="button" data-self-booking-submit hidden>Request this time</button>
+              <p class="self-booking-status" data-self-booking-status aria-live="polite"></p>
             </div>
             <div class="q-result-ctas">
               <a class="cta-call" href="tel:+14066072151">Call (406) 607-2151</a>
