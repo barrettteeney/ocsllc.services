@@ -390,10 +390,24 @@
   var form = document.querySelector("[data-quote-form]");
   if (!form) return;
 
+  /* Values carried by selected chips. They feed the pricing math but are
+   * never written into the visible number inputs — the customer only
+   * sees which tier/range they picked. Typing an exact number wins. */
+  var chipValues = { sqft: null, panes: null, screens: null };
+  var chipExplicit = { screens: false };
+  var PLACEHOLDERS = { sqft: "Example: 2200", panes: "Or enter an exact count", screens: "Or enter an exact count" };
+
+  function setChipPlaceholder(name, label) {
+    if (!form.elements[name]) return;
+    form.elements[name].placeholder = label ? "Using " + label + " \u2014 or type an exact number" : PLACEHOLDERS[name];
+  }
+
   function getNumber(name) {
     var field = form.elements[name];
     var value = field ? parseFloat(field.value) : 0;
-    return Number.isFinite(value) && value > 0 ? value : 0;
+    if (Number.isFinite(value) && value > 0) return value;
+    if (field && field.value === "" && chipValues[name] != null) return chipValues[name];
+    return 0;
   }
   function getValue(name) {
     var field = form.elements[name];
@@ -535,7 +549,10 @@
 
   /* ---------- Pane/screen suggestion chips ---------- */
   function setCountChoice(name, value, label) {
-    if (form.elements[name]) form.elements[name].value = String(value);
+    if (form.elements[name]) form.elements[name].value = "";
+    chipValues[name] = value;
+    if (name === "screens") chipExplicit.screens = true;
+    setChipPlaceholder(name, label);
     setHiddenValue(name === "panes" ? "pane_range" : "screen_range", label);
     form.querySelectorAll('[data-count-name="' + name + '"]').forEach(function (button) {
       button.classList.toggle("is-active", button.getAttribute("data-count-label") === label);
@@ -601,15 +618,17 @@
     if (!tier) return;
     var middlePane = tier.panes[1] || tier.panes[0];
     var noScreens = tier.screens[0];
-    /* Only default the pane count when it's empty or was set by a chip
-     * (pane_range non-empty) — never clobber a hand-typed count. */
-    if (middlePane && form.elements.panes && (!form.elements.panes.value || getValue("pane_range"))) {
-      form.elements.panes.value = String(middlePane.value);
+    /* Defaults live in chipValues only — never in the visible inputs.
+     * A hand-typed count always blocks the default. */
+    if (middlePane && form.elements.panes && !form.elements.panes.value) {
+      chipValues.panes = middlePane.value;
       setHiddenValue("pane_range", middlePane.label);
+      setChipPlaceholder("panes", middlePane.label);
     }
-    if (noScreens && form.elements.screens && !form.elements.screens.value) {
-      form.elements.screens.value = String(noScreens.value);
+    if (noScreens && form.elements.screens && !form.elements.screens.value && !chipExplicit.screens) {
+      chipValues.screens = noScreens.value;
       setHiddenValue("screen_range", noScreens.label);
+      setChipPlaceholder("screens", noScreens.label);
     }
   }
 
@@ -620,11 +639,14 @@
       var isOversize = button.getAttribute("data-sqft-tier-oversize") === "true";
       if (form.elements.sqft) {
         if (isOversize) {
-          if (getNumber("sqft") <= 8000) form.elements.sqft.value = "";
+          chipValues.sqft = null;
+          var typed = parseFloat(form.elements.sqft.value);
+          if (!(Number.isFinite(typed) && typed > 8000)) form.elements.sqft.value = "";
           form.elements.sqft.placeholder = "Example: 9200";
         } else {
-          form.elements.sqft.value = value;
-          form.elements.sqft.placeholder = "Example: 2200";
+          form.elements.sqft.value = "";
+          chipValues.sqft = parseFloat(value);
+          setChipPlaceholder("sqft", label);
         }
       }
       setSqftTierState(value, label);
@@ -642,17 +664,25 @@
         renderCountOptions();
         return;
       }
-      form.elements.sqft.placeholder = "Example: 2200";
+      chipValues.sqft = null;
+      form.elements.sqft.placeholder = PLACEHOLDERS.sqft;
       setSqftNote(DEFAULT_SQFT_NOTE);
       setSqftTierState("", "");
+      chipValues.panes = null;
+      chipValues.screens = null;
       setHiddenValue("pane_range", "");
       setHiddenValue("screen_range", "");
+      setChipPlaceholder("panes", "");
+      setChipPlaceholder("screens", "");
       renderCountOptions();
     });
   }
   ["panes", "screens"].forEach(function (name) {
     if (!form.elements[name]) return;
     form.elements[name].addEventListener("input", function () {
+      chipValues[name] = null;
+      if (name === "screens") chipExplicit.screens = false;
+      setChipPlaceholder(name, "");
       setHiddenValue(name === "panes" ? "pane_range" : "screen_range", "");
       form.querySelectorAll('[data-count-name="' + name + '"]').forEach(function (button) {
         button.classList.remove("is-active");
@@ -762,7 +792,9 @@
   }
 
   function crmLeadPayload(data) {
-    var screenCount = Number(data.screens) || 0;
+    /* Chip selections leave the visible inputs empty; getNumber() falls
+     * back to the chip median so the CRM still gets usable numbers. */
+    var screenCount = getNumber("screens");
     var lastCleaned = data.last_cleaned === "1-4 years"
       ? "1-4 years"
       : data.last_cleaned === "5+ years"
@@ -780,8 +812,8 @@
       },
       booking: {
         service: data.service === "ext" ? "ext" : "both",
-        sqft: optionalNumber(data.sqft),
-        paneCount: optionalNumber(data.panes),
+        sqft: optionalNumber(data.sqft) || (getNumber("sqft") || null),
+        paneCount: optionalNumber(data.panes) || (getNumber("panes") || null),
         stories2plus: data.stories === "Yes",
         hardWater: data.hard_water === "Yes",
         lastCleaned5yr: data.last_cleaned === "5+ years",
@@ -866,9 +898,14 @@
       priceEl.textContent = money(result.low) + " – " + money(result.high);
       var parts = [];
       parts.push(result.service === "both" ? "Interior + exterior" : "Exterior only");
-      if (result.sqft) parts.push(result.sqft.toLocaleString() + " sqft");
-      if (result.panes) parts.push(result.panes + " panes");
-      if (result.screens) parts.push(result.screens + " screens");
+      /* When a value came from a chip, show the chosen range — never the
+       * internal median the math used. */
+      var typedSqft = form.elements.sqft && form.elements.sqft.value !== "";
+      var typedPanes = form.elements.panes && form.elements.panes.value !== "";
+      var typedScreens = form.elements.screens && form.elements.screens.value !== "";
+      if (result.sqft) parts.push(typedSqft || !getValue("sqft_tier") ? result.sqft.toLocaleString() + " sqft" : getValue("sqft_tier"));
+      if (result.panes) parts.push(typedPanes || !getValue("pane_range") ? result.panes + " panes" : getValue("pane_range"));
+      if (result.screens) parts.push(typedScreens || !getValue("screen_range") ? result.screens + " screens" : getValue("screen_range"));
       if (result.averaged) parts.push("sqft + pane count averaged");
       if (result.french) parts.push("divided panes flagged for review");
       detailEl.textContent = parts.join(" • ") + ".";
