@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Booking Form Test | OCS LLC</title>
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="/assets/site-nav.css">
+  <link rel="stylesheet" href="/sandbox/booking-test/style.css">
+  <script src="/assets/site-nav.js" defer></script>
+  <script src="/sandbox/booking-test/app.js" defer></script>
+</head>
+<body>
+  <nav class="site-nav"><div class="site-nav-inner"><a href="/" class="site-brand">OCS LLC</a><a href="/estimate/" class="nav-cta">Live quote form</a></div></nav>
+
+  <main class="test-shell">
+    <header class="test-intro">
+      <div class="test-badge">Test mode</div>
+      <h1>Quote-to-booking form test</h1>
+      <p>Try any pricing tier, see the estimated work time, and choose a genuinely open time from the OCS calendar. Submitting this page does not save a customer, reserve the slot, email anyone, or write to QuickBooks.</p>
+    </header>
+
+    <form id="booking-test-form" class="test-card">
+      <section>
+        <div class="section-heading"><span>1</span><div><h2>Build the quote</h2><p>The CRM calculates price and time from these details.</p></div></div>
+
+        <fieldset>
+          <legend>Service</legend>
+          <div class="choice-row">
+            <label><input type="radio" name="service" value="both" checked><span>Inside + outside</span></label>
+            <label><input type="radio" name="service" value="ext"><span>Outside only</span></label>
+          </div>
+        </fieldset>
+
+        <label class="field"><span>Exact square footage</span><input id="sqft" name="sqft" type="number" min="200" max="8000" step="50" value="2500" required></label>
+        <div class="tier-grid" aria-label="Square footage pricing tiers">
+          <button type="button" data-sqft="500">≤1,000</button>
+          <button type="button" data-sqft="1500">1,001–2,000</button>
+          <button type="button" data-sqft="2500" class="selected">2,001–3,000</button>
+          <button type="button" data-sqft="3500">3,001–4,000</button>
+          <button type="button" data-sqft="4500">4,001–5,000</button>
+          <button type="button" data-sqft="5500">5,001–6,000</button>
+          <button type="button" data-sqft="6500">6,001–7,000</button>
+          <button type="button" data-sqft="7500">7,001–8,000</button>
+        </div>
+
+        <div class="two-col">
+          <label class="field"><span>Pane count <small>optional</small></span><input name="panes" type="number" min="1" step="1" placeholder="Example: 32"></label>
+          <label class="field"><span>Screens</span><input name="screens" type="number" min="0" step="1" value="0"></label>
+        </div>
+
+        <div class="check-grid">
+          <label><input name="stories" type="checkbox"> Two or more stories</label>
+          <label><input name="hardWater" type="checkbox"> Hard water</label>
+          <label><input name="lastCleaned5yr" type="checkbox"> Not cleaned in 5+ years</label>
+          <label><input name="postConstruction" type="checkbox"> Post-construction</label>
+        </div>
+
+        <button id="find-times" class="primary" type="button">Calculate quote and find times</button>
+      </section>
+
+      <section id="quote-section" hidden>
+        <div class="section-heading"><span>2</span><div><h2>Choose an available time</h2><p>Only times that fit the complete estimated job are shown.</p></div></div>
+        <div id="quote-summary" class="quote-summary" aria-live="polite"></div>
+        <div id="duration-note" class="duration-note"></div>
+        <div id="slot-fields" class="two-col">
+          <label class="field"><span>Available day</span><select id="day-select" required></select></label>
+          <label class="field"><span>Start time</span><select id="time-select" required></select></label>
+        </div>
+      </section>
+
+      <section id="contact-section" hidden>
+        <div class="section-heading"><span>3</span><div><h2>Test the submission</h2><p>These details are validated but never stored.</p></div></div>
+        <div class="two-col">
+          <label class="field"><span>Name</span><input name="name" type="text" value="Test Customer" required></label>
+          <label class="field"><span>Phone</span><input name="phone" type="tel" value="406-555-0100" required></label>
+        </div>
+        <label class="field"><span>Email <small>optional</small></span><input name="email" type="email" value="test@example.com"></label>
+        <button class="primary" type="submit">Submit test booking</button>
+      </section>
+
+      <div id="form-status" class="status" aria-live="polite"></div>
+    </form>
+  </main>
+</body>
+</html>
