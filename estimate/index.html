@@ -7,6 +7,8 @@
 <meta name="description" content="Request a window cleaning quote in the Flathead Valley. Tell us about your home, we'll get back to you within 24 hours with a price range.">
 <link rel="canonical" href="https://ocsllc.services/estimate/">
 <meta name="theme-color" content="#0CC0DF">
+<link rel="icon" type="image/png" href="/assets/icon-192.png?v=ocs-logo-20260727">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=ocs-logo-20260727">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="OCS LLC">
 <meta property="og:locale" content="en_US">
@@ -257,21 +259,26 @@ textarea{min-height:70px;resize:vertical}
           <button class="estimate-submit" type="submit">Send estimate request</button>
         </div>
         <div class="self-booking" data-self-booking hidden>
-          <p class="self-booking-eyebrow">Optional next step</p>
-          <h3>Choose an available time</h3>
+          <div class="self-booking-head">
+            <span class="self-booking-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/><path d="m9 16 2 2 4-4"/></svg></span>
+            <div><p class="self-booking-eyebrow" data-self-booking-eyebrow>Schedule your cleaning</p><h3 data-self-booking-heading>Pick a time that works</h3></div>
+          </div>
           <p class="self-booking-duration" data-self-booking-duration></p>
+          <p class="self-booking-explainer">Times are checked against the live OCS calendar and sized to the reservation shown above.</p>
           <div class="self-booking-fields" data-self-booking-fields hidden>
             <label>
-              <span>Choose a day</span>
+              <span class="self-booking-label"><b>1</b> Day</span>
               <input type="date" data-self-booking-day aria-label="Choose a booking day">
             </label>
             <label>
-              <span>Start time</span>
+              <span class="self-booking-label"><b>2</b> Start time</span>
               <select data-self-booking-time aria-label="Available start time"></select>
             </label>
           </div>
-          <button class="self-booking-submit" type="button" data-self-booking-submit hidden>Request this time</button>
+          <p class="self-booking-summary" data-self-booking-summary aria-live="polite" hidden></p>
+          <button class="self-booking-submit" type="button" data-self-booking-submit hidden>Choose a time to continue</button>
           <p class="self-booking-status" data-self-booking-status aria-live="polite"></p>
+          <p class="self-booking-fineprint">Times are shown in Mountain Time. No payment is required to request a time.</p>
         </div>
       </div>
     </form>
