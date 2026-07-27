@@ -96,7 +96,7 @@
   findButton.addEventListener("click", async function () {
     currentBooking = bookingPayload();
     if (!currentBooking.sqft && !currentBooking.paneCount) {
-      setStatus("Enter square footage or a pane count first.", "error");
+      setStatus("Enter square footage or the number of pieces of glass first.", "error");
       return;
     }
     findButton.disabled = true;

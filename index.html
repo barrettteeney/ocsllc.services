@@ -608,10 +608,10 @@
             <input class="q-input" type="number" name="sqft" min="200" step="50" placeholder="Example: 2200" inputmode="numeric">
           </div>
           <div class="q-field">
-            <span class="q-label" style="font-size:0.9rem">Roughly how many panes?</span>
+            <span class="q-label" style="font-size:0.9rem">Roughly how many pieces of glass?</span>
             <div class="q-chip-row" data-pane-options></div>
-            <p class="q-hint" data-pane-note>Pick a home size above and we&rsquo;ll suggest common pane-count ranges.</p>
-            <input class="q-input" type="number" name="panes" min="1" step="1" placeholder="Or enter an exact count" inputmode="numeric" style="margin-top:0.6rem">
+            <p class="q-hint" data-pane-note>Pick a home size above and we&rsquo;ll show the typical number of pieces of glass.</p>
+            <input class="q-input" type="number" name="panes" min="1" step="1" placeholder="Or enter the exact number of pieces of glass" inputmode="numeric" style="margin-top:0.6rem">
           </div>
         </div>
 
@@ -619,22 +619,10 @@
         <div class="q-step" data-step="2">
           <span class="q-label">Screens to clean?</span>
           <div class="q-chip-row" data-screen-options></div>
-          <p class="q-hint" data-screen-note>Choose no screens if you don&rsquo;t want screens cleaned.</p>
-          <input class="q-input" type="number" name="screens" min="0" step="1" placeholder="Or enter an exact count" inputmode="numeric" style="margin-top:0.6rem">
+          <p class="q-hint" data-screen-note>Pick a home size above and we&rsquo;ll show the typical number of screens.</p>
+          <input class="q-input" type="number" name="screens" min="0" step="1" placeholder="Or enter the exact number of screens" inputmode="numeric" style="margin-top:0.6rem">
 
-          <div class="q-field q-two">
-            <label>
-              <span class="q-label" style="font-size:0.9rem">Town</span>
-              <select class="q-select" name="town">
-                <option value="">Choose one</option>
-                <option>Kalispell</option>
-                <option>Whitefish</option>
-                <option>Columbia Falls</option>
-                <option>Bigfork</option>
-                <option>Lakeside</option>
-                <option>Other Flathead Valley</option>
-              </select>
-            </label>
+          <div class="q-field">
             <label>
               <span class="q-label" style="font-size:0.9rem">Last professional clean</span>
               <select class="q-select" name="last_cleaned">
@@ -652,7 +640,7 @@
               <label class="q-check"><input type="checkbox" name="stories" value="Yes"><span>Two or more stories</span></label>
               <label class="q-check"><input type="checkbox" name="hard_water" value="Yes"><span>Hard water or sprinkler spots</span></label>
               <label class="q-check"><input type="checkbox" name="post_construction" value="Yes"><span>Post-construction cleanup</span></label>
-              <label class="q-check"><input type="checkbox" name="french" value="Yes"><span>French / divided-light panes</span></label>
+              <label class="q-check"><input type="checkbox" name="french" value="Yes"><span>French / divided-light glass</span></label>
               <label class="q-check"><input type="checkbox" name="photos_available" value="Yes"><span>I can text photos</span></label>
             </div>
           </div>
