@@ -548,14 +548,24 @@
   }
 
   /* ---------- Glass/screen suggestion chips ---------- */
-  function setCountChoice(name, value, label) {
+  function countRange(label) {
+    return label.replace(/\s+(pieces of glass|screens)$/, "");
+  }
+  function countChoiceLabels(name, option, index) {
+    if (name === "screens" && index === 0) return { display: "No screens", stored: "No screens" };
+    var aboutIndex = name === "panes" ? 1 : 2;
+    if (index === aboutIndex) return { display: "About " + countRange(option.label), stored: "About " + option.label };
+    var direction = index < aboutIndex ? "Fewer" : "More";
+    return { display: direction, stored: direction + " · " + option.label };
+  }
+  function setCountChoice(name, value, storedLabel, displayLabel) {
     if (form.elements[name]) form.elements[name].value = "";
     chipValues[name] = value;
     if (name === "screens") chipExplicit.screens = true;
-    setChipPlaceholder(name, label);
-    setHiddenValue(name === "panes" ? "pane_range" : "screen_range", label);
+    setChipPlaceholder(name, displayLabel || storedLabel);
+    setHiddenValue(name === "panes" ? "pane_range" : "screen_range", storedLabel);
     form.querySelectorAll('[data-count-name="' + name + '"]').forEach(function (button) {
-      button.classList.toggle("is-active", button.getAttribute("data-count-label") === label);
+      button.classList.toggle("is-active", button.getAttribute("data-count-label") === storedLabel);
     });
   }
   function renderCountOptions() {
@@ -570,19 +580,14 @@
       wrap.innerHTML = "";
       if (!options || !options.length) return;
       options.forEach(function (option, index) {
-        var prefixes = name === "panes"
-          ? ["Fewer than average", "About average", "More than average"]
-          : ["No screens", "Fewer than average", "About average", "More than average"];
-        var displayLabel = name === "screens" && index === 0
-          ? "No screens"
-          : (prefixes[index] || "Closest match") + " · " + option.label;
+        var labels = countChoiceLabels(name, option, index);
         var button = document.createElement("button");
         button.type = "button";
         button.className = "q-chip";
         button.setAttribute("data-count-name", name);
-        button.setAttribute("data-count-label", displayLabel);
-        button.textContent = displayLabel;
-        button.addEventListener("click", function () { setCountChoice(name, option.value, displayLabel); });
+        button.setAttribute("data-count-label", labels.stored);
+        button.textContent = labels.display;
+        button.addEventListener("click", function () { setCountChoice(name, option.value, labels.stored, labels.display); });
         wrap.appendChild(button);
       });
     }
@@ -590,14 +595,14 @@
     if (!tier) {
       if (paneWrap) paneWrap.innerHTML = "";
       if (screenWrap) screenWrap.innerHTML = "";
-      if (paneNote) paneNote.textContent = "Pick a home size above and we’ll show the typical number of pieces of glass.";
-      if (screenNote) screenNote.textContent = "Pick a home size above and we’ll show the typical number of screens.";
+      if (paneNote) paneNote.textContent = "Choose a home size for a typical range.";
+      if (screenNote) screenNote.textContent = "We’ll suggest a typical range.";
       return;
     }
     var typicalGlass = tier.panes[1] || tier.panes[0];
     var typicalScreens = tier.screens[2] || tier.screens[1];
-    if (paneNote) paneNote.textContent = "A " + tier.sqftLabel + " home generally has " + typicalGlass.label + ". Do you think yours has fewer, about this many, or more?";
-    if (screenNote) screenNote.textContent = "For a home with about " + typicalGlass.label + ", " + typicalScreens.label + " is typical. Choose no screens, fewer, about this many, or more.";
+    if (paneNote) paneNote.textContent = "Typical for this home size: " + typicalGlass.label + ".";
+    if (screenNote) screenNote.textContent = "Typical for this home size: " + typicalScreens.label + ".";
     paint(paneWrap, "panes", tier.panes);
     paint(screenWrap, "screens", tier.screens);
 
@@ -630,8 +635,8 @@
      * A hand-typed count always blocks the default. */
     if (middlePane && form.elements.panes && !form.elements.panes.value) {
       chipValues.panes = middlePane.value;
-      setHiddenValue("pane_range", "About average · " + middlePane.label);
-      setChipPlaceholder("panes", "About average · " + middlePane.label);
+      setHiddenValue("pane_range", "About " + middlePane.label);
+      setChipPlaceholder("panes", "About " + countRange(middlePane.label));
     }
     if (noScreens && form.elements.screens && !form.elements.screens.value && !chipExplicit.screens) {
       chipValues.screens = noScreens.value;
