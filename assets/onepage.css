@@ -523,7 +523,11 @@ section { padding: clamp(4rem, 6vw + 1.5rem, 7rem) 0; position: relative; }
 }
 .q-next-steps b { color: var(--ink); display: block; margin-bottom: 0.3rem; }
 .q-next-steps p { color: var(--muted); font-size: 0.9rem; margin: 0; }
-.q-result-ctas { display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap; }
+.q-result-ctas {
+  display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap;
+  margin-top: 1.25rem; padding-top: 1.15rem; border-top: 1px solid var(--line);
+}
+.q-result-ctas-label { flex: 0 0 100%; color: var(--muted); font-size: 0.84rem; font-weight: 700; }
 .q-result-ctas a {
   text-decoration: none; font-weight: 750; padding: 0.75rem 1.5rem; border-radius: 999px; font-size: 0.95rem;
 }
@@ -531,7 +535,7 @@ section { padding: clamp(4rem, 6vw + 1.5rem, 7rem) 0; position: relative; }
 .q-result-ctas .cta-text { border: 2px solid var(--line); color: var(--ink); }
 .q-result-ctas .cta-text:hover { border-color: var(--cyan); }
 .q-fineprint { font-size: 0.78rem; color: var(--faint); margin-top: 1.1rem; }
-.q-submit-note { font-size: 0.85rem; margin-top: 0.8rem; }
+.q-submit-note { font-size: 0.85rem; margin: 0.9rem 0 0; }
 .q-submit-note.ok { color: var(--success); }
 .q-submit-note.err { color: var(--error-text); font-weight: 600; }
 .q-oversize-badge {
