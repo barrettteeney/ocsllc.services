@@ -81,6 +81,9 @@
     var slotsByDay = {};
     var selectedDayISO = "";
     var selectedSlot = null;
+    var nextFromISO = null;
+    var renderedDays = {};
+    var moreChip = null;
 
     panel.hidden = false;
     fields.hidden = true;
@@ -133,9 +136,69 @@
       updateSelection();
     }
 
+    function updateMoreChip() {
+      if (moreChip) { moreChip.remove(); moreChip = null; }
+      if (!nextFromISO) return;
+      moreChip = document.createElement("button");
+      moreChip.type = "button";
+      moreChip.className = "self-booking-day self-booking-day-more";
+      var caption = document.createElement("span");
+      caption.textContent = "Later";
+      var arrow = document.createElement("small");
+      arrow.textContent = "dates \u2192";
+      moreChip.appendChild(caption);
+      moreChip.appendChild(arrow);
+      moreChip.onclick = loadMoreDays;
+      daysWrap.appendChild(moreChip);
+    }
+
+    function loadMoreDays() {
+      if (!nextFromISO || !moreChip) return;
+      moreChip.disabled = true;
+      moreChip.firstChild.textContent = "Loading";
+      var payload = {};
+      for (var key in options.booking) payload[key] = options.booking[key];
+      payload.fromDateISO = nextFromISO;
+      requestJson("/api/booking/availability", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(function (response) {
+        nextFromISO = response.nextFromDateISO || null;
+        appendDays(response.days || []);
+        updateMoreChip();
+        var lastChip = daysWrap.querySelector(".self-booking-day:nth-last-child(" + (nextFromISO ? 2 : 1) + ")");
+        if (lastChip && lastChip.scrollIntoView) {
+          try { lastChip.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "end" }); } catch (e) { /* optional */ }
+        }
+      }).catch(function (error) {
+        updateMoreChip();
+        setStatus(panel, friendlyError(error) + " You can still call or text (406) 607-2151.", "error");
+      });
+    }
+
+    function appendDays(days) {
+      days.forEach(function (day) {
+        if (renderedDays[day.dateISO]) return;
+        renderedDays[day.dateISO] = true;
+        slotsByDay[day.dateISO] = day.slots || [];
+        daysWrap.appendChild(makeDayChip(day));
+      });
+    }
+
     function renderDays(days) {
       daysWrap.innerHTML = "";
+      renderedDays = {};
+      moreChip = null;
       days.forEach(function (day) {
+        renderedDays[day.dateISO] = true;
+        daysWrap.appendChild(makeDayChip(day));
+      });
+      updateMoreChip();
+    }
+
+    function makeDayChip(day) {
+      return (function (day) {
         var date = dayParts(day.dateISO);
         var chip = document.createElement("button");
         chip.type = "button";
@@ -153,8 +216,8 @@
         chip.appendChild(weekday);
         chip.appendChild(dateLabel);
         chip.onclick = function () { selectDay(day.dateISO); };
-        daysWrap.appendChild(chip);
-      });
+        return chip;
+      })(day);
     }
 
     function refreshSlotsForDay(dateISO, message) {
@@ -228,6 +291,7 @@
         }
 
         days.forEach(function (day) { slotsByDay[day.dateISO] = day.slots || []; });
+        nextFromISO = response.nextFromDateISO || null;
         renderDays(days);
         panel.setAttribute("aria-busy", "false");
         fields.hidden = false;
