@@ -18,7 +18,7 @@
     },
     {
       max: 2000,
-      both: 0.17,
+      both: 0.16,
       ext: 0.10,
       sqftLabel: "1,001-2,000 sqft",
       panes: [
@@ -35,8 +35,8 @@
     },
     {
       max: 3000,
-      both: 0.19,
-      ext: 0.11,
+      both: 0.17,
+      ext: 0.10,
       sqftLabel: "2,001-3,000 sqft",
       panes: [
         { label: "20-28 panes", value: 24 },
@@ -52,8 +52,8 @@
     },
     {
       max: 4000,
-      both: 0.21,
-      ext: 0.13,
+      both: 0.18,
+      ext: 0.11,
       sqftLabel: "3,001-4,000 sqft",
       panes: [
         { label: "30-38 panes", value: 34 },
@@ -69,8 +69,8 @@
     },
     {
       max: 5000,
-      both: 0.23,
-      ext: 0.14,
+      both: 0.19,
+      ext: 0.11,
       sqftLabel: "4,001-5,000 sqft",
       panes: [
         { label: "40-50 panes", value: 45 },
@@ -86,8 +86,8 @@
     },
     {
       max: 6000,
-      both: 0.25,
-      ext: 0.15,
+      both: 0.20,
+      ext: 0.12,
       sqftLabel: "5,001-6,000 sqft",
       panes: [
         { label: "50-65 panes", value: 58 },
@@ -103,8 +103,8 @@
     },
     {
       max: 7000,
-      both: 0.27,
-      ext: 0.16,
+      both: 0.21,
+      ext: 0.13,
       sqftLabel: "6,001-7,000 sqft",
       panes: [
         { label: "60-78 panes", value: 69 },
@@ -120,8 +120,8 @@
     },
     {
       max: 8000,
-      both: 0.29,
-      ext: 0.17,
+      both: 0.22,
+      ext: 0.13,
       sqftLabel: "7,001-8,000 sqft",
       panes: [
         { label: "70-90 panes", value: 80 },

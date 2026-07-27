@@ -2,6 +2,8 @@
 
 **Status:** Live as of May 2026. Reflects exactly what the booking form at `ocsllc.services` (homepage form + `/estimate/` page) calculates on the customer's screen.
 
+**Rates revised 2026-07-27:** square-foot tier rates lowered (tiers 2–8, both service types). Tier 1 ($0.15 / $0.09), per-pane rates, screens, surcharges, and the $150 minimum are unchanged.
+
 **Where this lives in code:** `index.html` and `estimate/index.html`, inside the embedded quote-form `<script>` blocks. Constants are at the top of the IIFE; calculation flow is in `compute()`.
 
 ---
@@ -11,12 +13,14 @@
 | Tier | Home size | Rate per sqft |
 |------|-----------|---------------|
 | 1 | ≤ 1,000 sqft | $0.15 |
-| 2 | 1,001 – 2,000 sqft | $0.17 |
-| 3 | 2,001 – 3,000 sqft | $0.19 |
-| 4 | 3,001 – 4,000 sqft | $0.21 |
-| 5 | 4,001 – 5,000 sqft | $0.23 |
-| 6 | 5,001 – 6,000 sqft | $0.25 |
-| — | Over 6,000 sqft | In-person quote required (form blocks online booking and shows call/text CTAs) |
+| 2 | 1,001 – 2,000 sqft | $0.16 |
+| 3 | 2,001 – 3,000 sqft | $0.17 |
+| 4 | 3,001 – 4,000 sqft | $0.18 |
+| 5 | 4,001 – 5,000 sqft | $0.19 |
+| 6 | 5,001 – 6,000 sqft | $0.20 |
+| 7 | 6,001 – 7,000 sqft | $0.21 |
+| 8 | 7,001 – 8,000 sqft | $0.22 |
+| — | Over 8,000 sqft | Custom confirmed quote required (form collects best sqft/pane/screen ranges; no instant price) |
 
 ## 2. Sqft method — Exterior Only
 
@@ -24,10 +28,12 @@
 |------|-----------|---------------|
 | 1 | ≤ 1,000 sqft | $0.09 |
 | 2 | 1,001 – 2,000 sqft | $0.10 |
-| 3 | 2,001 – 3,000 sqft | $0.11 |
-| 4 | 3,001 – 4,000 sqft | $0.13 |
-| 5 | 4,001 – 5,000 sqft | $0.14 |
-| 6 | 5,001 – 6,000 sqft | $0.15 |
+| 3 | 2,001 – 3,000 sqft | $0.10 |
+| 4 | 3,001 – 4,000 sqft | $0.11 |
+| 5 | 4,001 – 5,000 sqft | $0.11 |
+| 6 | 5,001 – 6,000 sqft | $0.12 |
+| 7 | 6,001 – 7,000 sqft | $0.13 |
+| 8 | 7,001 – 8,000 sqft | $0.13 |
 
 ## 3. Per-pane flat rates (alternate measurement method)
 
@@ -146,14 +152,14 @@ adjust the booking price manually at $2/pane after counting on-site.
 
 ```
 Step 1 — Base:
-  2,816 sqft → Tier 3 → $0.19/sqft (Interior + Exterior)
-  base = 2,816 × $0.19 = $535.04
+  2,816 sqft → Tier 3 → $0.17/sqft (Interior + Exterior)
+  base = 2,816 × $0.17 = $478.72
 
 Step 2 — Surcharges (% against base):
-  2-story:    $535.04 × 0.10 = $53.50
-  Hard water: $535.04 × 0.20 = $107.01
-  surcharge_total = $160.51
-  primary_total   = $535.04 + $160.51 = $695.55
+  2-story:    $478.72 × 0.10 = $47.87
+  Hard water: $478.72 × 0.20 = $95.74
+  surcharge_total = $143.62
+  primary_total   = $478.72 + $143.62 = $622.34
 
 Step 3 — (No flat add-ons in this step.)
 Step 4 — No averaging.
@@ -161,46 +167,46 @@ Step 5 — No screens.
 Step 6 — Above $150 minimum.
 
 Step 7 — Range:
-  low  = round_to_$5($695.55 × 0.85) = $590
-  high = round_to_$5($695.55 × 1.15) = $800
+  low  = round_to_$5($622.34 × 0.85) = $530
+  high = round_to_$5($622.34 × 1.15) = $715
 
-CUSTOMER SEES:        "$590 – $800"
-INTERNAL CALCULATION: $695.55
+CUSTOMER SEES:        "$530 – $715"
+INTERNAL CALCULATION: $622.34
 ```
 
 ### Example B — Real job: 2,328 sqft, Exterior only, 15 screens, no surcharges
 
 ```
-Step 1: 2,328 × $0.11 = $256.08
-Step 2: no surcharges → primary_total = $256.08
+Step 1: 2,328 × $0.10 = $232.80
+Step 2: no surcharges → primary_total = $232.80
 Step 3: no flat add-ons here
 Step 4: no averaging
-Step 5: screens → +15 × $4 = +$60 → total = $316.08
+Step 5: screens → +15 × $4 = +$60 → total = $292.80
 Step 6: above minimum
-Step 7: range = $270 – $365
+Step 7: range = $250 – $335
 
-CUSTOMER SEES:        "$270 – $365"
-INTERNAL CALCULATION: $316.08
+CUSTOMER SEES:        "$250 – $335"
+INTERNAL CALCULATION: $292.80
 ```
 
 ### Example C — Single-story, 2,816 sqft, hard water only, Interior + Exterior
 
 ```
-Base:       2,816 × $0.19 = $535.04
-Hard water: $535.04 × 0.20 = $107.01
-Total:      $642.05
-Range:      $545 – $740
+Base:       2,816 × $0.17 = $478.72
+Hard water: $478.72 × 0.20 = $95.74
+Total:      $574.46
+Range:      $490 – $660
 ```
 
 ### Example D — Same home as C but Exterior only with screens
 
 ```
-Base:       2,816 × $0.11 = $309.76
-Hard water: $309.76 × 0.20 = $61.95
-Subtotal:   $371.71
+Base:       2,816 × $0.10 = $281.60
+Hard water: $281.60 × 0.20 = $56.32
+Subtotal:   $337.92
 Screens:    +15 × $4 = $60
-Total:      $431.71
-Range:      $365 – $495
+Total:      $397.92
+Range:      $340 – $460
 ```
 
 ---
@@ -210,11 +216,13 @@ Range:      $365 – $495
 ```javascript
 const SQFT_TIERS = [
   {max:1000, both:0.15, ext:0.09},   // Tier 1
-  {max:2000, both:0.17, ext:0.10},   // Tier 2
-  {max:3000, both:0.19, ext:0.11},   // Tier 3
-  {max:4000, both:0.21, ext:0.13},   // Tier 4
-  {max:5000, both:0.23, ext:0.14},   // Tier 5
-  {max:6000, both:0.25, ext:0.15}    // Tier 6
+  {max:2000, both:0.16, ext:0.10},   // Tier 2
+  {max:3000, both:0.17, ext:0.10},   // Tier 3
+  {max:4000, both:0.18, ext:0.11},   // Tier 4
+  {max:5000, both:0.19, ext:0.11},   // Tier 5
+  {max:6000, both:0.20, ext:0.12},   // Tier 6
+  {max:7000, both:0.21, ext:0.13},   // Tier 7
+  {max:8000, both:0.22, ext:0.13}    // Tier 8
 ];
 
 const PER_PANE        = {ext: 8, both: 14, screen: 4};
