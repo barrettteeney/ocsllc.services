@@ -710,6 +710,7 @@
               <b>What happens next</b>
               <p data-result-next>Choose an available time below, or we’ll text or call you the same day to help schedule it.</p>
             </div>
+            <p class="q-submit-note" data-submit-note aria-live="polite"></p>
             <div class="self-booking" data-self-booking hidden>
               <div class="self-booking-head">
                 <span class="self-booking-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/><path d="m9 16 2 2 4-4"/></svg></span>
@@ -719,12 +720,18 @@
               <p class="self-booking-explainer">Times are checked against the live OCS calendar and sized to the reservation shown above.</p>
               <div class="self-booking-fields" data-self-booking-fields hidden>
                 <label>
-                  <span class="self-booking-label"><b>1</b> Day</span>
-                  <input type="date" data-self-booking-day aria-label="Choose a booking day">
+                  <span class="self-booking-label"><b>1</b> Choose a date</span>
+                  <span class="self-booking-control self-booking-control-date">
+                    <input type="date" data-self-booking-day aria-label="Choose a booking date">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+                  </span>
                 </label>
                 <label>
-                  <span class="self-booking-label"><b>2</b> Start time</span>
-                  <select data-self-booking-time aria-label="Available start time"></select>
+                  <span class="self-booking-label"><b>2</b> Choose a time</span>
+                  <span class="self-booking-control self-booking-control-time">
+                    <select data-self-booking-time aria-label="Available start time"></select>
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 10 5 5 5-5"/></svg>
+                  </span>
                 </label>
               </div>
               <p class="self-booking-summary" data-self-booking-summary aria-live="polite" hidden></p>
@@ -733,10 +740,10 @@
               <p class="self-booking-fineprint">Times are shown in Mountain Time. No payment is required to request a time.</p>
             </div>
             <div class="q-result-ctas">
+              <span class="q-result-ctas-label">Need help scheduling?</span>
               <a class="cta-call" href="tel:+14066072151">Call (406) 607-2151</a>
               <a class="cta-text" href="sms:+14066072151">Text us instead</a>
             </div>
-            <p class="q-submit-note" data-submit-note aria-live="polite"></p>
             <p class="q-fineprint">$150 service minimum · Final price confirmed after an on-site look · 48-hour streak-free guarantee</p>
           </div>
         </div>
