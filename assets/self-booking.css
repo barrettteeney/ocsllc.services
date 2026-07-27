@@ -3,6 +3,11 @@
   display: none !important;
 }
 
+.self-booking,
+.self-booking * {
+  box-sizing: border-box;
+}
+
 .self-booking {
   margin-top: 1.25rem;
   padding: clamp(1rem, 3vw, 1.4rem);
@@ -11,6 +16,27 @@
   background: rgba(12, 192, 223, 0.07);
   color: inherit;
   text-align: left;
+}
+
+.self-booking-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.self-booking-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #0cc0df;
+  color: #062b32;
+}
+
+.self-booking-icon svg {
+  width: 21px;
+  height: 21px;
 }
 
 .self-booking-eyebrow {
@@ -35,12 +61,42 @@
   line-height: 1.55;
 }
 
+.self-booking-duration {
+  padding: 0.75rem 0.85rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(12, 192, 223, 0.2);
+  font-weight: 650;
+}
+
+.self-booking-duration.is-full-day {
+  border-color: rgba(236, 178, 46, 0.55);
+  background: #fff8e8;
+}
+
+.self-booking-duration.is-multiday {
+  color: #684708;
+  border-color: rgba(236, 178, 46, 0.75);
+}
+
+.self-booking-explainer,
+.self-booking-fineprint {
+  margin: 0.55rem 0 0;
+  color: #52606d;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
 .self-booking-status {
   font-weight: 650;
 }
 
 .self-booking-status.is-error {
   color: #b42318;
+}
+
+.self-booking-status.is-notice {
+  color: #76520b;
 }
 
 .self-booking-status.is-success {
@@ -59,6 +115,23 @@
   gap: 0.4rem;
   min-width: 0;
   font-weight: 750;
+}
+
+.self-booking-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.self-booking-label b {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #1d1c1d;
+  color: #fff;
+  font-size: 0.73rem;
 }
 
 .self-booking-fields select,
@@ -86,6 +159,15 @@
   cursor: pointer;
 }
 
+.self-booking-summary {
+  margin: 0.75rem 0 0;
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba(100, 116, 139, 0.28);
+  font-weight: 750;
+}
+
 .self-booking-submit:hover {
   filter: brightness(0.96);
 }
@@ -98,8 +180,12 @@
 }
 
 .self-booking-submit:disabled {
-  cursor: wait;
+  cursor: not-allowed;
   opacity: 0.65;
+}
+
+.self-booking-submit.is-loading {
+  cursor: wait;
 }
 
 @media (max-width: 620px) {

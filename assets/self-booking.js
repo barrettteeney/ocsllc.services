@@ -22,6 +22,22 @@
     status.textContent = text || "";
   }
 
+  function friendlyError(error) {
+    if (!error || !error.status) return "We couldn’t reach the live calendar. Please try again.";
+    if (error.status === 429) return "The calendar is busy right now. Wait a moment, then try again.";
+    return error.message || "The booking request could not be completed.";
+  }
+
+  function formatDay(dateISO) {
+    var parts = String(dateISO || "").split("-").map(Number);
+    if (parts.length !== 3 || !parts[0] || !parts[1] || !parts[2]) return "";
+    return new Intl.DateTimeFormat("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric"
+    }).format(new Date(parts[0], parts[1] - 1, parts[2], 12));
+  }
+
   function requestJson(path, options) {
     return fetch(CRM_BASE + path, options).then(function (response) {
       return response.json().catch(function () { return {}; }).then(function (body) {
@@ -46,13 +62,32 @@
     var timeSelect = panel.querySelector("[data-self-booking-time]");
     var submit = panel.querySelector("[data-self-booking-submit]");
     var duration = panel.querySelector("[data-self-booking-duration]");
+    var summary = panel.querySelector("[data-self-booking-summary]");
+    var eyebrow = panel.querySelector("[data-self-booking-eyebrow]");
+    var heading = panel.querySelector("[data-self-booking-heading]");
     var bookingKey = createKey("booking");
     var slotRequestId = 0;
+    var selectedSummary = "";
+    var reservationIsMultiDay = false;
 
     panel.hidden = false;
     fields.hidden = true;
     submit.hidden = true;
-    setStatus(panel, "Checking the calendar for times that fit your quoted job…");
+    panel.setAttribute("aria-busy", "true");
+    setStatus(panel, "Loading the next available options…");
+
+    function updateSelection() {
+      var selected = timeSelect.options[timeSelect.selectedIndex];
+      selectedSummary = dayInput.value && timeSelect.value && selected
+        ? formatDay(dayInput.value) + " at " + selected.textContent
+        : "";
+      if (summary) {
+        summary.hidden = !selectedSummary;
+        summary.textContent = selectedSummary ? "You’re requesting " + selectedSummary + "." : "";
+      }
+      submit.disabled = !selectedSummary;
+      submit.textContent = selectedSummary ? "Request " + selected.textContent : "Choose a time to continue";
+    }
 
     function renderTimes(slots) {
       timeSelect.innerHTML = "";
@@ -69,26 +104,28 @@
         timeSelect.appendChild(option);
       });
       timeSelect.disabled = !slots.length;
-      submit.disabled = !timeSelect.value;
+      updateSelection();
     }
 
     timeSelect.onchange = function () {
-      submit.disabled = !timeSelect.value;
+      updateSelection();
+      if (timeSelect.value) setStatus(panel, "Review the time below, then send your request.");
     };
 
     function loadSlotsForDay(message) {
       if (!dayInput.value) {
         renderTimes([]);
         submit.disabled = true;
-        setStatus(panel, "Choose a date to see every available start time.");
+        setStatus(panel, "Choose a day to see the start times that fit your job.");
         return Promise.resolve();
       }
 
       var requestId = ++slotRequestId;
       timeSelect.disabled = true;
       submit.disabled = true;
-      submit.textContent = "Request this time";
-      setStatus(panel, message || "Checking every available time for that date…");
+      submit.textContent = "Checking times…";
+      panel.setAttribute("aria-busy", "true");
+      setStatus(panel, message || "Checking that day against the live calendar…");
       return requestJson("/api/booking/slots", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -97,40 +134,52 @@
         if (requestId !== slotRequestId) return;
         var slots = response.slots || [];
         renderTimes(slots);
+        panel.setAttribute("aria-busy", "false");
         fields.hidden = false;
         submit.hidden = false;
         if (!slots.length) {
-          setStatus(panel, "No times fit this job on that date. Choose another day from the calendar.", "error");
+          setStatus(panel, "That day is full for a job this size. Try another day.", "notice");
           return;
         }
-        setStatus(panel, "Choose any available start time shown for this date.");
+        setStatus(panel, reservationIsMultiDay
+          ? slots.length + " start time" + (slots.length === 1 ? " can" : "s can") + " begin your reserved work day on this date."
+          : slots.length + " start time" + (slots.length === 1 ? " fits" : "s fit") + " your complete job on this day.");
       }).catch(function (error) {
         if (requestId !== slotRequestId) return;
         renderTimes([]);
-        setStatus(panel, error.message + " You can still call or text (406) 607-2151.", "error");
+        panel.setAttribute("aria-busy", "false");
+        setStatus(panel, friendlyError(error) + " You can still call or text (406) 607-2151.", "error");
       });
     }
 
     function loadAvailability(message) {
       fields.hidden = true;
       submit.hidden = true;
-      setStatus(panel, message || "Checking the calendar for times that fit your quoted job…");
+      panel.setAttribute("aria-busy", "true");
+      setStatus(panel, message || "Loading the next available options…");
       return requestJson("/api/booking/availability", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(options.booking)
       }).then(function (response) {
-        duration.textContent = response.quote && response.quote.durationNote
-          ? response.quote.durationNote
+        var quote = response.quote || {};
+        reservationIsMultiDay = !!quote.mayTakeMultipleDays;
+        duration.textContent = quote.durationNote
+          ? quote.durationNote
           : "Available times are sized to the estimated work in your quote.";
+        duration.className = "self-booking-duration"
+          + (quote.fullDay ? " is-full-day" : "")
+          + (quote.mayTakeMultipleDays ? " is-multiday" : "");
 
-        if (response.quote && response.quote.requiresInPerson) {
+        if (quote.requiresInPerson) {
+          panel.setAttribute("aria-busy", "false");
           setStatus(panel, "This project needs a custom confirmed quote before scheduling. We’ll contact you directly.");
           return;
         }
 
         var days = response.days || [];
         if (!days.length) {
+          panel.setAttribute("aria-busy", "false");
           setStatus(panel, "No online times currently fit this job. Call or text (406) 607-2151 and we’ll find a time with you.", "error");
           return;
         }
@@ -142,16 +191,17 @@
         dayInput.value = days[0].dateISO;
         renderTimes(days[0].slots || []);
         dayInput.onchange = function () { loadSlotsForDay(); };
+        panel.setAttribute("aria-busy", "false");
         fields.hidden = false;
         submit.hidden = false;
-        submit.disabled = !timeSelect.value;
-        submit.textContent = "Request this time";
-        setStatus(panel, "Choose any date in the calendar, then select an available start time.");
+        updateSelection();
+        setStatus(panel, "Next available day selected. Pick a start time or choose another day.");
       }).catch(function (error) {
         if (error.body && error.body.quote && error.body.quote.durationNote) {
           duration.textContent = error.body.quote.durationNote;
         }
-        setStatus(panel, error.message + " You can still call or text (406) 607-2151.", "error");
+        panel.setAttribute("aria-busy", "false");
+        setStatus(panel, friendlyError(error) + " You can still call or text (406) 607-2151.", "error");
       });
     }
 
@@ -160,7 +210,9 @@
     submit.onclick = function () {
       if (!timeSelect.value) return;
       submit.disabled = true;
-      submit.textContent = "Reserving…";
+      submit.classList.add("is-loading");
+      submit.textContent = "Sending your request…";
+      panel.setAttribute("aria-busy", "true");
       setStatus(panel, "Checking that this time is still available…");
 
       requestJson("/api/booking/submit", {
@@ -176,13 +228,20 @@
           slotStartISO: timeSelect.value
         })
       }).then(function (response) {
+        panel.setAttribute("aria-busy", "false");
+        submit.classList.remove("is-loading");
         fields.hidden = true;
         submit.hidden = true;
-        setStatus(panel, response.message || "Your requested time has been saved.", "success");
+        if (summary) summary.hidden = true;
+        if (eyebrow) eyebrow.textContent = "Request received";
+        if (heading) heading.textContent = selectedSummary || "Your time is saved";
+        setStatus(panel, (response.message || "Your requested time has been saved.") + " No payment was collected.", "success");
       }).catch(function (error) {
-        setStatus(panel, error.message, "error");
+        panel.setAttribute("aria-busy", "false");
+        submit.classList.remove("is-loading");
+        setStatus(panel, friendlyError(error), "error");
         submit.disabled = false;
-        submit.textContent = "Request this time";
+        updateSelection();
         if (error.status === 409 && /time|reserved/i.test(error.message || "")) {
           bookingKey = createKey("booking");
           loadSlotsForDay("That time was just taken. Refreshing this date’s available times…");
