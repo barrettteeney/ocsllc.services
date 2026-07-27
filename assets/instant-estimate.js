@@ -6,14 +6,15 @@
       ext: 0.09,
       sqftLabel: "Up to 1,000 sqft",
       panes: [
-        { label: "6-10 panes", value: 8 },
-        { label: "11-15 panes", value: 13 },
-        { label: "16-20 panes", value: 18 }
+        { label: "6-10 pieces of glass", value: 8 },
+        { label: "11-15 pieces of glass", value: 13 },
+        { label: "16-20 pieces of glass", value: 18 }
       ],
       screens: [
         { label: "No screens", value: 0 },
-        { label: "1-6 screens", value: 4 },
-        { label: "7-12 screens", value: 10 }
+        { label: "1-3 screens", value: 2 },
+        { label: "4-7 screens", value: 6 },
+        { label: "8-12 screens", value: 10 }
       ]
     },
     {
@@ -22,9 +23,9 @@
       ext: 0.10,
       sqftLabel: "1,001-2,000 sqft",
       panes: [
-        { label: "12-18 panes", value: 15 },
-        { label: "19-25 panes", value: 22 },
-        { label: "26-32 panes", value: 29 }
+        { label: "12-18 pieces of glass", value: 15 },
+        { label: "19-25 pieces of glass", value: 22 },
+        { label: "26-32 pieces of glass", value: 29 }
       ],
       screens: [
         { label: "No screens", value: 0 },
@@ -39,9 +40,9 @@
       ext: 0.10,
       sqftLabel: "2,001-3,000 sqft",
       panes: [
-        { label: "20-28 panes", value: 24 },
-        { label: "29-36 panes", value: 33 },
-        { label: "37-45 panes", value: 41 }
+        { label: "20-28 pieces of glass", value: 24 },
+        { label: "29-36 pieces of glass", value: 33 },
+        { label: "37-45 pieces of glass", value: 41 }
       ],
       screens: [
         { label: "No screens", value: 0 },
@@ -56,9 +57,9 @@
       ext: 0.11,
       sqftLabel: "3,001-4,000 sqft",
       panes: [
-        { label: "30-38 panes", value: 34 },
-        { label: "39-48 panes", value: 44 },
-        { label: "49-60 panes", value: 55 }
+        { label: "30-38 pieces of glass", value: 34 },
+        { label: "39-48 pieces of glass", value: 44 },
+        { label: "49-60 pieces of glass", value: 55 }
       ],
       screens: [
         { label: "No screens", value: 0 },
@@ -73,9 +74,9 @@
       ext: 0.11,
       sqftLabel: "4,001-5,000 sqft",
       panes: [
-        { label: "40-50 panes", value: 45 },
-        { label: "51-62 panes", value: 56 },
-        { label: "63-75 panes", value: 69 }
+        { label: "40-50 pieces of glass", value: 45 },
+        { label: "51-62 pieces of glass", value: 56 },
+        { label: "63-75 pieces of glass", value: 69 }
       ],
       screens: [
         { label: "No screens", value: 0 },
@@ -90,9 +91,9 @@
       ext: 0.12,
       sqftLabel: "5,001-6,000 sqft",
       panes: [
-        { label: "50-65 panes", value: 58 },
-        { label: "66-80 panes", value: 73 },
-        { label: "81-100 panes", value: 90 }
+        { label: "50-65 pieces of glass", value: 58 },
+        { label: "66-80 pieces of glass", value: 73 },
+        { label: "81-100 pieces of glass", value: 90 }
       ],
       screens: [
         { label: "No screens", value: 0 },
@@ -107,9 +108,9 @@
       ext: 0.13,
       sqftLabel: "6,001-7,000 sqft",
       panes: [
-        { label: "60-78 panes", value: 69 },
-        { label: "79-96 panes", value: 88 },
-        { label: "97-120 panes", value: 108 }
+        { label: "60-78 pieces of glass", value: 69 },
+        { label: "79-96 pieces of glass", value: 88 },
+        { label: "97-120 pieces of glass", value: 108 }
       ],
       screens: [
         { label: "No screens", value: 0 },
@@ -124,9 +125,9 @@
       ext: 0.13,
       sqftLabel: "7,001-8,000 sqft",
       panes: [
-        { label: "70-90 panes", value: 80 },
-        { label: "91-112 panes", value: 101 },
-        { label: "113-140 panes", value: 126 }
+        { label: "70-90 pieces of glass", value: 80 },
+        { label: "91-112 pieces of glass", value: 101 },
+        { label: "113-140 pieces of glass", value: 126 }
       ],
       screens: [
         { label: "No screens", value: 0 },
@@ -138,7 +139,7 @@
   ];
   var DEFAULT_SQFT_NOTE = "Know the square footage? Enter it above. If not, choose the range your home falls in.";
   var OVERSIZE_SQFT_LABEL = "8,000+ sqft";
-  var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage for the home, then choose the closest pane and screen ranges below.";
+  var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage, then choose the closest pieces-of-glass and screen ranges below.";
   var PER_PANE = { ext: 8, both: 14, screen: 4 };
   var MIN_CHARGE = 150;
 
@@ -200,9 +201,9 @@
       max: Infinity,
       sqftLabel: sqft && sqft > 8000 ? sqft.toLocaleString() + " sqft / 8,000+ home" : OVERSIZE_SQFT_LABEL,
       panes: [
-        makeRange(80, 110, "panes", factor, false, false),
-        makeExplicitRange(paneHigh1 + 1, paneHigh2, "panes", false),
-        makeExplicitRange(paneHigh2 + 1, paneHigh3, "panes", true)
+        makeRange(80, 110, "pieces of glass", factor, false, false),
+        makeExplicitRange(paneHigh1 + 1, paneHigh2, "pieces of glass", false),
+        makeExplicitRange(paneHigh2 + 1, paneHigh3, "pieces of glass", true)
       ],
       screens: [
         { label: "No screens", value: 0 },
@@ -269,16 +270,22 @@
       if (!wrap) return;
       wrap.innerHTML = "";
       if (!options || !options.length) return;
-      options.forEach(function (option) {
+      options.forEach(function (option, index) {
+        var prefixes = name === "panes"
+          ? ["Fewer than average", "About average", "More than average"]
+          : ["No screens", "Fewer than average", "About average", "More than average"];
+        var displayLabel = name === "screens" && index === 0
+          ? "No screens"
+          : (prefixes[index] || "Closest match") + " · " + option.label;
         var button = document.createElement("button");
         button.type = "button";
         button.className = "estimate-chip";
         button.setAttribute("data-count-name", name);
-        button.setAttribute("data-count-label", option.label);
+        button.setAttribute("data-count-label", displayLabel);
         button.setAttribute("data-count-value", String(option.value));
-        button.textContent = option.label;
+        button.textContent = displayLabel;
         button.addEventListener("click", function () {
-          setCountChoice(form, name, option.value, option.label);
+          setCountChoice(form, name, option.value, displayLabel);
         });
         wrap.appendChild(button);
       });
@@ -287,13 +294,15 @@
     if (!tier) {
       if (paneWrap) paneWrap.innerHTML = "";
       if (screenWrap) screenWrap.innerHTML = "";
-      if (paneNote) paneNote.textContent = "Pick a home size above and we will suggest common pane-count ranges.";
-      if (screenNote) screenNote.textContent = "Choose no screens or tap a common range after selecting home size.";
+      if (paneNote) paneNote.textContent = "Pick a home size above and we will show the typical number of pieces of glass.";
+      if (screenNote) screenNote.textContent = "Pick a home size above and we will show the typical number of screens.";
       return;
     }
 
-    if (paneNote) paneNote.textContent = "Common pane-count ranges for " + tier.sqftLabel + ". Choose the closest one.";
-    if (screenNote) screenNote.textContent = "Screen ranges for " + tier.sqftLabel + ". Choose no screens if you do not want screens cleaned.";
+    var typicalGlass = tier.panes[1] || tier.panes[0];
+    var typicalScreens = tier.screens[2] || tier.screens[1];
+    if (paneNote) paneNote.textContent = "A " + tier.sqftLabel + " home generally has " + typicalGlass.label + ". Do you think yours has fewer, about this many, or more?";
+    if (screenNote) screenNote.textContent = "For a home with about " + typicalGlass.label + ", " + typicalScreens.label + " is typical. Choose no screens, fewer, about this many, or more.";
     paint(paneWrap, "panes", tier.panes);
     paint(screenWrap, "screens", tier.screens);
 
@@ -326,7 +335,7 @@
     if (form.elements.hard_water && form.elements.hard_water.checked) flags.push("hard water");
     if (getValue(form, "last_cleaned") === "5+ years" || (form.elements.neglected && form.elements.neglected.checked)) flags.push("5+ years since cleaning");
     if (form.elements.post_construction && form.elements.post_construction.checked) flags.push("post-construction");
-    if (form.elements.french && form.elements.french.checked) flags.push("divided-light panes");
+    if (form.elements.french && form.elements.french.checked) flags.push("divided-light glass");
     if (form.elements.stories && form.elements.stories.checked) flags.push("two or more stories");
     return flags;
   }
@@ -344,20 +353,20 @@
     if (result.sqft && result.panes && !flags.length) {
       return {
         label: "Tighter range",
-        text: "Square footage and pane count are both included.",
+        text: "Square footage and pieces of glass are both included.",
         level: "high"
       };
     }
     if (result.sqft && !flags.length) {
       return {
         label: "Good starting range",
-        text: "Add a pane count or text photos if you want Barrett to tighten it.",
+        text: "Add the number of pieces of glass or text photos if you want Barrett to tighten it.",
         level: "medium"
       };
     }
     return {
       label: "Barrett should confirm",
-      text: flags.length ? "Flagged for " + flags.join(", ") + "." : "A quick review will keep the quote accurate.",
+      text: "We’ll confirm the details you selected before finalizing the quote.",
       level: "review"
     };
   }
@@ -409,7 +418,7 @@
       estimate_service: result ? (result.service === "both" ? "Interior + exterior" : "Exterior only") : "",
       estimate_accuracy: confidence.label,
       estimate_review_flags: result ? getReviewFlags(form, result).join(", ") : "",
-      estimate_notes: result && result.french ? "REVIEW: divided-light/French panes may need manual price adjustment." : ""
+      estimate_notes: result && result.french ? "REVIEW: divided-light/French glass may need manual price adjustment." : ""
     };
 
     Object.keys(fields).forEach(function (name) {
@@ -441,7 +450,7 @@
     if (result.oversized) {
       box.classList.add("is-empty");
       price.textContent = "Custom quote";
-      detail.textContent = "Large homes need Barrett to confirm the final price. Your sqft, pane range, and screen range still help tighten the quote.";
+      detail.textContent = "Large homes need Barrett to confirm the final price. Your sqft, pieces-of-glass range, and screen range still help tighten the quote.";
       return;
     }
 
@@ -451,10 +460,10 @@
     var parts = [];
     parts.push(result.service === "both" ? "Interior + exterior" : "Exterior only");
     if (result.sqft) parts.push(result.sqft.toLocaleString() + " sqft");
-    if (result.panes) parts.push(result.panes + " panes");
+    if (result.panes) parts.push(result.panes + " pieces of glass");
     if (result.screens) parts.push(result.screens + " screens");
-    if (result.averaged) parts.push("sqft + pane count averaged");
-    if (result.french) parts.push("divided panes flagged for review");
+    if (result.averaged) parts.push("sqft + glass count averaged");
+    if (result.french) parts.push("divided-light glass");
     detail.textContent = parts.join(" • ") + ". Final price may change after an on-site look.";
   }
 
@@ -472,7 +481,7 @@
     var noScreens = tier.screens[0];
     if (middlePane) {
       if (form.elements.panes) form.elements.panes.value = String(middlePane.value);
-      setHiddenValue(form, "pane_range", middlePane.label);
+      setHiddenValue(form, "pane_range", "About average · " + middlePane.label);
     }
     if (noScreens && form.elements.screens && !form.elements.screens.value) {
       form.elements.screens.value = String(noScreens.value);
@@ -495,7 +504,7 @@
     var steps = [
       { title: "Service", items: [fieldsets[0]] },
       { title: "Home size", items: [rows[0]] },
-      { title: "Screens + town", items: [rows[1]] },
+      { title: "Screens", items: [rows[1]] },
       { title: "Condition", items: [fieldsets[1]] },
       { title: "Estimate", items: [result, warning] },
       { title: "Contact", items: [rows[2], rows[3], noteWrap] }
@@ -557,7 +566,7 @@
           return false;
         }
         if (!getNumber(form, "sqft") && !getNumber(form, "panes")) {
-          setError("Add a rough home size or pane count so the estimate stays useful.");
+          setError("Add a rough home size or number of pieces of glass so the estimate stays useful.");
           return false;
         }
       }
@@ -617,11 +626,10 @@
     if (data.estimate_service) pieces.push("Service: " + data.estimate_service);
     if (data.sqft_tier) pieces.push("Home size tier: " + data.sqft_tier);
     if (data.sqft) pieces.push("Square footage: " + data.sqft);
-    if (data.pane_range) pieces.push("Pane range: " + data.pane_range);
-    else if (data.panes) pieces.push("Panes: " + data.panes);
+    if (data.pane_range) pieces.push("Pieces of glass range: " + data.pane_range);
+    else if (data.panes) pieces.push("Pieces of glass: " + data.panes);
     if (data.screen_range) pieces.push("Screen range: " + data.screen_range);
     else if (data.screens) pieces.push("Screens: " + data.screens);
-    if (data.town) pieces.push("Town: " + data.town);
     if (data.service_address) pieces.push("Service address: " + data.service_address);
     if (data.last_cleaned) pieces.push("Last cleaned: " + data.last_cleaned);
     if (data.photos_available) pieces.push("Photos available: Yes");
@@ -648,7 +656,7 @@
         phone: data.phone || "",
         email: data.email || "",
         address: data.service_address || "",
-        city: data.town || "",
+        city: "",
         notes: data.message || "",
         company: data._honey || ""
       },
@@ -664,7 +672,7 @@
         screenCount: screenCount,
         frenchPanes: data.french === "Yes",
         plan: "onetime",
-        town: data.town || null,
+        town: null,
         lastCleaned: lastCleaned,
         photosAvailable: data.photos_available === "Yes",
         preferredTiming: data.preferred_timing || null,

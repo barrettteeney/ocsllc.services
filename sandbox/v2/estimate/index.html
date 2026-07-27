@@ -179,31 +179,19 @@ textarea{min-height:70px;resize:vertical}
             </span>
           </label>
           <label>
-            <span class="estimate-label">Pane count</span>
-            <input class="estimate-input" type="number" name="panes" min="1" step="1" inputmode="numeric" placeholder="Example: 32">
-            <span class="estimate-note" data-pane-note>Pick a home size above and we will suggest common pane-count ranges.</span>
-            <span class="estimate-kicker estimate-dynamic-kicker" data-pane-options aria-label="Suggested pane-count ranges"></span>
+            <span class="estimate-label">Pieces of glass</span>
+            <input class="estimate-input" type="number" name="panes" min="1" step="1" inputmode="numeric" placeholder="Or enter the exact number">
+            <span class="estimate-note" data-pane-note>Pick a home size above and we will show the typical number of pieces of glass.</span>
+            <span class="estimate-kicker estimate-dynamic-kicker" data-pane-options aria-label="Suggested pieces-of-glass ranges"></span>
           </label>
         </div>
 
-        <div class="estimate-row">
+        <div class="estimate-row" style="grid-template-columns:1fr">
           <label>
             <span class="estimate-label">Screens to clean</span>
             <input class="estimate-input" type="number" name="screens" min="0" step="1" inputmode="numeric" placeholder="0">
-            <span class="estimate-note" data-screen-note>Choose no screens or tap a common range after selecting home size.</span>
+            <span class="estimate-note" data-screen-note>Pick a home size above and we will show the typical number of screens.</span>
             <span class="estimate-kicker estimate-dynamic-kicker" data-screen-options aria-label="Suggested screen-count ranges"></span>
-          </label>
-          <label>
-            <span class="estimate-label">Town</span>
-            <select class="estimate-select" name="town">
-              <option value="">Choose one</option>
-              <option>Kalispell</option>
-              <option>Whitefish</option>
-              <option>Columbia Falls</option>
-              <option>Bigfork</option>
-              <option>Lakeside</option>
-              <option>Other Flathead Valley</option>
-            </select>
           </label>
         </div>
 
@@ -222,7 +210,7 @@ textarea{min-height:70px;resize:vertical}
             <label class="estimate-check"><input type="checkbox" name="stories" value="Yes">Two or more stories</label>
             <label class="estimate-check"><input type="checkbox" name="hard_water" value="Yes">Hard water or sprinkler spots</label>
             <label class="estimate-check"><input type="checkbox" name="post_construction" value="Yes">Post-construction cleanup</label>
-            <label class="estimate-check"><input type="checkbox" name="french" value="Yes">French/divided-light panes</label>
+            <label class="estimate-check"><input type="checkbox" name="french" value="Yes">French/divided-light glass</label>
             <label class="estimate-check"><input type="checkbox" name="photos_available" value="Yes">I can text photos</label>
           </div>
         </fieldset>
@@ -230,9 +218,9 @@ textarea{min-height:70px;resize:vertical}
         <div class="estimate-result is-empty" data-estimate-result>
           <div class="estimate-result-label">Estimated range</div>
           <div class="estimate-price" data-estimate-price>Enter a size</div>
-          <div class="estimate-detail" data-estimate-detail>Use square footage if you know it. Pane count is optional and helps tighten the range.</div>
+          <div class="estimate-detail" data-estimate-detail>Choose a home size and the closest number of pieces of glass to tighten the range.</div>
         </div>
-        <div class="estimate-warning" data-estimate-warning>Homes over 8,000 sqft get a custom confirmed quote. Keep going with your best sqft, pane range, and screen range so Barrett can price it faster.</div>
+        <div class="estimate-warning" data-estimate-warning>Homes over 8,000 sqft get a custom confirmed quote. Keep going with your best sqft, pieces-of-glass range, and screen range so Barrett can price it faster.</div>
 
         <div class="estimate-row">
           <label>
@@ -279,7 +267,7 @@ textarea{min-height:70px;resize:vertical}
       <p>The range updates instantly while you type. Once you send it, Barrett can confirm details and lock in the exact price.</p>
       <ul>
         <li>$150 minimum service charge.</li>
-        <li>Final price can shift after seeing access, hard water, or divided panes.</li>
+        <li>Final price can shift after seeing access, hard water, or divided-light glass.</li>
         <li>Most Flathead Valley quotes get a same-day reply.</li>
       </ul>
       <div class="quick-contact">
