@@ -719,21 +719,15 @@
               <p class="self-booking-duration" data-self-booking-duration></p>
               <p class="self-booking-explainer">Times are checked against the live OCS calendar and sized to the reservation shown above.</p>
               <div class="self-booking-fields" data-self-booking-fields hidden>
-                <label>
-                  <span class="self-booking-label"><b>1</b> Choose a date</span>
-                  <span class="self-booking-control self-booking-control-date">
-                    <input type="date" data-self-booking-day aria-label="Choose a booking date">
-                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
-                  </span>
-                </label>
-                <label>
-                  <span class="self-booking-label"><b>2</b> Choose a time</span>
-                  <span class="self-booking-control self-booking-control-time">
-                    <select data-self-booking-time aria-label="Available start time"></select>
-                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 10 5 5 5-5"/></svg>
-                  </span>
-                </label>
-              </div>
+            <div class="self-booking-step">
+              <span class="self-booking-label"><b>1</b> Choose a day</span>
+              <div class="self-booking-days" data-self-booking-days role="group" aria-label="Available days"></div>
+            </div>
+            <div class="self-booking-step" data-self-booking-time-step hidden>
+              <span class="self-booking-label"><b>2</b> Choose a time</span>
+              <div class="self-booking-times" data-self-booking-times role="group" aria-label="Available start times"></div>
+            </div>
+          </div>
               <p class="self-booking-summary" data-self-booking-summary aria-live="polite" hidden></p>
               <button class="self-booking-submit" type="button" data-self-booking-submit hidden>Choose a time to continue</button>
               <p class="self-booking-status" data-self-booking-status aria-live="polite"></p>

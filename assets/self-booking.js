@@ -28,14 +28,20 @@
     return error.message || "The booking request could not be completed.";
   }
 
-  function formatDay(dateISO) {
+  function dayParts(dateISO) {
     var parts = String(dateISO || "").split("-").map(Number);
-    if (parts.length !== 3 || !parts[0] || !parts[1] || !parts[2]) return "";
+    if (parts.length !== 3 || !parts[0] || !parts[1] || !parts[2]) return null;
+    return new Date(parts[0], parts[1] - 1, parts[2], 12);
+  }
+
+  function formatDay(dateISO) {
+    var date = dayParts(dateISO);
+    if (!date) return "";
     return new Intl.DateTimeFormat("en-US", {
       weekday: "short",
       month: "short",
       day: "numeric"
-    }).format(new Date(parts[0], parts[1] - 1, parts[2], 12));
+    }).format(date);
   }
 
   function requestJson(path, options) {
@@ -58,17 +64,23 @@
     if (!panel || !options.booking || !options.leadIdempotencyKey) return;
 
     var fields = panel.querySelector("[data-self-booking-fields]");
-    var dayInput = panel.querySelector("[data-self-booking-day]");
-    var timeSelect = panel.querySelector("[data-self-booking-time]");
+    var daysWrap = panel.querySelector("[data-self-booking-days]");
+    var timeStep = panel.querySelector("[data-self-booking-time-step]");
+    var timesWrap = panel.querySelector("[data-self-booking-times]");
     var submit = panel.querySelector("[data-self-booking-submit]");
     var duration = panel.querySelector("[data-self-booking-duration]");
     var summary = panel.querySelector("[data-self-booking-summary]");
     var eyebrow = panel.querySelector("[data-self-booking-eyebrow]");
     var heading = panel.querySelector("[data-self-booking-heading]");
+    if (!fields || !daysWrap || !timesWrap || !submit) return;
+
     var bookingKey = createKey("booking");
     var slotRequestId = 0;
     var selectedSummary = "";
     var reservationIsMultiDay = false;
+    var slotsByDay = {};
+    var selectedDayISO = "";
+    var selectedSlot = null;
 
     panel.hidden = false;
     fields.hidden = true;
@@ -77,66 +89,88 @@
     setStatus(panel, "Loading the next available options…");
 
     function updateSelection() {
-      var selected = timeSelect.options[timeSelect.selectedIndex];
-      selectedSummary = dayInput.value && timeSelect.value && selected
-        ? formatDay(dayInput.value) + " at " + selected.textContent
+      selectedSummary = selectedDayISO && selectedSlot
+        ? formatDay(selectedDayISO) + " at " + selectedSlot.label
         : "";
       if (summary) {
         summary.hidden = !selectedSummary;
         summary.textContent = selectedSummary ? "You’re requesting " + selectedSummary + "." : "";
       }
       submit.disabled = !selectedSummary;
-      submit.textContent = selectedSummary ? "Request " + selected.textContent : "Choose a time to continue";
+      submit.textContent = selectedSlot ? "Request " + selectedSlot.label : "Choose a time to continue";
+    }
+
+    function markActive(wrap, activeValue) {
+      Array.prototype.forEach.call(wrap.children, function (child) {
+        var isActive = child.getAttribute("data-value") === activeValue;
+        child.classList.toggle("is-active", isActive);
+        child.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
     }
 
     function renderTimes(slots) {
-      timeSelect.innerHTML = "";
-      var prompt = document.createElement("option");
-      prompt.value = "";
-      prompt.textContent = slots.length ? "Choose a start time" : "No times available";
-      prompt.disabled = true;
-      prompt.selected = true;
-      timeSelect.appendChild(prompt);
+      timesWrap.innerHTML = "";
       slots.forEach(function (slot) {
-        var option = document.createElement("option");
-        option.value = slot.startISO;
-        option.textContent = slot.label;
-        timeSelect.appendChild(option);
+        var chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "self-booking-time";
+        chip.setAttribute("data-value", slot.startISO);
+        chip.setAttribute("aria-pressed", "false");
+        chip.textContent = slot.label;
+        chip.onclick = function () {
+          selectedSlot = { startISO: slot.startISO, label: slot.label };
+          markActive(timesWrap, slot.startISO);
+          updateSelection();
+          setStatus(panel, "Review the time below, then send your request.");
+        };
+        timesWrap.appendChild(chip);
       });
-      timeSelect.disabled = !slots.length;
+      timeStep.hidden = !slots.length;
+      if (selectedSlot && !slots.some(function (slot) { return slot.startISO === selectedSlot.startISO; })) {
+        selectedSlot = null;
+      }
+      if (selectedSlot) markActive(timesWrap, selectedSlot.startISO);
       updateSelection();
     }
 
-    timeSelect.onchange = function () {
-      updateSelection();
-      if (timeSelect.value) setStatus(panel, "Review the time below, then send your request.");
-    };
+    function renderDays(days) {
+      daysWrap.innerHTML = "";
+      days.forEach(function (day) {
+        var date = dayParts(day.dateISO);
+        var chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "self-booking-day";
+        chip.setAttribute("data-value", day.dateISO);
+        chip.setAttribute("aria-pressed", "false");
+        var weekday = document.createElement("span");
+        weekday.textContent = date
+          ? new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(date)
+          : "";
+        var dateLabel = document.createElement("small");
+        dateLabel.textContent = date
+          ? new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(date)
+          : day.dateISO;
+        chip.appendChild(weekday);
+        chip.appendChild(dateLabel);
+        chip.onclick = function () { selectDay(day.dateISO); };
+        daysWrap.appendChild(chip);
+      });
+    }
 
-    function loadSlotsForDay(message) {
-      if (!dayInput.value) {
-        renderTimes([]);
-        submit.disabled = true;
-        setStatus(panel, "Choose a day to see the start times that fit your job.");
-        return Promise.resolve();
-      }
-
+    function refreshSlotsForDay(dateISO, message) {
       var requestId = ++slotRequestId;
-      timeSelect.disabled = true;
-      submit.disabled = true;
-      submit.textContent = "Checking times…";
       panel.setAttribute("aria-busy", "true");
-      setStatus(panel, message || "Checking that day against the live calendar…");
+      if (message) setStatus(panel, message);
       return requestJson("/api/booking/slots", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ booking: options.booking, dateISO: dayInput.value })
+        body: JSON.stringify({ booking: options.booking, dateISO: dateISO })
       }).then(function (response) {
-        if (requestId !== slotRequestId) return;
+        if (requestId !== slotRequestId || dateISO !== selectedDayISO) return;
         var slots = response.slots || [];
+        slotsByDay[dateISO] = slots;
         renderTimes(slots);
         panel.setAttribute("aria-busy", "false");
-        fields.hidden = false;
-        submit.hidden = false;
         if (!slots.length) {
           setStatus(panel, "That day is full for a job this size. Try another day.", "notice");
           return;
@@ -145,11 +179,20 @@
           ? slots.length + " start time" + (slots.length === 1 ? " can" : "s can") + " begin your reserved work day on this date."
           : slots.length + " start time" + (slots.length === 1 ? " fits" : "s fit") + " your complete job on this day.");
       }).catch(function (error) {
-        if (requestId !== slotRequestId) return;
-        renderTimes([]);
+        if (requestId !== slotRequestId || dateISO !== selectedDayISO) return;
         panel.setAttribute("aria-busy", "false");
         setStatus(panel, friendlyError(error) + " You can still call or text (406) 607-2151.", "error");
       });
+    }
+
+    function selectDay(dateISO, initialMessage) {
+      selectedDayISO = dateISO;
+      selectedSlot = null;
+      markActive(daysWrap, dateISO);
+      renderTimes(slotsByDay[dateISO] || []);
+      if (initialMessage) setStatus(panel, initialMessage);
+      // Always reconcile against the live calendar in the background.
+      refreshSlotsForDay(dateISO);
     }
 
     function loadAvailability(message) {
@@ -184,18 +227,12 @@
           return;
         }
 
-        if (response.bookingWindow) {
-          dayInput.min = response.bookingWindow.minDate || "";
-          dayInput.max = response.bookingWindow.maxDate || "";
-        }
-        dayInput.value = days[0].dateISO;
-        renderTimes(days[0].slots || []);
-        dayInput.onchange = function () { loadSlotsForDay(); };
+        days.forEach(function (day) { slotsByDay[day.dateISO] = day.slots || []; });
+        renderDays(days);
         panel.setAttribute("aria-busy", "false");
         fields.hidden = false;
         submit.hidden = false;
-        updateSelection();
-        setStatus(panel, "Next available day selected. Pick a start time or choose another day.");
+        selectDay(days[0].dateISO, "Next available day selected. Pick a start time or choose another day.");
       }).catch(function (error) {
         if (error.body && error.body.quote && error.body.quote.durationNote) {
           duration.textContent = error.body.quote.durationNote;
@@ -208,7 +245,7 @@
     loadAvailability();
 
     submit.onclick = function () {
-      if (!timeSelect.value) return;
+      if (!selectedSlot) return;
       submit.disabled = true;
       submit.classList.add("is-loading");
       submit.textContent = "Sending your request…";
@@ -225,7 +262,7 @@
           contact: options.contact,
           booking: options.booking,
           leadIdempotencyKey: options.leadIdempotencyKey,
-          slotStartISO: timeSelect.value
+          slotStartISO: selectedSlot.startISO
         })
       }).then(function (response) {
         panel.setAttribute("aria-busy", "false");
@@ -244,7 +281,7 @@
         updateSelection();
         if (error.status === 409 && /time|reserved/i.test(error.message || "")) {
           bookingKey = createKey("booking");
-          loadSlotsForDay("That time was just taken. Refreshing this date’s available times…");
+          refreshSlotsForDay(selectedDayISO, "That time was just taken. Refreshing this date’s available times…");
         }
       });
     };
