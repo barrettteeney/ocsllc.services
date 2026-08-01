@@ -926,8 +926,8 @@
     confEl.textContent = confidence.label + " — " + confidence.text;
 
     var firstName = (getValue("name") || "").trim().split(/\s+/)[0];
-    nextEl.textContent = (firstName ? firstName + ", choose" : "Choose") +
-      " an available time below, or we’ll text or call you the same day to help schedule it.";
+    nextEl.textContent = (firstName ? firstName + ", we’ll" : "We’ll") +
+      " text or call you the same day to confirm your final quote and schedule your cleaning.";
   }
 
   form.addEventListener("submit", function (event) {
@@ -969,7 +969,7 @@
         note.className = "q-submit-note ok";
         note.textContent = "Sent — we have your details and will confirm your final number.";
         fireFormConversion();
-        if (submission.crmOk && window.OCSSelfBooking) {
+        if (submission.crmOk && window.OCSSelfBooking && window.OCSSelfBooking.enabled) {
           var payload = crmLeadPayload(data);
           window.OCSSelfBooking.open(form, {
             contact: payload.contact,
