@@ -2,6 +2,9 @@
   "use strict";
 
   var CRM_BASE = "https://ocs-crm.vercel.app";
+  // Public self-booking is intentionally opt-in while the scheduling
+  // experience is being refined. Quote intake remains available.
+  var PUBLIC_BOOKING_ENABLED = window.OCS_ENABLE_SELF_BOOKING === true;
 
   function createKey(kind) {
     var random = "";
@@ -59,6 +62,7 @@
   }
 
   function open(form, options) {
+    if (!PUBLIC_BOOKING_ENABLED) return;
     options = options || {};
     var panel = form && form.querySelector("[data-self-booking]");
     if (!panel || !options.booking || !options.leadIdempotencyKey) return;
@@ -356,6 +360,7 @@
   }
 
   window.OCSSelfBooking = {
+    enabled: PUBLIC_BOOKING_ENABLED,
     createKey: createKey,
     open: open
   };

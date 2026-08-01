@@ -769,7 +769,7 @@
         status.textContent = "Thanks. We got it and will text or call you back the same day.";
         fireFormConversion();
         var crmOk = results.indexOf("ocs:ok") !== -1;
-        if (crmOk && window.OCSSelfBooking) {
+        if (crmOk && window.OCSSelfBooking && window.OCSSelfBooking.enabled) {
           var payload = crmLeadPayload(data);
           window.OCSSelfBooking.open(form, {
             contact: payload.contact,
