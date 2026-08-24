@@ -352,36 +352,42 @@
    * is collected BEFORE the range is shown, and the lead fires to
    * the same two endpoints as the live estimate page.
    * ============================================================ */
+  var SQFT_RATES = {
+    both: { fewer: 0.09, average: 0.12, more: 0.14 },
+    ext: { fewer: 0.05, average: 0.07, more: 0.08 }
+  };
   var SQFT_TIERS = [
-    { max: 1000, both: 0.15, ext: 0.09, sqftLabel: "Up to 1,000 sqft",
-      panes: [{ label: "6-10 pieces of glass", value: 8 }, { label: "11-15 pieces of glass", value: 13 }, { label: "16-20 pieces of glass", value: 18 }],
+    { max: 1000, fewerMax: 10, moreMin: 19, sqftLabel: "Up to 1,000 sqft",
+      panes: [{ label: "10 or fewer pieces of glass", value: 8 }, { label: "11-18 pieces of glass", value: 15 }, { label: "19 or more pieces of glass", value: 22 }],
       screens: [{ label: "No screens", value: 0 }, { label: "1-3 screens", value: 2 }, { label: "4-7 screens", value: 6 }, { label: "8-12 screens", value: 10 }] },
-    { max: 2000, both: 0.16, ext: 0.10, sqftLabel: "1,001-2,000 sqft",
-      panes: [{ label: "12-18 pieces of glass", value: 15 }, { label: "19-25 pieces of glass", value: 22 }, { label: "26-32 pieces of glass", value: 29 }],
+    { max: 2000, fewerMax: 16, moreMin: 29, sqftLabel: "1,001-2,000 sqft",
+      panes: [{ label: "16 or fewer pieces of glass", value: 13 }, { label: "17-28 pieces of glass", value: 23 }, { label: "29 or more pieces of glass", value: 33 }],
       screens: [{ label: "No screens", value: 0 }, { label: "1-5 screens", value: 3 }, { label: "6-12 screens", value: 9 }, { label: "13-20 screens", value: 16 }] },
-    { max: 3000, both: 0.17, ext: 0.10, sqftLabel: "2,001-3,000 sqft",
-      panes: [{ label: "20-28 pieces of glass", value: 24 }, { label: "29-36 pieces of glass", value: 33 }, { label: "37-45 pieces of glass", value: 41 }],
+    { max: 3000, fewerMax: 20, moreMin: 35, sqftLabel: "2,001-3,000 sqft",
+      panes: [{ label: "20 or fewer pieces of glass", value: 17 }, { label: "21-34 pieces of glass", value: 28 }, { label: "35 or more pieces of glass", value: 42 }],
       screens: [{ label: "No screens", value: 0 }, { label: "1-9 screens", value: 5 }, { label: "10-18 screens", value: 14 }, { label: "19-28 screens", value: 24 }] },
-    { max: 4000, both: 0.18, ext: 0.11, sqftLabel: "3,001-4,000 sqft",
-      panes: [{ label: "30-38 pieces of glass", value: 34 }, { label: "39-48 pieces of glass", value: 44 }, { label: "49-60 pieces of glass", value: 55 }],
+    { max: 4000, fewerMax: 26, moreMin: 45, sqftLabel: "3,001-4,000 sqft",
+      panes: [{ label: "26 or fewer pieces of glass", value: 22 }, { label: "27-44 pieces of glass", value: 36 }, { label: "45 or more pieces of glass", value: 53 }],
       screens: [{ label: "No screens", value: 0 }, { label: "1-14 screens", value: 7 }, { label: "15-25 screens", value: 20 }, { label: "26-38 screens", value: 32 }] },
-    { max: 5000, both: 0.19, ext: 0.11, sqftLabel: "4,001-5,000 sqft",
-      panes: [{ label: "40-50 pieces of glass", value: 45 }, { label: "51-62 pieces of glass", value: 56 }, { label: "63-75 pieces of glass", value: 69 }],
+    { max: 5000, fewerMax: 32, moreMin: 55, sqftLabel: "4,001-5,000 sqft",
+      panes: [{ label: "32 or fewer pieces of glass", value: 27 }, { label: "33-54 pieces of glass", value: 44 }, { label: "55 or more pieces of glass", value: 64 }],
       screens: [{ label: "No screens", value: 0 }, { label: "1-19 screens", value: 10 }, { label: "20-32 screens", value: 26 }, { label: "33-48 screens", value: 40 }] },
-    { max: 6000, both: 0.20, ext: 0.12, sqftLabel: "5,001-6,000 sqft",
-      panes: [{ label: "50-65 pieces of glass", value: 58 }, { label: "66-80 pieces of glass", value: 73 }, { label: "81-100 pieces of glass", value: 90 }],
+    { max: 6000, fewerMax: 38, moreMin: 65, sqftLabel: "5,001-6,000 sqft",
+      panes: [{ label: "38 or fewer pieces of glass", value: 32 }, { label: "39-64 pieces of glass", value: 52 }, { label: "65 or more pieces of glass", value: 75 }],
       screens: [{ label: "No screens", value: 0 }, { label: "1-24 screens", value: 12 }, { label: "25-40 screens", value: 32 }, { label: "41-60 screens", value: 50 }] },
-    { max: 7000, both: 0.21, ext: 0.13, sqftLabel: "6,001-7,000 sqft",
-      panes: [{ label: "60-78 pieces of glass", value: 69 }, { label: "79-96 pieces of glass", value: 88 }, { label: "97-120 pieces of glass", value: 108 }],
+    { max: 7000, fewerMax: 44, moreMin: 75, sqftLabel: "6,001-7,000 sqft",
+      panes: [{ label: "44 or fewer pieces of glass", value: 38 }, { label: "45-74 pieces of glass", value: 60 }, { label: "75 or more pieces of glass", value: 86 }],
       screens: [{ label: "No screens", value: 0 }, { label: "1-29 screens", value: 15 }, { label: "30-48 screens", value: 39 }, { label: "49-72 screens", value: 60 }] },
-    { max: 8000, both: 0.22, ext: 0.13, sqftLabel: "7,001-8,000 sqft",
-      panes: [{ label: "70-90 pieces of glass", value: 80 }, { label: "91-112 pieces of glass", value: 101 }, { label: "113-140 pieces of glass", value: 126 }],
+    { max: 8000, fewerMax: 50, moreMin: 87, sqftLabel: "7,001-8,000 sqft",
+      panes: [{ label: "50 or fewer pieces of glass", value: 44 }, { label: "51-86 pieces of glass", value: 69 }, { label: "87 or more pieces of glass", value: 100 }],
       screens: [{ label: "No screens", value: 0 }, { label: "1-34 screens", value: 17 }, { label: "35-56 screens", value: 45 }, { label: "57-84 screens", value: 70 }] }
   ];
   var DEFAULT_SQFT_NOTE = "Know the square footage? Enter it below. If not, choose the range your home falls in.";
   var OVERSIZE_SQFT_LABEL = "8,000+ sqft";
   var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage, then choose the closest pieces-of-glass and screen ranges.";
-  var PER_PANE = { ext: 8, both: 14, screen: 4 };
+  var PER_PANE = { ext: 7, both: 12, screen: 4 };
+  var FIELD_MINUTES = { ext: 2.5, both: 5, screen: 1.5 };
+  var MIN_EFFECTIVE_HOURLY = 125;
   var MIN_CHARGE = 150;
 
   function money(value) { return "$" + Math.round(value).toLocaleString(); }
@@ -458,11 +464,18 @@
       ]
     };
   }
-  function baseFromSqft(sqft, service) {
+  function densityForGlassCount(sqft, panes) {
+    var tier = SQFT_TIERS.find(function (item) { return sqft <= item.max; });
+    if (!tier || !panes) return "average";
+    if (panes <= tier.fewerMax) return "fewer";
+    if (panes >= tier.moreMin) return "more";
+    return "average";
+  }
+  function baseFromSqft(sqft, service, density) {
     if (!sqft) return 0;
     var tier = SQFT_TIERS.find(function (item) { return sqft <= item.max; });
     if (!tier) return null;
-    return sqft * tier[service];
+    return sqft * SQFT_RATES[service][density || "average"];
   }
   function getTierForSqft(sqft) {
     if (!sqft) return null;
@@ -478,12 +491,15 @@
     if (field) field.value = value || "";
   }
   function withSurcharges(base) {
+    return base + base * surchargePct();
+  }
+  function surchargePct() {
     var pct = 0;
     if (form.elements.stories && form.elements.stories.checked) pct += 0.10;
     if (form.elements.hard_water && form.elements.hard_water.checked) pct += 0.20;
     if (getValue("last_cleaned") === "5+ years") pct += 0.15;
     if (form.elements.post_construction && form.elements.post_construction.checked) pct += 0.25;
-    return base + base * pct;
+    return pct;
   }
   function getReviewFlags(result) {
     var flags = [];
@@ -513,7 +529,8 @@
     var sqft = getNumber("sqft");
     var panes = getNumber("panes");
     var screens = getNumber("screens");
-    var sqftBase = baseFromSqft(sqft, service);
+    var density = densityForGlassCount(sqft, panes);
+    var sqftBase = baseFromSqft(sqft, service, density);
     var paneBase = panes ? panes * PER_PANE[service] : 0;
     var paths = [];
 
@@ -526,6 +543,12 @@
     if (screens) total += screens * PER_PANE.screen;
     if (total < MIN_CHARGE) total = MIN_CHARGE;
 
+    var impliedGlass = panes || (sqftBase ? sqftBase / PER_PANE[service] : 0);
+    var laborMinutes = impliedGlass * FIELD_MINUTES[service] * (1 + surchargePct());
+    laborMinutes += screens * FIELD_MINUTES.screen;
+    var laborFloor = Math.ceil((((laborMinutes / 60) * MIN_EFFECTIVE_HOURLY) / 5)) * 5;
+    if (total < laborFloor) total = laborFloor;
+
     var low = Math.max(MIN_CHARGE, roundTo(total * 0.85, 5));
     var high = roundTo(total * 1.15, 5);
     if (high - low < 25) high = low + 25;
@@ -534,6 +557,8 @@
       low: low, high: high, total: total, service: service,
       sqft: sqft, panes: panes, screens: screens,
       averaged: sqftBase && paneBase,
+      density: density,
+      laborFloor: laborFloor,
       french: !!(form.elements.french && form.elements.french.checked)
     };
   }
