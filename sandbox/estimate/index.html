@@ -163,18 +163,21 @@ textarea{min-height:70px;resize:vertical}
           <label>
             <span class="estimate-label">Home size</span>
             <input class="estimate-input" type="number" name="sqft" min="200" step="50" inputmode="numeric" placeholder="Example: 2200">
-            <span class="estimate-note" data-sqft-note>Know the square footage? Enter it above. If not, choose the range your home falls in.</span>
-            <span class="estimate-kicker" aria-label="Home square-footage tiers">
-              <button class="estimate-chip" type="button" data-sqft-tier-value="500" data-sqft-tier-label="Up to 1,000 sqft">Up to 1,000</button>
-              <button class="estimate-chip" type="button" data-sqft-tier-value="1500" data-sqft-tier-label="1,001-2,000 sqft">1,001-2,000</button>
-              <button class="estimate-chip" type="button" data-sqft-tier-value="2500" data-sqft-tier-label="2,001-3,000 sqft">2,001-3,000</button>
-              <button class="estimate-chip" type="button" data-sqft-tier-value="3500" data-sqft-tier-label="3,001-4,000 sqft">3,001-4,000</button>
-              <button class="estimate-chip" type="button" data-sqft-tier-value="4500" data-sqft-tier-label="4,001-5,000 sqft">4,001-5,000</button>
-              <button class="estimate-chip" type="button" data-sqft-tier-value="5500" data-sqft-tier-label="5,001-6,000 sqft">5,001-6,000</button>
-              <button class="estimate-chip" type="button" data-sqft-tier-value="6500" data-sqft-tier-label="6,001-7,000 sqft">6,001-7,000</button>
-              <button class="estimate-chip" type="button" data-sqft-tier-value="7500" data-sqft-tier-label="7,001-8,000 sqft">7,001-8,000</button>
-              <button class="estimate-chip" type="button" data-sqft-tier-value="6000plus" data-sqft-tier-label="8,000+ sqft" data-sqft-tier-oversize="true">8,000+</button>
-            </span>
+            <span class="estimate-note">Enter the exact size if you know it.</span>
+            <span class="estimate-label" style="margin-top:.8rem">Not sure? Choose a range</span>
+            <select class="estimate-select" data-sqft-tier-select aria-label="Choose a home-size range">
+              <option value="">Select a home-size range</option>
+              <option value="500" data-sqft-tier-label="Up to 1,000 sqft">Up to 1,000 sqft</option>
+              <option value="1500" data-sqft-tier-label="1,001-2,000 sqft">1,001-2,000 sqft</option>
+              <option value="2500" data-sqft-tier-label="2,001-3,000 sqft">2,001-3,000 sqft</option>
+              <option value="3500" data-sqft-tier-label="3,001-4,000 sqft">3,001-4,000 sqft</option>
+              <option value="4500" data-sqft-tier-label="4,001-5,000 sqft">4,001-5,000 sqft</option>
+              <option value="5500" data-sqft-tier-label="5,001-6,000 sqft">5,001-6,000 sqft</option>
+              <option value="6500" data-sqft-tier-label="6,001-7,000 sqft">6,001-7,000 sqft</option>
+              <option value="7500" data-sqft-tier-label="7,001-8,000 sqft">7,001-8,000 sqft</option>
+              <option value="6000plus" data-sqft-tier-label="8,000+ sqft" data-sqft-tier-oversize="true">More than 8,000 sqft</option>
+            </select>
+            <span class="estimate-note" data-sqft-note>Enter the exact size or choose the closest range.</span>
           </label>
           <label>
             <span class="estimate-label">Pieces of glass</span>

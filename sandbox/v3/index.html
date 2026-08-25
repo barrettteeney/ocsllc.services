@@ -455,22 +455,28 @@
         <!-- STEP 2: Home size -->
         <div class="q-step" data-step="1">
           <span class="q-label">How big is the home?</span>
-          <div class="q-chip-row" data-sqft-tiers>
-            <button type="button" class="q-chip" data-sqft-tier-value="500" data-sqft-tier-label="Up to 1,000 sqft">Up to 1,000</button>
-            <button type="button" class="q-chip" data-sqft-tier-value="1500" data-sqft-tier-label="1,001-2,000 sqft">1,001&ndash;2,000</button>
-            <button type="button" class="q-chip" data-sqft-tier-value="2500" data-sqft-tier-label="2,001-3,000 sqft">2,001&ndash;3,000</button>
-            <button type="button" class="q-chip" data-sqft-tier-value="3500" data-sqft-tier-label="3,001-4,000 sqft">3,001&ndash;4,000</button>
-            <button type="button" class="q-chip" data-sqft-tier-value="4500" data-sqft-tier-label="4,001-5,000 sqft">4,001&ndash;5,000</button>
-            <button type="button" class="q-chip" data-sqft-tier-value="5500" data-sqft-tier-label="5,001-6,000 sqft">5,001&ndash;6,000</button>
-            <button type="button" class="q-chip" data-sqft-tier-value="6500" data-sqft-tier-label="6,001-7,000 sqft">6,001&ndash;7,000</button>
-            <button type="button" class="q-chip" data-sqft-tier-value="7500" data-sqft-tier-label="7,001-8,000 sqft">7,001&ndash;8,000</button>
-            <button type="button" class="q-chip" data-sqft-tier-value="6000plus" data-sqft-tier-label="8,000+ sqft" data-sqft-tier-oversize="true">8,000+</button>
-          </div>
-          <p class="q-hint" data-sqft-note>Know the square footage? Enter it below. If not, choose the range your home falls in.</p>
-          <div class="q-field">
-            <span class="q-label" style="font-size:0.9rem">Square footage (if known)</span>
+          <div class="q-field" style="margin-top:0">
+            <span class="q-label" style="font-size:0.9rem">Exact square footage (if known)</span>
             <input class="q-input" type="number" name="sqft" min="200" step="50" placeholder="Example: 2200" inputmode="numeric">
           </div>
+          <div class="q-field" style="margin-top:0.85rem">
+            <label>
+              <span class="q-label" style="font-size:0.9rem">Not sure? Choose a range</span>
+              <select class="q-select" data-sqft-tier-select aria-label="Choose a home-size range">
+                <option value="">Select a home-size range</option>
+                <option value="500" data-sqft-tier-label="Up to 1,000 sqft">Up to 1,000 sqft</option>
+                <option value="1500" data-sqft-tier-label="1,001-2,000 sqft">1,001&ndash;2,000 sqft</option>
+                <option value="2500" data-sqft-tier-label="2,001-3,000 sqft">2,001&ndash;3,000 sqft</option>
+                <option value="3500" data-sqft-tier-label="3,001-4,000 sqft">3,001&ndash;4,000 sqft</option>
+                <option value="4500" data-sqft-tier-label="4,001-5,000 sqft">4,001&ndash;5,000 sqft</option>
+                <option value="5500" data-sqft-tier-label="5,001-6,000 sqft">5,001&ndash;6,000 sqft</option>
+                <option value="6500" data-sqft-tier-label="6,001-7,000 sqft">6,001&ndash;7,000 sqft</option>
+                <option value="7500" data-sqft-tier-label="7,001-8,000 sqft">7,001&ndash;8,000 sqft</option>
+                <option value="6000plus" data-sqft-tier-label="8,000+ sqft" data-sqft-tier-oversize="true">More than 8,000 sqft</option>
+              </select>
+            </label>
+          </div>
+          <p class="q-hint" data-sqft-note>Enter the exact size or choose the closest range.</p>
           <div class="q-field">
             <span class="q-label" style="font-size:0.9rem">Roughly how many pieces of glass?</span>
             <div class="q-chip-row" data-pane-options></div>
