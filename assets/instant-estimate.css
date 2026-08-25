@@ -323,6 +323,46 @@
   box-shadow: 0 0 0 3px rgba(12, 192, 223, .15);
 }
 
+.estimate-range-control {
+  display: block;
+  position: relative;
+}
+
+.estimate-range-control::after {
+  content: "";
+  position: absolute;
+  right: 1.15rem;
+  top: 50%;
+  width: .55rem;
+  height: .55rem;
+  border-right: 2px solid #0CC0DF;
+  border-bottom: 2px solid #0CC0DF;
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.estimate-range-select {
+  appearance: none;
+  -webkit-appearance: none;
+  min-height: 54px;
+  padding-right: 3rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, .04);
+}
+
+.estimate-range-select:hover {
+  border-color: rgba(12, 192, 223, .7);
+  background: #fbfeff;
+}
+
+.estimate-range-select.has-selection {
+  border-color: #0CC0DF;
+  background: #f0fdff;
+  color: #0f172a;
+}
+
 .estimate-textarea {
   min-height: 84px;
   resize: vertical;
