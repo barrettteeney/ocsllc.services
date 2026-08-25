@@ -405,6 +405,10 @@
 
   function setChipPlaceholder(name, label) {
     if (!form.elements[name]) return;
+    if (name === "sqft") {
+      form.elements[name].placeholder = label ? "Or enter exact square footage" : PLACEHOLDERS.sqft;
+      return;
+    }
     form.elements[name].placeholder = label ? "Using " + label + " \u2014 or type an exact number" : PLACEHOLDERS[name];
   }
 
@@ -646,7 +650,10 @@
       button.classList.toggle("is-active", button.getAttribute("data-sqft-tier-value") === String(value));
     });
     var rangeSelect = form.querySelector("[data-sqft-tier-select]");
-    if (rangeSelect && rangeSelect.value !== String(value || "")) rangeSelect.value = String(value || "");
+    if (rangeSelect) {
+      if (rangeSelect.value !== String(value || "")) rangeSelect.value = String(value || "");
+      rangeSelect.classList.toggle("has-selection", Boolean(value));
+    }
     setHiddenValue("sqft_tier", label);
   }
   function setSqftNote(message) {

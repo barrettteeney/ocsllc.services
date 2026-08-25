@@ -16,7 +16,7 @@
   <meta property="og:image" content="https://ocsllc.services/assets/og-v3.png?v=20260628b">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ocsllc.services/">
-  <link rel="stylesheet" href="/assets/onepage.css">
+  <link rel="stylesheet" href="/assets/onepage.css?v=20260825-dropdown-ui">
   <noscript>
     <style>
       /* Progressive-enhancement fallback: show everything, run the form as a plain POST */
@@ -195,7 +195,7 @@
 }
     </script>
   <script defer src="/assets/ads-conversion.js"></script>
-  <script defer src="/assets/onepage.js?v=20260825-home-size"></script>
+  <script defer src="/assets/onepage.js?v=20260825-dropdown-ui"></script>
 </head>
 <body>
 
@@ -596,7 +596,8 @@
           <div class="q-field" style="margin-top:0.85rem">
             <label>
               <span class="q-label" style="font-size:0.9rem">Not sure? Choose a range</span>
-              <select class="q-select" data-sqft-tier-select aria-label="Choose a home-size range">
+              <span class="q-range-control">
+              <select class="q-select q-range-select" data-sqft-tier-select aria-label="Choose a home-size range">
                 <option value="">Select a home-size range</option>
                 <option value="500" data-sqft-tier-label="Up to 1,000 sqft">Up to 1,000 sqft</option>
                 <option value="1500" data-sqft-tier-label="1,001-2,000 sqft">1,001&ndash;2,000 sqft</option>
@@ -608,6 +609,7 @@
                 <option value="7500" data-sqft-tier-label="7,001-8,000 sqft">7,001&ndash;8,000 sqft</option>
                 <option value="6000plus" data-sqft-tier-label="8,000+ sqft" data-sqft-tier-oversize="true">More than 8,000 sqft</option>
               </select>
+              </span>
             </label>
           </div>
           <p class="q-hint" data-sqft-note>Enter the exact size or choose the closest range.</p>

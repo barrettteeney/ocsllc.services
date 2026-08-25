@@ -450,6 +450,19 @@ section { padding: clamp(4rem, 6vw + 1.5rem, 7rem) 0; position: relative; }
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .q-input:focus, .q-select:focus, .q-textarea:focus { border-color: var(--cyan); box-shadow: 0 0 0 4px rgba(12, 192, 223, 0.15); outline: none; }
+.q-range-control { display: block; position: relative; }
+.q-range-control::after {
+  content: ""; position: absolute; right: 1.15rem; top: 50%; width: 0.55rem; height: 0.55rem;
+  border-right: 2px solid var(--cyan); border-bottom: 2px solid var(--cyan);
+  transform: translateY(-70%) rotate(45deg); pointer-events: none;
+}
+.q-range-select {
+  appearance: none; -webkit-appearance: none; min-height: 56px; padding-right: 3rem;
+  border-radius: var(--radius); cursor: pointer; font-weight: 650;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+.q-range-select:hover { border-color: rgba(12, 192, 223, 0.7); background: #fbfeff; }
+.q-range-select.has-selection { border-color: var(--cyan); background: var(--cyan-tint); color: var(--ink); }
 .q-textarea { min-height: 90px; resize: vertical; }
 .q-two { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
 @media (max-width: 560px) { .q-two { grid-template-columns: 1fr; } }
