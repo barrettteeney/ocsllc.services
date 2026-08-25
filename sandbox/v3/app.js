@@ -382,7 +382,7 @@
       panes: [{ label: "50 or fewer pieces of glass", value: 44 }, { label: "51-86 pieces of glass", value: 69 }, { label: "87 or more pieces of glass", value: 100 }],
       screens: [{ label: "No screens", value: 0 }, { label: "1-34 screens", value: 17 }, { label: "35-56 screens", value: 45 }, { label: "57-84 screens", value: 70 }] }
   ];
-  var DEFAULT_SQFT_NOTE = "Know the square footage? Enter it below. If not, choose the range your home falls in.";
+  var DEFAULT_SQFT_NOTE = "Enter the exact size or choose the closest range.";
   var OVERSIZE_SQFT_LABEL = "8,000+ sqft";
   var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage, then choose the closest pieces-of-glass and screen ranges.";
   var PER_PANE = { ext: 7, both: 12, screen: 4 };
@@ -645,6 +645,8 @@
     form.querySelectorAll("[data-sqft-tier-value]").forEach(function (button) {
       button.classList.toggle("is-active", button.getAttribute("data-sqft-tier-value") === String(value));
     });
+    var rangeSelect = form.querySelector("[data-sqft-tier-select]");
+    if (rangeSelect && rangeSelect.value !== String(value || "")) rangeSelect.value = String(value || "");
     setHiddenValue("sqft_tier", label);
   }
   function setSqftNote(message) {
@@ -670,30 +672,54 @@
     }
   }
 
+  function chooseSqftTier(value, label, isOversize) {
+    if (form.elements.sqft) {
+      if (isOversize) {
+        chipValues.sqft = null;
+        var typed = parseFloat(form.elements.sqft.value);
+        if (!(Number.isFinite(typed) && typed > 8000)) form.elements.sqft.value = "";
+        form.elements.sqft.placeholder = "Example: 9200";
+      } else {
+        form.elements.sqft.value = "";
+        chipValues.sqft = parseFloat(value);
+        setChipPlaceholder("sqft", label);
+      }
+    }
+    setSqftTierState(value, label);
+    setSqftNote(isOversize ? OVERSIZE_SQFT_NOTE : DEFAULT_SQFT_NOTE);
+    applyTierDefaults(value);
+    renderCountOptions();
+    if (isOversize && form.elements.sqft) form.elements.sqft.focus();
+  }
+
   form.querySelectorAll("[data-sqft-tier-value]").forEach(function (button) {
     button.addEventListener("click", function () {
-      var value = button.getAttribute("data-sqft-tier-value");
-      var label = button.getAttribute("data-sqft-tier-label");
-      var isOversize = button.getAttribute("data-sqft-tier-oversize") === "true";
-      if (form.elements.sqft) {
-        if (isOversize) {
-          chipValues.sqft = null;
-          var typed = parseFloat(form.elements.sqft.value);
-          if (!(Number.isFinite(typed) && typed > 8000)) form.elements.sqft.value = "";
-          form.elements.sqft.placeholder = "Example: 9200";
-        } else {
-          form.elements.sqft.value = "";
-          chipValues.sqft = parseFloat(value);
-          setChipPlaceholder("sqft", label);
-        }
-      }
-      setSqftTierState(value, label);
-      setSqftNote(isOversize ? OVERSIZE_SQFT_NOTE : DEFAULT_SQFT_NOTE);
-      applyTierDefaults(value);
-      renderCountOptions();
-      if (isOversize && form.elements.sqft) form.elements.sqft.focus();
+      chooseSqftTier(
+        button.getAttribute("data-sqft-tier-value"),
+        button.getAttribute("data-sqft-tier-label"),
+        button.getAttribute("data-sqft-tier-oversize") === "true"
+      );
     });
   });
+  var sqftRangeSelect = form.querySelector("[data-sqft-tier-select]");
+  if (sqftRangeSelect) {
+    sqftRangeSelect.addEventListener("change", function () {
+      var option = sqftRangeSelect.options[sqftRangeSelect.selectedIndex];
+      var value = sqftRangeSelect.value;
+      if (!value) {
+        chipValues.sqft = null;
+        setSqftTierState("", "");
+        setSqftNote(DEFAULT_SQFT_NOTE);
+        renderCountOptions();
+        return;
+      }
+      chooseSqftTier(
+        value,
+        option.getAttribute("data-sqft-tier-label") || option.textContent,
+        option.getAttribute("data-sqft-tier-oversize") === "true"
+      );
+    });
+  }
   if (form.elements.sqft) {
     form.elements.sqft.addEventListener("input", function () {
       if (isOversizeTierSelected()) {

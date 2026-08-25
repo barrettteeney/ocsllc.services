@@ -125,7 +125,7 @@
       ]
     }
   ];
-  var DEFAULT_SQFT_NOTE = "Know the square footage? Enter it above. If not, choose the range your home falls in.";
+  var DEFAULT_SQFT_NOTE = "Enter the exact size or choose the closest range.";
   var OVERSIZE_SQFT_LABEL = "8,000+ sqft";
   var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage, then choose the closest pieces-of-glass and screen ranges below.";
   var PER_PANE = { ext: 7, both: 12, screen: 4 };
@@ -144,6 +144,10 @@
   function getNumber(form, name) {
     var field = form.elements[name];
     var value = field ? parseFloat(field.value) : 0;
+    if ((!Number.isFinite(value) || value <= 0) && name === "sqft") {
+      var rangeSelect = form.querySelector("[data-sqft-tier-select]");
+      value = rangeSelect ? parseFloat(rangeSelect.value) : 0;
+    }
     return Number.isFinite(value) && value > 0 ? value : 0;
   }
 
@@ -489,6 +493,8 @@
     form.querySelectorAll("[data-sqft-tier-value]").forEach(function (button) {
       button.classList.toggle("is-active", button.getAttribute("data-sqft-tier-value") === String(value));
     });
+    var rangeSelect = form.querySelector("[data-sqft-tier-select]");
+    if (rangeSelect && rangeSelect.value !== String(value || "")) rangeSelect.value = String(value || "");
     if (form.elements.sqft_tier) form.elements.sqft_tier.value = label || "";
   }
 
@@ -809,27 +815,45 @@
   function init(form) {
     form.addEventListener("input", function () { render(form); });
     form.addEventListener("change", function () { render(form); });
+    function chooseSqftTier(value, label, isOversize) {
+      if (form.elements.sqft) {
+        form.elements.sqft.value = "";
+        form.elements.sqft.placeholder = isOversize ? "Example: 9200" : "Example: 2200";
+      }
+      setSqftTierState(form, value, label);
+      setSqftNote(form, isOversize ? OVERSIZE_SQFT_NOTE : DEFAULT_SQFT_NOTE);
+      applyTierDefaults(form, value);
+      render(form);
+      if (isOversize && form.elements.sqft) form.elements.sqft.focus();
+    }
+
     form.querySelectorAll("[data-sqft-tier-value]").forEach(function (button) {
       button.addEventListener("click", function () {
-        var value = button.getAttribute("data-sqft-tier-value");
-        var label = button.getAttribute("data-sqft-tier-label");
-        var isOversize = button.getAttribute("data-sqft-tier-oversize") === "true";
-        if (form.elements.sqft) {
-          if (isOversize) {
-            if (getNumber(form, "sqft") <= 8000) form.elements.sqft.value = "";
-            form.elements.sqft.placeholder = "Example: 9200";
-          } else {
-            form.elements.sqft.value = value;
-            form.elements.sqft.placeholder = "Example: 2200";
-          }
-        }
-        setSqftTierState(form, value, label);
-        setSqftNote(form, isOversize ? OVERSIZE_SQFT_NOTE : DEFAULT_SQFT_NOTE);
-        applyTierDefaults(form, value);
-        render(form);
-        if (isOversize && form.elements.sqft) form.elements.sqft.focus();
+        chooseSqftTier(
+          button.getAttribute("data-sqft-tier-value"),
+          button.getAttribute("data-sqft-tier-label"),
+          button.getAttribute("data-sqft-tier-oversize") === "true"
+        );
       });
     });
+    var sqftRangeSelect = form.querySelector("[data-sqft-tier-select]");
+    if (sqftRangeSelect) {
+      sqftRangeSelect.addEventListener("change", function () {
+        var option = sqftRangeSelect.options[sqftRangeSelect.selectedIndex];
+        var value = sqftRangeSelect.value;
+        if (!value) {
+          setSqftTierState(form, "", "");
+          setSqftNote(form, DEFAULT_SQFT_NOTE);
+          render(form);
+          return;
+        }
+        chooseSqftTier(
+          value,
+          option.getAttribute("data-sqft-tier-label") || option.textContent,
+          option.getAttribute("data-sqft-tier-oversize") === "true"
+        );
+      });
+    }
     if (form.elements.sqft) {
       form.elements.sqft.addEventListener("input", function () {
         if (isOversizeTierSelected(form)) {
