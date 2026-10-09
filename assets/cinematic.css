@@ -21,8 +21,8 @@ html.cine .cine-curtain {
 }
 /* The logo is inlined in the HTML so it paints instantly while the page loads. */
 .cine-curtain-mark {
-  width: 96px; height: 96px; border-radius: 999px; background: #fff;
-  display: grid; place-items: center; overflow: hidden;
+  width: 104px; height: 104px; border-radius: 20px; background: #fff;
+  display: grid; place-items: center; overflow: hidden; padding: 8px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45), 0 0 0 0 rgba(12, 192, 223, 0.45);
 }
 html.cine-pre .cine-curtain-mark { animation: cine-breathe 1.6s ease-in-out infinite; }
