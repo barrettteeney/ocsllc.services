@@ -721,7 +721,8 @@
     if (scroll) {
       var card = form.closest(".quote-card") || form;
       var top = card.getBoundingClientRect().top + window.scrollY - 84;
-      window.scrollTo({ top: top, behavior: REDUCED_MOTION ? "auto" : "smooth" });
+      if (window.ocsLenis) window.ocsLenis.scrollTo(top, { duration: 1.1 });
+      else window.scrollTo({ top: top, behavior: REDUCED_MOTION ? "auto" : "smooth" });
     }
   }
   function canLeaveStep(index) {

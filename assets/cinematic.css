@@ -1,0 +1,84 @@
+/* OCS LLC — cinematic motion layer (homepage only).
+ * Purely additive: everything here is scoped to html.cine / html.cine-pre, which
+ * /assets/cinematic.js sets. With reduced motion, no JS, or a failed CDN load,
+ * none of these rules apply and the page renders exactly as before.
+ */
+
+/* ---------- Lenis base ---------- */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+html.cine, html.cine-pre { scroll-behavior: auto; }
+
+/* ---------- Intro curtain ---------- */
+.cine-curtain { display: none; }
+html.cine-pre .cine-curtain,
+html.cine .cine-curtain {
+  display: grid; place-items: center;
+  position: fixed; inset: 0; z-index: 200;
+  background: #141414; pointer-events: none;
+}
+.cine-curtain-mark {
+  width: 96px; height: 96px; border-radius: 999px; background: #fff;
+  display: grid; place-items: center; overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+}
+.cine-curtain-mark img { width: 118%; height: 118%; object-fit: contain; }
+html.cine-pre .hero-inner,
+html.cine-pre .nav,
+html.cine-pre .hero-scroll-cue { visibility: hidden; }
+
+/* ---------- Existing CSS reveals hand over to GSAP ---------- */
+html.cine .reveal,
+html.cine .reveal-group > * {
+  opacity: 1; transform: none;
+  transition-property: translate, scale, box-shadow, background-color, border-color, color;
+  transition-duration: 0.3s; transition-delay: 0s;
+}
+
+/* Hover lifts use individual transform properties (marked important because
+   GSAP writes translate/scale: none inline) so they stack on top of GSAP's
+   scroll transforms instead of being overridden by them. */
+html.cine .addl-card:hover,
+html.cine .loc-card:hover { transform: none; translate: 0 -4px !important; }
+html.cine .work-card { transition: translate 0.25s ease, scale 0.25s ease; }
+html.cine .work-card:hover { transform: none; translate: 0 -4px !important; scale: 1.015 !important; }
+html.cine .btn-primary { transition: background 0.2s ease, translate 0.2s ease, box-shadow 0.2s ease; }
+html.cine .btn-primary:hover { transform: none; translate: 0 -2px !important; }
+html.cine .nav-cta { transition: background 0.35s ease, color 0.35s ease, translate 0.2s ease; }
+html.cine .nav-cta:hover { transform: none; translate: 0 -1px !important; }
+html.cine .q-next:hover, html.cine .q-reveal:hover { transform: none; translate: 0 -1px !important; }
+
+/* ---------- Header: no blur repaint, hide on scroll down ---------- */
+html.cine .nav { transition: background 0.35s ease, box-shadow 0.35s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+html.cine .nav.scrolled { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(255, 255, 255, 0.97); }
+html.cine .nav.cine-nav-hidden { transform: translate3d(0, -110%, 0); }
+html.cine .aside-card { backdrop-filter: none; -webkit-backdrop-filter: none; }
+
+/* ---------- Scroll progress: scaled, not resized ---------- */
+html.cine .scroll-progress { width: 100% !important; transform-origin: 0 50%; transform: scaleX(0); }
+
+/* ---------- Split headings ---------- */
+.cine-w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+.cine-wi { display: inline-block; transform-origin: 0% 100%; }
+
+/* ---------- Section accent line ---------- */
+html.cine main > section, html.cine body > section:not(.hero) { position: relative; }
+.cine-line {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px; z-index: 2;
+  background: linear-gradient(90deg, var(--cyan), var(--cyan-dark));
+  transform-origin: 0 50%; transform: scaleX(0); pointer-events: none;
+}
+
+/* ---------- Hero media wrapper ---------- */
+html.cine .hero-video { will-change: transform; }
+
+/* ---------- Desktop cursor glow ---------- */
+.cine-glow {
+  position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none;
+  width: 560px; height: 560px; margin: -280px 0 0 -280px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(236, 178, 46, 0.13) 0%, rgba(236, 178, 46, 0.05) 38%, rgba(236, 178, 46, 0) 68%);
+  opacity: 0; will-change: transform;
+}

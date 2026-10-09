@@ -17,6 +17,19 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ocsllc.services/">
   <link rel="stylesheet" href="/assets/onepage.css?v=20260825-dropdown-ui">
+  <link rel="stylesheet" href="/assets/cinematic.css?v=20261009">
+  <script>
+    /* Cinematic intro gate: hide hero content until the motion layer starts.
+       Falls back to the normal page if the motion scripts don't run within 4s. */
+    (function () {
+      try {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var d = document.documentElement;
+        d.classList.add("cine-pre");
+        setTimeout(function () { if (!window.__cineStarted) d.classList.remove("cine-pre"); }, 4000);
+      } catch (e) {}
+    })();
+  </script>
   <noscript>
     <style>
       /* Progressive-enhancement fallback: show everything, run the form as a plain POST */
@@ -195,9 +208,15 @@
 }
     </script>
   <script defer src="/assets/ads-conversion.js"></script>
-  <script defer src="/assets/onepage.js?v=20260830-hero-video"></script>
+  <script defer src="/assets/onepage.js?v=20261009-cine"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="/assets/cinematic.js?v=20261009"></script>
 </head>
 <body>
+
+<div class="cine-curtain" aria-hidden="true"><span class="cine-curtain-mark"><img src="/assets/ocs-badge.png" alt="" width="96" height="96"></span></div>
 
 <div class="scroll-progress" aria-hidden="true"></div>
 
