@@ -176,14 +176,16 @@
         ScrollTrigger.refresh();
       }
     });
-    if (mark) tl.to(mark, { opacity: 1, scale: 1, duration: 0.55 }, 0.1)
-                .to(mark, { opacity: 0, scale: 0.92, duration: 0.35, ease: "power2.in" }, 0.95);
-    if (curtain) tl.to(curtain, { yPercent: -100, duration: 1.05, ease: "expo.inOut" }, 1.05);
-    if (heroVideo) tl.to(heroVideo, { scale: 1, duration: 2.2, ease: "power2.out" }, 1.3);
-    tl.to(heroWords, { yPercent: 0, rotate: 0, duration: 1.05, stagger: 0.09 }, 1.55);
-    tl.to(heroRest, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08 }, 1.9);
-    if (nav) tl.to(nav, { opacity: 1, duration: 0.8, ease: "power1.out" }, 2.1);
-    if (gsap.utils.toArray(".hero-scroll-cue").length) tl.from(".hero-scroll-cue", { opacity: 0, duration: 0.6 }, 2.4);
+    // The logo has been on screen since the page started loading; hold it a
+    // beat on very fast loads so it registers, then lift the curtain.
+    var t0 = Math.max(0.25, 0.9 - (window.performance ? performance.now() / 1000 : 0));
+    if (mark) tl.fromTo(mark, { scale: 1, opacity: 1 }, { opacity: 0, scale: 0.92, duration: 0.35, ease: "power2.in" }, t0 - 0.1);
+    if (curtain) tl.to(curtain, { yPercent: -100, duration: 1.05, ease: "expo.inOut" }, t0);
+    if (heroVideo) tl.to(heroVideo, { scale: 1, duration: 2.2, ease: "power2.out" }, t0 + 0.25);
+    tl.to(heroWords, { yPercent: 0, rotate: 0, duration: 1.05, stagger: 0.09 }, t0 + 0.5);
+    tl.to(heroRest, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08 }, t0 + 0.85);
+    if (nav) tl.to(nav, { opacity: 1, duration: 0.8, ease: "power1.out" }, t0 + 1.05);
+    if (gsap.utils.toArray(".hero-scroll-cue").length) tl.from(".hero-scroll-cue", { opacity: 0, duration: 0.6 }, t0 + 1.35);
   }
 
   if (playIntro) {
