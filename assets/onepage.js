@@ -754,7 +754,6 @@
 
   function prepareGate() {
     var result = compute();
-    updateHidden(result);
     var gateTitle = form.querySelector("[data-gate-title]");
     var preview = form.querySelector("[data-gate-preview]");
     if (result && result.oversized) {
@@ -762,7 +761,8 @@
       if (preview) preview.textContent = "Custom quote";
     } else {
       gateTitle.textContent = "Your estimate is ready.";
-      if (preview && result) preview.textContent = money(result.low) + " – " + money(result.high);
+      /* Never put the real range in the page before contact info is sent. */
+      if (preview) preview.textContent = "$ ••• – $ •••";
     }
   }
 
@@ -846,37 +846,45 @@
     } catch (e) { /* never block the reveal */ }
   }
 
-  function sendLead(data, leadIdempotencyKey) {
-    var tasks = [];
+  /* Website leads go to the same n8n automation as Meta leads:
+   * email alert to Barrett, Apple contact, and the Leads table. */
+  var LEAD_WEBHOOK = "https://ocsllc.app.n8n.cloud/webhook/ocs-website-estimate";
 
-    var fd = new FormData();
-    Object.keys(data).forEach(function (key) {
-      if (key !== "_honey") fd.append(key, data[key]);
-    });
-    fd.set("_subject", "New OCS instant estimate request");
-    fd.set("_template", "table");
-    fd.set("_captcha", "false");
-    tasks.push(fetch("https://formsubmit.co/ajax/barrett@ocsllc.services", {
-      method: "POST", body: fd
-    }).then(function (r) { return r.ok ? "formsubmit:ok" : "formsubmit:" + r.status; })
-      .catch(function () { return "formsubmit:err"; }));
+  function n8nLeadPayload(data, result) {
+    var extras = [];
+    if (data.stories === "Yes") extras.push("Two or more stories");
+    if (data.hard_water === "Yes") extras.push("Hard water");
+    if (data.post_construction === "Yes") extras.push("Post-construction");
+    if (data.french === "Yes") extras.push("French / divided-light glass");
+    if (data.photos_available === "Yes") extras.push("Can text photos");
+    if (data.last_cleaned && data.last_cleaned !== "Recently") extras.push("Last cleaned: " + data.last_cleaned);
+    var hasRange = result && !result.oversized;
+    return {
+      first_name: (data.first_name || "").trim(),
+      last_name: (data.last_name || "").trim(),
+      phone: (data.phone || "").trim(),
+      email: (data.email || "").trim(),
+      address: (data.service_address || "").trim(),
+      service: data.service === "ext" ? "Outside only" : "Inside + outside",
+      sqft: data.sqft_tier || data.sqft || "",
+      panes: data.pane_range || data.panes || "",
+      screens: data.screen_range || data.screens || "",
+      extras: extras,
+      estimate_low: hasRange ? result.low : null,
+      estimate_high: hasRange ? result.high : null,
+      notes: [result && result.oversized ? "Over 8,000 sq ft: custom quote" : "", data.message || ""].filter(Boolean).join(" | "),
+      page: window.location.pathname,
+      _honey: data._honey || ""
+    };
+  }
 
-    tasks.push(fetch("https://ocs-crm.vercel.app/api/leads", {
+  function sendLead(data, result) {
+    return fetch(LEAD_WEBHOOK, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Idempotency-Key": leadIdempotencyKey
-      },
-      body: JSON.stringify(crmLeadPayload(data))
-    }).then(function (r) { return r.ok ? "ocs:ok" : "ocs:" + r.status; })
-      .catch(function () { return "ocs:err"; }));
-
-    return Promise.all(tasks).then(function (results) {
-      return {
-        ok: results.some(function (result) { return result.slice(-3) === ":ok"; }),
-        crmOk: results.indexOf("ocs:ok") !== -1
-      };
-    });
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(n8nLeadPayload(data, result))
+    }).then(function (r) { return { ok: r.ok }; })
+      .catch(function () { return { ok: false }; });
   }
 
   function renderReveal(result) {
@@ -914,20 +922,25 @@
     confEl.className = "q-confidence is-" + confidence.level;
     confEl.textContent = confidence.label + " — " + confidence.text;
 
-    var firstName = (getValue("name") || "").trim().split(/\s+/)[0];
-    nextEl.textContent = (firstName ? firstName + ", we’ll" : "We’ll") +
-      " text or call you the same day to confirm your final quote and schedule your cleaning.";
+    var firstName = (getValue("first_name") || "").trim().split(/\s+/)[0];
+    nextEl.textContent = (firstName ? firstName + ", Barrett" : "Barrett") +
+      " will call or text you within 24 hours to confirm your exact price and find a time.";
   }
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     if (currentStep !== GATE_STEP) return;
 
-    var name = (getValue("name") || "").trim();
+    var name = (getValue("first_name") || "").trim();
     var phone = (getValue("phone") || "").trim();
+    var phoneDigits = phone.replace(/\D/g, "");
     var serviceAddress = (getValue("service_address") || "").trim();
     if (!name || !phone) {
-      setError("Add your name and phone number — that’s all it takes to unlock your range.");
+      setError("Add your name and mobile number to see your estimate.");
+      return;
+    }
+    if (!(phoneDigits.length === 10 || (phoneDigits.length === 11 && phoneDigits.charAt(0) === "1"))) {
+      setError("That phone number doesn’t look right. Use a 10-digit number like (406) 555-1234.");
       return;
     }
     if (!serviceAddress) {
@@ -945,30 +958,18 @@
     updateHidden(result);
     var data = Object.fromEntries(new FormData(form).entries());
     if (data._honey) return;
-    var leadIdempotencyKey = window.OCSSelfBooking
-      ? window.OCSSelfBooking.createKey("lead")
-      : "lead_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2);
-
     revealBtn.disabled = true;
     revealBtn.textContent = "Unlocking…";
 
     var note = form.querySelector("[data-submit-note]");
-    sendLead(data, leadIdempotencyKey).then(function (submission) {
+    sendLead(data, result).then(function (submission) {
       if (submission.ok) {
         note.className = "q-submit-note ok";
-        note.textContent = "Sent — we have your details and will confirm your final number.";
+        note.textContent = "Sent. Barrett has your details and will reach out within 24 hours.";
         fireFormConversion();
-        if (submission.crmOk && window.OCSSelfBooking && window.OCSSelfBooking.enabled) {
-          var payload = crmLeadPayload(data);
-          window.OCSSelfBooking.open(form, {
-            contact: payload.contact,
-            booking: payload.booking,
-            leadIdempotencyKey: leadIdempotencyKey
-          });
-        }
       } else {
         note.className = "q-submit-note err";
-        note.textContent = "We couldn’t auto-send your request — please call or text (406) 607-2151 to lock it in.";
+        note.textContent = "We couldn’t send your request automatically. Please call or text (406) 607-2151 to lock it in.";
       }
     });
 
@@ -977,7 +978,7 @@
     renderReveal(result);
     showStep(REVEAL_STEP, true);
     revealBtn.disabled = false;
-    revealBtn.textContent = "Reveal my price range";
+    revealBtn.textContent = "Show my estimate";
   });
 
   renderCountOptions();
