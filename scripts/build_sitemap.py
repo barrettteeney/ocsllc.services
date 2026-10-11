@@ -3,7 +3,8 @@
 build_sitemap.py — auto-regenerate sitemap.xml from index.html files in the repo.
 
 Walks the repo, finds every index.html, derives the URL, dates with today's date.
-Skips drafts, hidden dirs, .github/, docs/, and assets/.
+Skips drafts, hidden dirs, .github/, docs/, assets/, and any page marked noindex
+(redirect stubs like /estimate/ and /pricing/).
 """
 import os, sys, datetime, pathlib
 
@@ -21,6 +22,13 @@ def url_for(path: pathlib.Path) -> str:
     if rel == "404.html":
         return None  # 404 not in sitemap
     return f"{BASE}/{rel}"
+
+def is_noindex(path: pathlib.Path) -> bool:
+    try:
+        head = path.read_text(errors="ignore")[:6000].lower()
+    except OSError:
+        return False
+    return 'name="robots"' in head and "noindex" in head.split('name="robots"', 1)[1][:120]
 
 def priority_for(url: str) -> str:
     if url == f"{BASE}/":
@@ -46,7 +54,7 @@ def main():
             if f == "index.html":
                 p = rootp / f
                 u = url_for(p)
-                if u:
+                if u and not is_noindex(p):
                     urls.append(u)
 
     urls = sorted(set(urls))

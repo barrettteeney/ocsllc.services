@@ -857,7 +857,7 @@
     if (data.post_construction === "Yes") extras.push("Post-construction");
     if (data.french === "Yes") extras.push("French / divided-light glass");
     if (data.photos_available === "Yes") extras.push("Can text photos");
-    if (data.last_cleaned && data.last_cleaned !== "Recently") extras.push("Last cleaned: " + data.last_cleaned);
+    if (data.last_cleaned) extras.push("Last cleaned: " + data.last_cleaned);
     var hasRange = result && !result.oversized;
     return {
       first_name: (data.first_name || "").trim(),
