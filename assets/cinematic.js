@@ -315,7 +315,7 @@
       btn.addEventListener("mouseleave", function () { toX(0); toY(0); });
     });
 
-    // Soft warm glow that follows the cursor.
+    // Soft brand-blue glow that follows the cursor.
     var glow = document.createElement("div");
     glow.className = "cine-glow";
     glow.setAttribute("aria-hidden", "true");

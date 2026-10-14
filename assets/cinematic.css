@@ -84,6 +84,6 @@ html.cine .hero-video { will-change: transform; }
 .cine-glow {
   position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none;
   width: 560px; height: 560px; margin: -280px 0 0 -280px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(236, 178, 46, 0.13) 0%, rgba(236, 178, 46, 0.05) 38%, rgba(236, 178, 46, 0) 68%);
+  background: radial-gradient(circle, rgba(12, 192, 223, 0.13) 0%, rgba(12, 192, 223, 0.05) 38%, rgba(12, 192, 223, 0) 68%);
   opacity: 0; will-change: transform;
 }
