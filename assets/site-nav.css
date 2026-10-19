@@ -1,6 +1,6 @@
 /* OCS LLC — top navigation menu (desktop bar + dropdowns, mobile hamburger). */
 
-.site-nav { background:#00C0DF; color:#fff; position:sticky; top:0; z-index:50; box-shadow:0 1px 0 rgba(0,0,0,.06); }
+.site-nav { background:#0CC0DF; color:#fff; position:sticky; top:0; z-index:50; box-shadow:0 1px 0 rgba(0,0,0,.06); }
 .site-nav-inner { display:flex; align-items:center; gap:1.1rem; width:90%; max-width:1200px; margin:0 auto; padding:.45rem 0; }
 .site-brand { font-size:1.15rem; font-weight:800; color:#fff; text-decoration:none; white-space:nowrap; }
 

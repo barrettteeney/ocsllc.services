@@ -11,7 +11,7 @@
         img,video,iframe,svg,picture{max-width:100%;height:auto;display:inline-block}
         img.service-icon{width:80px!important;height:80px!important;max-width:80px!important;max-height:80px!important;object-fit:contain;margin:0 auto 0.75rem;display:block}
         .container{width:100%;max-width:1200px;margin:0 auto;padding-left:clamp(0.85rem,4vw,2rem);padding-right:clamp(0.85rem,4vw,2rem)}
-        .bg-custom-cyan{background:#00C0DF}
+        .bg-custom-cyan{background:#0CC0DF}
         nav.bg-custom-cyan{padding:0.75rem 0;color:white}
         .nav-container{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.5rem;padding:1rem;width:100%;max-width:1200px;margin:0 auto}
         .contact-info{display:flex;flex-direction:column;align-items:flex-end;gap:0.25rem;font-size:.95rem}
@@ -47,7 +47,7 @@
 </style>
 
     <meta name="robots" content="noindex, nofollow">
-    <meta name="theme-color" content="#161616">
+    <meta name="theme-color" content="#0CC0DF">
     <title>Upload photos | OCS LLC Admin</title>
     <link rel="icon" type="image/png" href="/assets/icon-192.png?v=ocs-logo-20260727">
     <link rel="stylesheet" href="/assets/tailwind.css">
@@ -64,10 +64,6 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Upload photos | OCS LLC Admin">
     <meta name="twitter:image" content="https://ocsllc.services/assets/og.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="/assets/brand.css?v=20261019">
 </head>
 <body>
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-black px-3 py-2 rounded z-50">Skip to content</a>
@@ -137,7 +133,7 @@
                 folder:   'ocsllc-website',
                 clientAllowedFormats: ['image'],
                 maxFileSize: 25_000_000,
-                styles: { palette: { window: '#FFFFFF', windowBorder: '#00C0DF', tabIcon: '#00C0DF', menuIcons: '#00C0DF', textDark: '#000', link: '#00C0DF', action: '#00C0DF', inactiveTabIcon: '#9ca3af', error: '#EF4444', inProgress: '#00C0DF', complete: '#10B981', sourceBg: '#F9FAFB' } }
+                styles: { palette: { window: '#FFFFFF', windowBorder: '#0CC0DF', tabIcon: '#0CC0DF', menuIcons: '#0CC0DF', textDark: '#000', link: '#0CC0DF', action: '#0CC0DF', inactiveTabIcon: '#9ca3af', error: '#EF4444', inProgress: '#0CC0DF', complete: '#10B981', sourceBg: '#F9FAFB' } }
             }, (err, result) => {
                 if (err) { showError('Upload error: ' + (err.message || err.statusText)); return; }
                 if (result && result.event === 'success') {

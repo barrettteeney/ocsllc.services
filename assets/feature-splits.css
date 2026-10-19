@@ -3,7 +3,7 @@
 
 .vsplit-wrap { padding: clamp(2.5rem, 6vw, 4.5rem) 0; }
 .vsplit-head { text-align: center; margin-bottom: clamp(1.5rem, 4vw, 2.75rem); }
-.vs-eyebrow { color: #00C0DF; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; margin: 0 0 .35rem; }
+.vs-eyebrow { color: #0CC0DF; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; margin: 0 0 .35rem; }
 
 .vsplit {
   display: grid;
@@ -45,12 +45,12 @@
 .vframe.unmuted .vframe-sound { opacity: 0; }
 
 .vsplit-copy h3 { font-size: clamp(1.5rem, 3.4vw, 2.2rem); font-weight: 800; color: #0f172a; line-height: 1.12; margin: 0; }
-.vsplit-copy .accent { color: #00C0DF; }
+.vsplit-copy .accent { color: #0CC0DF; }
 .vsplit-copy p { color: #475569; font-size: 1.06rem; line-height: 1.6; margin: .8rem 0 1.3rem; max-width: 42ch; }
 .vbtn {
-  display: inline-block; background: #00C0DF; color: #fff; font-weight: 700;
+  display: inline-block; background: #0CC0DF; color: #fff; font-weight: 700;
   padding: .8rem 1.5rem; border-radius: 999px; text-decoration: none;
-  box-shadow: 0 8px 22px rgba(0, 192, 223,.4);
+  box-shadow: 0 8px 22px rgba(12,192,223,.4);
 }
 .vbtn:hover { background: #0aa3bd; }
 
