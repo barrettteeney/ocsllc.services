@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="/assets/onepage.css?v=20260825-dropdown-ui">
-  <link rel="stylesheet" href="/assets/home-v4.css?v=20261010a">
+  <link rel="stylesheet" href="/assets/home-v4.css?v=20261019-reserve">
   <link rel="stylesheet" href="/assets/cinematic.css?v=20261014a">
   <script>
     /* Cinematic intro gate: hide hero content until the motion layer starts.
@@ -212,7 +212,7 @@
 }
     </script>
   <script defer src="/assets/ads-conversion.js"></script>
-  <script defer src="/assets/onepage.js?v=20261010-v4b"></script>
+  <script defer src="/assets/onepage.js?v=20261019-reserve"></script>
   <script defer src="/assets/address-autocomplete.js?v=20261011a"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -575,6 +575,28 @@
             <p class="q-result-price" data-result-price>$0 – $0</p>
             <span class="q-confidence" data-result-confidence></span>
             <p class="q-result-detail" data-result-detail></p>
+            <div class="q-reserve" data-reserve hidden>
+              <div data-reserve-choice>
+                <b>Happy with this range?</b>
+                <p>Accept it and pick your cleaning time right now, or have Barrett go over the numbers with you first.</p>
+                <div class="q-reserve-btns">
+                  <button type="button" class="q-reserve-yes" data-reserve-accept>Accept range &amp; pick a time</button>
+                  <button type="button" class="q-reserve-no" data-reserve-confirm>Have Barrett confirm first</button>
+                </div>
+              </div>
+              <div data-reserve-pick hidden>
+                <b>Pick a start time</b>
+                <p data-reserve-sub></p>
+                <div class="q-reserve-days" data-reserve-days></div>
+                <button type="button" class="q-reserve-yes q-reserve-book" data-reserve-book disabled>Reserve this time</button>
+                <button type="button" class="q-reserve-link" data-reserve-back>Not now, have Barrett confirm first</button>
+              </div>
+              <div class="q-reserve-done" data-reserve-done hidden>
+                <b>You&rsquo;re booked</b>
+                <p data-reserve-done-text></p>
+              </div>
+              <p class="q-reserve-msg" data-reserve-msg aria-live="polite"></p>
+            </div>
             <div class="q-next-steps">
               <b>What happens next</b>
               <p data-result-next>Barrett will call or text you within 24 hours to confirm your exact price and find a time.</p>

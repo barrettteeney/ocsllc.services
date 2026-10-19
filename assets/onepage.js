@@ -874,8 +874,17 @@
       estimate_high: hasRange ? result.high : null,
       notes: [result && result.oversized ? "Over 8,000 sq ft: custom quote" : "", data.message || ""].filter(Boolean).join(" | "),
       page: window.location.pathname,
+      id: submissionId || "",
       _honey: data._honey || ""
     };
+  }
+
+  var submissionId = "";
+  function newSubmissionId() {
+    var r = "";
+    try { r = window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : ""; } catch (e) { r = ""; }
+    if (!r) r = Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 12);
+    return "web-" + r;
   }
 
   function sendLead(data, result) {
@@ -927,6 +936,197 @@
       " will call or text you within 24 hours to confirm your exact price and find a time.";
   }
 
+
+  /* ---------- Accept the range and reserve a time ----------
+   * After the reveal, if OCS HQ has open times for this job, the customer can
+   * accept the range and book. The slot is sized in HQ from the top of the
+   * range. Anything that fails falls back to "Barrett will reach out". */
+  function hqBase() { return window.OCS_HQ_BASE || "https://ocs-hq.vercel.app"; }
+  var reserveBox = form.querySelector("[data-reserve]");
+  var reserveState = null;
+
+  function reserveEl(name) { return reserveBox && reserveBox.querySelector("[data-reserve-" + name + "]"); }
+  function reserveMsg(text, isError) {
+    var el = reserveEl("msg");
+    if (!el) return;
+    el.className = "q-reserve-msg" + (isError ? " err" : "");
+    el.textContent = text || "";
+  }
+  function reserveExtras(data) {
+    var extras = [];
+    if (data.stories === "Yes") extras.push("Two or more stories");
+    if (data.hard_water === "Yes") extras.push("Hard water");
+    if (data.post_construction === "Yes") extras.push("Post-construction");
+    if (data.french === "Yes") extras.push("French / divided-light glass");
+    if (data.last_cleaned === "5+ years") extras.push("Last cleaned 5+ years ago");
+    return extras;
+  }
+  function hqPost(path, body) {
+    return fetch(hqBase() + path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      return r.json().catch(function () { return { ok: false }; });
+    }).catch(function () { return { ok: false }; });
+  }
+  function hoursLabel(minutes) {
+    var h = Math.floor(minutes / 60), m = minutes % 60;
+    return (h ? h + " hr" : "") + (h && m ? " " : "") + (m ? m + " min" : "");
+  }
+  function renderSlots(slots) {
+    var wrap = reserveEl("days");
+    var book = reserveEl("book");
+    wrap.innerHTML = "";
+    reserveState.picked = null;
+    book.disabled = true;
+    book.textContent = "Reserve this time";
+    var byDay = [];
+    slots.forEach(function (slot) {
+      var last = byDay[byDay.length - 1];
+      if (!last || last.day !== slot.day) byDay.push(last = { day: slot.day, slots: [] });
+      last.slots.push(slot);
+    });
+    byDay.forEach(function (group) {
+      var day = document.createElement("div");
+      day.className = "q-reserve-day";
+      var label = document.createElement("b");
+      label.textContent = group.day;
+      var row = document.createElement("div");
+      row.className = "q-chip-row";
+      group.slots.forEach(function (slot) {
+        var chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "q-chip";
+        chip.textContent = slot.time;
+        chip.addEventListener("click", function () {
+          wrap.querySelectorAll(".q-chip").forEach(function (c) { c.classList.remove("is-active"); });
+          chip.classList.add("is-active");
+          reserveState.picked = slot;
+          book.disabled = false;
+          book.textContent = "Reserve " + slot.day + " at " + slot.time;
+          reserveMsg("");
+        });
+        row.appendChild(chip);
+      });
+      day.appendChild(label);
+      day.appendChild(row);
+      wrap.appendChild(day);
+    });
+  }
+  function loadSlots() {
+    return hqPost("/api/public/estimate/slots", reserveState.estimate).then(function (r) {
+      if (!r || !r.ok || !r.enabled || !r.slots || !r.slots.length) return null;
+      reserveState.blockMinutes = r.blockMinutes;
+      reserveState.workMinutes = r.workMinutes;
+      reserveState.slots = r.slots;
+      return r;
+    });
+  }
+  function showReserveChoice(result, data) {
+    if (!reserveBox) return;
+    reserveBox.hidden = true;
+    reserveState = null;
+    var shownSteps = form.querySelector(".q-next-steps");
+    if (shownSteps) shownSteps.hidden = false;
+    if (!result || result.oversized || data.post_construction === "Yes") return;
+    reserveState = {
+      estimate: {
+        service: data.service === "ext" ? "ext" : "both",
+        low: result.low,
+        high: result.high,
+        address: (data.service_address || "").trim(),
+        extras: reserveExtras(data)
+      },
+      data: data,
+      submissionId: submissionId
+    };
+    ["choice", "pick", "done"].forEach(function (n) { reserveEl(n).hidden = n !== "choice"; });
+    reserveMsg("");
+    var mine = reserveState;
+    loadSlots().then(function (r) {
+      if (!r || reserveState !== mine) return;
+      reserveBox.hidden = false;
+      var steps = form.querySelector(".q-next-steps");
+      if (steps) steps.hidden = true;
+    });
+  }
+  function reserveDone(r) {
+    var firstName = (reserveState.data.first_name || "").trim().split(/\s+/)[0];
+    reserveEl("pick").hidden = true;
+    reserveEl("done").hidden = false;
+    reserveEl("done-text").textContent = (firstName ? firstName + ", you" : "You") + "’re on the calendar for " + r.when +
+      ". Barrett will text you to confirm the details before your visit.";
+    reserveMsg("");
+    var note = form.querySelector("[data-submit-note]");
+    if (note) { note.className = "q-submit-note ok"; note.textContent = ""; }
+    var steps = form.querySelector(".q-next-steps");
+    if (steps) steps.hidden = false;
+    var nextEl = form.querySelector("[data-result-next]");
+    if (nextEl) nextEl.textContent = "Your time is reserved. Barrett will text to confirm the details, and he confirms your exact price before he starts.";
+    var fine = form.querySelector(".q-fineprint");
+    if (fine) fine.textContent = "You accepted the estimated range above. Barrett confirms the exact price on site before starting.";
+    var ctaLabel = form.querySelector(".q-result-ctas-label");
+    if (ctaLabel) ctaLabel.textContent = "Need to change something?";
+  }
+
+  if (reserveBox) {
+    reserveEl("accept").addEventListener("click", function () {
+      if (!reserveState || !reserveState.slots) return;
+      reserveEl("choice").hidden = true;
+      reserveEl("pick").hidden = false;
+      reserveEl("sub").textContent = "Your visit takes about " + hoursLabel(reserveState.workMinutes) +
+        ". Times shown fit Barrett’s schedule and route.";
+      renderSlots(reserveState.slots);
+    });
+    function confirmFirst() {
+      var steps = form.querySelector(".q-next-steps");
+      if (steps) steps.hidden = false;
+      reserveEl("choice").hidden = true;
+      reserveEl("pick").hidden = true;
+      reserveMsg("No problem. Barrett will reach out within 24 hours to go over the numbers and find a time.");
+    }
+    reserveEl("confirm").addEventListener("click", confirmFirst);
+    reserveEl("back").addEventListener("click", confirmFirst);
+    reserveEl("book").addEventListener("click", function () {
+      if (!reserveState || !reserveState.picked) return;
+      var book = reserveEl("book");
+      var d = reserveState.data;
+      book.disabled = true;
+      book.textContent = "Reserving…";
+      hqPost("/api/public/estimate/reserve", {
+        service: reserveState.estimate.service,
+        low: reserveState.estimate.low,
+        high: reserveState.estimate.high,
+        address: reserveState.estimate.address,
+        extras: reserveState.estimate.extras,
+        submissionId: reserveState.submissionId,
+        start: reserveState.picked.start,
+        name: [(d.first_name || "").trim(), (d.last_name || "").trim()].filter(Boolean).join(" "),
+        phone: (d.phone || "").trim(),
+        email: (d.email || "").trim(),
+        sqft: d.sqft_tier || d.sqft || "",
+        panes: d.pane_range || d.panes || "",
+        screens: d.screen_range || d.screens || "",
+        notes: (d.message || "").trim(),
+        _honey: d._honey || ""
+      }).then(function (r) {
+        if (r && r.ok) { reserveDone(r); return; }
+        if (r && r.code === "taken") {
+          reserveMsg(r.error || "That time was just taken. Please pick another one.", true);
+          loadSlots().then(function (fresh) {
+            if (fresh) renderSlots(fresh.slots);
+            else reserveMsg("Those times just filled up. Barrett will reach out within 24 hours to find a time.", true);
+          });
+          return;
+        }
+        book.disabled = false;
+        book.textContent = "Reserve " + reserveState.picked.day + " at " + reserveState.picked.time;
+        reserveMsg((r && r.error) || "We couldn’t reserve that time. Call or text (406) 607-2151 and we’ll get you booked.", true);
+      });
+    });
+  }
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     if (currentStep !== GATE_STEP) return;
@@ -961,6 +1161,7 @@
     revealBtn.disabled = true;
     revealBtn.textContent = "Unlocking…";
 
+    submissionId = newSubmissionId();
     var note = form.querySelector("[data-submit-note]");
     sendLead(data, result).then(function (submission) {
       if (submission.ok) {
@@ -976,6 +1177,7 @@
     /* Reveal immediately — the range is computed in-browser and must
      * never wait on the network. */
     renderReveal(result);
+    showReserveChoice(result, data);
     showStep(REVEAL_STEP, true);
     revealBtn.disabled = false;
     revealBtn.textContent = "Show my estimate";
