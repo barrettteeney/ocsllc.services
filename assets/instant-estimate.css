@@ -89,7 +89,7 @@
 }
 
 .estimate-side .quick-contact a:first-child {
-  background: #0CC0DF;
+  background: #00C0DF;
   color: #fff;
 }
 
@@ -139,7 +139,7 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: #0CC0DF;
+  background: #00C0DF;
   transition: width .18s ease;
 }
 
@@ -207,7 +207,7 @@
 
 .estimate-chip:hover,
 .estimate-chip.is-active {
-  border-color: #0CC0DF;
+  border-color: #00C0DF;
   background: #f0fdff;
   color: #075985;
 }
@@ -245,7 +245,7 @@
 }
 
 .estimate-mini-choice input:checked + span {
-  border-color: #0CC0DF;
+  border-color: #00C0DF;
   background: #f0fdff;
   color: #075985;
 }
@@ -290,8 +290,8 @@
 }
 
 .estimate-choice input:checked + span {
-  border-color: #0CC0DF;
-  box-shadow: 0 0 0 3px rgba(12, 192, 223, .15);
+  border-color: #00C0DF;
+  box-shadow: 0 0 0 3px rgba(0, 192, 223, .15);
   background: #f0fdff;
 }
 
@@ -319,8 +319,8 @@
 .estimate-select:focus,
 .estimate-textarea:focus {
   outline: none;
-  border-color: #0CC0DF;
-  box-shadow: 0 0 0 3px rgba(12, 192, 223, .15);
+  border-color: #00C0DF;
+  box-shadow: 0 0 0 3px rgba(0, 192, 223, .15);
 }
 
 .estimate-range-control {
@@ -335,8 +335,8 @@
   top: 50%;
   width: .55rem;
   height: .55rem;
-  border-right: 2px solid #0CC0DF;
-  border-bottom: 2px solid #0CC0DF;
+  border-right: 2px solid #00C0DF;
+  border-bottom: 2px solid #00C0DF;
   transform: translateY(-70%) rotate(45deg);
   pointer-events: none;
 }
@@ -353,12 +353,12 @@
 }
 
 .estimate-range-select:hover {
-  border-color: rgba(12, 192, 223, .7);
+  border-color: rgba(0, 192, 223, .7);
   background: #fbfeff;
 }
 
 .estimate-range-select.has-selection {
-  border-color: #0CC0DF;
+  border-color: #00C0DF;
   background: #f0fdff;
   color: #0f172a;
 }
@@ -388,7 +388,7 @@
 
 .estimate-check input {
   margin-top: .12rem;
-  accent-color: #0CC0DF;
+  accent-color: #00C0DF;
 }
 
 .estimate-result {
@@ -529,9 +529,9 @@
 }
 
 .estimate-submit {
-  background: #0CC0DF;
+  background: #00C0DF;
   color: #fff;
-  box-shadow: 0 8px 18px rgba(12, 192, 223, .28);
+  box-shadow: 0 8px 18px rgba(0, 192, 223, .28);
 }
 
 .estimate-link,
@@ -542,9 +542,9 @@
 }
 
 .estimate-next {
-  background: #0CC0DF;
+  background: #00C0DF;
   color: #fff;
-  box-shadow: 0 8px 18px rgba(12, 192, 223, .22);
+  box-shadow: 0 8px 18px rgba(0, 192, 223, .22);
   margin-left: auto;
 }
 

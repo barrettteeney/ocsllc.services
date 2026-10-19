@@ -193,7 +193,7 @@ details summary {
     line-height: 1.4;
 }
 details summary::-webkit-details-marker { display: none; }
-details summary::before { content: "+ "; color: #0CC0DF; font-weight: 700; }
+details summary::before { content: "+ "; color: #00C0DF; font-weight: 700; }
 details[open] summary::before { content: "− "; }
 
 /* === Sticky scroll snapping for hero on tall mobile === */
