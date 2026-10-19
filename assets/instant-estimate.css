@@ -1,5 +1,5 @@
 .estimate-shell {
-  background: #f8fafc;
+  background: #F5F6F7;
   padding: clamp(2rem, 5vw, 4rem) 0;
 }
 
@@ -16,7 +16,7 @@
 
 .estimate-hero h1,
 .estimate-hero h2 {
-  color: #0f172a;
+  color: #161616;
   font-size: clamp(1.85rem, 4vw, 2.75rem);
   line-height: 1.05;
   margin: 0 0 .65rem;
@@ -25,7 +25,7 @@
 
 .estimate-hero p {
   margin: 0 auto;
-  color: #475569;
+  color: #626A70;
   font-size: 1rem;
   line-height: 1.6;
 }
@@ -56,14 +56,14 @@
 }
 
 .estimate-side h3 {
-  color: #0f172a;
+  color: #161616;
   font-size: 1.05rem;
   margin: 0 0 .6rem;
 }
 
 .estimate-side p,
 .estimate-side li {
-  color: #475569;
+  color: #626A70;
   font-size: .92rem;
   line-height: 1.55;
 }
@@ -89,13 +89,13 @@
 }
 
 .estimate-side .quick-contact a:first-child {
-  background: #0CC0DF;
+  background: #00C0DF;
   color: #fff;
 }
 
 .estimate-side .quick-contact a:last-child {
   border: 1.5px solid #cbd5e1;
-  color: #0f172a;
+  color: #161616;
 }
 
 .estimate-grid {
@@ -106,7 +106,7 @@
 .estimate-progress {
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  background: #f8fafc;
+  background: #F5F6F7;
   padding: .8rem;
   margin-bottom: 1rem;
   display: grid;
@@ -115,7 +115,7 @@
 }
 
 .estimate-progress span:first-child {
-  color: #64748b;
+  color: #626A70;
   font-size: .78rem;
   font-weight: 800;
   letter-spacing: .07em;
@@ -123,7 +123,7 @@
 }
 
 .estimate-progress strong {
-  color: #0f172a;
+  color: #161616;
   font-size: 1rem;
 }
 
@@ -139,7 +139,7 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: #0CC0DF;
+  background: #00C0DF;
   transition: width .18s ease;
 }
 
@@ -173,14 +173,14 @@
 .estimate-fieldset legend,
 .estimate-label {
   display: block;
-  color: #0f172a;
+  color: #161616;
   font-size: .92rem;
   font-weight: 800;
   margin: 0 0 .45rem;
 }
 
 .estimate-note {
-  color: #64748b;
+  color: #626A70;
   font-size: .84rem;
   line-height: 1.45;
   margin: .35rem 0 0;
@@ -197,7 +197,7 @@
   border: 1px solid #cbd5e1;
   border-radius: 999px;
   background: #fff;
-  color: #0f172a;
+  color: #161616;
   cursor: pointer;
   font: inherit;
   font-size: .82rem;
@@ -207,9 +207,9 @@
 
 .estimate-chip:hover,
 .estimate-chip.is-active {
-  border-color: #0CC0DF;
+  border-color: #00C0DF;
   background: #f0fdff;
-  color: #075985;
+  color: #161616;
 }
 
 .estimate-mini {
@@ -237,7 +237,7 @@
   display: block;
   border: 1.5px solid #cbd5e1;
   border-radius: 999px;
-  color: #0f172a;
+  color: #161616;
   cursor: pointer;
   font-size: .84rem;
   font-weight: 800;
@@ -245,9 +245,9 @@
 }
 
 .estimate-mini-choice input:checked + span {
-  border-color: #0CC0DF;
+  border-color: #00C0DF;
   background: #f0fdff;
-  color: #075985;
+  color: #161616;
 }
 
 .estimate-segment {
@@ -273,7 +273,7 @@
   border-radius: 8px;
   padding: .85rem .9rem;
   cursor: pointer;
-  color: #0f172a;
+  color: #161616;
   background: #fff;
   transition: border-color .15s, box-shadow .15s, background .15s;
 }
@@ -285,13 +285,13 @@
 }
 
 .estimate-choice small {
-  color: #64748b;
+  color: #626A70;
   line-height: 1.35;
 }
 
 .estimate-choice input:checked + span {
-  border-color: #0CC0DF;
-  box-shadow: 0 0 0 3px rgba(12, 192, 223, .15);
+  border-color: #00C0DF;
+  box-shadow: 0 0 0 3px rgba(0, 192, 223, .15);
   background: #f0fdff;
 }
 
@@ -311,7 +311,7 @@
   padding: .75rem .85rem;
   font: inherit;
   font-size: 16px;
-  color: #0f172a;
+  color: #161616;
   background: #fff;
 }
 
@@ -319,8 +319,8 @@
 .estimate-select:focus,
 .estimate-textarea:focus {
   outline: none;
-  border-color: #0CC0DF;
-  box-shadow: 0 0 0 3px rgba(12, 192, 223, .15);
+  border-color: #00C0DF;
+  box-shadow: 0 0 0 3px rgba(0, 192, 223, .15);
 }
 
 .estimate-range-control {
@@ -335,8 +335,8 @@
   top: 50%;
   width: .55rem;
   height: .55rem;
-  border-right: 2px solid #0CC0DF;
-  border-bottom: 2px solid #0CC0DF;
+  border-right: 2px solid #00C0DF;
+  border-bottom: 2px solid #00C0DF;
   transform: translateY(-70%) rotate(45deg);
   pointer-events: none;
 }
@@ -353,14 +353,14 @@
 }
 
 .estimate-range-select:hover {
-  border-color: rgba(12, 192, 223, .7);
+  border-color: rgba(0, 192, 223, .7);
   background: #fbfeff;
 }
 
 .estimate-range-select.has-selection {
-  border-color: #0CC0DF;
+  border-color: #00C0DF;
   background: #f0fdff;
-  color: #0f172a;
+  color: #161616;
 }
 
 .estimate-textarea {
@@ -381,14 +381,14 @@
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: .7rem .75rem;
-  color: #0f172a;
+  color: #161616;
   font-size: .9rem;
   line-height: 1.35;
 }
 
 .estimate-check input {
   margin-top: .12rem;
-  accent-color: #0CC0DF;
+  accent-color: #00C0DF;
 }
 
 .estimate-result {
@@ -402,11 +402,11 @@
 
 .estimate-result.is-empty {
   border-color: #e2e8f0;
-  background: #f8fafc;
+  background: #F5F6F7;
 }
 
 .estimate-result-label {
-  color: #64748b;
+  color: #626A70;
   font-size: .78rem;
   font-weight: 800;
   letter-spacing: .07em;
@@ -414,14 +414,14 @@
 }
 
 .estimate-price {
-  color: #0f172a;
+  color: #161616;
   font-size: clamp(1.75rem, 5vw, 2.6rem);
   line-height: 1;
   font-weight: 900;
 }
 
 .estimate-detail {
-  color: #475569;
+  color: #626A70;
   font-size: .9rem;
   line-height: 1.5;
 }
@@ -436,19 +436,19 @@
 }
 
 .estimate-confidence strong {
-  color: #0f172a;
+  color: #161616;
   font-size: .92rem;
 }
 
 .estimate-confidence p {
-  color: #475569;
+  color: #626A70;
   font-size: .88rem;
   line-height: 1.45;
   margin: 0;
 }
 
 .estimate-confidence small {
-  color: #64748b;
+  color: #626A70;
   font-size: .78rem;
   line-height: 1.35;
 }
@@ -485,10 +485,10 @@
 }
 
 .estimate-submit-status {
-  background: #f8fafc;
+  background: #F5F6F7;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
-  color: #475569;
+  color: #626A70;
   font-size: .9rem;
   font-weight: 700;
   line-height: 1.45;
@@ -529,22 +529,22 @@
 }
 
 .estimate-submit {
-  background: #0CC0DF;
+  background: #00C0DF;
   color: #fff;
-  box-shadow: 0 8px 18px rgba(12, 192, 223, .28);
+  box-shadow: 0 8px 18px rgba(0, 192, 223, .28);
 }
 
 .estimate-link,
 .estimate-back {
-  color: #0f172a;
+  color: #161616;
   border: 1.5px solid #cbd5e1;
   background: #fff;
 }
 
 .estimate-next {
-  background: #0CC0DF;
+  background: #00C0DF;
   color: #fff;
-  box-shadow: 0 8px 18px rgba(12, 192, 223, .22);
+  box-shadow: 0 8px 18px rgba(0, 192, 223, .22);
   margin-left: auto;
 }
 

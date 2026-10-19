@@ -48,7 +48,7 @@
   var css = document.createElement("style");
   css.textContent =
     ".addr-suggest{position:absolute;left:0;right:0;top:100%;z-index:30;background:#fff;border:1px solid #9FA8AC;border-top:0;box-shadow:0 10px 24px rgba(0,0,0,.18);text-align:left}" +
-    ".addr-suggest button{display:block;width:100%;padding:.7rem .85rem;border:0;border-bottom:1px solid #EEF1F2;background:#fff;color:#121314;font:inherit;font-size:.95rem;line-height:1.3;text-align:left;cursor:pointer}" +
+    ".addr-suggest button{display:block;width:100%;padding:.7rem .85rem;border:0;border-bottom:1px solid #EEF1F2;background:#fff;color:#161616;font:inherit;font-size:.95rem;line-height:1.3;text-align:left;cursor:pointer}" +
     ".addr-suggest button small{display:block;color:#5B6468;font-size:.8rem;margin-top:.1rem}" +
     ".addr-suggest button[aria-selected=true],.addr-suggest button:hover{background:#F2FBFD}" +
     ".addr-suggest .addr-attrib{padding:.4rem .85rem;font-size:.72rem;color:#5B6468;text-align:right;font-family:Roboto,Arial,sans-serif}";

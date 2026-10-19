@@ -6,7 +6,7 @@
 <title>Photo upload · OCS LLC admin</title>
 <meta name="robots" content="noindex,nofollow">
 <style>
-:root { --cyan:#0CC0DF; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --bg:#f8fafc; --good:#16a34a; --warn:#f59e0b; --bad:#dc2626; }
+:root { --cyan:#00C0DF; --ink:#161616; --muted:#626A70; --line:#e2e8f0; --bg:#F5F6F7; --good:#16a34a; --warn:#f59e0b; --bad:#dc2626; }
 *{box-sizing:border-box}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding-bottom:env(safe-area-inset-bottom)}
 header{background:var(--cyan);color:#fff;padding:1rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
@@ -20,8 +20,8 @@ label{display:block;font-weight:600;font-size:.85rem;margin:.75rem 0 .35rem;colo
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;background:var(--cyan);color:#fff;border:0;padding:.8rem 1.2rem;border-radius:10px;font-weight:600;font-size:1rem;cursor:pointer;width:100%}
 .btn[disabled]{opacity:.55;cursor:not-allowed}
 .btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}
-.dropzone{border:2px dashed var(--cyan);border-radius:14px;background:rgba(12,192,223,.05);padding:2rem 1rem;text-align:center;cursor:pointer;transition:background .2s}
-.dropzone.drag{background:rgba(12,192,223,.15)}
+.dropzone{border:2px dashed var(--cyan);border-radius:14px;background:rgba(0, 192, 223,.05);padding:2rem 1rem;text-align:center;cursor:pointer;transition:background .2s}
+.dropzone.drag{background:rgba(0, 192, 223,.15)}
 .dropzone p{margin:0;color:var(--ink)} .dropzone .pick{color:var(--cyan);font-weight:700}
 #file-input{display:none}
 .thumb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.75rem;margin-top:1rem}
@@ -29,7 +29,7 @@ label{display:block;font-weight:600;font-size:.85rem;margin:.75rem 0 .35rem;colo
 .thumb img{width:100%;height:100%;object-fit:cover}
 .thumb .x{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.55);color:#fff;border:0;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:14px;line-height:1}
 .thumb .status{position:absolute;inset:auto 0 0 0;background:rgba(0,0,0,.6);color:#fff;font-size:.7rem;padding:.25rem .5rem;text-align:center}
-.log{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:.75rem 1rem;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:.82rem;max-height:240px;overflow-y:auto;white-space:pre-wrap;word-break:break-all}
+.log{background:#161616;color:#e2e8f0;border-radius:10px;padding:.75rem 1rem;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:.82rem;max-height:240px;overflow-y:auto;white-space:pre-wrap;word-break:break-all}
 .log .ok{color:#4ade80} .log .err{color:#f87171} .log .info{color:#60a5fa}
 .row{display:flex;gap:.5rem;flex-wrap:wrap} .row .btn{flex:1 1 0;min-width:140px}
 .pill{display:inline-block;padding:.15rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}

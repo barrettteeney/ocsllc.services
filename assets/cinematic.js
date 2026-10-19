@@ -314,20 +314,6 @@
       });
       btn.addEventListener("mouseleave", function () { toX(0); toY(0); });
     });
-
-    // Soft brand-blue glow that follows the cursor.
-    var glow = document.createElement("div");
-    glow.className = "cine-glow";
-    glow.setAttribute("aria-hidden", "true");
-    document.body.appendChild(glow);
-    var gx = gsap.quickTo(glow, "x", { duration: 0.8, ease: "power3.out" });
-    var gy = gsap.quickTo(glow, "y", { duration: 0.8, ease: "power3.out" });
-    var glowOn = false;
-    window.addEventListener("mousemove", function (e) {
-      if (!glowOn) { glowOn = true; gsap.set(glow, { x: e.clientX, y: e.clientY }); gsap.to(glow, { opacity: 1, duration: 0.6 }); }
-      gx(e.clientX); gy(e.clientY);
-    }, { passive: true });
-    document.addEventListener("mouseleave", function () { glowOn = false; gsap.to(glow, { opacity: 0, duration: 0.4 }); });
   }
 
   /* ================= Keep measurements fresh ================= */

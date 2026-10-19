@@ -1,6 +1,6 @@
 /* OCS LLC — top navigation menu (desktop bar + dropdowns, mobile hamburger). */
 
-.site-nav { background:#0CC0DF; color:#fff; position:sticky; top:0; z-index:50; box-shadow:0 1px 0 rgba(0,0,0,.06); }
+.site-nav { background:#161616; color:#fff; position:sticky; top:0; z-index:50; box-shadow:0 1px 0 rgba(0,0,0,.06); }
 .site-nav-inner { display:flex; align-items:center; gap:1.1rem; width:90%; max-width:1200px; margin:0 auto; padding:.45rem 0; }
 .site-brand { font-size:1.15rem; font-weight:800; color:#fff; text-decoration:none; white-space:nowrap; }
 
@@ -20,16 +20,16 @@
 }
 .nav-drop:hover .nav-drop-panel, .nav-drop.open .nav-drop-panel { display:block; }
 .nav-drop-panel a {
-  display:block; color:#0f172a; text-decoration:none; padding:.55rem .8rem; border-radius:7px;
+  display:block; color:#161616; text-decoration:none; padding:.55rem .8rem; border-radius:7px;
   font-size:.9rem; font-weight:600; white-space:nowrap;
 }
-.nav-drop-panel a:hover { background:#e0f7fb; color:#0aa3bd; }
+.nav-drop-panel a:hover { background:#F5F6F7; color:#161616; }
 
 .nav-menu > a.nav-cta {
-  background:#0f172a; color:#fff !important; padding:.5rem 1.1rem; border-radius:999px;
+  background:#00C0DF; color:#161616 !important; padding:.5rem 1.1rem; border-radius:999px;
   font-weight:800; font-size:.9rem; box-shadow:0 4px 12px rgba(15,23,42,.25); opacity:1;
 }
-.nav-menu > a.nav-cta:hover { background:#1e293b; opacity:1; }
+.nav-menu > a.nav-cta:hover { background:#fff; opacity:1; }
 
 .nav-phone { color:#fff; text-decoration:none; font-weight:700; font-size:.92rem; white-space:nowrap; }
 .nav-phone:hover { opacity:.85; }
@@ -45,7 +45,7 @@
   .nav-phone { display:none; }
   .nav-menu {
     display:none; position:absolute; top:100%; left:0; right:0; margin:0;
-    flex-direction:column; align-items:stretch; gap:0; background:#0aa3bd;
+    flex-direction:column; align-items:stretch; gap:0; background:#161616;
     padding:.25rem 5% 1rem; box-shadow:0 14px 28px rgba(0,0,0,.22);
   }
   .nav-menu.open { display:flex; }
