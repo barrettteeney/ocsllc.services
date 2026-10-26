@@ -318,6 +318,7 @@
   var PER_PANE = { ext: 8, int: 4, both: 12, screen: 3 };
   /* Surcharges are a share of that side's price. Exterior and interior are priced on separate lines. */
   var HARD_WATER_SHARE = 0.5;
+  var STORM_EXTRA = 2.0; /* triple-pane: the 2 inner glass sides at $12 each = +$24 per window on top of the regular $12 */
   var SURCHARGE = {
     ext: { high: 0.15, neglected: 0.25, construction: 0.50 },
     int: { high: 0.15, neglected: 0.25, construction: 0.50 }
@@ -440,13 +441,16 @@
     if (checked("post_construction")) pct += r.construction;
     return pct;
   }
-  /* One side (exterior or interior): the per-window price is the floor; a higher sqft price is averaged in. */
-  function sidePrice(side, sqft, panes, density) {
-    var tier = sqft ? SQFT_TIERS.find(function (item) { return sqft <= item.max; }) : null;
-    var bySqft = tier ? sqft * SQFT_RATES[side][density || "average"] : 0;
-    var byPane = panes ? panes * PER_PANE[side] : 0;
-    var base = byPane ? (bySqft > byPane ? (bySqft + byPane) / 2 : byPane) : bySqft;
-    return base * (1 + sidePct(side));
+  /* One side (exterior or interior): priced per window only. Square footage is a guide for the window count, not a price. */
+  function sidePrice(side, panes) {
+    return (panes ? panes * PER_PANE[side] : 0) * (1 + sidePct(side));
+  }
+  /* No window count given: estimate it from the home size (the middle of that size's typical range). */
+  function panesFromSqft(sqft) {
+    var tier = getTierForSqft(sqft);
+    if (!tier || !tier.panes) return 0;
+    var mid = tier.panes[1] || tier.panes[0];
+    return mid ? mid.value : 0;
   }
   function getReviewFlags(result) {
     var flags = [];
@@ -454,6 +458,7 @@
     if (form.elements.hard_water && form.elements.hard_water.checked) flags.push("hard water");
     if (getValue("last_cleaned") === "5+ years") flags.push("5+ years since cleaning");
     if (form.elements.post_construction && form.elements.post_construction.checked) flags.push("post-construction");
+    if (form.elements.storms && form.elements.storms.checked) flags.push("storm / triple-pane windows");
     if (form.elements.french && form.elements.french.checked) flags.push("divided-light glass");
     if (form.elements.stories && form.elements.stories.checked) flags.push("two or more stories");
     if (form.elements.high_interior && form.elements.high_interior.checked) flags.push("high interior windows");
@@ -478,12 +483,22 @@
     var panes = getNumber("panes");
     var screens = getNumber("screens");
     var density = densityForGlassCount(sqft, panes);
-    var sqftBase = baseFromSqft(sqft, service, density);
-    if (sqftBase === null) return { oversized: true };
-    if (!sqftBase && !panes) return null;
+    if (sqft && !SQFT_TIERS.find(function (item) { return sqft <= item.max; })) return { oversized: true };
+    var panesGuessed = false;
+    if (!panes && sqft) { panes = panesFromSqft(sqft); panesGuessed = true; }
+    if (!panes) return null;
+    var sqftBase = 0;
 
-    var ext = sidePrice("ext", sqft, panes, density);
-    var int = service === "both" ? sidePrice("int", sqft, panes, density) : 0;
+    var ext = sidePrice("ext", panes);
+    var int = service === "both" ? sidePrice("int", panes) : 0;
+    /* Storm / triple-pane windows: double the window price on each side (count not given → a third of the panes). */
+    var stormCount = 0;
+    if (checked("storms")) {
+      var allGlass = panes || (sqftBase ? Math.round(sqftBase / PER_PANE[service]) : 0);
+      stormCount = Math.min(getNumber("storm_count") || Math.ceil(allGlass / 3), allGlass || Infinity);
+      ext += stormCount * PER_PANE.ext * STORM_EXTRA * (1 + sidePct("ext"));
+      if (service === "both") int += stormCount * PER_PANE.int * STORM_EXTRA * (1 + sidePct("int"));
+    }
     var screenCost = screens ? screens * PER_PANE.screen : 0;
     /* Hard water: +50% of the exterior pane price, only on the windows that have it.
        Count not given → assume about a third of the panes. */
@@ -517,8 +532,9 @@
     return {
       low: low, high: high, total: total, service: service,
       sqft: sqft, panes: panes, screens: screens,
-      averaged: !!(sqftBase && paneBase),
-      lines: { ext: Math.round(ext), int: Math.round(int), hardWater: Math.round(hardWater), hwCount: hwCount, screens: screenCost },
+      averaged: false,
+      panesGuessed: panesGuessed,
+      lines: { stormCount: stormCount, ext: Math.round(ext), int: Math.round(int), hardWater: Math.round(hardWater), hwCount: hwCount, screens: screenCost },
       density: density,
       laborFloor: laborFloor,
       french: !!(form.elements.french && form.elements.french.checked)
@@ -777,6 +793,10 @@
     showStep(currentStep + 1, true);
   });
   form.addEventListener("change", function (event) {
+    if (event.target && event.target.name === "storms") {
+      var sc = form.querySelector("[data-storm-count]");
+      if (sc) sc.hidden = !event.target.checked;
+    }
     if (event.target && event.target.name === "hard_water") {
       var hw = form.querySelector("[data-hw-count]");
       if (hw) hw.hidden = !event.target.checked;
@@ -889,6 +909,7 @@
     if (data.stories === "Yes") extras.push("Two or more stories");
     if (data.high_interior === "Yes") extras.push("High inside windows");
     if (data.hard_water === "Yes") extras.push("Hard water");
+    if (data.storms === "Yes") extras.push("Storm / triple-pane windows" + (data.storm_count ? " (" + data.storm_count + ")" : ""));
     if (data.post_construction === "Yes") extras.push("Post-construction");
     if (data.french === "Yes") extras.push("French / divided-light glass");
     if (data.photos_available === "Yes") extras.push("Can text photos");
@@ -959,9 +980,10 @@
       var typedPanes = form.elements.panes && form.elements.panes.value !== "";
       var typedScreens = form.elements.screens && form.elements.screens.value !== "";
       if (result.sqft) parts.push(typedSqft || !getValue("sqft_tier") ? result.sqft.toLocaleString() + " sqft" : getValue("sqft_tier"));
-      if (result.panes) parts.push(typedPanes || !getValue("pane_range") ? result.panes + " pieces of glass" : getValue("pane_range"));
+      if (result.panes) parts.push(result.panesGuessed ? "about " + result.panes + " pieces of glass (typical for that size)" : (typedPanes || !getValue("pane_range") ? result.panes + " pieces of glass" : getValue("pane_range")));
       if (result.screens) parts.push(typedScreens || !getValue("screen_range") ? result.screens + " screens" : getValue("screen_range"));
       if (result.lines) {
+        if (result.lines.stormCount) parts.push(result.lines.stormCount + " storm/triple-pane windows (+$24 each for the inner glass)");
         var lineParts = ["Exterior " + money(result.lines.ext)];
         if (result.lines.int) lineParts.push("Interior " + money(result.lines.int));
         if (result.lines.hardWater) lineParts.push("Hard water (" + result.lines.hwCount + " windows) " + money(result.lines.hardWater));
@@ -999,6 +1021,7 @@
     var extras = [];
     if (data.stories === "Yes") extras.push("Two or more stories");
     if (data.hard_water === "Yes") extras.push("Hard water");
+    if (data.storms === "Yes") extras.push("Storm / triple-pane windows" + (data.storm_count ? " (" + data.storm_count + ")" : ""));
     if (data.post_construction === "Yes") extras.push("Post-construction");
     if (data.french === "Yes") extras.push("French / divided-light glass");
     if (data.last_cleaned === "5+ years") extras.push("Last cleaned 5+ years ago");
