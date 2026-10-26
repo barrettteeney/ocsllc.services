@@ -317,8 +317,9 @@
   var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage, then choose the closest pieces-of-glass and screen ranges.";
   var PER_PANE = { ext: 8, int: 6, both: 14, screen: 4 };
   /* Surcharges are a share of that side's price. Exterior and interior are priced on separate lines. */
+  var HARD_WATER_SHARE = 0.5;
   var SURCHARGE = {
-    ext: { high: 0.15, hardWater: 0.50, neglected: 0.25, construction: 0.50 },
+    ext: { high: 0.15, neglected: 0.25, construction: 0.50 },
     int: { high: 0.15, neglected: 0.25, construction: 0.50 }
   };
   var FIELD_MINUTES = { ext: 4, int: 3, both: 7, screen: 1.5 };
@@ -435,7 +436,6 @@
     var r = SURCHARGE[side], pct = 0;
     if (side === "ext" && checked("stories")) pct += r.high;
     if (side === "int" && checked("high_interior")) pct += r.high;
-    if (side === "ext" && checked("hard_water")) pct += r.hardWater;
     if (getValue("last_cleaned") === "5+ years") pct += r.neglected;
     if (checked("post_construction")) pct += r.construction;
     return pct;
@@ -485,19 +485,27 @@
     var ext = sidePrice("ext", sqft, panes, density);
     var int = service === "both" ? sidePrice("int", sqft, panes, density) : 0;
     var screenCost = screens ? screens * PER_PANE.screen : 0;
-    var total = ext + int + screenCost;
+    /* Hard water: +50% of the exterior pane price, only on the windows that have it.
+       Count not given → assume about a third of the panes. */
+    var hwCount = 0, hardWater = 0;
+    if (checked("hard_water")) {
+      var glassCount = panes || (sqftBase ? Math.round(sqftBase / PER_PANE[service]) : 0);
+      hwCount = Math.min(getNumber("hard_water_count") || Math.ceil(glassCount / 3), glassCount || Infinity);
+      hardWater = hwCount * PER_PANE.ext * HARD_WATER_SHARE;
+    }
+    var total = ext + int + hardWater + screenCost;
     if (total < MIN_CHARGE) total = MIN_CHARGE;
 
     var paneBase = panes ? panes * PER_PANE[service] : 0;
     var plainBase = paneBase || sqftBase;
     var impliedGlass = panes || (sqftBase ? sqftBase / PER_PANE[service] : 0);
-    var effort = plainBase ? (ext + int) / plainBase : 1;
+    var effort = plainBase ? (ext + int + hardWater) / plainBase : 1;
     var laborMinutes = impliedGlass * FIELD_MINUTES[service] * effort;
     laborMinutes += screens * FIELD_MINUTES.screen;
     var laborFloor = Math.ceil((((laborMinutes / 60) * MIN_EFFECTIVE_HOURLY) / 5)) * 5;
     if (total < laborFloor) {
       /* Labor floor wins: spread the raise over the window lines so the lines still add up. */
-      var glass = ext + int, need = laborFloor - screenCost;
+      var glass = ext + int, need = laborFloor - screenCost - hardWater;
       if (glass > 0 && need > glass) { ext = ext * need / glass; int = int * need / glass; }
       total = laborFloor;
     }
@@ -510,7 +518,7 @@
       low: low, high: high, total: total, service: service,
       sqft: sqft, panes: panes, screens: screens,
       averaged: !!(sqftBase && paneBase),
-      lines: { ext: Math.round(ext), int: Math.round(int), screens: screenCost },
+      lines: { ext: Math.round(ext), int: Math.round(int), hardWater: Math.round(hardWater), hwCount: hwCount, screens: screenCost },
       density: density,
       laborFloor: laborFloor,
       french: !!(form.elements.french && form.elements.french.checked)
@@ -768,6 +776,12 @@
     if (currentStep + 1 === GATE_STEP) prepareGate();
     showStep(currentStep + 1, true);
   });
+  form.addEventListener("change", function (event) {
+    if (event.target && event.target.name === "hard_water") {
+      var hw = form.querySelector("[data-hw-count]");
+      if (hw) hw.hidden = !event.target.checked;
+    }
+  });
   form.addEventListener("input", function () {
     if (!errorBox.hidden && (getNumber("sqft") || getNumber("panes"))) setError("");
   });
@@ -894,7 +908,7 @@
       estimate_low: hasRange ? result.low : null,
       estimate_high: hasRange ? result.high : null,
       notes: [result && result.oversized ? "Over 8,000 sq ft: custom quote" : "",
-        hasRange && result.lines ? "Lines: exterior $" + result.lines.ext + (result.lines.int ? ", interior $" + result.lines.int : "") + (result.lines.screens ? ", screens $" + result.lines.screens : "") : "",
+        hasRange && result.lines ? "Lines: exterior $" + result.lines.ext + (result.lines.int ? ", interior $" + result.lines.int : "") + (result.lines.hardWater ? ", hard water $" + result.lines.hardWater + " (" + result.lines.hwCount + " windows)" : "") + (result.lines.screens ? ", screens $" + result.lines.screens : "") : "",
         data.message || ""].filter(Boolean).join(" | "),
       page: window.location.pathname,
       id: submissionId || "",
@@ -950,6 +964,7 @@
       if (result.lines) {
         var lineParts = ["Exterior " + money(result.lines.ext)];
         if (result.lines.int) lineParts.push("Interior " + money(result.lines.int));
+        if (result.lines.hardWater) lineParts.push("Hard water (" + result.lines.hwCount + " windows) " + money(result.lines.hardWater));
         if (result.lines.screens) lineParts.push("Screens " + money(result.lines.screens));
         parts.push(lineParts.join(" + "));
       }

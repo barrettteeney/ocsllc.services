@@ -620,3 +620,6 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 8px); }
   .q-result-price { animation: none; }
   * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+.q-hw-count { display: grid; gap: 0.35rem; padding: 0.2rem 0.7rem 0.6rem 2.6rem; font-size: 0.9rem; }
+.q-hw-count[hidden] { display: none; }
