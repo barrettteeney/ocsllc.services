@@ -1052,6 +1052,7 @@
       var parts = [];
       parts.push(result.service === "both" ? "Interior + exterior" : "Exterior only");
       if (result.storefront) parts.push("storefront, per visit " + (STOREFRONT.frequencyLabel[result.frequency] || ""));
+      else if (isConstruction()) parts.push("new construction / remodel cleanup (+50% for paint, stickers, dust and debris)");
       else if (result.plan && result.plan !== "once") parts.push(PLAN.label[result.plan] + (result.planVisit ? ": first clean at the regular price, then about " + money(result.planVisit) + " per visit (" + Math.round(result.planDiscount * 100) + "% off) starting with your second visit" : ""));
       /* When a value came from a chip, show the chosen range — never the
        * internal median the math used. */
