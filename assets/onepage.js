@@ -322,7 +322,7 @@
     ext: { high: 0.15, neglected: 0.25, construction: 0.50 },
     int: { high: 0.15, neglected: 0.25, construction: 0.50 }
   };
-  var FIELD_MINUTES = { ext: 4, int: 2, both: 6, screen: 1.5 };
+  var FIELD_MINUTES = { ext: 3, int: 2, both: 5, screen: 1.5 };
   var MIN_EFFECTIVE_HOURLY = 125;
   var MIN_CHARGE = 150;
 
