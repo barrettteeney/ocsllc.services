@@ -283,8 +283,8 @@
    * the same two endpoints as the live estimate page.
    * ============================================================ */
   var SQFT_RATES = {
-    both: { fewer: 0.10, average: 0.14, more: 0.16 },
-    ext: { fewer: 0.055, average: 0.08, more: 0.09 }
+    ext: { fewer: 0.055, average: 0.08, more: 0.09 },
+    int: { fewer: 0.045, average: 0.06, more: 0.07 }
   };
   var SQFT_TIERS = [
     { max: 1000, fewerMax: 10, moreMin: 19, sqftLabel: "Up to 1,000 sqft",
@@ -315,7 +315,12 @@
   var DEFAULT_SQFT_NOTE = "Enter the exact size or choose the closest range.";
   var OVERSIZE_SQFT_LABEL = "8,000+ sqft";
   var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage, then choose the closest pieces-of-glass and screen ranges.";
-  var PER_PANE = { ext: 8, both: 14, screen: 4 };
+  var PER_PANE = { ext: 8, int: 6, both: 14, screen: 4 };
+  /* Surcharges are a share of that side's price. Exterior and interior are priced on separate lines. */
+  var SURCHARGE = {
+    ext: { high: 0.15, hardWater: 0.50, neglected: 0.25, construction: 0.50 },
+    int: { high: 0.15, neglected: 0.25, construction: 0.50 }
+  };
   var FIELD_MINUTES = { ext: 2.5, both: 5, screen: 1.5 };
   var MIN_EFFECTIVE_HOURLY = 125;
   var MIN_CHARGE = 150;
@@ -409,7 +414,8 @@
     if (!sqft) return 0;
     var tier = SQFT_TIERS.find(function (item) { return sqft <= item.max; });
     if (!tier) return null;
-    return sqft * SQFT_RATES[service][density || "average"];
+    var d = density || "average";
+    return service === "both" ? sqft * (SQFT_RATES.ext[d] + SQFT_RATES.int[d]) : sqft * SQFT_RATES[service][d];
   }
   function getTierForSqft(sqft) {
     if (!sqft) return null;
@@ -424,16 +430,23 @@
     var field = form.elements[name];
     if (field) field.value = value || "";
   }
-  function withSurcharges(base) {
-    return base + base * surchargePct();
-  }
-  function surchargePct() {
-    var pct = 0;
-    if (form.elements.stories && form.elements.stories.checked) pct += 0.10;
-    if (form.elements.hard_water && form.elements.hard_water.checked) pct += 0.20;
-    if (getValue("last_cleaned") === "5+ years") pct += 0.15;
-    if (form.elements.post_construction && form.elements.post_construction.checked) pct += 0.25;
+  function checked(name) { return !!(form.elements[name] && form.elements[name].checked); }
+  function sidePct(side) {
+    var r = SURCHARGE[side], pct = 0;
+    if (side === "ext" && checked("stories")) pct += r.high;
+    if (side === "int" && checked("high_interior")) pct += r.high;
+    if (side === "ext" && checked("hard_water")) pct += r.hardWater;
+    if (getValue("last_cleaned") === "5+ years") pct += r.neglected;
+    if (checked("post_construction")) pct += r.construction;
     return pct;
+  }
+  /* One side (exterior or interior): the per-window price is the floor; a higher sqft price is averaged in. */
+  function sidePrice(side, sqft, panes, density) {
+    var tier = sqft ? SQFT_TIERS.find(function (item) { return sqft <= item.max; }) : null;
+    var bySqft = tier ? sqft * SQFT_RATES[side][density || "average"] : 0;
+    var byPane = panes ? panes * PER_PANE[side] : 0;
+    var base = byPane ? (bySqft > byPane ? (bySqft + byPane) / 2 : byPane) : bySqft;
+    return base * (1 + sidePct(side));
   }
   function getReviewFlags(result) {
     var flags = [];
@@ -443,6 +456,7 @@
     if (form.elements.post_construction && form.elements.post_construction.checked) flags.push("post-construction");
     if (form.elements.french && form.elements.french.checked) flags.push("divided-light glass");
     if (form.elements.stories && form.elements.stories.checked) flags.push("two or more stories");
+    if (form.elements.high_interior && form.elements.high_interior.checked) flags.push("high interior windows");
     return flags;
   }
   function getConfidence(result) {
@@ -465,24 +479,20 @@
     var screens = getNumber("screens");
     var density = densityForGlassCount(sqft, panes);
     var sqftBase = baseFromSqft(sqft, service, density);
-    var paneBase = panes ? panes * PER_PANE[service] : 0;
-    var paths = [];
-
     if (sqftBase === null) return { oversized: true };
-    if (sqftBase) paths.push(withSurcharges(sqftBase));
-    if (paneBase) paths.push(withSurcharges(paneBase));
-    if (!paths.length) return null;
+    if (!sqftBase && !panes) return null;
 
-    // Per-window price is the floor. Square footage only raises it: if the sqft price is higher,
-    // average the two; if it is lower (or there is no window count), it never pulls the quote under per-window.
-    var total;
-    if (paths.length === 2) total = paths[0] > paths[1] ? (paths[0] + paths[1]) / 2 : paths[1];
-    else total = paths[0];
-    if (screens) total += screens * PER_PANE.screen;
+    var ext = sidePrice("ext", sqft, panes, density);
+    var int = service === "both" ? sidePrice("int", sqft, panes, density) : 0;
+    var screenCost = screens ? screens * PER_PANE.screen : 0;
+    var total = ext + int + screenCost;
     if (total < MIN_CHARGE) total = MIN_CHARGE;
 
+    var paneBase = panes ? panes * PER_PANE[service] : 0;
+    var plainBase = paneBase || sqftBase;
     var impliedGlass = panes || (sqftBase ? sqftBase / PER_PANE[service] : 0);
-    var laborMinutes = impliedGlass * FIELD_MINUTES[service] * (1 + surchargePct());
+    var effort = plainBase ? (ext + int) / plainBase : 1;
+    var laborMinutes = impliedGlass * FIELD_MINUTES[service] * effort;
     laborMinutes += screens * FIELD_MINUTES.screen;
     var laborFloor = Math.ceil((((laborMinutes / 60) * MIN_EFFECTIVE_HOURLY) / 5)) * 5;
     if (total < laborFloor) total = laborFloor;
@@ -494,7 +504,8 @@
     return {
       low: low, high: high, total: total, service: service,
       sqft: sqft, panes: panes, screens: screens,
-      averaged: sqftBase && paneBase,
+      averaged: !!(sqftBase && paneBase),
+      lines: { ext: Math.round(ext), int: Math.round(int), screens: screenCost },
       density: density,
       laborFloor: laborFloor,
       french: !!(form.elements.french && form.elements.french.checked)
@@ -857,6 +868,7 @@
   function n8nLeadPayload(data, result) {
     var extras = [];
     if (data.stories === "Yes") extras.push("Two or more stories");
+    if (data.high_interior === "Yes") extras.push("High inside windows");
     if (data.hard_water === "Yes") extras.push("Hard water");
     if (data.post_construction === "Yes") extras.push("Post-construction");
     if (data.french === "Yes") extras.push("French / divided-light glass");
@@ -876,7 +888,9 @@
       extras: extras,
       estimate_low: hasRange ? result.low : null,
       estimate_high: hasRange ? result.high : null,
-      notes: [result && result.oversized ? "Over 8,000 sq ft: custom quote" : "", data.message || ""].filter(Boolean).join(" | "),
+      notes: [result && result.oversized ? "Over 8,000 sq ft: custom quote" : "",
+        hasRange && result.lines ? "Lines: exterior $" + result.lines.ext + (result.lines.int ? ", interior $" + result.lines.int : "") + (result.lines.screens ? ", screens $" + result.lines.screens : "") : "",
+        data.message || ""].filter(Boolean).join(" | "),
       page: window.location.pathname,
       id: submissionId || "",
       _honey: data._honey || ""
@@ -928,7 +942,12 @@
       if (result.sqft) parts.push(typedSqft || !getValue("sqft_tier") ? result.sqft.toLocaleString() + " sqft" : getValue("sqft_tier"));
       if (result.panes) parts.push(typedPanes || !getValue("pane_range") ? result.panes + " pieces of glass" : getValue("pane_range"));
       if (result.screens) parts.push(typedScreens || !getValue("screen_range") ? result.screens + " screens" : getValue("screen_range"));
-      if (result.averaged) parts.push("sqft + glass count averaged");
+      if (result.lines) {
+        var lineParts = ["Exterior " + money(result.lines.ext)];
+        if (result.lines.int) lineParts.push("Interior " + money(result.lines.int));
+        if (result.lines.screens) lineParts.push("Screens " + money(result.lines.screens));
+        parts.push(lineParts.join(" + "));
+      }
       if (result.french) parts.push("divided-light glass");
       detailEl.textContent = parts.join(" • ") + ".";
     }
