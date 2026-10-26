@@ -318,6 +318,15 @@
   var PER_PANE = { ext: 8, int: 4, both: 12, screen: 3 };
   /* Surcharges are a share of that side's price. Exterior and interior are priced on separate lines. */
   var HARD_WATER_SHARE = 0.5;
+  var STOREFRONT = {
+    pane: { ext: 5, int: 3 },          /* per pane, per visit */
+    highGlass: 2,                      /* + per pane for glass that needs a pole or ladder */
+    min: 55,                           /* per visit */
+    frequency: { "1wk": 1, "2wk": 1, "4wk": 1, "8wk": 1.2, "12wk": 1.25, "once": 1.5 },
+    frequencyLabel: { "1wk": "every week", "2wk": "every 2 weeks", "4wk": "every 4 weeks", "8wk": "every 8 weeks", "12wk": "every 12 weeks", "once": "one time" }
+  };
+  function getProperty() { return getValue("property") || "home"; }
+  function isConstruction() { return getProperty() === "construction"; }
   var STORM_EXTRA = 2.0; /* triple-pane: the 2 inner glass sides at $12 each = +$24 per window on top of the regular $12 */
   var SURCHARGE = {
     ext: { high: 0.15, neglected: 0.25, construction: 0.50 },
@@ -439,7 +448,7 @@
     if (side === "ext" && checked("stories")) pct += r.high;
     if (side === "int" && checked("high_interior")) pct += r.high;
     if (getValue("last_cleaned") === "5+ years") pct += r.neglected;
-    if (checked("post_construction")) pct += r.construction;
+    if (isConstruction()) pct += r.construction;
     return pct;
   }
   /* One side (exterior or interior): priced per window only. Square footage is a guide for the window count, not a price. */
@@ -458,7 +467,8 @@
     if (result && result.oversized) flags.push("over 8,000 sqft");
     if (form.elements.hard_water && form.elements.hard_water.checked) flags.push("hard water");
     if (getValue("last_cleaned") === "5+ years") flags.push("5+ years since cleaning");
-    if (form.elements.post_construction && form.elements.post_construction.checked) flags.push("post-construction");
+    if (isConstruction()) flags.push("new construction / remodel");
+    if (getProperty() === "storefront") flags.push("storefront");
     if (form.elements.storms && form.elements.storms.checked) flags.push("storm / triple-pane windows");
     if (form.elements.french && form.elements.french.checked) flags.push("divided-light glass");
     if (form.elements.stories && form.elements.stories.checked) flags.push("two or more stories");
@@ -478,7 +488,35 @@
     }
     return { label: "We’ll confirm", text: "We’ll confirm the details you selected before finalizing the quote.", level: "review" };
   }
+  function computeStorefront() {
+    var service = getService();
+    var panes = getNumber("panes");
+    if (!panes) return null;
+    var freq = getValue("frequency") || "4wk";
+    var mult = STOREFRONT.frequency[freq] || 1;
+    var ext = panes * STOREFRONT.pane.ext + (checked("stories") ? panes * STOREFRONT.highGlass : 0);
+    var int = service === "both" ? panes * STOREFRONT.pane.int : 0;
+    var hwCount = 0, hardWater = 0;
+    if (checked("hard_water")) {
+      hwCount = Math.min(getNumber("hard_water_count") || Math.ceil(panes / 3), panes);
+      hardWater = hwCount * STOREFRONT.pane.ext * HARD_WATER_SHARE;
+    }
+    ext *= mult; int *= mult; hardWater *= mult;
+    var total = ext + int + hardWater;
+    var minApplied = total < STOREFRONT.min;
+    if (minApplied) total = STOREFRONT.min;
+    var low = Math.ceil(total / 5) * 5; if (low < STOREFRONT.min) low = STOREFRONT.min;
+    var high = roundTo(total * 1.15, 5); if (high - low < 10) high = low + 10;
+    return {
+      storefront: true, frequency: freq, low: low, high: high, total: total, service: service,
+      sqft: 0, panes: panes, screens: 0, density: "average", laborFloor: 0, averaged: false,
+      panesGuessed: false, minApplied: minApplied, minCharge: STOREFRONT.min,
+      lines: { stormCount: 0, ext: Math.round(ext), int: Math.round(int), hardWater: Math.round(hardWater), hwCount: hwCount, screens: 0 },
+      french: false
+    };
+  }
   function compute() {
+    if (getProperty() === "storefront") return computeStorefront();
     var service = getService();
     var sqft = getNumber("sqft");
     var panes = getNumber("panes");
@@ -529,7 +567,7 @@
       total = laborFloor;
     }
 
-    var low = Math.max(minCharge, roundTo(total, 5));  // never quote below the per-window price
+    var low = Math.max(minCharge, Math.ceil(total / 5) * 5);  // never quote below the per-window price
     var high = roundTo(total * 1.15, 5);
     if (high - low < 25) high = low + 25;
 
@@ -775,6 +813,10 @@
     }
   }
   function canLeaveStep(index) {
+    if (index === 1 && getProperty() === "storefront") {
+      if (!getNumber("panes")) { setError("Add the number of panes of glass (count each door as one)."); return false; }
+      setError(""); return true;
+    }
     if (index === 1) {
       if (isOversizeTierSelected() && getNumber("sqft") <= 8000) {
         setError("Enter your best estimated square footage above 8,000 so we have enough context.");
@@ -797,7 +839,20 @@
     if (currentStep + 1 === GATE_STEP) prepareGate();
     showStep(currentStep + 1, true);
   });
+  function applyPropertyMode() {
+    var store = getProperty() === "storefront";
+    form.querySelectorAll("[data-home-only]").forEach(function (el) { el.hidden = store; });
+    form.querySelectorAll("[data-storefront-only]").forEach(function (el) { el.hidden = !store; });
+    var size = form.querySelector("[data-size-label]");
+    if (size) size.textContent = store ? "How much glass?" : "How big is the home?";
+    var pl = form.querySelector("[data-pane-label]");
+    if (pl) pl.textContent = store ? "Panes of glass (count each door as one)" : "Roughly how many pieces of glass?";
+    var sl = form.querySelector("[data-stories-label]");
+    if (sl) sl.textContent = store ? "High glass that needs a pole or ladder" : "Two or more stories / high outside windows";
+    STEP_TITLES[1] = store ? "Glass" : "Home size";
+  }
   form.addEventListener("change", function (event) {
+    if (event.target && event.target.name === "property") applyPropertyMode();
     if (event.target && event.target.name === "storms") {
       var sc = form.querySelector("[data-storm-count]");
       if (sc) sc.hidden = !event.target.checked;
@@ -915,7 +970,8 @@
     if (data.high_interior === "Yes") extras.push("High inside windows");
     if (data.hard_water === "Yes") extras.push("Hard water");
     if (data.storms === "Yes") extras.push("Storm / triple-pane windows" + (data.storm_count ? " (" + data.storm_count + ")" : ""));
-    if (data.post_construction === "Yes") extras.push("Post-construction");
+    if (data.property === "construction") extras.push("New construction / remodel");
+    if (data.property === "storefront") extras.push("Storefront / business, " + (STOREFRONT.frequencyLabel[data.frequency] || "every 4 weeks"));
     if (data.french === "Yes") extras.push("French / divided-light glass");
     if (data.photos_available === "Yes") extras.push("Can text photos");
     if (data.last_cleaned) extras.push("Last cleaned: " + data.last_cleaned);
@@ -979,6 +1035,7 @@
       priceEl.textContent = money(result.low) + " – " + money(result.high);
       var parts = [];
       parts.push(result.service === "both" ? "Interior + exterior" : "Exterior only");
+      if (result.storefront) parts.push("storefront, per visit " + (STOREFRONT.frequencyLabel[result.frequency] || ""));
       /* When a value came from a chip, show the chosen range — never the
        * internal median the math used. */
       var typedSqft = form.elements.sqft && form.elements.sqft.value !== "";
@@ -1027,7 +1084,8 @@
     if (data.stories === "Yes") extras.push("Two or more stories");
     if (data.hard_water === "Yes") extras.push("Hard water");
     if (data.storms === "Yes") extras.push("Storm / triple-pane windows" + (data.storm_count ? " (" + data.storm_count + ")" : ""));
-    if (data.post_construction === "Yes") extras.push("Post-construction");
+    if (data.property === "construction") extras.push("New construction / remodel");
+    if (data.property === "storefront") extras.push("Storefront / business, " + (STOREFRONT.frequencyLabel[data.frequency] || "every 4 weeks"));
     if (data.french === "Yes") extras.push("French / divided-light glass");
     if (data.last_cleaned === "5+ years") extras.push("Last cleaned 5+ years ago");
     return extras;

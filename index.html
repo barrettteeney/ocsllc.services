@@ -209,7 +209,7 @@
 }
     </script>
   <script defer src="/assets/ads-conversion.js"></script>
-  <script defer src="/assets/onepage.js?v=20261025-nofloor"></script>
+  <script defer src="/assets/onepage.js?v=20261025-storefront"></script>
   <script defer src="/assets/address-autocomplete.js?v=20261011a"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -439,7 +439,35 @@
 
         <!-- STEP 1: Service -->
         <div class="q-step" data-step="0">
-          <span class="q-label">What should we clean?</span>
+          <span class="q-label">What kind of property?</span>
+          <div class="q-options q-options-3">
+            <label class="q-option">
+              <input type="radio" name="property" value="home" checked>
+              <span class="q-option-body"><b>Home</b><small>House, cabin or condo</small></span>
+            </label>
+            <label class="q-option">
+              <input type="radio" name="property" value="storefront">
+              <span class="q-option-body"><b>Storefront / business</b><small>Shops, offices, restaurants</small></span>
+            </label>
+            <label class="q-option">
+              <input type="radio" name="property" value="construction">
+              <span class="q-option-body"><b>New construction / remodel</b><small>Paint, stickers, dust and debris</small></span>
+            </label>
+          </div>
+          <div class="q-field" data-storefront-only hidden>
+            <label>
+              <span class="q-label" style="font-size:0.9rem">How often?</span>
+              <select class="q-select" name="frequency">
+                <option value="4wk" selected>Every 4 weeks</option>
+                <option value="2wk">Every 2 weeks</option>
+                <option value="1wk">Every week</option>
+                <option value="8wk">Every 8 weeks</option>
+                <option value="12wk">Every 12 weeks</option>
+                <option value="once">One time</option>
+              </select>
+            </label>
+          </div>
+          <span class="q-label" style="margin-top:1rem">What should we clean?</span>
           <div class="q-options">
             <label class="q-option">
               <input type="radio" name="service" value="both" checked>
@@ -454,7 +482,8 @@
 
         <!-- STEP 2: Home size -->
         <div class="q-step" data-step="1">
-          <span class="q-label">How big is the home?</span>
+          <span class="q-label" data-size-label>How big is the home?</span>
+          <div data-home-only>
           <div class="q-field" style="margin-top:0">
             <span class="q-label" style="font-size:0.9rem">Exact square footage (if known)</span>
             <input class="q-input" type="number" name="sqft" min="200" step="50" placeholder="Example: 2200" inputmode="numeric">
@@ -479,20 +508,25 @@
             </label>
           </div>
           <p class="q-hint" data-sqft-note>Enter the exact size or choose the closest range.</p>
+          </div>
           <div class="q-field">
-            <span class="q-label" style="font-size:0.9rem">Roughly how many pieces of glass?</span>
+            <span class="q-label" style="font-size:0.9rem" data-pane-label>Roughly how many pieces of glass?</span>
+            <div data-home-only>
             <div class="q-chip-row" data-pane-options></div>
             <p class="q-hint" data-pane-note>Choose a home size for a typical range.</p>
+            </div>
             <input class="q-input" type="number" name="panes" min="1" step="1" placeholder="Enter exact number instead" inputmode="numeric" style="margin-top:0.6rem">
           </div>
         </div>
 
         <!-- STEP 3: Details & condition -->
         <div class="q-step" data-step="2">
+          <div data-home-only>
           <span class="q-label">Screens to wash? <small class="q-label-note">(add-on)</small></span>
           <div class="q-chip-row" data-screen-options></div>
           <p class="q-hint" data-screen-note>We&rsquo;ll suggest a typical range.</p>
           <input class="q-input" type="number" name="screens" min="0" step="1" placeholder="Enter exact number instead" inputmode="numeric" style="margin-top:0.6rem">
+          </div>
 
           <div class="q-field">
             <label>
@@ -509,14 +543,13 @@
           <div class="q-field">
             <span class="q-label" style="font-size:0.9rem">Anything that applies?</span>
             <div class="q-checks">
-              <label class="q-check"><input type="checkbox" name="stories" value="Yes"><span>Two or more stories / high outside windows</span></label>
-              <label class="q-check" data-int-only><input type="checkbox" name="high_interior" value="Yes"><span>High or vaulted inside windows</span></label>
+              <label class="q-check"><input type="checkbox" name="stories" value="Yes"><span data-stories-label>Two or more stories / high outside windows</span></label>
+              <label class="q-check" data-int-only data-home-only><input type="checkbox" name="high_interior" value="Yes"><span>High or vaulted inside windows</span></label>
               <label class="q-check"><input type="checkbox" name="hard_water" value="Yes"><span>Hard water or sprinkler spots</span></label>
               <label class="q-hw-count" data-hw-count hidden><span>About how many windows have spots?</span><input class="q-input" type="number" name="hard_water_count" min="1" step="1" inputmode="numeric" placeholder="Not sure? Leave blank"></label>
-              <label class="q-check"><input type="checkbox" name="storms" value="Yes"><span>Storm or triple-pane windows</span></label>
+              <label class="q-check" data-home-only><input type="checkbox" name="storms" value="Yes"><span>Storm or triple-pane windows</span></label>
               <label class="q-hw-count" data-storm-count hidden><span>About how many?</span><input class="q-input" type="number" name="storm_count" min="1" step="1" inputmode="numeric" placeholder="Not sure? Leave blank"></label>
-              <label class="q-check"><input type="checkbox" name="post_construction" value="Yes"><span>Post-construction cleanup</span></label>
-              <label class="q-check"><input type="checkbox" name="french" value="Yes"><span>French / divided-light glass</span></label>
+              <label class="q-check" data-home-only><input type="checkbox" name="french" value="Yes"><span>French / divided-light glass</span></label>
               <label class="q-check"><input type="checkbox" name="photos_available" value="Yes"><span>I can text photos</span></label>
             </div>
           </div>
