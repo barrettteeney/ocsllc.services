@@ -318,7 +318,7 @@
   var PER_PANE = { ext: 8, int: 4, both: 12, screen: 3 };
   /* Surcharges are a share of that side's price. Exterior and interior are priced on separate lines. */
   var HARD_WATER_SHARE = 0.5;
-  var STORM_EXTRA = 1.0; /* storm / triple-pane: +100% per window on each side cleaned */
+  var STORM_EXTRA = 2.0; /* triple-pane: the 2 inner glass sides at $12 each = +$24 per window on top of the regular $12 */
   var SURCHARGE = {
     ext: { high: 0.15, neglected: 0.25, construction: 0.50 },
     int: { high: 0.15, neglected: 0.25, construction: 0.50 }
@@ -977,7 +977,7 @@
       if (result.panes) parts.push(typedPanes || !getValue("pane_range") ? result.panes + " pieces of glass" : getValue("pane_range"));
       if (result.screens) parts.push(typedScreens || !getValue("screen_range") ? result.screens + " screens" : getValue("screen_range"));
       if (result.lines) {
-        if (result.lines.stormCount) parts.push(result.lines.stormCount + " storm/triple-pane windows (double rate)");
+        if (result.lines.stormCount) parts.push(result.lines.stormCount + " storm/triple-pane windows (+$24 each for the inner glass)");
         var lineParts = ["Exterior " + money(result.lines.ext)];
         if (result.lines.int) lineParts.push("Interior " + money(result.lines.int));
         if (result.lines.hardWater) lineParts.push("Hard water (" + result.lines.hwCount + " windows) " + money(result.lines.hardWater));
