@@ -325,6 +325,12 @@
     frequency: { "1wk": 1, "2wk": 1, "4wk": 1, "8wk": 1.2, "12wk": 1.25, "once": 1.5 },
     frequencyLabel: { "1wk": "every week", "2wk": "every 2 weeks", "4wk": "every 4 weeks", "8wk": "every 8 weeks", "12wk": "every 12 weeks", "once": "one time" }
   };
+  /* Recurring plan discounts for homes (storefronts are never discounted). */
+  var PLAN = {
+    discount: { once: 0, biannual: 0.10, quarterly: 0.20, monthly: 0.20, custom: 0 },
+    label: { once: "one-time clean", biannual: "twice-a-year plan", quarterly: "every-3-months plan", monthly: "monthly plan", custom: "custom schedule (we\u2019ll confirm)" }
+  };
+  function getPlan() { return getProperty() === "home" ? (getValue("plan") || "once") : "once"; }
   function getProperty() { return getValue("property") || "home"; }
   function isConstruction() { return getProperty() === "construction"; }
   var STORM_EXTRA = 2.0; /* triple-pane: the 2 inner glass sides at $12 each = +$24 per window on top of the regular $12 */
@@ -547,7 +553,10 @@
       hwCount = Math.min(getNumber("hard_water_count") || Math.ceil(glassCount / 3), glassCount || Infinity);
       hardWater = hwCount * PER_PANE.ext * HARD_WATER_SHARE;
     }
-    var total = ext + int + hardWater + screenCost;
+    var plan = getPlan();
+    var planDiscount = PLAN.discount[plan] || 0;
+    var beforeDiscount = ext + int + hardWater + screenCost;
+    var total = beforeDiscount * (1 - planDiscount);
     var minCharge = service === "both" ? MIN_CHARGE_BOTH : MIN_CHARGE;
     var minApplied = total < minCharge;
     if (minApplied) total = minCharge;
@@ -577,6 +586,7 @@
       averaged: false,
       panesGuessed: panesGuessed,
       minApplied: minApplied,
+      plan: plan, planDiscount: planDiscount, beforeDiscount: beforeDiscount,
       lines: { stormCount: stormCount, ext: Math.round(ext), int: Math.round(int), hardWater: Math.round(hardWater), hwCount: hwCount, screens: screenCost },
       density: density,
       laborFloor: laborFloor,
@@ -843,6 +853,8 @@
     var store = getProperty() === "storefront";
     form.querySelectorAll("[data-home-only]").forEach(function (el) { el.hidden = store; });
     form.querySelectorAll("[data-storefront-only]").forEach(function (el) { el.hidden = !store; });
+    var planEl = form.querySelector("[data-home-plan]");
+    if (planEl) planEl.hidden = getProperty() !== "home";
     var size = form.querySelector("[data-size-label]");
     if (size) size.textContent = store ? "How much glass?" : "How big is the home?";
     var pl = form.querySelector("[data-pane-label]");
@@ -971,6 +983,7 @@
     if (data.hard_water === "Yes") extras.push("Hard water");
     if (data.storms === "Yes") extras.push("Storm / triple-pane windows" + (data.storm_count ? " (" + data.storm_count + ")" : ""));
     if (data.property === "construction") extras.push("New construction / remodel");
+    if ((data.property || "home") === "home" && data.plan && data.plan !== "once") extras.push("Plan: " + (PLAN.label[data.plan] || data.plan) + (PLAN.discount[data.plan] ? " (" + Math.round(PLAN.discount[data.plan] * 100) + "% off)" : ""));
     if (data.property === "storefront") extras.push("Storefront / business, " + (STOREFRONT.frequencyLabel[data.frequency] || "every 4 weeks"));
     if (data.french === "Yes") extras.push("French / divided-light glass");
     if (data.photos_available === "Yes") extras.push("Can text photos");
@@ -1036,6 +1049,7 @@
       var parts = [];
       parts.push(result.service === "both" ? "Interior + exterior" : "Exterior only");
       if (result.storefront) parts.push("storefront, per visit " + (STOREFRONT.frequencyLabel[result.frequency] || ""));
+      else if (result.plan && result.plan !== "once") parts.push(PLAN.label[result.plan] + (result.planDiscount ? ", " + Math.round(result.planDiscount * 100) + "% off each visit (regular " + money(result.beforeDiscount) + ")" : ""));
       /* When a value came from a chip, show the chosen range — never the
        * internal median the math used. */
       var typedSqft = form.elements.sqft && form.elements.sqft.value !== "";
@@ -1085,6 +1099,7 @@
     if (data.hard_water === "Yes") extras.push("Hard water");
     if (data.storms === "Yes") extras.push("Storm / triple-pane windows" + (data.storm_count ? " (" + data.storm_count + ")" : ""));
     if (data.property === "construction") extras.push("New construction / remodel");
+    if ((data.property || "home") === "home" && data.plan && data.plan !== "once") extras.push("Plan: " + (PLAN.label[data.plan] || data.plan) + (PLAN.discount[data.plan] ? " (" + Math.round(PLAN.discount[data.plan] * 100) + "% off)" : ""));
     if (data.property === "storefront") extras.push("Storefront / business, " + (STOREFRONT.frequencyLabel[data.frequency] || "every 4 weeks"));
     if (data.french === "Yes") extras.push("French / divided-light glass");
     if (data.last_cleaned === "5+ years") extras.push("Last cleaned 5+ years ago");
