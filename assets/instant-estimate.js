@@ -129,7 +129,7 @@
   var OVERSIZE_SQFT_LABEL = "8,000+ sqft";
   var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage, then choose the closest pieces-of-glass and screen ranges below.";
   var PER_PANE = { ext: 8, both: 14, screen: 4 };
-  var FIELD_MINUTES = { ext: 5, int: 3, both: 8, screen: 1.5 };
+  var FIELD_MINUTES = { ext: 4, int: 3, both: 7, screen: 1.5 };
   var MIN_EFFECTIVE_HOURLY = 150;
   var MIN_CHARGE = 150;
 

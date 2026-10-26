@@ -321,7 +321,7 @@
     ext: { high: 0.15, hardWater: 0.50, neglected: 0.25, construction: 0.50 },
     int: { high: 0.15, neglected: 0.25, construction: 0.50 }
   };
-  var FIELD_MINUTES = { ext: 5, int: 3, both: 8, screen: 1.5 };
+  var FIELD_MINUTES = { ext: 4, int: 3, both: 7, screen: 1.5 };
   var MIN_EFFECTIVE_HOURLY = 150;
   var MIN_CHARGE = 150;
 
