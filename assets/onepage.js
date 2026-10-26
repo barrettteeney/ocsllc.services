@@ -441,13 +441,16 @@
     if (checked("post_construction")) pct += r.construction;
     return pct;
   }
-  /* One side (exterior or interior): the per-window price is the floor; a higher sqft price is averaged in. */
-  function sidePrice(side, sqft, panes, density) {
-    var tier = sqft ? SQFT_TIERS.find(function (item) { return sqft <= item.max; }) : null;
-    var bySqft = tier ? sqft * SQFT_RATES[side][density || "average"] : 0;
-    var byPane = panes ? panes * PER_PANE[side] : 0;
-    var base = byPane ? (bySqft > byPane ? (bySqft + byPane) / 2 : byPane) : bySqft;
-    return base * (1 + sidePct(side));
+  /* One side (exterior or interior): priced per window only. Square footage is a guide for the window count, not a price. */
+  function sidePrice(side, panes) {
+    return (panes ? panes * PER_PANE[side] : 0) * (1 + sidePct(side));
+  }
+  /* No window count given: estimate it from the home size (the middle of that size's typical range). */
+  function panesFromSqft(sqft) {
+    var tier = getTierForSqft(sqft);
+    if (!tier || !tier.panes) return 0;
+    var mid = tier.panes[1] || tier.panes[0];
+    return mid ? mid.value : 0;
   }
   function getReviewFlags(result) {
     var flags = [];
@@ -480,12 +483,14 @@
     var panes = getNumber("panes");
     var screens = getNumber("screens");
     var density = densityForGlassCount(sqft, panes);
-    var sqftBase = baseFromSqft(sqft, service, density);
-    if (sqftBase === null) return { oversized: true };
-    if (!sqftBase && !panes) return null;
+    if (sqft && !SQFT_TIERS.find(function (item) { return sqft <= item.max; })) return { oversized: true };
+    var panesGuessed = false;
+    if (!panes && sqft) { panes = panesFromSqft(sqft); panesGuessed = true; }
+    if (!panes) return null;
+    var sqftBase = 0;
 
-    var ext = sidePrice("ext", sqft, panes, density);
-    var int = service === "both" ? sidePrice("int", sqft, panes, density) : 0;
+    var ext = sidePrice("ext", panes);
+    var int = service === "both" ? sidePrice("int", panes) : 0;
     /* Storm / triple-pane windows: double the window price on each side (count not given → a third of the panes). */
     var stormCount = 0;
     if (checked("storms")) {
@@ -527,7 +532,8 @@
     return {
       low: low, high: high, total: total, service: service,
       sqft: sqft, panes: panes, screens: screens,
-      averaged: !!(sqftBase && paneBase),
+      averaged: false,
+      panesGuessed: panesGuessed,
       lines: { stormCount: stormCount, ext: Math.round(ext), int: Math.round(int), hardWater: Math.round(hardWater), hwCount: hwCount, screens: screenCost },
       density: density,
       laborFloor: laborFloor,
@@ -974,7 +980,7 @@
       var typedPanes = form.elements.panes && form.elements.panes.value !== "";
       var typedScreens = form.elements.screens && form.elements.screens.value !== "";
       if (result.sqft) parts.push(typedSqft || !getValue("sqft_tier") ? result.sqft.toLocaleString() + " sqft" : getValue("sqft_tier"));
-      if (result.panes) parts.push(typedPanes || !getValue("pane_range") ? result.panes + " pieces of glass" : getValue("pane_range"));
+      if (result.panes) parts.push(result.panesGuessed ? "about " + result.panes + " pieces of glass (typical for that size)" : (typedPanes || !getValue("pane_range") ? result.panes + " pieces of glass" : getValue("pane_range")));
       if (result.screens) parts.push(typedScreens || !getValue("screen_range") ? result.screens + " screens" : getValue("screen_range"));
       if (result.lines) {
         if (result.lines.stormCount) parts.push(result.lines.stormCount + " storm/triple-pane windows (+$24 each for the inner glass)");
