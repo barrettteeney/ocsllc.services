@@ -556,7 +556,8 @@
     var plan = getPlan();
     var planDiscount = PLAN.discount[plan] || 0;
     var beforeDiscount = ext + int + hardWater + screenCost;
-    var total = beforeDiscount * (1 - planDiscount);
+    /* First clean is always full price; the plan price starts with visit two. */
+    var total = beforeDiscount;
     var minCharge = service === "both" ? MIN_CHARGE_BOTH : MIN_CHARGE;
     var minApplied = total < minCharge;
     if (minApplied) total = minCharge;
@@ -587,6 +588,7 @@
       panesGuessed: panesGuessed,
       minApplied: minApplied,
       plan: plan, planDiscount: planDiscount, beforeDiscount: beforeDiscount,
+      planVisit: planDiscount ? Math.max(minCharge, Math.ceil(beforeDiscount * (1 - planDiscount) / 5) * 5) : 0,
       lines: { stormCount: stormCount, ext: Math.round(ext), int: Math.round(int), hardWater: Math.round(hardWater), hwCount: hwCount, screens: screenCost },
       density: density,
       laborFloor: laborFloor,
@@ -1004,6 +1006,7 @@
       estimate_high: hasRange ? result.high : null,
       notes: [result && result.oversized ? "Over 8,000 sq ft: custom quote" : "",
         hasRange && result.lines ? "Lines: exterior $" + result.lines.ext + (result.lines.int ? ", interior $" + result.lines.int : "") + (result.lines.hardWater ? ", hard water $" + result.lines.hardWater + " (" + result.lines.hwCount + " windows)" : "") + (result.lines.screens ? ", screens $" + result.lines.screens : "") : "",
+        hasRange && result.planVisit ? "Plan: first clean $" + Math.round(result.total) + ", then ~$" + result.planVisit + "/visit from visit 2" : "",
         data.message || ""].filter(Boolean).join(" | "),
       page: window.location.pathname,
       id: submissionId || "",
@@ -1049,7 +1052,7 @@
       var parts = [];
       parts.push(result.service === "both" ? "Interior + exterior" : "Exterior only");
       if (result.storefront) parts.push("storefront, per visit " + (STOREFRONT.frequencyLabel[result.frequency] || ""));
-      else if (result.plan && result.plan !== "once") parts.push(PLAN.label[result.plan] + (result.planDiscount ? ", " + Math.round(result.planDiscount * 100) + "% off each visit (regular " + money(result.beforeDiscount) + ")" : ""));
+      else if (result.plan && result.plan !== "once") parts.push(PLAN.label[result.plan] + (result.planVisit ? ": first clean at the regular price, then about " + money(result.planVisit) + " per visit (" + Math.round(result.planDiscount * 100) + "% off) starting with your second visit" : ""));
       /* When a value came from a chip, show the chosen range — never the
        * internal median the math used. */
       var typedSqft = form.elements.sqft && form.elements.sqft.value !== "";
