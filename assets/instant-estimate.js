@@ -1,7 +1,7 @@
 (function () {
   var SQFT_RATES = {
-    both: { fewer: 0.09, average: 0.12, more: 0.14 },
-    ext: { fewer: 0.05, average: 0.07, more: 0.08 }
+    both: { fewer: 0.107, average: 0.15, more: 0.17 },
+    ext: { fewer: 0.062, average: 0.09, more: 0.10 }
   };
   var SQFT_TIERS = [
     {
@@ -128,8 +128,8 @@
   var DEFAULT_SQFT_NOTE = "Enter the exact size or choose the closest range.";
   var OVERSIZE_SQFT_LABEL = "8,000+ sqft";
   var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage, then choose the closest pieces-of-glass and screen ranges below.";
-  var PER_PANE = { ext: 7, both: 12, screen: 4 };
-  var FIELD_MINUTES = { ext: 2.5, both: 5, screen: 1.5 };
+  var PER_PANE = { ext: 9, both: 15, screen: 3 };
+  var FIELD_MINUTES = { ext: 4, int: 3, both: 7, screen: 1.5 };
   var MIN_EFFECTIVE_HOURLY = 125;
   var MIN_CHARGE = 150;
 
@@ -402,7 +402,11 @@
     if (paneBase) paths.push(withSurcharges(paneBase, form));
     if (!paths.length) return null;
 
-    var total = paths.reduce(function (sum, item) { return sum + item; }, 0) / paths.length;
+    // Per-window price is the floor. Square footage only raises it: if the sqft price is higher,
+    // average the two; if it is lower (or there is no window count), it never pulls the quote under per-window.
+    var total;
+    if (paths.length === 2) total = paths[0] > paths[1] ? (paths[0] + paths[1]) / 2 : paths[1];
+    else total = paths[0];
     if (screens) total += screens * PER_PANE.screen;
     if (total < MIN_CHARGE) total = MIN_CHARGE;
 
@@ -412,7 +416,7 @@
     var laborFloor = Math.ceil((((laborMinutes / 60) * MIN_EFFECTIVE_HOURLY) / 5)) * 5;
     if (total < laborFloor) total = laborFloor;
 
-    var low = Math.max(MIN_CHARGE, roundTo(total * 0.85, 5));
+    var low = Math.max(MIN_CHARGE, roundTo(total, 5));  // never quote below the per-window price
     var high = roundTo(total * 1.15, 5);
     if (high - low < 25) high = low + 25;
 

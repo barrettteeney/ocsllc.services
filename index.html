@@ -16,7 +16,7 @@
   <meta property="og:image" content="https://ocsllc.services/assets/og-v3.png?v=20260628b">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ocsllc.services/">
-  <link rel="stylesheet" href="/assets/onepage.css?v=20260825-dropdown-ui">
+  <link rel="stylesheet" href="/assets/onepage.css?v=20261025-hw">
   <link rel="stylesheet" href="/assets/home-v4.css?v=20261019-reserve">
   <link rel="stylesheet" href="/assets/cinematic.css?v=20261014a">
   <script>
@@ -209,7 +209,7 @@
 }
     </script>
   <script defer src="/assets/ads-conversion.js"></script>
-  <script defer src="/assets/onepage.js?v=20261019-reserve"></script>
+  <script defer src="/assets/onepage.js?v=20261025-hw"></script>
   <script defer src="/assets/address-autocomplete.js?v=20261011a"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -509,8 +509,10 @@
           <div class="q-field">
             <span class="q-label" style="font-size:0.9rem">Anything that applies?</span>
             <div class="q-checks">
-              <label class="q-check"><input type="checkbox" name="stories" value="Yes"><span>Two or more stories</span></label>
+              <label class="q-check"><input type="checkbox" name="stories" value="Yes"><span>Two or more stories / high outside windows</span></label>
+              <label class="q-check" data-int-only><input type="checkbox" name="high_interior" value="Yes"><span>High or vaulted inside windows</span></label>
               <label class="q-check"><input type="checkbox" name="hard_water" value="Yes"><span>Hard water or sprinkler spots</span></label>
+              <label class="q-hw-count" data-hw-count hidden><span>About how many windows have spots?</span><input class="q-input" type="number" name="hard_water_count" min="1" step="1" inputmode="numeric" placeholder="Not sure? Leave blank"></label>
               <label class="q-check"><input type="checkbox" name="post_construction" value="Yes"><span>Post-construction cleanup</span></label>
               <label class="q-check"><input type="checkbox" name="french" value="Yes"><span>French / divided-light glass</span></label>
               <label class="q-check"><input type="checkbox" name="photos_available" value="Yes"><span>I can text photos</span></label>
