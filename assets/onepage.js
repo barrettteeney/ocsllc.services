@@ -283,7 +283,7 @@
    * the same two endpoints as the live estimate page.
    * ============================================================ */
   var SQFT_RATES = {
-    ext: { fewer: 0.062, average: 0.09, more: 0.10 },
+    ext: { fewer: 0.055, average: 0.08, more: 0.09 },
     int: { fewer: 0.045, average: 0.06, more: 0.07 }
   };
   var SQFT_TIERS = [
@@ -315,7 +315,7 @@
   var DEFAULT_SQFT_NOTE = "Enter the exact size or choose the closest range.";
   var OVERSIZE_SQFT_LABEL = "8,000+ sqft";
   var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage, then choose the closest pieces-of-glass and screen ranges.";
-  var PER_PANE = { ext: 9, int: 6, both: 15, screen: 3 };
+  var PER_PANE = { ext: 8, int: 6, both: 14, screen: 3 };
   /* Surcharges are a share of that side's price. Exterior and interior are priced on separate lines. */
   var HARD_WATER_SHARE = 0.5;
   var SURCHARGE = {
@@ -323,7 +323,7 @@
     int: { high: 0.15, neglected: 0.25, construction: 0.50 }
   };
   var FIELD_MINUTES = { ext: 4, int: 3, both: 7, screen: 1.5 };
-  var MIN_EFFECTIVE_HOURLY = 125;
+  var MIN_EFFECTIVE_HOURLY = 120;
   var MIN_CHARGE = 150;
 
   function money(value) { return "$" + Math.round(value).toLocaleString(); }
