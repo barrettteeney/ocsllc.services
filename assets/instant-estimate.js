@@ -130,7 +130,7 @@
   var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage, then choose the closest pieces-of-glass and screen ranges below.";
   var PER_PANE = { ext: 8, both: 14, screen: 4 };
   var FIELD_MINUTES = { ext: 2.5, both: 5, screen: 1.5 };
-  var MIN_EFFECTIVE_HOURLY = 125;
+  var MIN_EFFECTIVE_HOURLY = 150;
   var MIN_CHARGE = 150;
 
   function money(value) {

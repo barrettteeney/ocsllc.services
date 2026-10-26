@@ -322,7 +322,7 @@
     int: { high: 0.15, neglected: 0.25, construction: 0.50 }
   };
   var FIELD_MINUTES = { ext: 2.5, both: 5, screen: 1.5 };
-  var MIN_EFFECTIVE_HOURLY = 125;
+  var MIN_EFFECTIVE_HOURLY = 150;
   var MIN_CHARGE = 150;
 
   function money(value) { return "$" + Math.round(value).toLocaleString(); }
