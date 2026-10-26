@@ -509,10 +509,12 @@
       hwCount = Math.min(getNumber("hard_water_count") || Math.ceil(glassCount / 3), glassCount || Infinity);
       hardWater = hwCount * PER_PANE.ext * HARD_WATER_SHARE;
     }
-    var total = ext + int + hardWater + screenCost;
+    /* Minimum applies to the window work (panes + surcharges + hard water + triple-pane).
+       Add-on line items (screens, travel) are charged on top of whichever is larger. */
+    var windowWork = ext + int + hardWater;
     var minCharge = service === "both" ? MIN_CHARGE_BOTH : MIN_CHARGE;
-    var minApplied = total < minCharge;
-    if (minApplied) total = minCharge;
+    var minApplied = windowWork < minCharge;
+    var total = (minApplied ? minCharge : windowWork) + screenCost;
 
     var paneBase = panes ? panes * PER_PANE[service] : 0;
     var plainBase = paneBase || sqftBase;
@@ -539,6 +541,7 @@
       averaged: false,
       panesGuessed: panesGuessed,
       minApplied: minApplied,
+      minCharge: minCharge,
       lines: { stormCount: stormCount, ext: Math.round(ext), int: Math.round(int), hardWater: Math.round(hardWater), hwCount: hwCount, screens: screenCost },
       density: density,
       laborFloor: laborFloor,
@@ -993,7 +996,7 @@
         if (result.lines.int) lineParts.push("Interior " + money(result.lines.int));
         if (result.lines.hardWater) lineParts.push("Hard water (" + result.lines.hwCount + " windows) " + money(result.lines.hardWater));
         if (result.lines.screens) lineParts.push("Screens " + money(result.lines.screens));
-        parts.push(lineParts.join(" + ") + (result.minApplied ? " (service minimum " + money(result.total) + " applies)" : ""));
+        parts.push(lineParts.join(" + ") + (result.minApplied ? " (window minimum " + money(result.minCharge) + " applies to the window work)" : ""));
       }
       if (result.french) parts.push("divided-light glass");
       detailEl.textContent = parts.join(" • ") + ".";
