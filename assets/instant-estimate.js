@@ -1,7 +1,7 @@
 (function () {
   var SQFT_RATES = {
-    both: { fewer: 0.10, average: 0.14, more: 0.16 },
-    ext: { fewer: 0.055, average: 0.08, more: 0.09 }
+    both: { fewer: 0.09, average: 0.12, more: 0.14 },
+    ext: { fewer: 0.05, average: 0.07, more: 0.08 }
   };
   var SQFT_TIERS = [
     {
@@ -128,9 +128,9 @@
   var DEFAULT_SQFT_NOTE = "Enter the exact size or choose the closest range.";
   var OVERSIZE_SQFT_LABEL = "8,000+ sqft";
   var OVERSIZE_SQFT_NOTE = "Enter your best estimated square footage, then choose the closest pieces-of-glass and screen ranges below.";
-  var PER_PANE = { ext: 8, both: 14, screen: 3 };
+  var PER_PANE = { ext: 7, both: 12, screen: 3 };
   var FIELD_MINUTES = { ext: 4, int: 3, both: 7, screen: 1.5 };
-  var MIN_EFFECTIVE_HOURLY = 120;
+  var MIN_EFFECTIVE_HOURLY = 100;
   var MIN_CHARGE = 150;
 
   function money(value) {
