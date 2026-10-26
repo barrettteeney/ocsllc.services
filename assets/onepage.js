@@ -326,6 +326,7 @@
   var FIELD_MINUTES = { ext: 3, int: 2, both: 5, screen: 1.5 };
   var MIN_EFFECTIVE_HOURLY = 125;
   var MIN_CHARGE = 150;
+  var MIN_CHARGE_BOTH = 225; /* exterior-only minimum $150; inside + out in the same 12:8 proportion */
 
   function money(value) { return "$" + Math.round(value).toLocaleString(); }
   function roundTo(value, step) { return Math.round(value / step) * step; }
@@ -509,7 +510,9 @@
       hardWater = hwCount * PER_PANE.ext * HARD_WATER_SHARE;
     }
     var total = ext + int + hardWater + screenCost;
-    if (total < MIN_CHARGE) total = MIN_CHARGE;
+    var minCharge = service === "both" ? MIN_CHARGE_BOTH : MIN_CHARGE;
+    var minApplied = total < minCharge;
+    if (minApplied) total = minCharge;
 
     var paneBase = panes ? panes * PER_PANE[service] : 0;
     var plainBase = paneBase || sqftBase;
@@ -518,14 +521,15 @@
     var laborMinutes = impliedGlass * FIELD_MINUTES[service] * effort;
     laborMinutes += screens * FIELD_MINUTES.screen;
     var laborFloor = Math.ceil((((laborMinutes / 60) * MIN_EFFECTIVE_HOURLY) / 5)) * 5;
-    if (total < laborFloor) {
+    /* Hourly floor is tracked for reference only; it never changes the price. */
+    if (false) {
       /* Labor floor wins: spread the raise over the window lines so the lines still add up. */
       var glass = ext + int, need = laborFloor - screenCost - hardWater;
       if (glass > 0 && need > glass) { ext = ext * need / glass; int = int * need / glass; }
       total = laborFloor;
     }
 
-    var low = Math.max(MIN_CHARGE, roundTo(total, 5));  // never quote below the per-window price
+    var low = Math.max(minCharge, roundTo(total, 5));  // never quote below the per-window price
     var high = roundTo(total * 1.15, 5);
     if (high - low < 25) high = low + 25;
 
@@ -534,6 +538,7 @@
       sqft: sqft, panes: panes, screens: screens,
       averaged: false,
       panesGuessed: panesGuessed,
+      minApplied: minApplied,
       lines: { stormCount: stormCount, ext: Math.round(ext), int: Math.round(int), hardWater: Math.round(hardWater), hwCount: hwCount, screens: screenCost },
       density: density,
       laborFloor: laborFloor,
@@ -988,7 +993,7 @@
         if (result.lines.int) lineParts.push("Interior " + money(result.lines.int));
         if (result.lines.hardWater) lineParts.push("Hard water (" + result.lines.hwCount + " windows) " + money(result.lines.hardWater));
         if (result.lines.screens) lineParts.push("Screens " + money(result.lines.screens));
-        parts.push(lineParts.join(" + "));
+        parts.push(lineParts.join(" + ") + (result.minApplied ? " (service minimum " + money(result.total) + " applies)" : ""));
       }
       if (result.french) parts.push("divided-light glass");
       detailEl.textContent = parts.join(" • ") + ".";
