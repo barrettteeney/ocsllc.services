@@ -321,7 +321,7 @@
     ext: { high: 0.15, hardWater: 0.50, neglected: 0.25, construction: 0.50 },
     int: { high: 0.15, neglected: 0.25, construction: 0.50 }
   };
-  var FIELD_MINUTES = { ext: 2.5, both: 5, screen: 1.5 };
+  var FIELD_MINUTES = { ext: 5, int: 3, both: 8, screen: 1.5 };
   var MIN_EFFECTIVE_HOURLY = 150;
   var MIN_CHARGE = 150;
 
@@ -495,7 +495,12 @@
     var laborMinutes = impliedGlass * FIELD_MINUTES[service] * effort;
     laborMinutes += screens * FIELD_MINUTES.screen;
     var laborFloor = Math.ceil((((laborMinutes / 60) * MIN_EFFECTIVE_HOURLY) / 5)) * 5;
-    if (total < laborFloor) total = laborFloor;
+    if (total < laborFloor) {
+      /* Labor floor wins: spread the raise over the window lines so the lines still add up. */
+      var glass = ext + int, need = laborFloor - screenCost;
+      if (glass > 0 && need > glass) { ext = ext * need / glass; int = int * need / glass; }
+      total = laborFloor;
+    }
 
     var low = Math.max(MIN_CHARGE, roundTo(total, 5));  // never quote below the per-window price
     var high = roundTo(total * 1.15, 5);
