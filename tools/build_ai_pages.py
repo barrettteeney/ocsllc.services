@@ -87,21 +87,21 @@ CTA = """    <section class="bg-white cta-band">
 # ---------- FAQ content (shared by FAQ page + schema) ----------
 FAQS = [
     ("How much does window cleaning cost in Kalispell?",
-     "OCS charges $12 per window for inside and outside ($8 outside, $4 inside). Screens are $3 each. Most single-level homes with about 20 windows run around $240 for inside and out. The minimum visit is $150 for outside only or $225 for inside and out."),
+     "We price by the window, not by square footage, so you only pay for the glass you have. Your price depends on how many windows you have, inside and out or outside only, screens, how high the windows are and their condition. The instant estimate on our website gives you a range in about a minute, and we confirm a firm price before any work starts."),
     ("How do you count windows?",
-     "Each separate piece of glass that opens or sits in its own frame counts as one window. Small French or divided panes are grouped: about 3 small lites count as one window. Triple-pane storm windows are $12 more per side because both layers get cleaned."),
+     "Each separate piece of glass that opens or sits in its own frame counts as one window. Small French or divided panes are grouped together, so a window full of little panes isn't priced like a dozen windows."),
     ("Is there a minimum charge?",
-     "Yes. $150 for outside only and $225 for inside and out. The minimum covers screens and any surcharges, so smaller homes never pay more than the minimum unless travel applies."),
-    ("What costs extra?",
-     "High or hard-to-reach windows (second story and up) add 15% to that side. Windows that haven't been professionally cleaned in years add 25%. Post-construction cleans add 50%. Hard water spot removal is $4 more per affected window."),
+     "Yes, there's a minimum per visit. It covers screens and any extras, so small homes and quick jobs get one simple price."),
+    ("What affects the price?",
+     "High or hard-to-reach windows, windows that haven't been professionally cleaned in years, post-construction dust and residue, hard water spots, and triple-pane storm windows where both layers get cleaned. We tell you about any of these before we start."),
     ("Can you remove hard water spots?",
-     "Light staining usually comes out with our standard process. Heavier mineral buildup is treated as hard water removal at $4 per affected window on top of the regular price. We'll look at it and tell you what to expect before we start."),
+     "Light staining usually comes out with our standard process. Heavier mineral buildup takes extra treatment, which we include in your quote. We'll look at it and tell you what to expect before we start."),
     ("Do you offer discounts for regular cleanings?",
-     "Yes. The first clean is full price. After that, twice-a-year plans save 10% and quarterly or monthly plans save 20% on every visit."),
-    ("How much is storefront window cleaning?",
-     "Storefront glass is $5 per pane outside and $3 per pane inside, with a $55 minimum per visit. High glass adds $2 per pane. Weekly, every-2-week and every-4-week routes are standard price; every 8 weeks is 20% more, every 12 weeks 25% more, and a one-time clean 50% more."),
+     "Yes. Customers on a twice-a-year, quarterly or monthly plan save on every visit after the first clean."),
+    ("Do you clean storefronts and commercial windows?",
+     "Yes. We service storefronts and commercial buildings on weekly, every-2-week, monthly or seasonal routes, as well as one-time cleans. Ask for a storefront quote."),
     ("Which towns do you serve?",
-     "Kalispell, Whitefish, Columbia Falls, Bigfork and the rest of the Flathead Valley. If you're farther out, ask: a travel charge may apply and we'll quote it up front."),
+     "Kalispell, Whitefish, Columbia Falls, Bigfork and the rest of the Flathead Valley. If you're farther out, ask and we'll let you know."),
     ("How often should I have my windows cleaned?",
      "Most homeowners do twice a year, once in spring after winter grit and once in fall before snow flies. Lakefront homes and properties under heavy tree cover often benefit from quarterly cleaning."),
     ("Do I need to be home?",
@@ -236,7 +236,7 @@ faq_body = hero("Window Cleaning FAQ",
             <p class="breadcrumbs"><a href="/">Home</a> &rsaquo; FAQ</p>
             <h2 class="text-2xl font-bold mb-3">Frequently asked questions</h2>
 {faq_html(FAQS)}
-            <p class="mt-4"><a class="underline" href="/pricing/">See the full price list &rarr;</a></p>
+            <p class="mt-4"><a class="underline" href="/estimate/">Get your instant estimate &rarr;</a></p>
         </div>
     </section>
 """ + CTA
@@ -246,7 +246,7 @@ def page(title, desc, url, lds, body):
             + "</head>\n<body class=\"bg-gray-50 text-black\">\n\n    " + nav + "\n" + body + foot)
 
 out = {
-    "pricing/index.html": page(
+    "_unused_pricing.html": page(
         "Window Cleaning Prices in Kalispell & the Flathead Valley | OCS LLC",
         "OCS window cleaning prices: $12 per window inside and out, $8 outside only, $3 screens, $150 minimum. Kalispell, Whitefish, Columbia Falls, Bigfork.",
         "https://ocsllc.services/pricing/",
@@ -258,6 +258,7 @@ out = {
         [crumbs("FAQ", "https://ocsllc.services/faq/"), faq_ld(FAQS)], faq_body),
 }
 for path, html in out.items():
+    if path.startswith("_unused"): continue
     p = ROOT / path
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(html)
