@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Performance hints -->
+    <link rel="preconnect" href="https://live.staticflickr.com" crossorigin>
+    <link rel="preconnect" href="https://www.youtube.com" crossorigin>
+    <link rel="dns-prefetch" href="https://upload.wikimedia.org">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <style>
+        /* Critical CSS — applied before any other stylesheet so the layout never collapses */
+        body{margin:0;font-family:'Garet',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+        html,body{overflow-x:hidden;max-width:100vw}
+        *,*::before,*::after{box-sizing:border-box}
+        img,video,iframe,svg,picture{max-width:100%;height:auto;display:inline-block}
+        img.service-icon{width:80px!important;height:80px!important;max-width:80px!important;max-height:80px!important;object-fit:contain;margin:0 auto 0.75rem;display:block}
+        .container{width:100%;max-width:1200px;margin:0 auto;padding-left:clamp(0.85rem,4vw,2rem);padding-right:clamp(0.85rem,4vw,2rem)}
+        .bg-custom-cyan{background:#00C0DF}
+        nav.bg-custom-cyan{padding:0.75rem 0;color:white}
+        .nav-container{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.5rem;padding:1rem;width:100%;max-width:1200px;margin:0 auto}
+        .contact-info{display:flex;flex-direction:column;align-items:flex-end;gap:0.25rem;font-size:.95rem}
+        .contact-info a{color:#fff;text-decoration:none}
+        section{padding:clamp(2rem,5vw,4rem) 0}
+        h1,h2,h3{margin:0 0 .75rem}
+        @media (max-width:720px){
+            .nav-container{flex-direction:column;align-items:flex-start;gap:.4rem}
+            .contact-info{align-items:flex-start;font-size:.95rem}
+            body{padding-bottom:calc(60px + env(safe-area-inset-bottom))}
+            img.service-icon{width:64px!important;height:64px!important}
+        }
+    
+        .hero-photo {
+            position: relative;
+            color: white;
+            padding: clamp(2.5rem, 6vw + 1rem, 5rem) 1rem;
+            text-align: center;
+            background: url("/assets/photos/54650912485.jpg") center/cover no-repeat;
+            isolation: isolate;
+        }
+        .hero-photo::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 192, 223,0.85) 0%, rgba(10,163,189,0.92) 100%);
+            z-index: -1;
+        }
+        .hero-photo h1, .hero-photo p, .hero-photo .trust-row, .hero-photo .hero-cta-row {
+            position: relative;
+            z-index: 1;
+        }
+</style>
+
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="theme-color" content="#00C0DF">
+    <title>Window Cleaning in Lakeside, MT | OCS LLC</title>
+    <meta name="description" content="Professional window cleaning in Lakeside, Montana: lake-view homes, vacation rentals, storefronts and post-construction. Free estimates — call (406) 607-2151.">
+    <link rel="canonical" href="https://ocsllc.services/lakeside/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="OCS LLC">
+    <meta property="og:title" content="Window Cleaning in Lakeside, MT | OCS LLC">
+    <meta property="og:description" content="Professional window cleaning in Lakeside, Montana: lake-view homes, vacation rentals, storefronts and post-construction. Free estimates — call (406) 607-2151.">
+    <meta property="og:url" content="https://ocsllc.services/lakeside/">
+    <meta property="og:image" content="https://ocsllc.services/assets/og.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Window Cleaning in Lakeside, MT | OCS LLC">
+    <meta name="twitter:description" content="Professional window cleaning in Lakeside, Montana: lake-view homes, vacation rentals, storefronts and post-construction. Free estimates — call (406) 607-2151.">
+    <meta name="twitter:image" content="https://ocsllc.services/assets/og.png">
+
+    
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Window Cleaning in Lakeside, MT",
+  "description": "Residential, commercial, post-construction window cleaning in Lakeside, Montana.",
+  "provider": {
+    "@id": "https://ocsllc.services/#business"
+  },
+  "areaServed": {
+    "@type": "City",
+    "name": "Lakeside, MT"
+  },
+  "serviceType": [
+    "Window Cleaning",
+    "Post-Construction Cleaning"
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://ocsllc.services/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Lakeside",
+      "item": "https://ocsllc.services/lakeside/"
+    }
+  ]
+}
+    </script>
+
+    <link rel="icon" type="image/png" href="/assets/icon-192.png?v=ocs-logo-20260727">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v=ocs-logo-20260727">
+    <link rel="stylesheet" href="/assets/tailwind.css">
+    
+    <link rel="stylesheet" href="/assets/site.css">
+    <link rel="stylesheet" href="/assets/responsive.css">
+<link rel="stylesheet" href="/assets/feature-splits.css">
+<script src="/assets/feature-splits.js" defer></script>
+<link rel="stylesheet" href="/assets/ambient-hero.css">
+<script src="/assets/ambient-hero.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "@id": "https://ocsllc.services/#business",
+  "name": "OCS LLC",
+  "alternateName": "OCS LLC Window Cleaning",
+  "description": "Professional window cleaning in Kalispell and the Flathead Valley — interior and exterior glass, frames, and screens. Insured and locally owned.",
+  "url": "https://ocsllc.services/",
+  "telephone": "+1-406-607-2151",
+  "email": "barrett@ocsllc.services",
+  "image": "https://ocsllc.services/assets/og.png",
+  "logo": "https://ocsllc.services/assets/og.png",
+  "priceRange": "$$",
+  "founder": { "@type": "Person", "name": "Barrett Teeney" },
+  "address": { "@type": "PostalAddress", "addressLocality": "Kalispell", "addressRegion": "MT", "postalCode": "59901", "addressCountry": "US" },
+  "geo": { "@type": "GeoCoordinates", "latitude": 48.1958, "longitude": -114.3129 },
+  "areaServed": [
+    { "@type": "City", "name": "Kalispell" },
+    { "@type": "City", "name": "Whitefish" },
+    { "@type": "City", "name": "Columbia Falls" },
+    { "@type": "City", "name": "Bigfork" },
+    { "@type": "City", "name": "Lakeside" },
+    { "@type": "City", "name": "Somers" },
+    { "@type": "City", "name": "Evergreen" },
+    { "@type": "City", "name": "Eureka" },
+    { "@type": "AdministrativeArea", "name": "Flathead Valley" }
+  ],
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "09:30", "closes": "19:00" }
+  ],
+  "sameAs": [ "https://www.google.com/maps/place/data=!4m2!3m1!1s0x2ba17fade10a7f9b:0x7b5721a0f9b3ddf4", "https://www.facebook.com/1064180896780151" ]
+}
+</script>
+<link rel="stylesheet" href="/assets/site-nav.css">
+<script src="/assets/site-nav.js" defer></script>
+<script src="/assets/ads-conversion.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/assets/brand.css?v=20261019c">
+</head>
+<body class="bg-gray-50 text-black">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-black px-3 py-2 rounded z-50">Skip to content</a>
+    <nav class="site-nav"><div class="site-nav-inner"><a href="/" class="site-brand">OCS LLC</a><button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button><div class="nav-menu"><a href="/">Home</a><div class="nav-drop"><button type="button" class="nav-drop-btn" aria-expanded="false">Services <span class="caret">&#9662;</span></button><div class="nav-drop-panel"><a href="/services/residential/">Residential</a><a href="/services/commercial/">Commercial</a><a href="/services/post-construction/">Post-Construction</a><a href="/services/additional/">Additional Services</a></div></div><div class="nav-drop"><button type="button" class="nav-drop-btn" aria-expanded="false">Areas <span class="caret">&#9662;</span></button><div class="nav-drop-panel"><a href="/kalispell/">Kalispell</a><a href="/whitefish/">Whitefish</a><a href="/columbia-falls/">Columbia Falls</a><a href="/bigfork/">Bigfork</a><a href="/lakeside/">Lakeside</a><a href="/somers/">Somers</a><a href="/evergreen/">Evergreen</a><a href="/eureka/">Eureka</a><a href="/flathead-valley/">Flathead Valley</a></div></div><a href="/pricing/">Pricing</a><a href="/faq/">FAQ</a><a href="/reviews/">Reviews</a><a href="/our-work/">Our Work</a><a href="/about/">About</a><a href="tel:+14066072151" class="nav-phone-m">Call (406) 607-2151</a><a href="/estimate/" class="nav-cta">Get a Quote</a></div><a href="tel:+14066072151" class="nav-phone">(406) 607-2151</a></div></nav>
+    <section class="hero-mini hero-photo has-ambient">
+<video class="ambient-hero-video" autoplay muted loop playsinline preload="auto" poster="/assets/videos/bg/flathead-valley.jpg"><source src="/assets/videos/bg/flathead-valley.mp4" type="video/mp4"></video>
+        <h1>Window Cleaning in Lakeside</h1>
+        <p>Window cleaning for Lakeside homes, lake-view properties, and vacation rentals on the west shore of Flathead Lake.</p>
+        <div class="hero-cta-row">
+            <a href="/estimate/" class="bg-white text-black px-6 py-3 rounded-lg hover:bg-gray-200 transition font-semibold">Get a Free Quote</a>
+            <a href="tel:+14066072151" class="tel-link" aria-label="Call OCS LLC at (406) 607-2151">Or call (406) 607-2151</a>
+        </div>
+        <div class="trust-row" aria-label="Trust signals">
+            <span>Insured</span>
+            <span style="display:inline-flex;align-items:center;gap:.4rem"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>5.0 Star rated</span>
+            <span>Locally owned</span>
+        </div>
+    </section>
+
+    <section class="bg-white">
+        <div class="container">
+            <p class="breadcrumbs"><a href="/">Home</a> &rsaquo; Lakeside</p>
+            <h2 class="text-2xl font-bold mb-3">Local cleaning, done right</h2>
+            <p class="mb-4">Lakeside homes are built for the view, which means big panes of glass facing Flathead Lake and the morning sun. Lake spray, pollen and hard water from sprinklers and wells show up fast on that glass. We hand-detail every window inside and out, wipe the frames, and take extra care on high lake-side elevations.</p>
+            <p class="mb-4">Many Lakeside properties are second homes and vacation rentals. We can set up a spring and fall schedule, or clean between guests, so the glass is ready without you having to be there.</p>
+            <h3 class="text-xl font-semibold mb-2 mt-6">What we do for Lakeside customers</h3>
+            <ul class="checklist">
+                <li>Residential window cleaning, including large lake-view picture windows</li>
+                <li>Vacation-rental and second-home cleans</li>
+                <li>Seasonal scheduling (spring open, fall close)</li>
+                <li>Hard-water stain treatment</li>
+                <li>Storefront glass along Highway 93</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="bg-gray-50">
+        <div class="container">
+            <h2 class="text-2xl font-bold mb-4 text-center">Services in Lakeside</h2>
+            <div class="related-grid">
+                <div class="related-card"><a href="/services/residential/">Residential window cleaning →</a></div>
+                <div class="related-card"><a href="/services/commercial/">Commercial window cleaning →</a></div>
+                <div class="related-card"><a href="/services/post-construction/">Post-construction cleaning →</a></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white">
+        <div class="container">
+            <h2 class="text-2xl font-bold mb-4 text-center">What our customers say</h2>
+            <div class="review-card">
+                <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="italic mt-1">"Highly recommended, fantastic service in all ways; the window cleaning itself and the customer service. Great price as well, highly recommend."</p>
+                <p class="mt-2 text-sm font-semibold">— Jayden Jacobson</p>
+            </div>
+            <div class="review-card">
+                <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="italic mt-1">"Barrett did an amazing job on my windows inside and out very polite and very hard-working. I definitely will use him again and I highly recommend him."</p>
+                <p class="mt-2 text-sm font-semibold">— Debbie Turner</p>
+            </div>
+            <div class="review-card">
+                <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="italic mt-1">"Interior and exterior our windows look so clear and beautiful! The job Barrett and his company did exceeded our expectations. Really good communication throughout."</p>
+                <p class="mt-2 text-sm font-semibold">— Addie C</p>
+            </div>
+</section>
+
+    <section>
+        <div class="container">
+        <div class="cta-box">
+            <h2>Get a free estimate in Lakeside</h2>
+            <p>Same-day quotes most weekdays. No high-pressure sales — just a clear price and a clean job.</p>
+            <a href="/estimate/" class="btn-white">Get a Free Quote</a>
+            <a href="tel:+14066072151" class="tel-link">Or call (406) 607-2151</a>
+        </div>
+        </div>
+    </section>
+
+    <section class="bg-gray-50">
+        <div class="container">
+            <h2 class="text-2xl font-bold mb-3">Other areas we serve</h2>
+            <ul class="list-disc pl-6 space-y-1">
+                <li><a href="/kalispell/" class="text-custom-cyan underline">Window cleaning in Kalispell</a></li>
+                <li><a href="/whitefish/" class="text-custom-cyan underline">Window cleaning in Whitefish</a></li>
+                <li><a href="/columbia-falls/" class="text-custom-cyan underline">Window cleaning in Columbia Falls</a></li>
+                <li><a href="/bigfork/" class="text-custom-cyan underline">Window cleaning in Bigfork</a></li>
+                <li><a href="/lakeside/" class="text-custom-cyan underline">Window cleaning in Lakeside</a></li>
+                <li><a href="/somers/" class="text-custom-cyan underline">Window cleaning in Somers</a></li>
+                <li><a href="/evergreen/" class="text-custom-cyan underline">Window cleaning in Evergreen</a></li>
+                <li><a href="/eureka/" class="text-custom-cyan underline">Window cleaning in Eureka</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Feature split: window cleaning in action -->
+<section class="vsplit-wrap bg-white">
+<div class="container vsplit-head"><p class="vs-eyebrow">On the glass</p><h2 class="text-2xl font-bold" style="margin:.3rem 0">See the work, up close</h2></div>
+<div class="vsplit"><div class="vsplit-media"><div class="vframe"><video data-vs muted loop playsinline preload="none" poster="/assets/videos/posters/ig-DOt2_gjklwo.jpg"><source src="/assets/videos/clips/ig-DOt2_gjklwo.mp4" type="video/mp4"></video><span class="vframe-sound">tap for sound</span></div></div>
+<div class="vsplit-copy"><h3>On the glass in Lakeside.</h3><p>Spotless windows for Lakeside homes and businesses.</p><a href="/estimate/" class="vbtn">Get a free quote</a></div></div>
+</section>
+<footer class="bg-custom-cyan text-white py-8 mt-auto site-footer"><div class="container text-center">
+<p>&copy; 2025 OCS LLC &middot; Insured &middot; Locally owned</p>
+<p class="mt-2"><a class="underline" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a> | <a class="underline" href="tel:+14066072151">(406) 607-2151</a></p>
+<p class="mt-2 text-sm">Serving Kalispell, Whitefish, Columbia Falls, Bigfork &amp; the Flathead Valley.</p>
+<p class="mt-3 text-sm"><a class="underline" href="/">Home</a> &middot; <a class="underline" href="/pricing/">Pricing</a> &middot; <a class="underline" href="/faq/">FAQ</a> &middot; <a class="underline" href="/reviews/">Reviews</a> &middot; <a class="underline" href="/our-work/">Our Work</a> &middot; <a class="underline" href="/about/">About</a> &middot; <a class="underline" href="/estimate/">Get a Quote</a></p>
+<p class="mt-2 text-sm"><a class="underline" href="/privacy/">Privacy</a> &middot; <a class="underline" href="/terms/">Terms</a> &middot; <a class="underline" href="/sitemap.html">Sitemap</a></p>
+</div></footer>
+    <div class="mobile-bottom-bar"><a href="tel:+14066072151" class="mobile-call-bar mcb-half"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;margin-right:6px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call</a><a href="sms:+14066072151" class="mobile-call-bar mcb-half sms-bar-link" style="border-left: 1px solid rgba(255,255,255,0.3);"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;margin-right:6px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Text</a></div>
+</body>
+</html>

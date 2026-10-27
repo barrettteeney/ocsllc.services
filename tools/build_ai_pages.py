@@ -11,10 +11,11 @@ head_top = tpl.split('<script type="application/ld+json">')[0]
 head_rest = tpl[tpl.index('<link rel="icon"'):tpl.index('</head>')]
 nav = re.search(r'<nav class="site-nav">.*?</nav>', tpl, re.S).group(0)
 foot = tpl[tpl.index('<footer'):]
-foot = foot.replace(
+foot = foot if '/faq/' in foot else foot.replace(
     '<a class="underline" href="/pricing/">Pricing</a>',
     '<a class="underline" href="/pricing/">Pricing</a> &middot; <a class="underline" href="/faq/">FAQ</a>')
-nav = nav.replace('<a href="/pricing/">Pricing</a>', '<a href="/pricing/">Pricing</a><a href="/faq/">FAQ</a>')
+if '<a href="/faq/">FAQ</a>' not in nav:
+    nav = nav.replace('<a href="/pricing/">Pricing</a>', '<a href="/pricing/">Pricing</a><a href="/faq/">FAQ</a>')
 
 EXTRA_CSS = """
 <style>
