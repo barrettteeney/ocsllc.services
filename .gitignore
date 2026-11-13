@@ -1,0 +1,12 @@
+# Build output: the deploy workflow rebuilds this
+site/
+# Old brand files and unused photos, not for publishing
+archive/
+.claude/
+.DS_Store
+__pycache__/
+# Unused API relay, kept locally in case Rotor grants API access
+worker/
+LAUNCH.md
+# One-file preview for sharing, not for publishing
+ocs-website-home.html

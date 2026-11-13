@@ -1,0 +1,154 @@
+<section class="hero" aria-labelledby="hero-title">
+  <picture>
+    <source media="(max-width: 759px)" type="image/webp" srcset="/assets/img/work/hero-window-cleaning-tall.webp" width="643" height="1143">
+    <source media="(max-width: 759px)" srcset="/assets/img/work/hero-window-cleaning-tall.jpg" width="643" height="1143">
+    <source type="image/webp" srcset="/assets/img/work/hero-window-cleaning.webp" width="2000" height="1125">
+    <img class="hero-bg" src="/assets/img/work/hero-window-cleaning.jpg" alt="Window cleaner kneeling to clean a window on a dark-sided home in the trees" width="2000" height="1125" fetchpriority="high">
+  </picture>
+  <div class="container">
+    <div class="hero-copy">
+      <p class="hero-rating"><span class="stars" aria-hidden="true">★★★★★</span> [[rating]] stars on Google</p>
+      <h1 id="hero-title">Dirty Windows? See the Difference.</h1>
+      <p class="hero-lede">Top-rated window cleaning in the Flathead Valley. Brighter views, streak-free glass, and plans that keep them that way.</p>
+      <a class="btn btn-primary btn-lg" href="/quote/?plan=quarterly">Get a Same-Day Price <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="services" aria-labelledby="services-title">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <p class="eyebrow">Services</p>
+      <h2 id="services-title">Our Services</h2>
+    </div>
+[[include:service-grid]]
+  </div>
+</section>
+
+<section class="section section--soft" id="plans" aria-labelledby="plans-title">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <h2 id="plans-title">Save Big</h2>
+      <p class="section-sub">With an OCS window cleaning plan</p>
+    </div>
+    <div class="plans-photo" data-reveal>
+      <img src="/assets/img/work/recent-work-gable-windows.jpg" alt="Tall gable windows on a dark-sided home, reflecting a stormy sky" width="1130" height="636" loading="lazy" decoding="async">
+    </div>
+[[include:plan-cards]]
+  </div>
+</section>
+
+<section class="section" id="reviews" aria-labelledby="reviews-title">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <p class="section-sub section-sub--top">See What Your</p>
+      <h2 id="reviews-title">Neighbors Are Saying</h2>
+      <p class="reviews-score"><span class="stars" aria-hidden="true">★★★★★</span> [[rating]] rating from [[review_count]] Google reviews</p>
+      <a class="text-link reviews-link" href="[[maps_uri]]" target="_blank" rel="noopener">See us on Google <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+    </div>
+    <!-- Every review comes from assets/data/reviews.json, which scripts/sync_reviews.py keeps current. -->
+    <div class="reviews" data-reviews data-reveal role="group" aria-roledescription="carousel" aria-label="Customer reviews">
+      <div class="rev-row" tabindex="0" aria-label="Reviews, scrolls sideways">
+[[reviews]]
+      </div>
+      <div class="rev-controls">
+        <button class="rev-btn" type="button" data-rev-prev aria-label="Previous review">←</button>
+        <span class="rev-status" data-rev-status>[[review_shown]] reviews</span>
+        <button class="rev-btn rev-btn--pause" type="button" data-rev-pause hidden>Pause</button>
+        <button class="rev-btn" type="button" data-rev-next aria-label="Next review">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--dark" id="process" aria-labelledby="process-title">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <h2 id="process-title">Our 4 Step Process</h2>
+      <p class="section-sub">Done by hand, the same way every visit</p>
+    </div>
+    <div class="process" data-process data-reveal>
+      <div class="process-panel is-active" id="process-panel-1" role="tabpanel" aria-labelledby="process-tab-1">
+        <div class="process-photo"><div class="ph ph--filled"><video muted loop playsinline controls preload="none" poster="/assets/img/work/step-scrub.jpg" aria-label="Window cleaner scrubbing a large window with a soapy applicator"><source src="/assets/video/step-scrub.mp4" type="video/mp4"></video></div></div>
+        <div class="process-copy">
+          <span class="process-num">01</span>
+          <h3>Scrub</h3>
+          <p>We start by washing the glass by hand, loosening dirt, grime, and buildup so nothing gets dragged across the pane.</p>
+        </div>
+      </div>
+      <div class="process-panel" id="process-panel-2" role="tabpanel" aria-labelledby="process-tab-2">
+        <div class="process-photo"><div class="ph ph--filled"><video muted loop playsinline controls preload="none" poster="/assets/img/work/step-squeegee.jpg" aria-label="Window cleaner pulling a squeegee down a large window"><source src="/assets/video/step-squeegee.mp4" type="video/mp4"></video></div></div>
+        <div class="process-copy">
+          <span class="process-num">02</span>
+          <h3>Squeegee</h3>
+          <p>Long, steady pulls take the water and the dirt with them. No streaks and no drips, just clear glass.</p>
+        </div>
+      </div>
+      <div class="process-panel" id="process-panel-3" role="tabpanel" aria-labelledby="process-tab-3">
+        <div class="process-photo"><div class="ph ph--filled"><video muted loop playsinline controls preload="none" poster="/assets/img/work/step-detail.jpg" aria-label="Window cleaner wiping the edges and frame of a window with a towel"><source src="/assets/video/step-detail.mp4" type="video/mp4"></video></div></div>
+        <div class="process-copy">
+          <span class="process-num">03</span>
+          <h3>Detail</h3>
+          <p>Then the small stuff. We wipe down frames and sills and go back over the corners and edges until the whole window looks right.</p>
+        </div>
+      </div>
+      <div class="process-panel" id="process-panel-4" role="tabpanel" aria-labelledby="process-tab-4">
+        <div class="process-photo">[[img:step-schedule.jpg|Window cleaner walking past a work truck loaded with ladders and tool boxes toward a home|56%]]</div>
+        <div class="process-copy">
+          <span class="process-num">04</span>
+          <h3>Stay on Schedule</h3>
+          <p>On a plan, your next visit is set for you with the discount applied every time, so your windows stay clean without you thinking about it.</p>
+        </div>
+      </div>
+      <div class="process-nav" role="tablist" aria-label="Process steps">
+        <button type="button" role="tab" id="process-tab-1" aria-controls="process-panel-1" aria-selected="true">1<span class="sr-only">: Scrub</span></button>
+        <button type="button" role="tab" id="process-tab-2" aria-controls="process-panel-2" aria-selected="false" tabindex="-1">2<span class="sr-only">: Squeegee</span></button>
+        <button type="button" role="tab" id="process-tab-3" aria-controls="process-panel-3" aria-selected="false" tabindex="-1">3<span class="sr-only">: Detail</span></button>
+        <button type="button" role="tab" id="process-tab-4" aria-controls="process-panel-4" aria-selected="false" tabindex="-1">4<span class="sr-only">: Stay on Schedule</span></button>
+      </div>
+    </div>
+    <div class="process-cta"><a class="btn btn-primary btn-lg" href="/quote/?plan=quarterly">Get a Same-Day Price <span class="arrow" aria-hidden="true">→</span></a></div>
+  </div>
+</section>
+
+<section class="section" id="recent-work" aria-labelledby="work-title">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <h2 id="work-title">Our Recent Work</h2>
+      <p class="section-sub">Real jobs from around the valley</p>
+    </div>
+    <div class="work" data-work data-reveal>
+      <div class="work-row" tabindex="0" role="group" aria-label="Recent work photos, scrolls sideways">
+        [[img:recent-work-lake-house.jpg|Large clean windows on a lakefront home, reflecting the water and trees|52%]]
+        [[img:recent-work-white-dormers.jpg|White board-and-batten home with clean dormer windows against a blue sky|25%]]
+        [[img:recent-work-entry-windows.jpg|Clean front entry windows and glass door on a new home|37%]]
+        [[img:recent-work-skylight.jpg|Clean skylight on a shingled roof with fall leaves around it|50%]]
+        [[img:recent-work-ladder-truck.jpg|Work truck and ladder parked in front of a large home at dusk|50%]]
+        [[img:recent-work-garage-door.jpg|Glass garage door with clean panes, seen from inside|60%]]
+      </div>
+      <button class="work-arrow work-arrow--prev" type="button" data-work-prev aria-label="Previous photos">←</button>
+      <button class="work-arrow work-arrow--next" type="button" data-work-next aria-label="Next photos">→</button>
+    </div>
+  </div>
+</section>
+
+<section class="section section--soft" id="areas" aria-labelledby="areas-title">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <h2 id="areas-title">Proudly Serving</h2>
+      <p class="section-sub">Professional window cleaning across the Flathead Valley</p>
+    </div>
+    <div class="serving" data-reveal>
+      <div class="serving-map">
+        <iframe title="Map of the Flathead Valley, Montana" src="https://www.google.com/maps?q=Flathead+Valley,+Montana&amp;z=9&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div class="serving-list">
+        <h3>Montana</h3>
+[[areas_accordion]]
+        <p class="serving-more"><a class="text-link" href="/service-area/">See every town and ZIP code <span aria-hidden="true">→</span></a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+[[include:cta]]

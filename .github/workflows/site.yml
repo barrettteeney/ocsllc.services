@@ -1,0 +1,61 @@
+# Keeps the Google reviews current and publishes the site.
+# Does nothing until this project is pushed to a GitHub repo with Pages set to "GitHub Actions".
+# Reviews use the same GBP_* secrets as the old site's sync bot. Without them the site still
+# builds and deploys, using the reviews already in assets/data/reviews.json.
+name: Sync reviews and deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test the review sync
+        run: python scripts/test_sync_reviews.py
+      - name: Pull latest Google reviews
+        # A Google problem shouldn't stop the site publishing; the current reviews stay up.
+        continue-on-error: true
+        env:
+          GBP_CLIENT_ID: ${{ secrets.GBP_CLIENT_ID }}
+          GBP_CLIENT_SECRET: ${{ secrets.GBP_CLIENT_SECRET }}
+          GBP_REFRESH_TOKEN: ${{ secrets.GBP_REFRESH_TOKEN }}
+          GBP_ACCOUNT_ID: ${{ secrets.GBP_ACCOUNT_ID }}
+          GBP_LOCATION_ID: ${{ secrets.GBP_LOCATION_ID }}
+        run: python scripts/sync_reviews.py
+      - name: Save new reviews
+        run: |
+          if [ -n "$(git status --porcelain assets/data/reviews.json)" ]; then
+            git config user.name "ocs-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add assets/data/reviews.json
+            git commit -m "auto: sync Google reviews [skip ci]"
+            git push
+          fi
+      - name: Build site
+        run: python build.py
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4

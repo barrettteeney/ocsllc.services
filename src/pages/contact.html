@@ -1,0 +1,65 @@
+<section class="page-hero" aria-labelledby="page-title">
+  <div class="container">
+    <p class="eyebrow">Contact</p>
+    <h1 id="page-title">Get in touch.</h1>
+    <p class="lede">Questions about plans or services? Send a note. For a price, the quote form has everything we need.</p>
+  </div>
+</section>
+
+<section class="section section--tight-top">
+  <div class="container contact-grid">
+    <div>
+      <div class="contact-block">
+        <h2>Call or text</h2>
+        <a class="contact-email" href="tel:+14066072151">406-607-2151</a>
+      </div>
+      <div class="contact-block">
+        <h2>Email</h2>
+        <a class="contact-email" href="mailto:barrett@ocsllc.services">barrett@ocsllc.services</a>
+      </div>
+      <div class="contact-block">
+        <h2>Service area</h2>
+        <ul class="area-chips" style="margin-top:0">
+          <li>Kalispell</li><li>Whitefish</li><li>Columbia Falls</li><li>Bigfork</li><li>Lakeside</li><li>Somers</li><li>Surrounding Flathead Valley</li>
+        </ul>
+        <p style="margin:1rem 0 0"><a class="text-link" href="/service-area/">All towns &amp; ZIP codes <span aria-hidden="true">→</span></a></p>
+      </div>
+      <div class="contact-block">
+        <h2>Looking for a price?</h2>
+        <p class="muted">Quotes go through the quote form so we can confirm an exact price.</p>
+        <a class="btn btn-primary" href="/quote/">Get a Same-Day Price <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <form data-ajax-form data-success="contact-success" data-email="barrett@ocsllc.services"
+            data-endpoint="https://formsubmit.co/ajax/barrett@ocsllc.services"
+            action="https://formsubmit.co/barrett@ocsllc.services" method="post">
+        <input type="hidden" name="_subject" value="Website message (ocsllc.services)">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_next" value="https://ocsllc.services/thanks/">
+        <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="_honey" tabindex="-1" autocomplete="off"></label></div>
+
+        <div class="field">
+          <label for="c-name">Name</label>
+          <input class="input" id="c-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="c-email">Email</label>
+          <input class="input" id="c-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="c-message">Message</label>
+          <textarea class="input" id="c-message" name="message" rows="5" required></textarea>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Send message</button>
+        <p class="form-error" data-form-error role="alert"></p>
+      </form>
+      <div class="form-success" id="contact-success" tabindex="-1" hidden>
+        <div class="success-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+        <h2>Message sent.</h2>
+        <p>Thanks. We’ll reply by email.</p>
+      </div>
+    </div>
+  </div>
+</section>
