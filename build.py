@@ -154,6 +154,7 @@ BUSINESS = {
     "url": f"{DOMAIN}/",
     "email": EMAIL,
     "telephone": "+1-406-607-2151",
+    "sameAs": ["https://www.instagram.com/ocsllc.services/", "https://www.facebook.com/61568037686227"],
     "logo": f"{DOMAIN}/assets/img/ocs-logo.png",
     "image": f"{DOMAIN}/assets/img/og-image.jpg",
     "address": {"@type": "PostalAddress", "addressLocality": "Kalispell", "addressRegion": "MT", "addressCountry": "US"},
@@ -354,6 +355,10 @@ FOOT = """</main>
         <p>Hand-cleaned, insured window cleaning for homes across the Flathead Valley, on a schedule that works for you.</p>
         <p class="footer-phone"><a class="footer-email" href="tel:+14066072151">406-607-2151</a></p>
         <a class="footer-email" href="mailto:{email}">{email}</a>
+        <ul class="social-links" aria-label="OCS LLC on social media">
+          <li><a href="https://www.instagram.com/ocsllc.services/" target="_blank" rel="noopener" aria-label="OCS LLC on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg></a></li>
+          <li><a href="https://www.facebook.com/61568037686227" target="_blank" rel="noopener" aria-label="OCS LLC on Facebook (opens in a new tab)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.6 21v-7.8h2.6l.4-3.1h-3V8.2c0-.9.3-1.5 1.6-1.5h1.6V4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8V13h2.6V21z"/></svg></a></li>
+        </ul>
       </div>
       <div>
         <h2 class="footer-h">Plans</h2>
