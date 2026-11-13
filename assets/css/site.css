@@ -683,3 +683,28 @@ html:not(.js) .review { display: none; }
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
   .js [data-reveal] { opacity: 1; transform: none; }
 }
+
+/* ---------- OCS vintage photo filter ----------
+   On every job photo, video, the hero and the photo banner. Not on the logo, icons or buttons. */
+.ocs-vintage {
+  position: relative;
+  isolation: isolate;
+}
+.ocs-vintage img,
+.ocs-vintage video {
+  filter: sepia(0.15) saturate(0.75) contrast(0.95) brightness(1.02);
+}
+.ocs-vintage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(247,245,242,.08), rgba(38,36,34,.06));
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  border-radius: inherit;
+}
+/* Photo boxes already use ::after for a dashed placeholder border, so clear it here. */
+.ph.ocs-vintage::after { border: 0; }
+/* In the hero and photo banner the tint sits under the words, not over them. */
+.hero.ocs-vintage::after, .cta-full.ocs-vintage::after { z-index: -1; }
+

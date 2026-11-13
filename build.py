@@ -292,7 +292,7 @@ def placeholder(match):
 def photo(match):
     filename, alt, focus = match.group(1), match.group(2), match.group(3)
     style = f' style="object-position:center {focus}"' if focus else ""
-    return (f'<div class="ph ph--filled"><img src="/assets/img/work/{filename}" alt="{alt}"{style} loading="lazy" decoding="async"></div>')
+    return (f'<div class="ph ph--filled ocs-vintage"><img src="/assets/img/work/{filename}" alt="{alt}"{style} loading="lazy" decoding="async"></div>')
 
 
 HEAD = """<!doctype html>
