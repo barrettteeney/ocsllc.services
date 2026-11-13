@@ -1,9 +1,14 @@
 {
  "rating": 5,
- "review_count": 35,
+ "review_count": 36,
  "maps_uri": "https://www.google.com/maps/place/OCS+LLC/data=!4m2!3m1!1s0x2ba17fade10a7f9b:0x7b5721a0f9b3ddf4",
  "synced": "2026-11-13",
  "reviews": [
+  {
+   "author": "Diane Boyd",
+   "rating": 5,
+   "body": "I hired Barrett to clean my windows. Not only did he do a great job inside & out, he was friendly, honest, efficient, and offered some suggestions on my large leaking picture window in terms of replacement. I higjly recommend Barrett's squeaky clean window cleaning service."
+  },
   {
    "author": "Melissa Harbin",
    "rating": 5,
